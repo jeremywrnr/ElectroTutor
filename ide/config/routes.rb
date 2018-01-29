@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :tutorials
   resources :steps
+  resources :tutorials
 
   root :to => "welcome#index"
   get 'welcome/index'

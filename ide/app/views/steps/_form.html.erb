@@ -12,8 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :Tutorial %>
-    <%= form.text_field :Tutorial, id: :step_Tutorial %>
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :step_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :instruction %>
+    <%= form.text_field :instruction, id: :step_instruction %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image %>
+    <%= form.text_field :image, id: :step_image %>
   </div>
 
   <div class="actions">

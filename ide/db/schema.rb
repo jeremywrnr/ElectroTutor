@@ -10,16 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180129165404) do
+ActiveRecord::Schema.define(version: 20180129172221) do
 
   create_table "steps", force: :cascade do |t|
-    t.string "Tutorial"
+    t.string "name"
+    t.string "instruction"
+    t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "code"
-    t.string "title"
-    t.text "instruction"
-    t.boolean "complete"
   end
 
   create_table "tutorials", force: :cascade do |t|

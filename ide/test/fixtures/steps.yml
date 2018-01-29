@@ -1,7 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  Tutorial: MyString
+  name: MyString
+  instruction: MyString
+  image: MyString
 
 two:
-  Tutorial: MyString
+  name: MyString
+  instruction: MyString
+  image: MyString
