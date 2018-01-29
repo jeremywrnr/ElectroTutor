@@ -1,4 +1,6 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
+tmp/
+log/
 
 # dependencies
 /node_modules
@@ -15,8 +17,6 @@
 .env.development.local
 .env.test.local
 .env.production.local
-tmp/
-log/
 
 npm-debug.log*
 yarn-debug.log*
