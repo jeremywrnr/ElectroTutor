@@ -4,16 +4,27 @@
       <h2><%= pluralize(step.errors.count, "error") %> prohibited this step from being saved:</h2>
 
       <ul>
-      <% step.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% step.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :step_name %>
+    <%= form.label :tutorial %>
+    <ul>
+      <% @tuts.each do |t| %>
+        <%= radio_button_tag(:step_tutorial, t) %>
+        <%= label_tag(:tutorial, t.name) %>
+        <li><%= t.name %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, id: :step_title %>
   </div>
 
   <div class="field">
