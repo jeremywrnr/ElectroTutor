@@ -26,6 +26,8 @@ yarn-error.log*
 *swp
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+.byebug_history
+
 # dependencies
 /node_modules
 
