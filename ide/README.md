@@ -2,8 +2,9 @@
 
 ## setup
 
-    bundle
+    bundle install
     bundle exec rails webpacker:install
+    bundle exec rails generate react:install
     bundle exec rails server
 
 ## about

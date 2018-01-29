@@ -4778,11 +4778,11 @@ react@^16.0.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react_ujs@^2.2.1, react_ujs@^2.4.1:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/react_ujs/-/react_ujs-2.4.2.tgz#c09365579b1c7b2191eab5a57f007609fd1852ba"
+react_ujs@^2.4.2, react_ujs@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/react_ujs/-/react_ujs-2.4.3.tgz#f35b641f248a155ad3539468c5463734fce4fe4a"
   dependencies:
-    react_ujs "^2.4.1"
+    react_ujs "^2.4.2"
 
 read-cache@^1.0.0:
   version "1.0.0"
