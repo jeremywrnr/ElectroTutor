@@ -25,8 +25,9 @@ class StepsController < ApplicationController
   # POST /steps
   # POST /steps.json
   def create
-    byebug
-    @step = Step.new(step_params)
+    @tid = step_params[:tutorial]
+    @tut = Tutorial.find(1)
+    @step = @tut.posts.build(step_params)
 
     respond_to do |format|
       if @step.save

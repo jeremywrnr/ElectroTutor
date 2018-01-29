@@ -13,19 +13,14 @@
 
   <div class="field">
     <%= form.label :tutorial %>
-    <ul>
-      <% @tuts.each do |t| %>
-        <li>
-          <%= radio_button_tag(:step_tutorial_id, t.id) %>
-          <%= label_tag(:tutorial, t.name) %>
-        </li>
-      <% end %>
-    </ul>
+    <% @tuts.each do |t| %>
+      <%= form.radio_button :tutorial, t.id %>
+    <% end %>
   </div>
 
   <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title, id: :step_title %>
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :step_name %>
   </div>
 
   <div class="field">
