@@ -1,11 +1,13 @@
 # SOURKIT IDE
 
+react-rails: https://github.com/reactjs/react-rails
+
 ## setup
 
     bundle install
-    bundle exec rails webpacker:install
-    bundle exec rails generate react:install
-    bundle exec rails server
+    rails webpacker:install
+    rails webpacker:install:react
+    rails generate react:install
 
 ## about
 
