@@ -156,8 +156,6 @@ GEM
     selenium-webdriver (3.7.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
-    semantic-ui-sass (2.2.12.1)
-      sass (>= 3.2)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -206,7 +204,6 @@ DEPENDENCIES
   react-rails
   sass-rails (~> 5.0)
   selenium-webdriver
-  semantic-ui-sass
   sqlite3
   turbolinks (~> 5)
   tzinfo-data

@@ -1,5 +1,6 @@
 class StepsController < ApplicationController
   before_action :set_step, only: [:show, :edit, :update, :destroy]
+  before_action :set_tuts, only: [:create, :new, :update,  :destroy]
 
   # GET /steps
   # GET /steps.json
@@ -14,7 +15,6 @@ class StepsController < ApplicationController
 
   # GET /steps/new
   def new
-    @tuts = Tutorial.all
     @step = Step.new
   end
 
@@ -25,6 +25,7 @@ class StepsController < ApplicationController
   # POST /steps
   # POST /steps.json
   def create
+    byebug
     @step = Step.new(step_params)
 
     respond_to do |format|
@@ -63,13 +64,17 @@ class StepsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_step
-      @step = Step.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_step
+    @step = Step.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def step_params
-      params.require(:step).permit(:name, :instruction, :image, :tutorial)
-    end
+  def set_tuts
+    @tuts = Tutorial.all
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def step_params
+    params.require(:step).permit(:name, :instruction, :image, :tutorial)
+  end
 end

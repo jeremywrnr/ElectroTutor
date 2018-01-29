@@ -15,9 +15,10 @@
     <%= form.label :tutorial %>
     <ul>
       <% @tuts.each do |t| %>
-        <%= radio_button_tag(:step_tutorial, t) %>
-        <%= label_tag(:tutorial, t.name) %>
-        <li><%= t.name %></li>
+        <li>
+          <%= radio_button_tag(:step_tutorial_id, t.id) %>
+          <%= label_tag(:tutorial, t.name) %>
+        </li>
       <% end %>
     </ul>
   </div>

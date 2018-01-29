@@ -1,2 +1,10 @@
 <%= javascript_pack_tag 'application' %>
+
+<%= react_component 'HelloWorld', { greeting: 'why hullo'} %>
 <%= react_component 'Post', { title: 'A working react component', body: 'Simple but effective' }, prerender: true %>
+<%= react_component 'Post', { title: 'A non-prerendered react component', body: 'Complex yet ineffectual' } %>
+
+<br>
+
+<%= link_to 'Tutorial', tutorials_path %> |
+<%= link_to 'Steps', steps_path %>
