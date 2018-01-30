@@ -1,11 +1,14 @@
+# interface
+
+rails guide: https://www.railstutorial.org/book/modeling_users
+
 from: https://engineering.musefind.com/make-your-rails-app-real-time-in-under-ten-minutes-cd5bd4a47f61
 
-frontend
+*frontend*
 
     yarn start
 
-backend
+*backend*
 
-    cd docs
-    rails s -p 3001
+    cd docs && rails s -p 3001
 
