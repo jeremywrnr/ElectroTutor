@@ -3,25 +3,29 @@ import TextArea from './TextArea.js'
 import Grid3 from './Grid3.js'
 import './App.css'
 
-//import { Header } from 'semantic-ui-react'
 
 class App extends Component {
+  handleKeyPress = (event) => {
+    if(event.key === 'Enter') {
+      console.log('enter press here! ')
+    }
+  }
+
   render() {
     return (
       <div id="main">
         <Grid3
           left={
-          <TextArea />
+          <TextArea onKeyPress={this.handleKeyPress} id='left'/>
           }
           middle={
-          <TextArea />
+          <TextArea onKeyPress={this.handleKeyPress} id='middle'/>
           }
           right={
-          <TextArea />
+          <TextArea onKeyPress={this.handleKeyPress} id='right'/>
           } />
       </div>
-    )
-}
+    ) }
 }
 
 
