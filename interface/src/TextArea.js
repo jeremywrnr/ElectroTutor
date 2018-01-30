@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ActionCable from 'actioncable'
 
-class App extends Component {
+class TextArea extends Component {
   state = { text: '' }
 
   componentDidMount() {
@@ -38,4 +38,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default TextArea
