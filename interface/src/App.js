@@ -16,7 +16,7 @@ class App extends Component {
       <div id="main">
         <Grid3
           left={
-          <TextArea onKeyPress={this.handleKeyPress} id='left'/>
+          <img onKeyPress={this.handleKeyPress} id='left'/>
           }
           middle={
           <TextArea onKeyPress={this.handleKeyPress} id='middle'/>
