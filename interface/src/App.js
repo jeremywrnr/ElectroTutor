@@ -6,7 +6,19 @@ import './App.css'
 
 
 class App extends Component {
-  handleKeyPress = (event) => {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      count: 0
+    };
+
+    this.handleKeyUp = this.handleKeyUp.bind(this)
+  }
+
+  handleKeyUp = (event) => {
+    console.log(event.target)
+    console.log(event.key)
     if(event.key === 'Enter') {
       console.log('enter press here! ')
     }
@@ -14,21 +26,22 @@ class App extends Component {
 
   render() {
     return (
-      <div id="main">
+      <div id="main"
+        onKeyUp={this.handleKeyUp} >
         <Grid3
           left={
           <Message
             success
             icon='thumbs up'
-            header='Nice job!'
+            header={'Counter: ' + this.state.count}
             content='Your profile is complete.'
           />
           }
           middle={
-          <TextArea onKeyPress={this.handleKeyPress} id='middle'/>
+          <TextArea onKeyUp={this.handleKeyUp} id='middle'/>
           }
           right={
-          <TextArea onKeyPress={this.handleKeyPress} id='right'/>
+          <TextArea onKeyUp={this.handleKeyUp} id='right'/>
           } />
       </div>
     ) }
