@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20180131154100) do
   create_table "steps", force: :cascade do |t|
     t.text "description"
     t.string "title"
+    t.integer "tutorial_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -43,6 +44,7 @@ ActiveRecord::Schema.define(version: 20180131154100) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
     t.datetime "confirmed_at"
