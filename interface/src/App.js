@@ -75,10 +75,10 @@ class App extends Component {
             />
             }
             middle={
-            <TextArea id='middle'/>
+            <img id='middle'/>
             }
             right={
-            <TextArea id='right'/>
+            <img id='right'/>
             } />
         </div>
       </HotKeys>
