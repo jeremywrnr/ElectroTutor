@@ -39,25 +39,26 @@ class App extends Component {
   componentDidMount() {
     window.fetch('http://localhost:3001/users/1').then(data => {
       data.json().then(res => {
+        console.log(res)
         this.setState({ step: res.step })
       })
     })
 
     const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-    this.sub = cable.subscriptions.create('NotesChannel', {
-      received: this.handleReceiveNewText
+    this.sub = cable.subscriptions.create('UsersChannel', {
+      received: this.handleReceiveUserData
     })
   }
 
-  handleReceiveNewText = ({ text }) => {
-    if (text !== this.state.text) {
-      this.setState({ text })
+  handleReceiveUserData = ({ step }) => {
+    if (step !== this.state.step) {
+      this.setState({ step })
     }
   }
 
   handleChange = e => {
-    this.setState({ text: e.target.value })
-    this.sub.send({ text: e.target.value, id: 1 })
+    this.setState({ step: e.target.value })
+    this.sub.send({ step: e.target.value, id: 1 })
   }
 
   render() {
