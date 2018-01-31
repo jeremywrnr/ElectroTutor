@@ -8,7 +8,9 @@ note = Note.create!(text: 'hello!', id: 1)
 user = User.create(
   name: 'Quentin',
   email: 'q@q.com',
-  password_digest: 'q@q.com'
+  password_digest: 'q@q.com',
+  tutorial: 1,
+  step: 1,
 )
 
 tuto = Tutorial.create(
