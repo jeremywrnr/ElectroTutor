@@ -1,9 +1,10 @@
 class CreateProgresses < ActiveRecord::Migration[5.1]
   def change
     create_table :progresses do |t|
-      t.integer :user_id
-      t.integer :step_id
-      t.boolean :completed
+      t.belongs_to :user, index: true
+      t.belongs_to :step, index: true
+      t.boolean :completed, :default => false
+      t.string :jsondata
 
       t.timestamps
     end

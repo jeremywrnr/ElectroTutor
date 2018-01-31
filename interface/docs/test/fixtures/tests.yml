@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyText
+  exec: MyString
+  image: MyString
+  output: MyText
+  belongs_to: 
+  complete: false
+
+two:
+  description: MyText
+  exec: MyString
+  image: MyString
+  output: MyText
+  belongs_to: 
+  complete: false

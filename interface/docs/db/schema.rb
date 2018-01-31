@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180131154100) do
+ActiveRecord::Schema.define(version: 20180131194154) do
 
   create_table "notes", force: :cascade do |t|
     t.text "text"
@@ -21,17 +21,34 @@ ActiveRecord::Schema.define(version: 20180131154100) do
   create_table "progresses", force: :cascade do |t|
     t.integer "user_id"
     t.integer "step_id"
-    t.boolean "completed"
+    t.boolean "completed", default: false
+    t.string "jsondata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["step_id"], name: "index_progresses_on_step_id"
+    t.index ["user_id"], name: "index_progresses_on_user_id"
   end
 
   create_table "steps", force: :cascade do |t|
+    t.integer "tutorial_id"
     t.text "description"
     t.string "title"
-    t.integer "tutorial_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["tutorial_id"], name: "index_steps_on_tutorial_id"
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.integer "step_id"
+    t.text "description"
+    t.string "exec"
+    t.string "image"
+    t.text "output"
+    t.boolean "complete"
+    t.string "jsondata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["step_id"], name: "index_tests_on_step_id"
   end
 
   create_table "tutorials", force: :cascade do |t|
@@ -41,15 +58,13 @@ ActiveRecord::Schema.define(version: 20180131154100) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tutorials_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.datetime "confirmed_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end
