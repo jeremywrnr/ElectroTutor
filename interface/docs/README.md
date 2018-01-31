@@ -4,7 +4,7 @@ Links to the frontend React UI with ActionCable.
 
 * Database initialization
 
-    rake db:drop db:create db:migrate
+    bin/rails db:environment:set RAILS_ENV=development db:drop db:create db:migrate db:seed
 
 * How to run the test suite
 

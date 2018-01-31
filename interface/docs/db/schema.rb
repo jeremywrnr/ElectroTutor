@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20180131194154) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
+    t.integer "tutorial"
+    t.integer "step"
   end
 
 end
