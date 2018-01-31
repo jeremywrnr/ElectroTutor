@@ -10,8 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      count: 0
-    };
+      step: 0
+    }
   }
 
   map = {
@@ -19,33 +19,34 @@ class App extends Component {
     'back': ['down', 'left']
   }
 
-  handlers = {
+  keyHandler = {
     'next': (event) => {
       event.preventDefault()
       console.log('Move up hotkey called!')
       this.setState((prev) => {
-        return {count: prev.count + 1}
+        return {step: prev.step + 1}
       })
     },
+
     'back': (event) => {
       event.preventDefault()
       console.log('Move back hotkey called!')
       this.setState((prev) => {
-        return {count: prev.count - 1}
+        return {step: prev.step - 1}
       })
     }
   }
 
   render() {
     return (
-      <HotKeys keyMap={this.map} handlers={this.handlers}>
+      <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <div id="main">
           <Grid3
             left={
             <Message
               success
               icon='thumbs up'
-              header={'Counter: ' + this.state.count}
+              header={'Step ' + this.state.step}
               content='Your profile is complete.'
             />
             }
