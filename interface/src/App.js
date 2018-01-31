@@ -9,7 +9,7 @@ import './App.css'
 
 class App extends Component {
   state = {
-    text: '',
+    text: 'initial tutorial description',
     step: 1
   }
 
@@ -21,18 +21,16 @@ class App extends Component {
   keyHandler = {
     'next': (event) => {
       event.preventDefault()
-      console.log('Move up hotkey called!')
-      this.setState((prev) => {
-        return {step: prev.step + 1}
-      })
+      let writeStep = (prev, inc) => { return {step: prev.step + 1} }
+      let saveStep = () => this.sub.send({ step: this.state.step, id: 1 })
+      this.setState(writeStep, saveStep)
     },
 
     'back': (event) => {
       event.preventDefault()
-      console.log('Move back hotkey called!')
-      this.setState((prev) => {
-        return {step: prev.step - 1}
-      })
+      let writeStep = (prev, inc) => { return {step: prev.step - 1} }
+      let saveStep = () => this.sub.send({ step: this.state.step, id: 1 })
+      this.setState(writeStep, saveStep)
     }
   }
 
@@ -56,11 +54,6 @@ class App extends Component {
     }
   }
 
-  handleChange = e => {
-    this.setState({ step: e.target.value })
-    this.sub.send({ step: e.target.value, id: 1 })
-  }
-
   render() {
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
@@ -70,13 +63,12 @@ class App extends Component {
             <Message
               success
               icon='thumbs up'
-              onChange={this.handleChange}
               header={'Step ' + this.state.step}
               content={this.state.text}
             />
             }
             middle={
-            <img id='middle'/>
+            <TextArea id='middle'/>
             }
             right={
             <img id='right'/>
