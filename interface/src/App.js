@@ -57,12 +57,15 @@ class App extends Component {
 
   handleOnClick = () => {
     console.log('clicked')
-    fetch('http://localhost:3001/compile/1', {
-      method: 'POST',
-      body: JSON.stringify({user: 1, step: this.state.step}),
-      //headers: new Headers({
-        //'Content-Type': 'application/json'
-      //})
+    var url = 'http://localhost:3001/compile/1'
+    var data = {step: 1};
+
+    fetch(url, {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));

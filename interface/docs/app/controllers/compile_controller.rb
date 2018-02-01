@@ -1,11 +1,8 @@
 class CompileController < ApplicationController
-
-  def get
-    puts params
-  end
-
   def post
     puts params
+    json_response(params)
   end
 
+  alias :get :post
 end
