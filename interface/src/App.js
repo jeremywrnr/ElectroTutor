@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { HotKeys } from 'react-hotkeys'
 import { Message } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import TextArea from './TextArea.js'
 import Grid3 from './Grid3.js'
@@ -54,24 +55,51 @@ class App extends Component {
     }
   }
 
+  handleOnClick = () => {
+    console.log('clicked')
+    fetch('http://localhost:3001/compile/1', {
+      method: 'POST',
+      body: JSON.stringify({user: 1, step: this.state.step}),
+      //headers: new Headers({
+        //'Content-Type': 'application/json'
+      //})
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+  }
+
   render() {
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <div id="main">
           <Grid3
             left={
-            <Message
-              success
-              icon='thumbs up'
-              header={'Step ' + this.state.step}
-              content={this.state.text}
-            />
+            <div>
+              <Message
+                success
+                icon='thumbs up'
+                header={'Step ' + this.state.step}
+                content={this.state.text}
+              />
+            </div>
             }
             middle={
-            <TextArea id='middle'/>
+            <div>
+              <Button animated secondary icon onClick={this.handleOnClick} >
+                <Button.Content visible>Compile</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='right arrow' />
+                </Button.Content>
+              </Button>
+              <br/>
+              <br/>
+              <TextArea id='middle'/>
+            </div>
             }
             right={
-            <img id='right'/>
+            <div>
+              <img id='right'/>
+            </div>
             } />
         </div>
       </HotKeys>
