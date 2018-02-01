@@ -9,7 +9,7 @@ class Grid3 extends Component {
         <Grid.Row>
           <Column
             main={this.props.left}
-            header='Circuit Tutorial' />
+            header='Test Driven Tutorial' />
 
           <Column
             main={this.props.middle}
