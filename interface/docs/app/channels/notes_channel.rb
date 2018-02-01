@@ -9,7 +9,7 @@ class NotesChannel < ApplicationCable::Channel
 
   def receive(data)
     note = Note.find(data["id"])
-    note.update!(text: data["text"])
+    note.update!(code: data["code"])
     ActionCable.server.broadcast('notes', data)
   end
 end

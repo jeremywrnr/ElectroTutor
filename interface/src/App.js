@@ -3,14 +3,15 @@ import { HotKeys } from 'react-hotkeys'
 import { Message } from 'semantic-ui-react'
 import { Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
-import TextArea from './TextArea.js'
 import Grid3 from './Grid3.js'
+import Code from './Code.js'
 import './App.css'
 
+//import TextArea from './TextArea.js'
 
 class App extends Component {
   state = {
-    text: 'initial tutorial description',
+    code: 'initial tutorial description',
     step: 1
   }
 
@@ -23,14 +24,14 @@ class App extends Component {
     'next': (event) => {
       event.preventDefault()
       let writeStep = (prev, inc) => { return {step: prev.step + 1} }
-      let saveStep = () => this.sub.send({ step: this.state.step, id: 1 })
+      let saveStep = () => this.userSub.send({ step: this.state.step, id: 1 })
       this.setState(writeStep, saveStep)
     },
 
     'back': (event) => {
       event.preventDefault()
       let writeStep = (prev, inc) => { return {step: prev.step - 1} }
-      let saveStep = () => this.sub.send({ step: this.state.step, id: 1 })
+      let saveStep = () => this.userSub.send({ step: this.state.step, id: 1 })
       this.setState(writeStep, saveStep)
     }
   }
@@ -39,20 +40,47 @@ class App extends Component {
     window.fetch('http://localhost:3001/users/1').then(data => {
       data.json().then(res => {
         console.log(res)
-        this.setState({ step: res.step })
+        this.setState({ ...this.state, step: res.step })
       })
     })
 
+    window.fetch('http://localhost:3001/notes/1').then(data => {
+      data.json().then(res => {
+        this.setState({ ...this.state, code: res.code })
+      })
+    })
+
+    /**
+     * Pull DB state
+     */
+
     const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-    this.sub = cable.subscriptions.create('UsersChannel', {
+
+    this.userSub = cable.subscriptions.create('UsersChannel', {
       received: this.handleReceiveUserData
+    })
+
+    this.noteSub = cable.subscriptions.create('NotesChannel', {
+      received: this.handleReceiveNewCode
     })
   }
 
   handleReceiveUserData = ({ step }) => {
     if (step !== this.state.step) {
-      this.setState({ step })
+      this.setState({ ...this.state, step })
     }
+  }
+
+  handleReceiveNewCode = ({ code }) => {
+    if (code !== this.state.code) {
+      this.setState({ ...this.state, code: code })
+    }
+  }
+
+  handleCodeChange = e => {
+    console.log(e)
+    this.setState({ ...this.state, code: e })
+    this.noteSub.send({ code: e, id: 1 })
   }
 
   handleOnClick = () => {
@@ -71,6 +99,11 @@ class App extends Component {
     .then(response => console.log('Success:', response));
   }
 
+
+  /**
+   * Rendering UI
+   */
+
   render() {
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
@@ -82,10 +115,11 @@ class App extends Component {
                 success
                 icon='thumbs up'
                 header={'Step ' + this.state.step}
-                content={this.state.text}
+                content={this.state.code}
               />
             </div>
             }
+
             middle={
             <div>
               <Button animated secondary icon onClick={this.handleOnClick} >
@@ -96,14 +130,19 @@ class App extends Component {
               </Button>
               <br/>
               <br/>
-              <TextArea id='middle'/>
+              <Code id='middle'
+                code={this.state.code}
+                onChange={this.handleCodeChange}
+              />
             </div>
             }
+
             right={
             <div>
-              <img id='right'/>
+              <img id='right' alt='hardware'/>
             </div>
-            } />
+            }
+          />
         </div>
       </HotKeys>
       ) }

@@ -2,7 +2,7 @@
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
 # ActionCable linkage (live db updates)
-note = Note.create!(text: 'hello!', id: 1)
+note = Note.create!(code: 'seeded text', id: 1)
 
 # Application Data
 user = User.create(
