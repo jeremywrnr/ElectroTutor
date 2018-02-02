@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :notes
   resources :users
+  resources :steps
+  resources :progresses
 
   # compile for the current user
   post '/compile' => 'compile#post'
