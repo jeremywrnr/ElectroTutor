@@ -3,9 +3,3 @@
     height: 100vh;
     width: 100vw;
 }
-
-textarea {
-    max-width: 100%;
-    width: 500px;
-    height: 500px;
-}

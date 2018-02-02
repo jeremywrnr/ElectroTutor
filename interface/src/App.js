@@ -7,12 +7,12 @@ import Grid3 from './Grid3.js'
 import Code from './Code.js'
 import './App.css'
 
-//import TextArea from './TextArea.js'
-
 class App extends Component {
   state = {
     code: 'initial tutorial description',
-    step: 1
+    step: 1,
+    list: [],
+    desc: 'hello',
   }
 
   map = {
@@ -60,6 +60,10 @@ class App extends Component {
       received: this.handleReceiveUserData
     })
 
+    this.stepSub = cable.subscriptions.create('StepsChannel', {
+      received: this.handleReceiveStepData
+    })
+
     this.noteSub = cable.subscriptions.create('NotesChannel', {
       received: this.handleReceiveNewCode
     })
@@ -69,6 +73,10 @@ class App extends Component {
     if (step !== this.state.step) {
       this.setState({ ...this.state, step })
     }
+  }
+
+  handleReceiveStepData = (step) => {
+    console.log(step)
   }
 
   handleReceiveNewCode = ({ code }) => {
@@ -115,7 +123,7 @@ class App extends Component {
                 success
                 icon='thumbs up'
                 header={'Step ' + this.state.step}
-                content={this.state.code}
+                content={this.state.desc}
               />
             </div>
             }

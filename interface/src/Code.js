@@ -19,7 +19,7 @@ class Code extends React.Component {
 
   static defaultProps = {
     code: 'Hello world!'
-  }
+  };
 
   render() {
     return (
@@ -33,6 +33,7 @@ class Code extends React.Component {
         onChange={this.props.onChange}
         showPrintMargin={true}
         showGutter={true}
+        bottom={ 0 }
         width={"100%"}
         highlightActiveLine={true}
         value={this.props.code}
@@ -42,10 +43,7 @@ class Code extends React.Component {
         tabSize: 2,
         }}/>
       );
-  }
-
-  componentDidMount() {
-  }
+  };
 }
 
 export default Code
