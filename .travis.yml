@@ -21,5 +21,6 @@ install:
 
 script:
    - cd hardware/device && platformio run
-   - cd hardware/tester && platformio run
+   - cd ../tester && platformio run
+   - cd ../.. # app root
 
