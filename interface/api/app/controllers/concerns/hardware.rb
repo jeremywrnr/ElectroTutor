@@ -6,7 +6,7 @@ module Hardware
   # Makefile has some logic for programming devices.
 
   def upload ( code='', device='device', &block)
-    out = File.join(@@hw_base, device+'.ino')
+    out = File.join(@@hw_base, "#{device}/#{device}.ino")
 
     File.open(out, 'w') { |f| puts code }
 
