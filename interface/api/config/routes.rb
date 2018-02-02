@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :notes
   resources :users
   resources :steps
+  resources :tutorials
   resources :progresses
 
   # compile for the current user
