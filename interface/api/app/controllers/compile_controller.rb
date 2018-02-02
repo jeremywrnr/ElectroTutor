@@ -23,6 +23,8 @@ class CompileController < ApplicationController
       user_id: params[:user],
     )
 
+    puts prog
+
     # TODO encode the programming code in that progress step
     @code = File.read asset_path('basic.ino')
 

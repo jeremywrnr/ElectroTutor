@@ -1,5 +1,7 @@
 flash: device tester
 
+# Convenience link layer between server and hw
+
 device:
 	cd device && platformio run -e uno -t upload
 tester:
