@@ -14,5 +14,5 @@
 
 ### backend
 
-    cd docs && rails s -p 3001
+    cd api && rails s -p 3001
 
