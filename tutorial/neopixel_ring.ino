@@ -25,15 +25,15 @@ VectorFloat gravity;    // [x, y, z]            gravity vector
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin has gone high
 
-void setup() 
+void setup()
 {
     Serial.begin(9600);
     Serial.println("Program started");
-    initialization = initializeGyroscope();  
-    strip.begin(); 
+    initialization = initializeGyroscope();
+    strip.begin();
 }
 
-void loop() 
+void loop()
 {
     if (!initialization) {
         return;
@@ -49,7 +49,7 @@ void loop()
         while (fifoCount < packetSize) {
             fifoCount = mpu.getFIFOCount();
         }
-        mpu.getFIFOBytes(fifoBuffer, packetSize);        
+        mpu.getFIFOBytes(fifoBuffer, packetSize);
         fifoCount -= packetSize;
         mpu.dmpGetQuaternion(&q, fifoBuffer);
         mpu.dmpGetGravity(&gravity, &q);
@@ -58,44 +58,44 @@ void loop()
     }
 }
 
-boolean hasFifoOverflown(int mpuIntStatus, int fifoCount) 
+boolean hasFifoOverflown(int mpuIntStatus, int fifoCount)
 {
     return mpuIntStatus & 0x10 || fifoCount == 1024;
 }
 
 void redrawLeds(int x, int y, int z)
-{  
+{
     x = constrain(x, -1 * MAX_ANGLE, MAX_ANGLE);
     y = constrain(y, -1 * MAX_ANGLE, MAX_ANGLE);
     if (y < 0 and z > 0) {
-        lightLeds(y, z, 0, 5, 0, 89);      
+        lightLeds(y, z, 0, 5, 0, 89);
     } else if (y < 0 and z < 0) {
-        lightLeds(y, z, 6, 12, 89, 0);  
+        lightLeds(y, z, 6, 12, 89, 0);
     } else if (y > 0 and z < 0) {
-        lightLeds(y, z, 13, 19, 0, 89);     
+        lightLeds(y, z, 13, 19, 0, 89);
     } else if (y > 0 and z > 0) {
-        lightLeds(y, z, 20, 24, 89, 0);     
+        lightLeds(y, z, 20, 24, 89, 0);
     }
 }
 
 
-void lightLeds(int x, int y, int fromLedPosition, int toLedPosition, int fromAngle, int toAngle) 
+void lightLeds(int x, int y, int fromLedPosition, int toLedPosition, int fromAngle, int toAngle)
 {
     double angle = (atan((double) abs(x) / (double) abs (y)) * 4068) / 71;
     int ledNr = map(angle, fromAngle, toAngle, fromLedPosition, toLedPosition);
-    printDebug(x, y, ledNr, angle);  
+    printDebug(x, y, ledNr, angle);
     uint32_t color;
 
     for (int i=0; i < NUM_LEDS; i++) {
         color = strip.Color(0, 0, 0);
         if (i == ledNr) {
-           color = strip.Color(0, 180, 0);
+            color = strip.Color(0, 180, 0);
         } else if (i == ledNr - 1) {
-           color = strip.Color(0, 5, 0);
+            color = strip.Color(0, 5, 0);
         }
-        strip.setPixelColor(normalizeLedPosition(i), color); 
+        strip.setPixelColor(normalizeLedPosition(i), color);
         strip.show();
-    }  
+    }
 }
 
 int normalizeLedPosition(int position)
@@ -122,7 +122,7 @@ void printDebug(int y, int z, int lightLed, int angle)
 
 bool initializeGyroscope() {
     Wire.begin();
-    TWBR = 24;  
+    TWBR = 24;
     mpu.initialize();
     Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
     Serial.println(F("Initializing DMP..."));
@@ -141,11 +141,11 @@ bool initializeGyroscope() {
     mpuIntStatus = mpu.getIntStatus();
     Serial.println(F("DMP ready! Waiting for first interrupt..."));
     packetSize = mpu.dmpGetFIFOPacketSize();
-    
+
     return true;
 }
 
-void dmpDataReady() 
+void dmpDataReady()
 {
     mpuInterrupt = true;
 }

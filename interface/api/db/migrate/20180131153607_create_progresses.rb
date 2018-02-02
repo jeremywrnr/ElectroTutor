@@ -5,6 +5,7 @@ class CreateProgresses < ActiveRecord::Migration[5.1]
       t.belongs_to :step, index: true
       t.boolean :completed, :default => false
       t.string :jsondata
+      t.text :code
 
       t.timestamps
     end
