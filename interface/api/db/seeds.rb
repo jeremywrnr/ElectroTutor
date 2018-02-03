@@ -1,8 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
-# ActionCable linkage (live db updates)
-note = Note.create!(code: 'seeded text', id: 1)
+require './example.rb'
 
 # Application Data
 user = User.create(
@@ -14,18 +13,23 @@ user = User.create(
 )
 
 tuto = Tutorial.create(
-  user_id: user.id,
-  title: 'sample',
-  description: 'a test tutorial')
+  user_id: user.id, # authorship
+  title: 'Gyroscope Fun with NeoPixel Rings',
+  description: %{
+In this project, we'll combine a gyroscope and NeoPixels to build a
+device that lights LEDs corresponding to the angle of inclination.
+  },
+)
 
-size = 3
 steps = []
-size.times do |i|
+descriptions.each do |d|
   steps << Step.create(
     tutorial_id: tuto.id,
-    title: 'sample step',
-    description: 'a step in the right direction')
+    description: d.desc,
+    title: d.title,
+  )
 end
+
 
 tests = {}
 steps.each do |step|
@@ -47,4 +51,3 @@ steps.each do |step|
     )
   end
 end
-

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { HotKeys } from 'react-hotkeys'
-import { Message } from 'semantic-ui-react'
-import { Button, Icon } from 'semantic-ui-react'
+import { Message, Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import Grid3 from './Grid3.js'
 import Code from './Code.js'
+
 import './App.css'
 
 class App extends Component {
@@ -37,6 +37,11 @@ class App extends Component {
   }
 
   componentDidMount() {
+
+    /**
+     * Initial data creation
+     */
+
     window.fetch('http://localhost:3001/users/1').then(data => {
       data.json().then(res => {
         console.log(res)
@@ -44,14 +49,8 @@ class App extends Component {
       })
     })
 
-    window.fetch('http://localhost:3001/notes/1').then(data => {
-      data.json().then(res => {
-        this.setState({ ...this.state, code: res.code })
-      })
-    })
-
     /**
-     * Pull DB state
+     * Connect to DB
      */
 
     const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
@@ -60,14 +59,22 @@ class App extends Component {
       received: this.handleReceiveUserData
     })
 
+    this.stepSub = cable.subscriptions.create('TutorialsChannel', {
+      received: this.handleReceiveStepData
+    })
+
     this.stepSub = cable.subscriptions.create('StepsChannel', {
       received: this.handleReceiveStepData
     })
 
-    this.noteSub = cable.subscriptions.create('NotesChannel', {
-      received: this.handleReceiveNewCode
+    this.stepSub = cable.subscriptions.create('ProgressesChannel', {
+      received: this.handleReceiveStepData
     })
   }
+
+  /**
+   * DB Update handlers
+   */
 
   handleReceiveUserData = ({ step }) => {
     if (step !== this.state.step) {
@@ -75,7 +82,15 @@ class App extends Component {
     }
   }
 
+  handleReceiveTutorialData = (step) => {
+    console.log(step)
+  }
+
   handleReceiveStepData = (step) => {
+    console.log(step)
+  }
+
+  handleReceiveProgressData = (step) => {
     console.log(step)
   }
 
@@ -88,7 +103,7 @@ class App extends Component {
   handleCodeChange = e => {
     console.log(e)
     this.setState({ ...this.state, code: e })
-    this.noteSub.send({ code: e, id: 1 })
+    //this.noteSub.send({ code: e, id: 1 })
   }
 
   handleOnClick = () => {
