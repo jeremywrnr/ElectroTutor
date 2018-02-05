@@ -56,8 +56,26 @@ class App extends Component {
   }
 
   fetchUser = () => {
-    window.fetch(`${Host}/users/${this.state.user}`).then(data => {
-      data.json().then(this.handleReceiveUserData)
+    return fetch(`${Host}/users/${this.state.user}`).then(data => {
+      return data.json().then(this.handleReceiveUserData)
+    })
+  }
+
+  fetchTutorial = () => {
+    return fetch(`${Host}/tutorials/${this.state.tutorial}]`).then(data => {
+      return data.json().then(this.handleReceiveTutorialData)
+    })
+  }
+
+  fetchStep = () => {
+    return fetch(`${Host}/steps/${this.state.step}`).then(data => {
+      return data.json().then(this.handleReceiveStepData)
+    })
+  }
+
+  fetchProgress = () => {
+    return fetch(`${Host}/progresses/${this.state.progress}]`).then(data => {
+      return data.json().then(this.handleReceiveProgressData)
     })
   }
 
@@ -89,29 +107,11 @@ class App extends Component {
      * Initial data creation
      */
 
-    this.fetchTutorial = () => {
-      window.fetch(`${Host}/tutorials/${this.state.tutorial}]`).then(data => {
-        data.json().then(this.handleReceiveTutorialData)
-      })
-
-    }
-
-    this.fetchStep = () => {
-      window.fetch(`${Host}/steps/${this.state.step}`).then(data => {
-        data.json().then(this.handleReceiveStepData)
-      })
-    }
-
-    this.fetchProgress = () => {
-      window.fetch(`${Host}/progresses/${this.state.progress}]`).then(data => {
-        data.json().then(this.handleReceiveProgressData)
-      })
-    }
-
     this.fetchUser()
-    //.then(this.fetchTutorial)
-    //.then(this.fetchStep)
-    //.then(this.fetchProgress)
+    .then(this.fetchTutorial)
+    .then(this.fetchStep)
+    .then(this.fetchProgress)
+
   }
 
   /**
