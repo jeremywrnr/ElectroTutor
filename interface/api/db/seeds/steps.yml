@@ -1,9 +1,9 @@
 -
-  description: MyText
-  title: MyString
+  title: one
+  description: the first step
 -
-  description: MyText
-  title: MyString
+  title: two
+  description: the second step
 -
-  description: MyText
-  title: MyString
+  title: three
+  description: the third step

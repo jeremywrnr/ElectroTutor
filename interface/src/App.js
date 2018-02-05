@@ -9,10 +9,11 @@ import './App.css'
 
 class App extends Component {
   state = {
-    code: 'initial tutorial description',
+    title: 'Test Driven Tutorial',
+    desc: 'Starting the tutorial...',
+    code: 'def hello:\n\tprint("world")',
     step: 1,
     list: [],
-    desc: 'hello',
   }
 
   map = {
@@ -49,6 +50,7 @@ class App extends Component {
       })
     })
 
+
     /**
      * Connect to DB
      */
@@ -71,6 +73,7 @@ class App extends Component {
       received: this.handleReceiveStepData
     })
   }
+
 
   /**
    * DB Update handlers
@@ -96,13 +99,17 @@ class App extends Component {
 
   handleReceiveNewCode = ({ code }) => {
     if (code !== this.state.code) {
-      this.setState({ ...this.state, code: code })
+      this.setState({ ...this.state, code })
     }
   }
 
-  handleCodeChange = e => {
-    this.setState({ ...this.state, code: e })
-    this.progSub.send({ code: e, id: 1 })
+  /**
+   * Interface handlers
+   */
+
+  handleCodeChange = code => {
+    this.setState({ ...this.state, code })
+    this.progSub.send({ code, id: 1 })
   }
 
   handleOnClick = () => {
@@ -129,6 +136,8 @@ class App extends Component {
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <div id="main">
           <Grid3
+            title={this.state.title}
+
             left={
             <div>
               <Message
