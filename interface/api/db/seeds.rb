@@ -17,31 +17,12 @@ seed_load(:tutorials)
 seed_load(:steps)
   .each {|x| Tutorial.find(1).steps.create! x }
 
-=begin
+seed_load(:tests)
+  .each {|x| Step.find(1).tests.create! x }
 
-steps = []
-descriptions.each do |d|
+seed_load(:progresses).each do |x|
+  prog = Step.find(1).progresses.build x
+  prog.user_id = 1
+  prog.test_id = 1
+  prog.save
 end
-
-
-tests = {}
-steps.each do |step|
-  tests[step] = []
-  size.times do |i|
-    tests[step] << Test.create(
-      step_id: step.id,
-      description: 'standardizing our tests')
-  end
-end
-
-progress = {}
-steps.each do |step|
-  progress[step] = []
-  size.times do |i|
-    tests[step] << Progress.create(
-      user_id: user.id,
-      step_id: step.id
-    )
-  end
-end
-=end

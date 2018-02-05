@@ -10,17 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205163110) do
+ActiveRecord::Schema.define(version: 20180131194154) do
 
   create_table "progresses", force: :cascade do |t|
     t.integer "user_id"
     t.integer "step_id"
+    t.integer "test_id"
     t.boolean "completed", default: false
     t.string "jsondata"
     t.text "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["step_id"], name: "index_progresses_on_step_id"
+    t.index ["test_id"], name: "index_progresses_on_test_id"
     t.index ["user_id"], name: "index_progresses_on_user_id"
   end
 
@@ -54,12 +56,6 @@ ActiveRecord::Schema.define(version: 20180205163110) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_tutorials_on_user_id"
-  end
-
-  create_table "tutorials_users", id: false, force: :cascade do |t|
-    t.integer "tutorial_id", null: false
-    t.integer "user_id", null: false
-    t.index ["tutorial_id", "user_id"], name: "index_tutorials_users_on_tutorial_id_and_user_id"
   end
 
   create_table "users", force: :cascade do |t|
