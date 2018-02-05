@@ -1,16 +1,18 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 -
+  id: 1
   name: Quentin
   email: q@q.com
   password_digest: testing
-  tutorial: 1
-  step: 1
+  current_tutorial: 1
+  current_step: 1
 
 -
+  id: 2
   name: Quentin
   email: q@q.com
   password_digest: testing
-  tutorial: 2
-  step: 2
+  current_tutorial: 2
+  current_step: 2
 

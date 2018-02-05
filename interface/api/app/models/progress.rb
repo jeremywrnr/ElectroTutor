@@ -1,4 +1,4 @@
 class Progress < ApplicationRecord
-  belongs_to :users
-  belongs_to :steps
+  belongs_to :user
+  belongs_to :step
 end

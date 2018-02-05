@@ -2,13 +2,17 @@
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
 def seed_load(name)
-  seed_file = Rails.root.join('db', 'seeds', "#{name}.yml")
-  return YAML::load_file(seed_file)
+  seed = Rails.root.join('db', 'seeds', "#{name}.yml")
+  YAML::load_file seed
 end
 
 # Application Data
-users = seed_load :users
-users.each {|u| User.create! u }
+
+seed_load(:users)
+  .each {|x| User.create! x }
+
+seed_load(:tutorials)
+  .each {|x| User.find(1).tutorials.create! x }
 
 =begin
 tuto = Tutorial.create(
