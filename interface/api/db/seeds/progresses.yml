@@ -1,6 +1,12 @@
 -
   completed: false
-  code: hello
+  code: starting
 -
   completed: false
-  code: world
+  code: first stage
+-
+  completed: false
+  code: next stage
+-
+  completed: false
+  code: last stage

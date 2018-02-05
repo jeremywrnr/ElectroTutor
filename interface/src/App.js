@@ -11,9 +11,9 @@ import './App.css'
 
 class App extends Component {
   state = {
-    ttitle: 'Test Driven Tutorial',
+    tTitle: 'Test Driven Tutorial',
     tdesc: 'Starting tutorial...',
-    stitle: 'Test Driven Steps',
+    sTitle: 'Test Driven Steps',
     sdesc: 'Starting step...',
     code: 'def hello:\n\tprint("world")',
     image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
@@ -30,27 +30,22 @@ class App extends Component {
 
   keyHandler = {
     'next': (event) => {
-      event.preventDefault()
-      let writeStep = (prev, inc) => { return {step: prev.step + 1} }
+      let writeStep = (p, n) => { return {...n, step: p.step + 1} }
       let saveStep = () => {
         this.userSub.send({ step: this.state.step, id: this.state.user })
-        window.fetch(`${Host}/steps/${this.state.step}`).then(data => {
-          data.json().then(this.handleReceiveStepData)
-        })
+        //this.fetchStep().then(this.fetchProgress)
       }
 
       this.setState(writeStep, saveStep)
     },
 
     'back': (event) => {
-      event.preventDefault()
-      let writeStep = (prev, inc) => { return {step: prev.step - 1} }
+      let writeStep = (p, n) => { return {...n, step: p.step - 1} }
       let saveStep = () => {
         this.userSub.send({ step: this.state.step, id: this.state.user })
-        window.fetch(`${Host}/steps/${this.state.step}`).then(data => {
-          data.json().then(this.handleReceiveStepData)
-        })
+        //this.fetchStep().then(this.fetchProgress)
       }
+
       this.setState(writeStep, saveStep)
     }
   }
@@ -136,18 +131,19 @@ class App extends Component {
     this.setState({
       ...this.state,
       tutorial: id,
-      ttitle: title,
+      tTitle: title,
       tdesc: description,
     })
   }
 
-  handleReceiveStepData = ({ id, title, description }) => {
-    console.log(id, title, description)
+  handleReceiveStepData = ({ id, title, description, image }) => {
+    console.log(id, title, description, image)
     this.setState({
       ...this.state,
       step: id,
-      stitle: title,
+      sTitle: title,
       sdesc: description,
+      image,
     });
   }
 
@@ -193,7 +189,7 @@ class App extends Component {
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <div id="main">
           <Grid3
-            title={this.state.ttitle}
+            title={this.state.tTitle}
 
             left={
             <div>
@@ -205,7 +201,7 @@ class App extends Component {
               <Message
                 success
                 icon='check'
-                header={'Step ' + this.state.step + ': ' + this.state.stitle}
+                header={'Step ' + this.state.step + ': ' + this.state.sTitle}
                 content={this.state.sdesc}
               />
             </div>
