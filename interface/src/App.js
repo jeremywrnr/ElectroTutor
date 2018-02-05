@@ -44,8 +44,8 @@ class App extends Component {
 
     window.fetch('http://localhost:3001/users/1').then(data => {
       data.json().then(res => {
-        console.log(res)
-        this.setState({ ...this.state, step: res.step })
+        console.log('user:', res)
+        this.setState({ ...this.state, step: res.current_step })
       })
     })
 
@@ -59,7 +59,7 @@ class App extends Component {
       received: this.handleReceiveUserData
     })
 
-    this.stepSub = cable.subscriptions.create('TutorialsChannel', {
+    this.tutSub = cable.subscriptions.create('TutorialsChannel', {
       received: this.handleReceiveStepData
     })
 
@@ -67,7 +67,7 @@ class App extends Component {
       received: this.handleReceiveStepData
     })
 
-    this.stepSub = cable.subscriptions.create('ProgressesChannel', {
+    this.progSub = cable.subscriptions.create('ProgressesChannel', {
       received: this.handleReceiveStepData
     })
   }
@@ -76,9 +76,9 @@ class App extends Component {
    * DB Update handlers
    */
 
-  handleReceiveUserData = ({ step }) => {
-    if (step !== this.state.step) {
-      this.setState({ ...this.state, step })
+  handleReceiveUserData = ({ current_step }) => {
+    if (current_step !== this.state.step) {
+      this.setState({ ...this.state, current_step })
     }
   }
 
@@ -101,9 +101,8 @@ class App extends Component {
   }
 
   handleCodeChange = e => {
-    console.log(e)
     this.setState({ ...this.state, code: e })
-    //this.noteSub.send({ code: e, id: 1 })
+    this.progSub.send({ code: e, id: 1 })
   }
 
   handleOnClick = () => {
@@ -114,9 +113,7 @@ class App extends Component {
     fetch(url, {
       method: 'POST', // or 'PUT'
       body: JSON.stringify(data),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+      headers: new Headers({ 'Content-Type': 'application/json' })
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));
