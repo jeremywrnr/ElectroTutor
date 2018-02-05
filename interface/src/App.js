@@ -3,6 +3,7 @@ import { HotKeys } from 'react-hotkeys'
 import { Message, Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import Grid3 from './Grid3.js'
+import Delay from './Delay.js'
 import Code from './Code.js'
 
 import './App.css'
@@ -50,6 +51,13 @@ class App extends Component {
       })
     })
 
+    window.fetch('http://localhost:3001/progresses/1').then(data => {
+      data.json().then(res => {
+        console.log('prog:', res)
+        this.setState({ ...this.state, code: res.code })
+      })
+    })
+
 
     /**
      * Connect to DB
@@ -62,7 +70,7 @@ class App extends Component {
     })
 
     this.tutSub = cable.subscriptions.create('TutorialsChannel', {
-      received: this.handleReceiveStepData
+      received: this.handleReceiveTutorialData
     })
 
     this.stepSub = cable.subscriptions.create('StepsChannel', {
@@ -70,7 +78,7 @@ class App extends Component {
     })
 
     this.progSub = cable.subscriptions.create('ProgressesChannel', {
-      received: this.handleReceiveStepData
+      received: this.handleReceiveProgressData
     })
   }
 
@@ -93,23 +101,23 @@ class App extends Component {
     console.log(step)
   }
 
-  handleReceiveProgressData = (step) => {
-    console.log(step)
-  }
-
-  handleReceiveNewCode = ({ code }) => {
+  handleReceiveProgressData = ({ code }) => {
     if (code !== this.state.code) {
       this.setState({ ...this.state, code })
     }
   }
+
 
   /**
    * Interface handlers
    */
 
   handleCodeChange = code => {
-    this.setState({ ...this.state, code })
-    this.progSub.send({ code, id: 1 })
+    Delay(() => {
+      console.log("code:", code)
+      this.setState({ ...this.state, code })
+      this.progSub.send({ code, id: 1 })
+    }, 1000 );
   }
 
   handleOnClick = () => {

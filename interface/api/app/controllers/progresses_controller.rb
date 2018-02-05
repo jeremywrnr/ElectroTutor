@@ -1,5 +1,5 @@
 class ProgressesController < ApplicationController
-  before_action :set_progresses, only: [:show, :update, :destroy]
+  before_action :set_progress, only: [:show, :update, :destroy]
 
   # GET /progresses
   def index
