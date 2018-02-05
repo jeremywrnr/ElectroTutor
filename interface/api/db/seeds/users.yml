@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+-
+  name: Quentin
+  email: q@q.com
+  password_digest: testing
+  tutorial: 1
+  step: 1
+
+-
+  name: Quentin
+  email: q@q.com
+  password_digest: testing
+  tutorial: 2
+  step: 2
+

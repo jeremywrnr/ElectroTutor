@@ -1,17 +1,16 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
-require './example.rb'
+def seed_load(name)
+  seed_file = Rails.root.join('db', 'seeds', "#{name}.yml")
+  return YAML::load_file(seed_file)
+end
 
 # Application Data
-user = User.create(
-  name: 'Quentin',
-  email: 'q@q.com',
-  password_digest: 'q@q.com',
-  tutorial: 1,
-  step: 1,
-)
+users = seed_load :users
+users.each {|u| User.create! u }
 
+=begin
 tuto = Tutorial.create(
   user_id: user.id, # authorship
   title: 'Gyroscope Fun with NeoPixel Rings',
@@ -51,3 +50,4 @@ steps.each do |step|
     )
   end
 end
+=end

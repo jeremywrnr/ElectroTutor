@@ -12,12 +12,6 @@
 
 ActiveRecord::Schema.define(version: 20180131194154) do
 
-  create_table "notes", force: :cascade do |t|
-    t.text "code"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "progresses", force: :cascade do |t|
     t.integer "user_id"
     t.integer "step_id"
