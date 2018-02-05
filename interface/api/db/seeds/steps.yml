@@ -1,9 +1,16 @@
 -
   title: one
   description: the first step
+  image: https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max
 -
   title: two
   description: the second step
+  image: https://hackster.imgix.net/uploads/attachments/404769/dsc00470_VPTGqgaQbc.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max
 -
   title: three
   description: the third step
+  image: https://halckemy.s3.amazonaws.com/uploads/attachments/404784/arduinomega_chess_cheme_yd60a9cuh8.jpg
+-
+  title: four
+  description: the fourth step
+  image: https://halckemy.s3.amazonaws.com/uploads/attachments/404784/arduinomega_chess_cheme_yd60a9cuh8.jpg

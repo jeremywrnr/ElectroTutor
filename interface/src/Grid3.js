@@ -5,7 +5,7 @@ import Column from './Column.js'
 class Grid3 extends Component {
   render () {
     return (
-      <Grid columns='three' divided>
+      <Grid className="full" columns='three' divided>
         <Grid.Row>
           <Column
             main={this.props.left}

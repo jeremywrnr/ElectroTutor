@@ -5,16 +5,22 @@ import ActionCable from 'actioncable'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Code from './Code.js'
+import Host from './Host.js'
 
 import './App.css'
 
 class App extends Component {
   state = {
-    title: 'Test Driven Tutorial',
-    desc: 'Starting the tutorial...',
+    ttitle: 'Test Driven Tutorial',
+    tdesc: 'Starting tutorial...',
+    stitle: 'Test Driven Steps',
+    sdesc: 'Starting step...',
     code: 'def hello:\n\tprint("world")',
-    step: 1,
-    list: [],
+    image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
+    progress: 1, // id
+    tutorial: 1, // id
+    step:     1, // id
+    user:     1, // id
   }
 
   map = {
@@ -26,38 +32,36 @@ class App extends Component {
     'next': (event) => {
       event.preventDefault()
       let writeStep = (prev, inc) => { return {step: prev.step + 1} }
-      let saveStep = () => this.userSub.send({ step: this.state.step, id: 1 })
+      let saveStep = () => {
+        this.userSub.send({ step: this.state.step, id: this.state.user })
+        window.fetch(`${Host}/steps/${this.state.step}`).then(data => {
+          data.json().then(this.handleReceiveStepData)
+        })
+      }
+
       this.setState(writeStep, saveStep)
     },
 
     'back': (event) => {
       event.preventDefault()
       let writeStep = (prev, inc) => { return {step: prev.step - 1} }
-      let saveStep = () => this.userSub.send({ step: this.state.step, id: 1 })
+      let saveStep = () => {
+        this.userSub.send({ step: this.state.step, id: this.state.user })
+        window.fetch(`${Host}/steps/${this.state.step}`).then(data => {
+          data.json().then(this.handleReceiveStepData)
+        })
+      }
       this.setState(writeStep, saveStep)
     }
   }
 
+  fetchUser = () => {
+    window.fetch(`${Host}/users/${this.state.user}`).then(data => {
+      data.json().then(this.handleReceiveUserData)
+    })
+  }
+
   componentDidMount() {
-
-    /**
-     * Initial data creation
-     */
-
-    window.fetch('http://localhost:3001/users/1').then(data => {
-      data.json().then(res => {
-        console.log('user:', res)
-        this.setState({ ...this.state, step: res.current_step })
-      })
-    })
-
-    window.fetch('http://localhost:3001/progresses/1').then(data => {
-      data.json().then(res => {
-        console.log('prog:', res)
-        this.setState({ ...this.state, code: res.code })
-      })
-    })
-
 
     /**
      * Connect to DB
@@ -80,25 +84,71 @@ class App extends Component {
     this.progSub = cable.subscriptions.create('ProgressesChannel', {
       received: this.handleReceiveProgressData
     })
-  }
 
+    /**
+     * Initial data creation
+     */
+
+    this.fetchTutorial = () => {
+      window.fetch(`${Host}/tutorials/${this.state.tutorial}]`).then(data => {
+        data.json().then(this.handleReceiveTutorialData)
+      })
+
+    }
+
+    this.fetchStep = () => {
+      window.fetch(`${Host}/steps/${this.state.step}`).then(data => {
+        data.json().then(this.handleReceiveStepData)
+      })
+    }
+
+    this.fetchProgress = () => {
+      window.fetch(`${Host}/progresses/${this.state.progress}]`).then(data => {
+        data.json().then(this.handleReceiveProgressData)
+      })
+    }
+
+    this.fetchUser()
+    //.then(this.fetchTutorial)
+    //.then(this.fetchStep)
+    //.then(this.fetchProgress)
+  }
 
   /**
    * DB Update handlers
    */
 
-  handleReceiveUserData = ({ current_step }) => {
+  handleReceiveUserData = (data) => {
+    console.log(data)
+    let current_step = data.current_step
+    let current_tutorial = data.current_tutorial
     if (current_step !== this.state.step) {
-      this.setState({ ...this.state, current_step })
+      this.setState({ ...this.state,
+                    tutorial: current_tutorial,
+                    step: current_step,
+      })
     }
   }
 
-  handleReceiveTutorialData = (step) => {
-    console.log(step)
+  handleReceiveTutorialData = ({ id, title, description }) => {
+    console.log( id, title, description)
+    if (id !== this.state.tutorial) {
+      this.setState({ ...this.state,
+                    tutorial: id,
+                    ttitle: title,
+                    tdesc: description
+      })
+    }
   }
 
-  handleReceiveStepData = (step) => {
-    console.log(step)
+  handleReceiveStepData = ({ id, description, title }) => {
+    if (id !== this.state.step) {
+      this.setState({ ...this.state,
+                    step: id,
+                    sdesc: description,
+                    stitle: title
+      });
+    }
   }
 
   handleReceiveProgressData = ({ code }) => {
@@ -114,7 +164,6 @@ class App extends Component {
 
   handleCodeChange = code => {
     Delay(() => {
-      console.log("code:", code)
       this.setState({ ...this.state, code })
       this.progSub.send({ code, id: 1 })
     }, 1000 );
@@ -122,8 +171,8 @@ class App extends Component {
 
   handleOnClick = () => {
     console.log('clicked')
-    var url = 'http://localhost:3001/compile'
-    var data = {step_id: 1, user_id: 1}
+    var url = `${Host}/compile`
+    var data = {step_id: this.state.step, user_id: 1}
 
     fetch(url, {
       method: 'POST', // or 'PUT'
@@ -144,15 +193,20 @@ class App extends Component {
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <div id="main">
           <Grid3
-            title={this.state.title}
+            title={this.state.ttitle}
 
             left={
             <div>
               <Message
+                icon='info'
+                header={'Tutorial ' + this.state.tutorial }
+                content={this.state.tdesc}
+              />
+              <Message
                 success
-                icon='thumbs up'
-                header={'Step ' + this.state.step}
-                content={this.state.desc}
+                icon='check'
+                header={'Step ' + this.state.step + ': ' + this.state.stitle}
+                content={this.state.sdesc}
               />
             </div>
             }
@@ -176,7 +230,7 @@ class App extends Component {
 
             right={
             <div>
-              <img id='right' alt='hardware'/>
+              <img id='right' alt='hardware' src={this.state.image}/>
             </div>
             }
           />

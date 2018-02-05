@@ -4,6 +4,7 @@ class CreateSteps < ActiveRecord::Migration[5.1]
       t.belongs_to :tutorial, index: true
       t.text :description
       t.string :title
+      t.string :image
 
       t.timestamps
     end
