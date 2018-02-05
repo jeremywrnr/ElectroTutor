@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20180131194154) do
     t.string "email", null: false
     t.string "password_digest", null: false
     t.integer "current_tutorial"
+    t.integer "current_progress"
     t.integer "current_step"
   end
 

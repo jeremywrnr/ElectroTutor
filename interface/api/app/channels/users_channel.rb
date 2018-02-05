@@ -9,7 +9,10 @@ class UsersChannel < ApplicationCable::Channel
 
   def receive(data)
     user = User.find(data["id"])
-    user.update!(current_step: data["step"])
-    ActionCable.server.broadcast('users', data)
+    step = Step.find(data["step"])
+    if user && step
+      user.update!(current_step: data["step"])
+      ActionCable.server.broadcast("users", data)
+    end
   end
 end

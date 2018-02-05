@@ -9,5 +9,8 @@ Rails.application.routes.draw do
   # compile for the current user
   post '/compile' => 'compile#post'
 
+  # thinking about progress...
+  # https://stackoverflow.com/questions/4641325/rails-has-many-and-routing
+
   mount ActionCable.server => '/cable'
 end

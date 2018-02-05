@@ -9,7 +9,9 @@ class ProgressesChannel < ApplicationCable::Channel
 
   def receive(data)
     prog = Progress.find(data["id"])
-    prog.update!(code: data["code"])
-    ActionCable.server.broadcast('progresses', data)
+    if prog
+      prog.update!(code: data["code"])
+      ActionCable.server.broadcast('progresses', data)
+    end
   end
 end

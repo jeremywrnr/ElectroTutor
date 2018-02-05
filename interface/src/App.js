@@ -15,11 +15,11 @@ class App extends Component {
     tdesc: 'Starting tutorial...',
     sTitle: 'Test Driven Steps',
     sdesc: 'Starting step...',
-    code: 'def hello:\n\tprint("world")',
+    code: 'print("world")',
     image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
-    progress: 0, // id
-    tutorial: 0, // id
-    step:     0, // id
+    progress: 1, // id
+    tutorial: 1, // id
+    step:     1, // id
     user:     1, // id
   }
 
@@ -30,22 +30,24 @@ class App extends Component {
 
   keyHandler = {
     'next': (event) => {
-      let writeStep = (p, n) => { return {...n, step: p.step + 1} }
+      event.preventDefault()
+      console.log(this.state)
+      let writeStep = (prevState, props) => { return {step: prevState.step + 1 } }
       let saveStep = () => {
-        this.userSub.send({ step: this.state.step, id: this.state.user })
-        //this.fetchStep().then(this.fetchProgress)
+        this.userSub.send({ id: this.state.user, step: this.state.step })
+        console.log(this.state)
       }
-
       this.setState(writeStep, saveStep)
     },
 
     'back': (event) => {
-      let writeStep = (p, n) => { return {...n, step: p.step - 1} }
+      event.preventDefault()
+      console.log(this.state)
+      let writeStep = (prevState, props) => { return {step: prevState.step - 1 } }
       let saveStep = () => {
-        this.userSub.send({ step: this.state.step, id: this.state.user })
-        //this.fetchStep().then(this.fetchProgress)
+        this.userSub.send({ id: this.state.user, step: this.state.step })
+        console.log(this.state)
       }
-
       this.setState(writeStep, saveStep)
     }
   }
@@ -85,25 +87,30 @@ class App extends Component {
 
   }
 
+
   fetchUser = () => {
+    console.log(this.state)
     return fetch(`${Host}/users/${this.state.user}`).then(data => {
       return data.json().then(this.handleReceiveUserData)
     })
   }
 
   fetchTutorial = () => {
+    console.log(this.state)
     return fetch(`${Host}/tutorials/${this.state.tutorial}`).then(data => {
       return data.json().then(this.handleReceiveTutorialData)
     })
   }
 
   fetchStep = () => {
+    console.log(this.state)
     return fetch(`${Host}/steps/${this.state.step}`).then(data => {
       return data.json().then(this.handleReceiveStepData)
     })
   }
 
   fetchProgress = () => {
+    console.log(this.state)
     return fetch(`${Host}/progresses/${this.state.progress}`).then(data => {
       return data.json().then(this.handleReceiveProgressData)
     })
@@ -116,11 +123,11 @@ class App extends Component {
 
   // TODO - set logged in user w/ account management and access permissions
 
-  handleReceiveUserData = ({ id, current_step, current_tutorial }) => {
+  handleReceiveUserData = ({ id, current_tutorial, current_step, current_progress }) => {
     if (id === this.state.user) {
       this.setState({
-        ...this.state,
         tutorial: current_tutorial,
+        progress: current_progress,
         step: current_step,
       })
     }
@@ -129,7 +136,6 @@ class App extends Component {
   handleReceiveTutorialData = ({ id, title, description }) => {
     console.log(id, title, description)
     this.setState({
-      ...this.state,
       tutorial: id,
       tTitle: title,
       tdesc: description,
@@ -139,7 +145,6 @@ class App extends Component {
   handleReceiveStepData = ({ id, title, description, image }) => {
     console.log(id, title, description, image)
     this.setState({
-      ...this.state,
       step: id,
       sTitle: title,
       sdesc: description,
@@ -148,8 +153,9 @@ class App extends Component {
   }
 
   handleReceiveProgressData = ({ code }) => {
-    if (code !== this.state.code) {
-      this.setState({ ...this.state, code })
+    console.log(code)
+    if (code && code !== this.state.code) {
+      this.setState({ code })
     }
   }
 
@@ -160,6 +166,7 @@ class App extends Component {
 
   handleCodeChange = code => {
     Delay(() => {
+      console.log(code)
       this.setState({ ...this.state, code })
       this.progSub.send({ code, id: 1 })
     }, 1000 );

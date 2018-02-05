@@ -18,7 +18,7 @@ class Code extends React.Component {
   };
 
   static defaultProps = {
-    code: 'Hello world!'
+    code: '...'
   };
 
   render() {
@@ -26,7 +26,6 @@ class Code extends React.Component {
       <AceEditor
         cursorStart={1}
         mode="javascript"
-        ref={(editor) => { this.aceEditor = editor; }}
         name="codeEditor"
         fontSize={14}
         theme="github"
@@ -37,6 +36,7 @@ class Code extends React.Component {
         width={"100%"}
         highlightActiveLine={true}
         value={this.props.code}
+        ref={ (editor) => { this.aceEditor = editor } }
         setOptions={{
         //$blockScrolling = Infinity
         showLineNumbers: true,
