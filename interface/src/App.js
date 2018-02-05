@@ -17,9 +17,9 @@ class App extends Component {
     sdesc: 'Starting step...',
     code: 'def hello:\n\tprint("world")',
     image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
-    progress: 1, // id
-    tutorial: 1, // id
-    step:     1, // id
+    progress: 0, // id
+    tutorial: 0, // id
+    step:     0, // id
     user:     1, // id
   }
 
@@ -53,30 +53,6 @@ class App extends Component {
       }
       this.setState(writeStep, saveStep)
     }
-  }
-
-  fetchUser = () => {
-    return fetch(`${Host}/users/${this.state.user}`).then(data => {
-      return data.json().then(this.handleReceiveUserData)
-    })
-  }
-
-  fetchTutorial = () => {
-    return fetch(`${Host}/tutorials/${this.state.tutorial}]`).then(data => {
-      return data.json().then(this.handleReceiveTutorialData)
-    })
-  }
-
-  fetchStep = () => {
-    return fetch(`${Host}/steps/${this.state.step}`).then(data => {
-      return data.json().then(this.handleReceiveStepData)
-    })
-  }
-
-  fetchProgress = () => {
-    return fetch(`${Host}/progresses/${this.state.progress}]`).then(data => {
-      return data.json().then(this.handleReceiveProgressData)
-    })
   }
 
   componentDidMount() {
@@ -114,41 +90,65 @@ class App extends Component {
 
   }
 
+  fetchUser = () => {
+    return fetch(`${Host}/users/${this.state.user}`).then(data => {
+      return data.json().then(this.handleReceiveUserData)
+    })
+  }
+
+  fetchTutorial = () => {
+    return fetch(`${Host}/tutorials/${this.state.tutorial}`).then(data => {
+      return data.json().then(this.handleReceiveTutorialData)
+    })
+  }
+
+  fetchStep = () => {
+    return fetch(`${Host}/steps/${this.state.step}`).then(data => {
+      return data.json().then(this.handleReceiveStepData)
+    })
+  }
+
+  fetchProgress = () => {
+    return fetch(`${Host}/progresses/${this.state.progress}`).then(data => {
+      return data.json().then(this.handleReceiveProgressData)
+    })
+  }
+
+
   /**
    * DB Update handlers
    */
 
-  handleReceiveUserData = (data) => {
-    console.log(data)
-    let current_step = data.current_step
-    let current_tutorial = data.current_tutorial
-    if (current_step !== this.state.step) {
-      this.setState({ ...this.state,
-                    tutorial: current_tutorial,
-                    step: current_step,
+  // TODO - set logged in user w/ account management and access permissions
+
+  handleReceiveUserData = ({ id, current_step, current_tutorial }) => {
+    if (id === this.state.user) {
+      this.setState({
+        ...this.state,
+        tutorial: current_tutorial,
+        step: current_step,
       })
     }
   }
 
   handleReceiveTutorialData = ({ id, title, description }) => {
-    console.log( id, title, description)
-    if (id !== this.state.tutorial) {
-      this.setState({ ...this.state,
-                    tutorial: id,
-                    ttitle: title,
-                    tdesc: description
-      })
-    }
+    console.log(id, title, description)
+    this.setState({
+      ...this.state,
+      tutorial: id,
+      ttitle: title,
+      tdesc: description,
+    })
   }
 
-  handleReceiveStepData = ({ id, description, title }) => {
-    if (id !== this.state.step) {
-      this.setState({ ...this.state,
-                    step: id,
-                    sdesc: description,
-                    stitle: title
-      });
-    }
+  handleReceiveStepData = ({ id, title, description }) => {
+    console.log(id, title, description)
+    this.setState({
+      ...this.state,
+      step: id,
+      stitle: title,
+      sdesc: description,
+    });
   }
 
   handleReceiveProgressData = ({ code }) => {
