@@ -14,23 +14,13 @@ seed_load(:users)
 seed_load(:tutorials)
   .each {|x| User.find(1).tutorials.create! x }
 
+seed_load(:steps)
+  .each {|x| Tutorial.find(1).steps.create! x }
+
 =begin
-tuto = Tutorial.create(
-  user_id: user.id, # authorship
-  title: 'Gyroscope Fun with NeoPixel Rings',
-  description: %{
-In this project, we'll combine a gyroscope and NeoPixels to build a
-device that lights LEDs corresponding to the angle of inclination.
-  },
-)
 
 steps = []
 descriptions.each do |d|
-  steps << Step.create(
-    tutorial_id: tuto.id,
-    description: d.desc,
-    title: d.title,
-  )
 end
 
 

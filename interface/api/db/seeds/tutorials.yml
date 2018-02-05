@@ -1,8 +1,6 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 -
-  description: MyText
-  title: MyString
+  title: Gyroscope Fun with NeoPixel Rings
+  description: In this project, we'll combine a gyroscope and NeoPixels to build a device that lights LEDs corresponding to the angle of inclination. 
   image: MyString
 
 -
