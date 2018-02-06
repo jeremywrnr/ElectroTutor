@@ -1,10 +1,10 @@
 -
   title: Gyroscope Fun with NeoPixel Rings
   description: In this project, we'll combine a gyroscope and NeoPixels to build a device that lights LEDs corresponding to the angle of inclination. 
-  image: MyString
-
+  source: https://create.arduino.cc/projecthub/danionescu/gyroscope-fun-with-neopixel-ring-3a0b84
+  image: https://hackster.imgix.net/uploads/attachments/393480/main_rOhiO74qPh.png
 -
   description: MyText
   title: MyString
+  source: MyString
   image: MyString
-

@@ -51,8 +51,9 @@ ActiveRecord::Schema.define(version: 20180131194154) do
 
   create_table "tutorials", force: :cascade do |t|
     t.integer "user_id"
-    t.text "description"
     t.string "title"
+    t.text "description"
+    t.string "source"
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
