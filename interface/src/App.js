@@ -83,29 +83,26 @@ class App extends Component {
 
 
   fetchUser = () => {
-    //console.log(this.state)
     return fetch(`${Host}/users/${this.state.user}`).then(data => {
       return data.json().then(this.handleReceiveUserData)
     })
   }
 
   fetchTutorial = () => {
-    //console.log(this.state)
     return fetch(`${Host}/tutorials/${this.state.tutorial}`).then(data => {
       return data.json().then(this.handleReceiveTutorialData)
     })
   }
 
   fetchStep = () => {
-    console.log(this.state)
     return fetch(`${Host}/steps/${this.state.step}`).then(data => {
       return data.json().then(this.handleReceiveStepData)
     })
   }
 
   fetchProgress = () => {
-    //console.log(this.state)
-    return fetch(`${Host}/progresses/${this.state.progress}`).then(data => {
+    return fetch(`${Host}/progresses?user_id=${this.state.user}&step_id=${this.state.step}`).then(data => {
+      console.log(data)
       return data.json().then(this.handleReceiveProgressData)
     })
   }
