@@ -31,7 +31,7 @@ class App extends Component {
   incrementStep(inc) {
     let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
     let saveStep = () => {
-      this.userSub.send({ id: this.state.user, step: this.state.step })
+      this.userSub.send({ user: this.state.user, step: this.state.step })
       this.fetchStep().then(this.fetchProgress) }
       this.setState(writeStep, saveStep)
   }
@@ -101,8 +101,7 @@ class App extends Component {
   }
 
   fetchProgress = () => {
-    return fetch(`${Host}/progresses?user_id=${this.state.user}&step_id=${this.state.step}`).then(data => {
-      console.log(data)
+    return fetch(`${Host}/prog?user_id=${this.state.user}&step_id=${this.state.step}`).then(data => {
       return data.json().then(this.handleReceiveProgressData)
     })
   }
@@ -121,23 +120,25 @@ class App extends Component {
         this.setState({ tutorial: data.current_tutorial }, this.fetchTutorial)
       }
 
-      if (data.current_step !== this.state.step) {
+      else if (data.current_step !== this.state.step) {
         this.setState({ step: data.current_step }, this.fetchStep)
       }
 
-      if (data.current_progress !== this.state.progress) {
+      else if (data.current_progress !== this.state.progress) {
         this.setState({ progress: data.current_progress}, this.fetchProgress)
       }
     }
   }
 
   handleReceiveTutorialData = ({ id, title, source, description }) => {
-    this.setState({
-      tutorial: id,
-      tTitle: title,
-      tLink: source,
-      tDesc: description,
-    })
+    if (id !== this.state.tutorial) {
+      this.setState({
+        tutorial: id,
+        tTitle: title,
+        tLink: source,
+        tDesc: description,
+      })
+    }
   }
 
   handleReceiveStepData = ({ id, title, description, image }) => {
@@ -152,6 +153,7 @@ class App extends Component {
   }
 
   handleReceiveProgressData = ({ code }) => {
+    console.log(code)
     if (code && code !== this.state.code) {
       this.setState({ code })
     }
@@ -164,13 +166,14 @@ class App extends Component {
 
   handleCodeChange = code => {
     Delay(() => {
+      console.log('saving code...')
       this.setState({ code })
-      this.progSub.send({ code, id: this.state.progress })
+      this.progSub.send({ code, user_id: this.state.user, step_id: this.state.step })
     }, 1000 );
   }
 
   handleOnClick = () => {
-    console.log('clicked')
+    console.log('compiling...')
     var data = {step_id: this.state.step, user_id: 1}
     fetch(`${Host}/compile`, {
       method: 'POST', // or 'PUT'

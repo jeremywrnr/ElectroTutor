@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   resources :steps
   resources :tutorials
 
-  get '/progresses', to: 'progresses#show'
   resources :progresses
+  get '/prog', to: 'progresses#show'
 
   # compile for the current user
   post '/compile' => 'compile#post'

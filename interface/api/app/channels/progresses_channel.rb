@@ -1,4 +1,4 @@
-class ProgressesChannel < ApplicationFGble::Channel
+class ProgressesChannel < ApplicationCable::Channel
   def subscribed
     stream_from "progresses"
   end
@@ -17,8 +17,10 @@ class ProgressesChannel < ApplicationFGble::Channel
         .first
     end
 
+    puts prog
+
     if prog && data['code']
-      prog.update!(code: data["code"])
+      prog = prog.update!(code: data["code"])
       ActionCable.server.broadcast('progresses', prog)
     end
   end

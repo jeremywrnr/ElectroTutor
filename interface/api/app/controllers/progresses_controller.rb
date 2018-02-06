@@ -41,12 +41,19 @@ class ProgressesController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_progress
     @progress = Progress
       .where(user_id: params['user_id'])
       .where(step_id: params['step_id'])
       .first
+
+    if @progress.nil? # check by id
+      @progress = Progress.find(params[:id])
+    end
+
+    puts @progress, params
   end
 
   # Only allow a trusted parameter "white list" through.
