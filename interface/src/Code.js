@@ -27,7 +27,7 @@ class Code extends React.Component {
         cursorStart={1}
         mode="javascript"
         name="codeEditor"
-        fontSize={14}
+        fontSize={12}
         theme="github"
         onChange={this.props.onChange}
         showPrintMargin={true}
