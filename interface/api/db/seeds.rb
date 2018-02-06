@@ -17,12 +17,13 @@ seed_load(:tutorials)
 seed_load(:steps)
   .each {|x| Tutorial.first.steps.create! x }
 
-seed_load(:tests)
-  .each {|x| Step.first.tests.create! x }
+seed_load(:tests).each_with_index do |x, i|
+  Step.find(i+1).tests.create! x 
+end
 
 seed_load(:progresses).each_with_index do |x, i|
   prog = Step.find(i+1).progresses.build x
-  prog.test_id = i
+  prog.test_id = i+1 unless Test.find(i+1).nil?
   prog.user_id = 1
-  prog.save
+  prog.save!
 end
