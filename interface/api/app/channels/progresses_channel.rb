@@ -11,7 +11,7 @@ class ProgressesChannel < ApplicationCable::Channel
     prog = Progress.find(data["id"])
     if prog
       prog.update!(code: data["code"])
-      ActionCable.server.broadcast('progresses', data)
+      ActionCable.server.broadcast('progresses', prog)
     end
   end
 end

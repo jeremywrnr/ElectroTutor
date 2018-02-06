@@ -10,7 +10,7 @@ class TutorialsChannel < ApplicationCable::Channel
   def receive(data)
     tutorial = Tutorial.find(data["id"])
     if tutorial
-      ActionCable.server.broadcast('tutorials', data)
+      ActionCable.server.broadcast('tutorials', tutorial)
     end
   end
 end

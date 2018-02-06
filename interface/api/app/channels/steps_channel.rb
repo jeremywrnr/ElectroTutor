@@ -12,7 +12,7 @@ class StepsChannel < ApplicationCable::Channel
     if step
       # am no longer storing id
       # step.update!(step: data["step"])
-      ActionCable.server.broadcast('steps', data)
+      ActionCable.server.broadcast('steps', step)
     end
   end
 end

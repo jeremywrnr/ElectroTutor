@@ -12,7 +12,7 @@ class UsersChannel < ApplicationCable::Channel
     step = Step.find(data["step"])
     if user && step
       user.update!(current_step: data["step"])
-      ActionCable.server.broadcast("users", data)
+      ActionCable.server.broadcast("users", user)
     end
   end
 end

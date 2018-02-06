@@ -28,27 +28,21 @@ class App extends Component {
     'back': ['down', 'left']
   }
 
+  incrementStep(inc) {
+    let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+    let saveStep = () => {
+      this.userSub.send({ id: this.state.user, step: this.state.step })
+      this.fetchStep().then(this.fetchProgress) }
+    this.setState(writeStep, saveStep)
+  }
+
   keyHandler = {
     'next': (event) => {
-      event.preventDefault()
-      console.log(this.state)
-      let writeStep = (prevState, props) => { return {step: prevState.step + 1 } }
-      let saveStep = () => {
-        this.userSub.send({ id: this.state.user, step: this.state.step })
-      }
-
-      this.setState(writeStep, saveStep)
+      this.incrementStep(1)
     },
 
     'back': (event) => {
-      event.preventDefault()
-      console.log(this.state)
-      let writeStep = (prevState, props) => { return {step: prevState.step - 1 } }
-      let saveStep = () => {
-        this.userSub.send({ id: this.state.user, step: this.state.step })
-      }
-
-      this.setState(writeStep, saveStep)
+      this.incrementStep(-1)
     }
   }
 
@@ -89,14 +83,14 @@ class App extends Component {
 
 
   fetchUser = () => {
-    console.log(this.state)
+    //console.log(this.state)
     return fetch(`${Host}/users/${this.state.user}`).then(data => {
       return data.json().then(this.handleReceiveUserData)
     })
   }
 
   fetchTutorial = () => {
-    console.log(this.state)
+    //console.log(this.state)
     return fetch(`${Host}/tutorials/${this.state.tutorial}`).then(data => {
       return data.json().then(this.handleReceiveTutorialData)
     })
@@ -110,7 +104,7 @@ class App extends Component {
   }
 
   fetchProgress = () => {
-    console.log(this.state)
+    //console.log(this.state)
     return fetch(`${Host}/progresses/${this.state.progress}`).then(data => {
       return data.json().then(this.handleReceiveProgressData)
     })
@@ -123,14 +117,20 @@ class App extends Component {
 
   // TODO - set logged in user w/ account management and access permissions
 
-  handleReceiveUserData = ({ id, current_tutorial, current_step, current_progress }) => {
-    console.log(id,  this.state.user, current_tutorial, current_step, current_progress)
-    if (id === this.state.user && current_tutorial && current_step && current_progress) {
-      this.setState({
-        tutorial: current_tutorial,
-        progress: current_progress,
-        step: current_step,
-      })
+  handleReceiveUserData = (data) => {
+    //console.log(data, this.state)
+    if (data && data.id === this.state.user) {
+      if (data.current_tutorial !== this.state.tutorial) {
+        this.setState({ tutorial: data.current_tutorial }, this.fetchTutorial)
+      }
+
+      if (data.current_step !== this.state.step) {
+        this.setState({ step: data.current_step }, this.fetchStep)
+      }
+
+      if (data.current_progress !== this.state.progress) {
+        this.setState({ progress: data.current_progress}, this.fetchProgress)
+      }
     }
   }
 
@@ -167,18 +167,15 @@ class App extends Component {
 
   handleCodeChange = code => {
     Delay(() => {
-      console.log(code)
-      this.setState({ ...this.state, code })
-      this.progSub.send({ code, id: 1 })
+      this.setState({ code })
+      this.progSub.send({ code, id: this.state.progress })
     }, 1000 );
   }
 
   handleOnClick = () => {
     console.log('clicked')
-    var url = `${Host}/compile`
     var data = {step_id: this.state.step, user_id: 1}
-
-    fetch(url, {
+    fetch(`${Host}/compile`, {
       method: 'POST', // or 'PUT'
       body: JSON.stringify(data),
       headers: new Headers({ 'Content-Type': 'application/json' })
