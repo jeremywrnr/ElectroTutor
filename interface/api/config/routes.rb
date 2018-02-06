@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :users
   resources :steps
   resources :tutorials
+
+  get '/progresses', to: 'progresses#show'
   resources :progresses
 
   # compile for the current user

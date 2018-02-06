@@ -1,7 +1,7 @@
 class ProgressesController < ApplicationController
   before_action :set_progress, only: [:show, :update, :destroy]
 
-  # QUERY: ?user_id=1&step_id=1
+  # QUERY: ?user_id=1 &step_id=1
 
   # GET /progresses
   def index
@@ -43,10 +43,9 @@ class ProgressesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_progress
-    puts 'progress params: ', params
     @progress = Progress
-      .where(user_id: params[:user_id])
-      .where(step_id: params[:step_id])
+      .where(user_id: params['user_id'])
+      .where(step_id: params['step_id'])
       .first
   end
 

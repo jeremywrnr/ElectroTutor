@@ -5,7 +5,6 @@ one:
   exec: MyString
   image: MyString
   output: MyText
-  belongs_to: 
   complete: false
 
 two:
@@ -13,5 +12,4 @@ two:
   exec: MyString
   image: MyString
   output: MyText
-  belongs_to: 
   complete: false

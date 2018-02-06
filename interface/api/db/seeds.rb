@@ -21,7 +21,7 @@ seed_load(:tests)
   .each {|x| Step.first.tests.create! x }
 
 seed_load(:progresses).each_with_index do |x, i|
-  prog = Step.find(i).progresses.build x
+  prog = Step.find(i+1).progresses.build x
   prog.test_id = i
   prog.user_id = 1
   prog.save
