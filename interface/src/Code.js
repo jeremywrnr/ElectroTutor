@@ -37,8 +37,10 @@ class Code extends React.Component {
         highlightActiveLine={true}
         value={this.props.code}
         ref={ (editor) => { this.aceEditor = editor } }
+        editorProps={{
+        $blockScrolling: Infinity
+        }}
         setOptions={{
-        //$blockScrolling = Infinity
         showLineNumbers: true,
         tabSize: 2,
         }}/>
