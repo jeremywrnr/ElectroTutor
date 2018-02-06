@@ -17,11 +17,10 @@ class ProgressesChannel < ApplicationCable::Channel
         .first
     end
 
-    puts prog
-
     if prog && data['code']
-      prog = prog.update!(code: data["code"])
-      ActionCable.server.broadcast('progresses', prog)
+      prog.update!(code: data["code"])
+      msg = { code: prog.code }
+      ActionCable.server.broadcast('progresses', msg)
     end
   end
 end

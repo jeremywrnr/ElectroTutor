@@ -9,7 +9,7 @@ class Column extends Component {
   render () {
     var head
     if (this.props.tLink !== undefined) {
-      head = <Header size='huge'> <a href={this.props.tLink}>{this.props.header}</a> </Header>
+      head = <Header size='huge'> <a href={this.props.tLink} target="_blank">{this.props.header}</a> </Header>
     } else {
       head = <Header size='large'>{this.props.header}</Header>
     }

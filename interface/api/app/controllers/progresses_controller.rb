@@ -49,7 +49,7 @@ class ProgressesController < ApplicationController
       .where(step_id: params['step_id'])
       .first
 
-    if @progress.nil? # check by id
+    if @progress.nil? # check by id instead
       @progress = Progress.find(params[:id])
     end
 

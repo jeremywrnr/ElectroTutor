@@ -17,9 +17,9 @@ class App extends Component {
     sDesc: 'Starting step...',
     code: 'print("world")',
     image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
-    progress: 1, // id
-    tutorial: 1, // id
-    step:     1, // id
+    progress: -1, // id
+    tutorial: -1, // id
+    step:     -1, // id
     user:     1, // id
   }
 
@@ -29,7 +29,9 @@ class App extends Component {
   }
 
   incrementStep(inc) {
-    let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+    let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
+    //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+
     let saveStep = () => {
       this.userSub.send({ user: this.state.user, step: this.state.step })
       this.fetchStep().then(this.fetchProgress) }
@@ -117,43 +119,38 @@ class App extends Component {
     //console.log(data, this.state)
     if (data && data.id === this.state.user) {
       if (data.current_tutorial !== this.state.tutorial) {
-        this.setState({ tutorial: data.current_tutorial }, this.fetchTutorial)
+        this.setState({ tutorial: data.current_tutorial })
       }
 
-      else if (data.current_step !== this.state.step) {
-        this.setState({ step: data.current_step }, this.fetchStep)
+      if (data.current_step !== this.state.step) {
+        this.setState({ step: data.current_step })
       }
 
-      else if (data.current_progress !== this.state.progress) {
-        this.setState({ progress: data.current_progress}, this.fetchProgress)
+      if (data.current_progress !== this.state.progress) {
+        this.setState({ progress: data.current_progress})
       }
     }
   }
 
   handleReceiveTutorialData = ({ id, title, source, description }) => {
-    if (id !== this.state.tutorial) {
-      this.setState({
-        tutorial: id,
-        tTitle: title,
-        tLink: source,
-        tDesc: description,
-      })
-    }
+    this.setState({
+      tutorial: id,
+      tTitle: title,
+      tLink: source,
+      tDesc: description,
+    })
   }
 
   handleReceiveStepData = ({ id, title, description, image }) => {
-    if (id !== this.state.step) {
-      this.setState({
-        step: id,
-        sTitle: title,
-        sDesc: description,
-        image,
-      })
-    }
+    this.setState({
+      step: id,
+      sTitle: title,
+      sDesc: description,
+      image,
+    })
   }
 
   handleReceiveProgressData = ({ code }) => {
-    console.log(code)
     if (code && code !== this.state.code) {
       this.setState({ code })
     }
@@ -166,14 +163,14 @@ class App extends Component {
 
   handleCodeChange = code => {
     Delay(() => {
-      console.log('saving code...')
+      console.info('saving code...')
       this.setState({ code })
       this.progSub.send({ code, user_id: this.state.user, step_id: this.state.step })
-    }, 1000 );
+    }, 500 );
   }
 
   handleOnClick = () => {
-    console.log('compiling...')
+    console.info('compiling...')
     var data = {step_id: this.state.step, user_id: 1}
     fetch(`${Host}/compile`, {
       method: 'POST', // or 'PUT'
