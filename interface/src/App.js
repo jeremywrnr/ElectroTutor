@@ -17,6 +17,7 @@ class App extends Component {
     sDesc: 'Starting step...',
     code: 'print("world")',
     image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
+    completed: 0, // id
     progress: -1, // id
     tutorial: -1, // id
     step:     -1, // id
@@ -150,9 +151,12 @@ class App extends Component {
     })
   }
 
-  handleReceiveProgressData = ({ code }) => {
+  handleReceiveProgressData = ({ completed, code }) => {
     if (code && code !== this.state.code) {
-      this.setState({ code })
+      this.setState({
+        completed,
+        code,
+      })
     }
   }
 
