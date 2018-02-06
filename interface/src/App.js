@@ -35,8 +35,8 @@ class App extends Component {
       let writeStep = (prevState, props) => { return {step: prevState.step + 1 } }
       let saveStep = () => {
         this.userSub.send({ id: this.state.user, step: this.state.step })
-        console.log(this.state)
       }
+
       this.setState(writeStep, saveStep)
     },
 
@@ -46,8 +46,8 @@ class App extends Component {
       let writeStep = (prevState, props) => { return {step: prevState.step - 1 } }
       let saveStep = () => {
         this.userSub.send({ id: this.state.user, step: this.state.step })
-        console.log(this.state)
       }
+
       this.setState(writeStep, saveStep)
     }
   }
@@ -124,7 +124,8 @@ class App extends Component {
   // TODO - set logged in user w/ account management and access permissions
 
   handleReceiveUserData = ({ id, current_tutorial, current_step, current_progress }) => {
-    if (id === this.state.user) {
+    console.log(id,  this.state.user, current_tutorial, current_step, current_progress)
+    if (id === this.state.user && current_tutorial && current_step && current_progress) {
       this.setState({
         tutorial: current_tutorial,
         progress: current_progress,
@@ -134,7 +135,7 @@ class App extends Component {
   }
 
   handleReceiveTutorialData = ({ id, title, description }) => {
-    console.log(id, title, description)
+    //console.log(id, title, description)
     this.setState({
       tutorial: id,
       tTitle: title,
@@ -143,7 +144,7 @@ class App extends Component {
   }
 
   handleReceiveStepData = ({ id, title, description, image }) => {
-    console.log(id, title, description, image)
+    //console.log(id, title, description, image)
     this.setState({
       step: id,
       sTitle: title,
@@ -153,7 +154,7 @@ class App extends Component {
   }
 
   handleReceiveProgressData = ({ code }) => {
-    console.log(code)
+    //console.log(code)
     if (code && code !== this.state.code) {
       this.setState({ code })
     }
