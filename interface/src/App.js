@@ -12,9 +12,9 @@ import './App.css'
 class App extends Component {
   state = {
     tTitle: 'Test Driven Tutorial',
-    tdesc: 'Starting tutorial...',
+    tDesc: 'Starting tutorial...',
     sTitle: 'Test Driven Steps',
-    sdesc: 'Starting step...',
+    sDesc: 'Starting step...',
     code: 'print("world")',
     image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
     progress: 1, // id
@@ -33,7 +33,7 @@ class App extends Component {
     let saveStep = () => {
       this.userSub.send({ id: this.state.user, step: this.state.step })
       this.fetchStep().then(this.fetchProgress) }
-    this.setState(writeStep, saveStep)
+      this.setState(writeStep, saveStep)
   }
 
   keyHandler = {
@@ -131,27 +131,27 @@ class App extends Component {
     }
   }
 
-  handleReceiveTutorialData = ({ id, title, description }) => {
-    //console.log(id, title, description)
+  handleReceiveTutorialData = ({ id, title, source, description }) => {
     this.setState({
       tutorial: id,
       tTitle: title,
-      tdesc: description,
+      tLink: source,
+      tDesc: description,
     })
   }
 
   handleReceiveStepData = ({ id, title, description, image }) => {
-    //console.log(id, title, description, image)
-    this.setState({
-      step: id,
-      sTitle: title,
-      sdesc: description,
-      image,
-    });
+    if (id !== this.state.step) {
+      this.setState({
+        step: id,
+        sTitle: title,
+        sDesc: description,
+        image,
+      })
+    }
   }
 
   handleReceiveProgressData = ({ code }) => {
-    //console.log(code)
     if (code && code !== this.state.code) {
       this.setState({ code })
     }
@@ -192,19 +192,20 @@ class App extends Component {
         <div id="main">
           <Grid3
             title={this.state.tTitle}
+            tLink={this.state.tLink}
 
             left={
             <div>
               <Message
                 icon='info'
                 header={'Tutorial ' + this.state.tutorial }
-                content={this.state.tdesc}
+                content={this.state.tDesc}
               />
               <Message
                 success
                 icon='check'
                 header={'Step ' + this.state.step + ': ' + this.state.sTitle}
-                content={this.state.sdesc}
+                content={this.state.sDesc}
               />
             </div>
             }
