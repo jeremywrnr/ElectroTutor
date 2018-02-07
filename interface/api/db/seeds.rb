@@ -21,7 +21,7 @@ seed_load(:steps).each_with_index do |x, i|
 end
 
 seed_load(:tests).each_with_index do |x, i|
-  test = Step.find(i+1).tests.create! x
+  test = Step.find(x['step_id']).tests.create! x
   test.position = i+1
   test.save!
 end

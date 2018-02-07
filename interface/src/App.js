@@ -110,7 +110,7 @@ class App extends Component {
   }
 
   fetchTest = () => {
-    return fetch(`${Host}/test?step=${this.state.step}`).then(data => {
+    return fetch(`${Host}/test?step_id=${this.state.step}`).then(data => {
       return data.json().then(this.handleReceiveTestData)
     })
   }
@@ -169,13 +169,11 @@ class App extends Component {
 
   handleReceiveTestData = (data) => {
     console.log(data)
-    this.setState({
-      test: data.tests,
-    })
+    //this.setState({ test: data.tests, })
   }
 
   handleReceiveProgressData = (data) => {
-    console.log(data)
+    //console.log(data)
   }
 
 

@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(version: 20180207164107) do
     t.integer "position"
     t.text "description"
     t.string "image"
-    t.string "exec"
     t.text "output"
+    t.string "exec"
     t.boolean "complete"
     t.string "jsondata"
     t.datetime "created_at", null: false

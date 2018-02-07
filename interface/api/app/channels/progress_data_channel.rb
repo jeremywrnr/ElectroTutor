@@ -1,6 +1,6 @@
 class ProgressDataChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "progresses"
+    stream_from "progress_data"
   end
 
   def unsubscribed
