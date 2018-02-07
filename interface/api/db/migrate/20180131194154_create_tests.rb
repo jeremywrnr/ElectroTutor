@@ -6,8 +6,8 @@ class CreateTests < ActiveRecord::Migration[5.1]
       t.text :description
       t.string :image
 
-      t.string :exec
       t.text :output
+      t.string :exec
       t.boolean :complete
 
       t.string :jsondata

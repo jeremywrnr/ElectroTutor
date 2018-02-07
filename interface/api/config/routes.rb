@@ -4,12 +4,15 @@ Rails.application.routes.draw do
   resources :notes
   resources :users
   resources :steps
-  resources :tests
+
   resources :tutorials
-  resources :progresses
   resources :progress_data
 
+  get '/test', to: 'tests#step'
+  resources :tests
+
   get '/prog', to: 'progresses#show'
+  resources :progresses
 
   post '/compile' => 'compile#post'
 

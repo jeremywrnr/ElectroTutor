@@ -52,8 +52,6 @@ class ProgressesController < ApplicationController
     if @progress.nil? # check by id instead
       @progress = Progress.find(params[:id])
     end
-
-    puts @progress, params
   end
 
   # Only allow a trusted parameter "white list" through.

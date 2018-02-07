@@ -5,6 +5,7 @@ import ActionCable from 'actioncable'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Code from './Code.js'
+import Test from './Test.js'
 import Host from './Host.js'
 
 import './App.css'
@@ -22,6 +23,7 @@ class App extends Component {
     tutorial: -1, // id
     step:     -1, // id
     user:     1, // id
+    tests: [],
   }
 
   map = {
@@ -62,16 +64,12 @@ class App extends Component {
       received: this.handleReceiveUserData
     })
 
-    this.tutSub = cable.subscriptions.create('TutorialsChannel', {
-      received: this.handleReceiveTutorialData
-    })
-
-    this.stepSub = cable.subscriptions.create('StepsChannel', {
-      received: this.handleReceiveStepData
-    })
-
     this.progSub = cable.subscriptions.create('ProgressesChannel', {
       received: this.handleReceiveProgress
+    })
+
+    this.dataSub = cable.subscriptions.create('ProgressDataChannel', {
+      received: this.handleReceiveProgressData
     })
 
     /**
@@ -82,6 +80,7 @@ class App extends Component {
     .then(this.fetchTutorial)
     .then(this.fetchProgress)
     .then(this.fetchStep)
+    .then(this.fetchTest)
 
   }
 
@@ -111,8 +110,8 @@ class App extends Component {
   }
 
   fetchTest = () => {
-    return fetch(`${Host}/tests/${this.state.test}`).then(data => {
-      return data.json().then(this.handleReceiveStepTest)
+    return fetch(`${Host}/test?step=${this.state.step}`).then(data => {
+      return data.json().then(this.handleReceiveTestData)
     })
   }
 
@@ -170,6 +169,9 @@ class App extends Component {
 
   handleReceiveTestData = (data) => {
     console.log(data)
+    this.setState({
+      test: data.tests,
+    })
   }
 
   handleReceiveProgressData = (data) => {
@@ -223,6 +225,11 @@ class App extends Component {
                 content={this.state.tDesc}
               />
               <img id='right' alt='hardware' src={this.state.sImage}/>
+              <Message
+                icon='info'
+                header={'Step ' + this.state.step }
+                content={this.state.sDesc}
+              />
             </div>
             }
 
@@ -245,12 +252,11 @@ class App extends Component {
 
             right={
             <div>
-              <Message
-                success
-                icon='check'
-                header={'Step ' + this.state.step + ': ' + this.state.sTitle}
-                content={this.state.sDesc}
-              />
+              {
+               this.state.tests.map((t, i) => {
+              return <Test task={t.description} output={t.output} key={i} />
+              })
+              }
             </div>
             }
           />

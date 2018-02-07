@@ -13,6 +13,12 @@ class TestsController < ApplicationController
     render json: @test
   end
 
+  # GET /tests?step=1
+  def step
+    @tests = Test.where(step_id: params[:step_id])
+    render json: @test
+  end
+
   # POST /tests
   def create
     @test = Test.new(test_params)
