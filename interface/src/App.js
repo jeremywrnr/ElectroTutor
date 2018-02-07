@@ -71,7 +71,7 @@ class App extends Component {
     })
 
     this.progSub = cable.subscriptions.create('ProgressesChannel', {
-      received: this.handleReceiveProgressData
+      received: this.handleReceiveProgress
     })
 
     /**
@@ -100,12 +100,24 @@ class App extends Component {
 
   fetchProgress = () => {
     return fetch(`${Host}/prog?user_id=${this.state.user}&tutorial_id=${this.state.tutorial}`).then(data => {
-      return data.json().then(this.handleReceiveProgressData)
+      return data.json().then(this.handleReceiveProgress)
     })
   }
 
   fetchStep = () => {
     return fetch(`${Host}/steps/${this.state.step}`).then(data => {
+      return data.json().then(this.handleReceiveStepData)
+    })
+  }
+
+  fetchTest = () => {
+    return fetch(`${Host}/tests/${this.state.test}`).then(data => {
+      return data.json().then(this.handleReceiveStepTest)
+    })
+  }
+
+  fetchData = () => {
+    return fetch(`${Host}/pdata/${this.state.progressData}`).then(data => {
       return data.json().then(this.handleReceiveStepData)
     })
   }
@@ -137,7 +149,7 @@ class App extends Component {
     })
   }
 
-  handleReceiveProgressData = ({ completed, code, step_id }) => {
+  handleReceiveProgress = ({ completed, code, step_id }) => {
     if (code && code !== this.state.code) {
       this.setState({
         step: step_id,
@@ -154,6 +166,14 @@ class App extends Component {
       sDesc: description,
       sImage: image,
     })
+  }
+
+  handleReceiveTestData = (data) => {
+    console.log(data)
+  }
+
+  handleReceiveProgressData = (data) => {
+    console.log(data)
   }
 
 
