@@ -1,14 +1,4 @@
 -
-  completed: true
-  code: starting
--
-  completed: false
-  code: first stage
--
-  completed: false
-  code: next stage
--
-  completed: false
   code: >
     const int MAX_ANGLE = 45;
     const int LED_OFFSET = 12;

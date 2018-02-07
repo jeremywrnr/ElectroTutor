@@ -4,13 +4,9 @@
   email: q@q.com
   password_digest: testing
   current_tutorial: 1
-  current_progress: 1
-  current_step: 1
 -
   id: 2
   name: Tarantino
   email: t@t.com
   password_digest: testing
   current_tutorial: 2
-  current_progress: 2
-  current_step: 2

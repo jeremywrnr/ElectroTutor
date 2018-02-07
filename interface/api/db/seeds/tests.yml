@@ -3,22 +3,18 @@
   exec: MyString
   image: MyString
   output: MyText
-  complete: false
 -
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
-  complete: false
 -
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
-  complete: false
 -
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
-  complete: false
