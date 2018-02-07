@@ -1,3 +1,6 @@
+# Modifications to generated files
+hardware/*.c
+
 # Prerequisites
 *.d
 
