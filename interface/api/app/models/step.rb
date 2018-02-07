@@ -3,15 +3,6 @@ class Step < ApplicationRecord
   has_many :progresses, :dependent => :destroy
   has_many :tests, :dependent => :destroy
 
-  # TODO make better way for accessing sequential steps.
-  #https://stackoverflow.com/questions/25665804/rails-best-way-to-get-previous-and-next-active-record-object
-  #https://github.com/glebm/order_query
-
-  def next
-    #self.class.where()
-  end
-
-  def previous
-    #self.class.where()
-  end
+  # https://github.com/swanandp/acts_as_list
+  acts_as_list scope: :tutorial
 end
