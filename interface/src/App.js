@@ -30,13 +30,14 @@ class App extends Component {
   }
 
   incrementStep(inc) {
-    let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
     //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
-
+    let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
     let saveStep = () => {
       this.userSub.send({ user: this.state.user, step: this.state.step })
-      this.fetchStep().then(this.fetchProgress) }
-      this.setState(writeStep, saveStep)
+      this.fetchStep()
+    }
+
+    this.setState(writeStep, saveStep)
   }
 
   keyHandler = {
@@ -197,7 +198,7 @@ class App extends Component {
           <Grid3
             title={this.state.tTitle}
             tLink={this.state.tLink}
-
+            mHead={this.state.sTitle}
             left={
             <div>
               <Message
@@ -205,12 +206,7 @@ class App extends Component {
                 header={'Tutorial ' + this.state.tutorial }
                 content={this.state.tDesc}
               />
-              <Message
-                success
-                icon='check'
-                header={'Step ' + this.state.step + ': ' + this.state.sTitle}
-                content={this.state.sDesc}
-              />
+              <img id='right' alt='hardware' src={this.state.image}/>
             </div>
             }
 
@@ -233,7 +229,12 @@ class App extends Component {
 
             right={
             <div>
-              <img id='right' alt='hardware' src={this.state.image}/>
+              <Message
+                success
+                icon='check'
+                header={'Step ' + this.state.step + ': ' + this.state.sTitle}
+                content={this.state.sDesc}
+              />
             </div>
             }
           />

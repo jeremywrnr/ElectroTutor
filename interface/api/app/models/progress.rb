@@ -1,5 +1,5 @@
 class Progress < ApplicationRecord
   belongs_to :user
-  belongs_to :step
-  belongs_to :test, optional: true
+  belongs_to :tutorial
+  has_many :tests
 end
