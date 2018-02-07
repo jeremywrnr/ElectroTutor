@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { HotKeys } from 'react-hotkeys'
-import { Message, Segment, Button, Icon } from 'semantic-ui-react'
+import { Segment, Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'

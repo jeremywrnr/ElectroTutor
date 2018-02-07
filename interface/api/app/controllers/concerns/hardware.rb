@@ -8,7 +8,7 @@ module Hardware
   def upload (code='', device='device', &block)
     out = File.join(@@hw_path, "#{device}/src/main.cpp")
 
-    File.open(out, 'w') { |f| puts code }
+    File.open(out, 'w') { |f| f.write code }
 
     yield `cd #{@@hw_path} && make #{device}`
   end
