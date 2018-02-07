@@ -168,8 +168,7 @@ class App extends Component {
   }
 
   handleReceiveTestData = (data) => {
-    console.log(data)
-    //this.setState({ test: data.tests, })
+    this.setState({ tests: data, })
   }
 
   handleReceiveProgressData = (data) => {
@@ -250,11 +249,7 @@ class App extends Component {
 
             right={
             <div>
-              {
-               this.state.tests.map((t, i) => {
-              return <Test task={t.description} output={t.output} key={i} />
-              })
-              }
+              { this.state.tests.map((t, i) => { <Test task={t.description} output={t.output} key={i} /> }) }
             </div>
             }
           />

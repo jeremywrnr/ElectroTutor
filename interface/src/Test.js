@@ -4,7 +4,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Message, Icon } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react'
 
 class Test extends React.Component {
   static propTypes = {
@@ -16,14 +16,15 @@ class Test extends React.Component {
     pass: false,
   };
 
+  //className={ pass ? 'success' : 'info' }
+  //icon={ pass ? 'check' : 'info' }
+
   render() {
     let pass = this.props.pass
     return (
       <Message
-        className={ pass ? 'success' : 'info' }
-        icon={ pass ? 'check' : 'info' }
-        header={'Step ' + this.state.key }
-        content={this.state.task}
+        header={'Step ' + this.props.key }
+        content={pass + this.props.task}
       />
       );
 };

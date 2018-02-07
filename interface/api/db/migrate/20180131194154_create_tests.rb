@@ -10,7 +10,7 @@ class CreateTests < ActiveRecord::Migration[5.1]
       t.string :exec
       t.boolean :complete
 
-      t.string :jsondata
+      t.string :jsondata, default: '{}'
       t.timestamps
     end
   end
