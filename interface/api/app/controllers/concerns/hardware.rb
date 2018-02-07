@@ -5,11 +5,11 @@ module Hardware
 
   # Makefile has some logic for programming devices.
 
-  def upload ( code='', device='device', &block)
+  def upload (code='', device='device', &block)
     out = File.join(@@hw_path, "#{device}/#{device}.ino")
 
     File.open(out, 'w') { |f| puts code }
 
-    yield `cd #{@@hw_path} && make device`
+    yield `cd #{@@hw_path} && make #{device}`
   end
 end

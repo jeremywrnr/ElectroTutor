@@ -24,7 +24,7 @@ class Test extends React.Component {
     else if (p === 'fail')
       return 'info'
     else if (p === 'info')
-      return 'announcement'
+      return false
     else
       return 'bug'
   }
@@ -33,8 +33,10 @@ class Test extends React.Component {
     let pass = this.props.pass
     return (
       <Message
-        header={'Step ' + this.props.i }
+        header={'Task ' + this.props.i }
         icon={ this.handlePassIcon(pass) }
+        success={ pass === 'pass' }
+        error={ pass === 'fail' }
         content={this.props.task}
       />
       ) };

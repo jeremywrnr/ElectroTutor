@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { HotKeys } from 'react-hotkeys'
-import { Message, Button, Icon } from 'semantic-ui-react'
+import { Message, Segment, Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
@@ -183,17 +183,15 @@ class App extends Component {
   handleCodeChange = code => {
     Delay(() => {
       console.info('saving code...')
-      this.setState({ code },
-                    this.progSub.send({ code, user_id: this.state.user, tutorial_id: this.state.tutorial }))
+      this.setState({ code }, () => this.progSub.send({ code, user_id: this.state.user, tutorial_id: this.state.tutorial }))
     }, 500 );
   }
 
   handleOnClick = () => {
     console.info('compiling...')
-    var data = { user_id: this.state.user, progress_id: this.state.progress }
+    var data = { user_id: this.state.user, code: this.state.code, step_id: this.state.step, progress_id: this.state.progress }
     fetch(`${Host}/compile`, {
       method: 'POST',
-      code: this.state.code,
       body: JSON.stringify(data),
       headers: new Headers({ 'Content-Type': 'application/json' })
     }).then(res => res.json())
@@ -213,20 +211,12 @@ class App extends Component {
           <Grid3
             title={this.state.tTitle}
             tLink={this.state.tLink}
-            mHead={this.state.sTitle}
+            mHead={this.state.step +': '+ this.state.sTitle}
             left={
             <div>
-              <Message
-                icon='info'
-                header={'Tutorial ' + this.state.tutorial }
-                content={this.state.tDesc}
-              />
+              <Segment raised content={this.state.tDesc} />
               <img id='right' alt='hardware' src={this.state.sImage}/>
-              <Message
-                icon='info'
-                header={'Step ' + this.state.step }
-                content={this.state.sDesc}
-              />
+              <Segment raised content={this.state.sDesc} />
             </div>
             }
 
@@ -248,9 +238,10 @@ class App extends Component {
                 </Button.Content>
               </Button>
               <br/>
-              { this.state.tests.map((t, i) => {
-                return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} />
-                })
+              {
+              this.state.tests.map( (t, i) => {
+              return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} />
+              })
               }
             </div>
             }
