@@ -14,7 +14,7 @@ import 'brace/theme/github';
 class Code extends React.Component {
   static propTypes = {
     code: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    //onChange: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -26,7 +26,7 @@ class Code extends React.Component {
       <AceEditor
         cursorStart={1}
         mode="javascript"
-        name="codeEditor"
+        name={this.props.name}
         fontSize={12}
         theme="github"
         onChange={this.props.onChange}
@@ -41,6 +41,7 @@ class Code extends React.Component {
         $blockScrolling: Infinity
         }}
         setOptions={{
+        setUseWrapMode: true,
         showLineNumbers: true,
         tabSize: 2,
         }}/>

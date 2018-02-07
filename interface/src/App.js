@@ -187,7 +187,7 @@ class App extends Component {
     }, 500 );
   }
 
-  handleOnClick = () => {
+  handleOnClickCompile = () => {
     console.info('compiling...')
     var data = { user_id: this.state.user, code: this.state.code, step_id: this.state.step, progress_id: this.state.progress }
     fetch(`${Host}/compile`, {
@@ -196,7 +196,7 @@ class App extends Component {
       headers: new Headers({ 'Content-Type': 'application/json' })
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
+    .then(res => this.setState({ deviceOut: res.output }))
   }
 
 
@@ -223,6 +223,7 @@ class App extends Component {
             middle={
             <div>
               <Code id='middle'
+                name="codeEditor"
                 code={this.state.code}
                 onChange={this.handleCodeChange}
               />
@@ -231,7 +232,7 @@ class App extends Component {
 
             right={
             <div>
-              <Button animated secondary icon onClick={this.handleOnClick} >
+              <Button animated secondary icon onClick={this.handleOnClickCompile} >
                 <Button.Content visible>Compile</Button.Content>
                 <Button.Content hidden>
                   <Icon name='right arrow' />
@@ -243,6 +244,7 @@ class App extends Component {
               return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} />
               })
               }
+              { this.state.deviceOut && <Code code={this.state.deviceOut}/> }
             </div>
             }
           />
