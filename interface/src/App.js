@@ -33,8 +33,8 @@ class App extends Component {
     //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
     let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
     let saveStep = () => {
-      //this.userSub.send({ user: this.state.user, step: this.state.step })
-      //this.fetchStep()
+      this.progSub.send({ id: this.state.user, step_id: this.state.step })
+      this.fetchStep()
     }
 
     this.setState(writeStep, saveStep)
@@ -147,12 +147,12 @@ class App extends Component {
     }
   }
 
-  handleReceiveStepData = ({ id, title, description, sImage }) => {
+  handleReceiveStepData = ({ id, title, description, image }) => {
     this.setState({
       step: id,
       sTitle: title,
       sDesc: description,
-      sImage,
+      sImage: image,
     })
   }
 
