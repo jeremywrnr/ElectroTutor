@@ -9,12 +9,6 @@ class StepsChannel < ApplicationCable::Channel
 
   def receive(data)
     step = Step.find(data["step"])
-    if step
-      # am no longer storing id
-      # step.update!(step: data["step"])
-      ActionCable.server.broadcast('steps', step)
-    else
-      ActionCable.server.broadcast('steps', step)
-    end
+    ActionCable.server.broadcast('steps', step)
   end
 end

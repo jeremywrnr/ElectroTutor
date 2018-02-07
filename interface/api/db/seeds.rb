@@ -14,16 +14,22 @@ seed_load(:users)
 seed_load(:tutorials)
   .each {|x| User.first.tutorials.create! x }
 
-seed_load(:steps)
-  .each {|x| Tutorial.first.steps.create! x }
+seed_load(:steps).each_with_index do |x, i|
+  step = Tutorial.first.steps.create! x
+  step.position = i+1
+  step.save!
+end
 
 seed_load(:tests).each_with_index do |x, i|
-  Step.find(i+1).tests.create! x
+  test = Step.find(i+1).tests.create! x
+  test.position = i+1
+  test.save!
 end
 
 seed_load(:progresses).each_with_index do |x, i|
   prog = Tutorial.find(1).progresses.build x
   prog.user_id = 1
+  prog.step_id = 1
   prog.save!
 end
 

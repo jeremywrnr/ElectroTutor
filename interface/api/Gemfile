@@ -8,6 +8,9 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 
+# Use https://github.com/swanandp/acts_as_list
+gem 'acts_as_list', '~> 0.8.0'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
@@ -29,8 +32,6 @@ gem 'capistrano-rails', group: :development
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
-# Use https://github.com/swanandp/acts_as_list
-gem 'acts_as_list'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

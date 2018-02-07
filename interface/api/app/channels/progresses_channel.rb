@@ -10,10 +10,10 @@ class ProgressesChannel < ApplicationCable::Channel
   def receive(data)
     if data["id"]
       prog = Progress.find(data['id'])
-    elsif data["user_id"] && data["step_id"]
+    elsif data["user_id"] && data["tutorial_id"]
       prog = Progress
         .where(user_id: data['user_id'])
-        .where(step_id: data['step_id'])
+        .where(tutorial_id: data['tutorial_id'])
         .first
     end
 

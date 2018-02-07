@@ -46,6 +46,6 @@ class StepsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def step_params
-    params.require(:step).permit(:progress, :tutorial_id)
+    params.require(:step).permit(:tutorial_id, :id, :step_id)
   end
 end

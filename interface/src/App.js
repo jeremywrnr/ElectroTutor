@@ -16,7 +16,7 @@ class App extends Component {
     sTitle: 'Test Driven Steps',
     sDesc: 'Starting step...',
     code: 'print("world")',
-    image: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
+    sImage: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
     completed: 0, // id
     progress: -1, // id
     tutorial: -1, // id
@@ -33,8 +33,8 @@ class App extends Component {
     //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
     let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
     let saveStep = () => {
-      this.userSub.send({ user: this.state.user, step: this.state.step })
-      this.fetchStep()
+      //this.userSub.send({ user: this.state.user, step: this.state.step })
+      //this.fetchStep()
     }
 
     this.setState(writeStep, saveStep)
@@ -80,8 +80,8 @@ class App extends Component {
 
     this.fetchUser()
     .then(this.fetchTutorial)
-    .then(this.fetchStep)
     .then(this.fetchProgress)
+    .then(this.fetchStep)
 
   }
 
@@ -98,15 +98,15 @@ class App extends Component {
     })
   }
 
-  fetchStep = () => {
-    return fetch(`${Host}/steps/${this.state.step}`).then(data => {
-      return data.json().then(this.handleReceiveStepData)
+  fetchProgress = () => {
+    return fetch(`${Host}/prog?user_id=${this.state.user}&tutorial_id=${this.state.tutorial}`).then(data => {
+      return data.json().then(this.handleReceiveProgressData)
     })
   }
 
-  fetchProgress = () => {
-    return fetch(`${Host}/prog?user_id=${this.state.user}&step_id=${this.state.step}`).then(data => {
-      return data.json().then(this.handleReceiveProgressData)
+  fetchStep = () => {
+    return fetch(`${Host}/steps/${this.state.step}`).then(data => {
+      return data.json().then(this.handleReceiveStepData)
     })
   }
 
@@ -120,17 +120,11 @@ class App extends Component {
   handleReceiveUserData = (data) => {
     //console.log(data, this.state)
     if (data && data.id === this.state.user) {
+
       if (data.current_tutorial !== this.state.tutorial) {
         this.setState({ tutorial: data.current_tutorial })
       }
 
-      if (data.current_step !== this.state.step) {
-        this.setState({ step: data.current_step })
-      }
-
-      if (data.current_progress !== this.state.progress) {
-        this.setState({ progress: data.current_progress})
-      }
     }
   }
 
@@ -143,22 +137,23 @@ class App extends Component {
     })
   }
 
-  handleReceiveStepData = ({ id, title, description, image }) => {
-    this.setState({
-      step: id,
-      sTitle: title,
-      sDesc: description,
-      image,
-    })
-  }
-
-  handleReceiveProgressData = ({ completed, code }) => {
+  handleReceiveProgressData = ({ completed, code, step_id }) => {
     if (code && code !== this.state.code) {
       this.setState({
+        step: step_id,
         completed,
         code,
       })
     }
+  }
+
+  handleReceiveStepData = ({ id, title, description, sImage }) => {
+    this.setState({
+      step: id,
+      sTitle: title,
+      sDesc: description,
+      sImage,
+    })
   }
 
 
@@ -170,15 +165,16 @@ class App extends Component {
     Delay(() => {
       console.info('saving code...')
       this.setState({ code })
-      this.progSub.send({ code, user_id: this.state.user, step_id: this.state.step })
+      this.progSub.send({ code, user_id: this.state.user, tutorial_id: this.state.tutorial })
     }, 500 );
   }
 
   handleOnClick = () => {
     console.info('compiling...')
-    var data = {step_id: this.state.step, user_id: 1}
+    var data = { user_id: this.state.user, progress_id: this.state.progress }
     fetch(`${Host}/compile`, {
-      method: 'POST', // or 'PUT'
+      method: 'POST',
+      code: this.state.code,
       body: JSON.stringify(data),
       headers: new Headers({ 'Content-Type': 'application/json' })
     }).then(res => res.json())
@@ -206,7 +202,7 @@ class App extends Component {
                 header={'Tutorial ' + this.state.tutorial }
                 content={this.state.tDesc}
               />
-              <img id='right' alt='hardware' src={this.state.image}/>
+              <img id='right' alt='hardware' src={this.state.sImage}/>
             </div>
             }
 

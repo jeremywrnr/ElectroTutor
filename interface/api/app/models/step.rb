@@ -3,5 +3,5 @@ class Step < ApplicationRecord
 
   has_many :tests, -> { order(position: :asc) }
 
-  acts_as_list
+  acts_as_list scope: :tutorial
 end

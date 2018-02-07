@@ -1,7 +1,7 @@
 class ProgressesController < ApplicationController
   before_action :set_progress, only: [:show, :update, :destroy]
 
-  # QUERY: ?user_id=1 &step_id=1
+  # QUERY: ?user_id=1 &tutorial_id=1
 
   # GET /progresses
   def index
@@ -46,7 +46,7 @@ class ProgressesController < ApplicationController
   def set_progress
     @progress = Progress
       .where(user_id: params['user_id'])
-      .where(step_id: params['step_id'])
+      .where(tutorial_id: params['tutorial_id'])
       .first
 
     if @progress.nil? # check by id instead
@@ -58,6 +58,6 @@ class ProgressesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_params
-    params.require(:progress).permit(:step_id, :progress_id, :test_id)
+    params.require(:progress).permit(:tutorial_id, :progress_id)
   end
 end
