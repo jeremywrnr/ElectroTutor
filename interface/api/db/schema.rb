@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20180207164107) do
     t.string "image"
     t.text "output"
     t.string "exec"
-    t.boolean "complete"
-    t.string "jsondata"
+    t.string "pass"
+    t.string "jsondata", default: "{}"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["step_id"], name: "index_tests_on_step_id"

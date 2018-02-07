@@ -36,7 +36,7 @@ class App extends Component {
     let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
     let saveStep = () => {
       this.progSub.send({ id: this.state.user, step_id: this.state.step })
-      this.fetchStep()
+      this.fetchStep().then(this.fetchTest)
     }
 
     this.setState(writeStep, saveStep)
@@ -183,8 +183,8 @@ class App extends Component {
   handleCodeChange = code => {
     Delay(() => {
       console.info('saving code...')
-      this.setState({ code })
-      this.progSub.send({ code, user_id: this.state.user, tutorial_id: this.state.tutorial })
+      this.setState({ code },
+                    this.progSub.send({ code, user_id: this.state.user, tutorial_id: this.state.tutorial }))
     }, 500 );
   }
 
@@ -232,14 +232,6 @@ class App extends Component {
 
             middle={
             <div>
-              <Button animated secondary icon onClick={this.handleOnClick} >
-                <Button.Content visible>Compile</Button.Content>
-                <Button.Content hidden>
-                  <Icon name='right arrow' />
-                </Button.Content>
-              </Button>
-              <br/>
-              <br/>
               <Code id='middle'
                 code={this.state.code}
                 onChange={this.handleCodeChange}
@@ -249,7 +241,17 @@ class App extends Component {
 
             right={
             <div>
-              { this.state.tests.map((t, i) => { <Test task={t.description} output={t.output} key={i} /> }) }
+              <Button animated secondary icon onClick={this.handleOnClick} >
+                <Button.Content visible>Compile</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='right arrow' />
+                </Button.Content>
+              </Button>
+              <br/>
+              { this.state.tests.map((t, i) => {
+                return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} />
+                })
+              }
             </div>
             }
           />

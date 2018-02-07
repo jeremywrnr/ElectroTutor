@@ -5,11 +5,8 @@ one:
   exec: MyString
   image: MyString
   output: MyText
-  complete: false
-
 two:
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
-  complete: false

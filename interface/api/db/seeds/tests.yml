@@ -4,45 +4,53 @@
   exec: MyString
   image: MyString
   output: MyText
+  pass: pass
 -
   step_id: 1
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: fail
 -
   step_id: 2
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: info
 -
   step_id: 3
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: info
 -
   step_id: 3
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: info
 -
   step_id: 3
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: info
 -
   step_id: 4
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: info
 -
   step_id: 4
   description: MyText
   exec: MyString
   image: MyString
   output: MyText
+  pass: info

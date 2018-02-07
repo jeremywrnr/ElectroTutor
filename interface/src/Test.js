@@ -12,22 +12,32 @@ class Test extends React.Component {
   };
 
   static defaultProps = {
+    pass: undefined,
     task: '...',
-    pass: false,
   };
 
   //className={ pass ? 'success' : 'info' }
-  //icon={ pass ? 'check' : 'info' }
+
+  handlePassIcon(p) {
+    if (p === 'pass')
+      return 'check'
+    else if (p === 'fail')
+      return 'info'
+    else if (p === 'info')
+      return 'announcement'
+    else
+      return 'bug'
+  }
 
   render() {
     let pass = this.props.pass
     return (
       <Message
-        header={'Step ' + this.props.key }
-        content={pass + this.props.task}
+        header={'Step ' + this.props.i }
+        icon={ this.handlePassIcon(pass) }
+        content={this.props.task}
       />
-      );
-};
+      ) };
 }
 
 export default Test
