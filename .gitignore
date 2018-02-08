@@ -1,5 +1,5 @@
 # Modifications to generated files
-hardware/*.c
+hardware/*.cpp
 
 # Prerequisites
 *.d
