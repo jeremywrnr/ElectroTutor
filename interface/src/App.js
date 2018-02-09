@@ -20,6 +20,7 @@ class App extends Component {
     sTitle: 'Test Driven Steps',
     sDesc: 'Starting step...',
     code: 'print("world")',
+    isUserActive: false,
     sImage: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
     completed: 0, // id
     progress: -1, // id
@@ -55,10 +56,26 @@ class App extends Component {
     }
   }
 
+  /**
+   * user account setup
+   */
+
+  setUserCredentials(data) {
+    localStorage.setItem("tdtutorial.user.account", data)
+  }
+
+  getUserCredentials() {
+    return localStorage.getItem("tdtutorial.user.account")
+  }
+
+  clearUserCredentials() {
+    localStorage.setItem("tdtutorial.user.account", undefined)
+  }
+
   componentDidMount() {
 
     /**
-     * Connect to DB
+     * connect to db
      */
 
     const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
@@ -79,13 +96,18 @@ class App extends Component {
      * Initial data creation
      */
 
-    this.fetchUser()
-    .catch(e => console.log(e))
-    .then(this.fetchTutorial)
-    .then(this.fetchProgress)
-    .then(this.fetchStep)
-    .then(this.fetchTest)
+    let user = this.getUserCredentials()
 
+    if (user === undefined) {
+    } else {
+      this.setState({ isUserActive: true }, () => {
+        this.fetchUser()
+        .then(this.fetchTutorial)
+        .then(this.fetchProgress)
+        .then(this.fetchStep)
+        .then(this.fetchTest)
+      })
+    }
   }
 
 
@@ -209,7 +231,8 @@ class App extends Component {
    */
 
   render() {
-    let login = this.state.userLoggedin
+    const login = this.state.isUserActive
+
     return (
       <div id="main">
         { login ? (
@@ -229,7 +252,10 @@ class App extends Component {
 
             middle={
             <div>
-              <ButtonGroup onMClick={this.handleOnClickCompile} />
+              <ButtonGroup
+                onLClick={this.incrementStep(-1)}
+                onMClick={this.handleOnClickCompile}
+                onRClick={this.incrementStep(1)} />
               <Code id='middle'
                 name="codeEditor"
                 code={this.state.code}
