@@ -15,7 +15,7 @@ class AuthenticateUser
   attr_accessor :uname, :password
 
   def user
-    user = User.by_uname(uname)
+    user = User.by_uname uname 
     return user if user && user.authenticate(password)
 
     errors.add :user_authentication, 'invalid credentials'

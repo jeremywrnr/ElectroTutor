@@ -4,10 +4,10 @@ class ApplicationController < ActionController::API
   include Response
 
   before_action :authenticate_request
-  protect_from_forgery with: :null_session
-
   attr_reader :current_user
-  helper_method :current_user
+
+  #protect_from_forgery with: :null_session
+  #helper_method :current_user
 
   private
 

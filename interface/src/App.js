@@ -3,6 +3,7 @@ import { HotKeys } from 'react-hotkeys'
 import { Header, Segment } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import ButtonGroup from './ButtonGroup.js'
+import Account from './Account.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Login from './Login.js'
@@ -56,22 +57,6 @@ class App extends Component {
     }
   }
 
-  /**
-   * user account setup
-   */
-
-  setUserCredentials(data) {
-    localStorage.setItem("tdtutorial.user.account", data)
-  }
-
-  getUserCredentials() {
-    return localStorage.getItem("tdtutorial.user.account")
-  }
-
-  clearUserCredentials() {
-    localStorage.setItem("tdtutorial.user.account", undefined)
-  }
-
   componentDidMount() {
 
     /**
@@ -96,17 +81,17 @@ class App extends Component {
      * Initial data creation
      */
 
-    let user = this.getUserCredentials()
+    const user = Account.getLocalCredentials()
 
     if (user === undefined) {
+      return
     } else {
-      this.setState({ isUserActive: true }, () => {
-        this.fetchUser()
-        .then(this.fetchTutorial)
-        .then(this.fetchProgress)
-        .then(this.fetchStep)
-        .then(this.fetchTest)
-      })
+      //this.setState({ isUserActive: true }, () => {})
+      this.fetchUser()
+      .then(this.fetchTutorial)
+      .then(this.fetchProgress)
+      .then(this.fetchStep)
+      .then(this.fetchTest)
     }
   }
 
@@ -273,7 +258,7 @@ class App extends Component {
           />
         </HotKeys>
         ) : (
-        <Login title={this.state.title} signin={e => console.log(e) } create={e => console.log(e) } />
+        <Login title={this.state.title} signin={console.log} create={console.log} />
         ) }
       </div>
       ) }

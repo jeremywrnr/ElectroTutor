@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
   post '/compile' => 'compile#post'
 
+  get '/authenticate' => 'authenticate'
+
   mount ActionCable.server => '/cable'
 
 end
