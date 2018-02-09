@@ -7,9 +7,10 @@ import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 
 import 'brace';
-import 'brace/mode/javascript';
-import 'brace/theme/monokai';
 import 'brace/theme/github';
+import 'brace/theme/monokai';
+import 'brace/mode/c_cpp';
+//import 'brace/mode/javascript';
 
 class Code extends React.Component {
   static propTypes = {
@@ -25,7 +26,7 @@ class Code extends React.Component {
     return (
       <AceEditor
         cursorStart={1}
-        mode="javascript"
+        mode="c_cpp"
         name={this.props.name}
         fontSize={12}
         theme="github"

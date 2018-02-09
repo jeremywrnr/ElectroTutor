@@ -14,6 +14,7 @@
 ### tools/reference
 
 - arduino tutorials: https://www.arduino.cc/en/Tutorial/HomePage
+- cloud compiler: https://github.com/AllwineDesigns/arduino-compiler
 - platform io: http://docs.platformio.org/en/latest/quickstart.html
 - desire paths: https://en.wikipedia.org/wiki/desire_path
 - tdd wikipedia: https://en.wikipedia.org/wiki/Test-driven_development

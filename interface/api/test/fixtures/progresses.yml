@@ -3,9 +3,6 @@
 one:
   user_id: 1
   step_id: 1
-  completed: false
-
 two:
   user_id: 1
   step_id: 1
-  completed: false

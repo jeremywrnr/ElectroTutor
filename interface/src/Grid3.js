@@ -19,8 +19,8 @@ class Grid3 extends Component {
 
           <Column
             key='middle-col'
-            main={this.props.middle}
-            header={this.props.mHead} />
+            header={this.props.mHead}
+            main={this.props.middle} />
 
           <Column
             key='right-col'

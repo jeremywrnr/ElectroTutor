@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { HotKeys } from 'react-hotkeys'
-import { Segment, Button, Icon } from 'semantic-ui-react'
+import { Header, Segment, Button, Icon } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
+import ButtonGroup from './ButtonGroup.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Code from './Code.js'
@@ -211,9 +212,10 @@ class App extends Component {
           <Grid3
             title={this.state.tTitle}
             tLink={this.state.tLink}
-            mHead={this.state.step +': '+ this.state.sTitle}
+            mHead="Code Editor"
             left={
             <div>
+              <Header content={'Step ' + this.state.step +': '+ this.state.sTitle} />
               <Segment raised content={this.state.tDesc} />
               <img id='right' alt='hardware' src={this.state.sImage}/>
               <Segment raised content={this.state.sDesc} />
@@ -222,6 +224,7 @@ class App extends Component {
 
             middle={
             <div>
+              <ButtonGroup onMClick={this.handleOnClickCompile} />
               <Code id='middle'
                 name="codeEditor"
                 code={this.state.code}
@@ -232,18 +235,7 @@ class App extends Component {
 
             right={
             <div>
-              <Button animated secondary icon onClick={this.handleOnClickCompile} >
-                <Button.Content visible>Compile</Button.Content>
-                <Button.Content hidden>
-                  <Icon name='right arrow' />
-                </Button.Content>
-              </Button>
-              <br/>
-              {
-              this.state.tests.map( (t, i) => {
-              return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} />
-              })
-              }
+              { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
               { this.state.deviceOut && <Code code={this.state.deviceOut}/> }
             </div>
             }
@@ -252,5 +244,6 @@ class App extends Component {
       </HotKeys>
       ) }
 }
+
 
 export default App
