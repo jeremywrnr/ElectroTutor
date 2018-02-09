@@ -2,13 +2,13 @@
 
 one:
   id: 1
-  name: Quentin
+  uname: Quentin
   email: q@q.com
   password_digest: testing
   current_tutorial: 1
 two:
   id: 2
-  name: Tarantino
+  uname: Tarantino
   email: t@t.com
   password_digest: testing
   current_tutorial: 2

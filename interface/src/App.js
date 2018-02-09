@@ -14,6 +14,7 @@ import './App.css'
 
 class App extends Component {
   state = {
+    title: 'Test Driven Tutorials',
     tTitle: 'Test Driven Tutorial',
     tDesc: 'Starting tutorial...',
     sTitle: 'Test Driven Steps',
@@ -79,6 +80,7 @@ class App extends Component {
      */
 
     this.fetchUser()
+    .catch(e => console.log(e))
     .then(this.fetchTutorial)
     .then(this.fetchProgress)
     .then(this.fetchStep)
@@ -245,7 +247,7 @@ class App extends Component {
           />
         </HotKeys>
         ) : (
-        <Login />
+        <Login title={this.state.title} signin={e => console.log(e) } create={e => console.log(e) } />
         ) }
       </div>
       ) }

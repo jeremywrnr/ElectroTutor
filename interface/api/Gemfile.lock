@@ -137,6 +137,7 @@ GEM
     shoulda-context (1.2.2)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    simple_command (0.0.9)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -178,6 +179,7 @@ DEPENDENCIES
   rails (~> 5.1.4)
   redis (~> 3.0)
   shoulda
+  simple_command
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3

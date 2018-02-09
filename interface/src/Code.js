@@ -9,17 +9,18 @@ import AceEditor from 'react-ace';
 import 'brace';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
+import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
-//import 'brace/mode/javascript';
 
 class Code extends React.Component {
   static propTypes = {
     code: PropTypes.string.isRequired,
-    //onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    code: '...'
+    code: '...',
+    onChange: () => {},
   };
 
   render() {

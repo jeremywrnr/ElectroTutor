@@ -3,38 +3,59 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Container, Form, Header } from 'semantic-ui-react'
 
 class Login extends React.Component {
-  state = { name: '', pass: '', submittedName: '', submittedPass: '' }
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    signin: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
+  }
+
+  state = {
+    name: '',
+    pass: '',
+  }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
-  handleSubmit = () => {
+  validate = () => {
     const { name, pass } = this.state
-    this.setState({ submittedName: name, submittedPass: pass })
+    return name.trim().length > 1 &&
+      pass.trim().length > 1
+  }
+
+  signinUser = () => {
+    const { name, pass } = this.state
+    if (this.validate())
+      this.props.signin({ name, pass })
+    else
+      console.log('error', { name, pass })
+  }
+
+  createUser = () => {
+    const { name, pass } = this.state
+    if (this.validate())
+      this.props.create({ name, pass })
+    else
+      console.log('error', { name, pass })
   }
 
   render() {
-    const { name, pass, submittedName, submittedPass } = this.state
+    const { name, pass } = this.state
     return (
       <Container>
-        <Header size='huge'>Tutorial</Header>
+        <Header size='huge'>{this.props.title}</Header>
         <Header>User Information</Header>
-
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
           <Form.Input placeholder='username' label='Username' name='name' value={name} onChange={this.handleChange} />
-          <Form.Input placeholder='password' label='Password' name='pass' value={pass} type='password' onChange={this.handleChange} />
+          <Form.Input placeholder='password' label='Password' name='pass' value={pass} onChange={this.handleChange} type='password' />
           <Form.Group>
-            <Form.Button primary content='Submit' />
-            <Form.Button content='New User'/>
+            <Form.Button onClick={this.signinUser} primary content='Sign In' />
+            <Form.Button onClick={this.createUser} content='New User'/>
           </Form.Group>
         </Form>
-
-        <strong>onChange:</strong>
-        <pre>{JSON.stringify({ name, pass }, null, 2)}</pre>
-        <strong>onSubmit:</strong>
-        <pre>{JSON.stringify({ submittedName, submittedPass }, null, 2)}</pre>
       </Container>
       )
     }
