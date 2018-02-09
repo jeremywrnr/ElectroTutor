@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { HotKeys } from 'react-hotkeys'
-import { Header, Segment, Button, Icon } from 'semantic-ui-react'
+import { Header, Segment } from 'semantic-ui-react'
 import ActionCable from 'actioncable'
 import ButtonGroup from './ButtonGroup.js'
 import Grid3 from './Grid3.js'
