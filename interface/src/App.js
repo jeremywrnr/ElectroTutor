@@ -5,6 +5,7 @@ import ActionCable from 'actioncable'
 import ButtonGroup from './ButtonGroup.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
+import Login from './Login.js'
 import Code from './Code.js'
 import Test from './Test.js'
 import Host from './Host.js'
@@ -206,9 +207,11 @@ class App extends Component {
    */
 
   render() {
+    let login = this.state.userLoggedin
     return (
-      <HotKeys keyMap={this.map} handlers={this.keyHandler}>
-        <div id="main">
+      <div id="main">
+        { login ? (
+        <HotKeys keyMap={this.map} handlers={this.keyHandler}>
           <Grid3
             title={this.state.tTitle}
             tLink={this.state.tLink}
@@ -240,8 +243,11 @@ class App extends Component {
             </div>
             }
           />
-        </div>
-      </HotKeys>
+        </HotKeys>
+        ) : (
+        <Login />
+        ) }
+      </div>
       ) }
 }
 

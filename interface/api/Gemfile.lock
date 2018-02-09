@@ -166,7 +166,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list (~> 0.8.0)
-  bcrypt (~> 3.1.7)
+  bcrypt (~> 3.1.11)
   byebug
   capistrano-rails
   factory_bot_rails
