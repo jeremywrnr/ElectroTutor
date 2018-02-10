@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserControllerTest < ActionDispatch::IntegrationTest
   def user
-    user = User.create!(uname: 'John', password_digest: 'jo')
+    User.create!(uname: 'John', password_digest: 'jo')
   end
 
   def authenticated_header
@@ -34,12 +34,16 @@ class UserControllerTest < ActionDispatch::IntegrationTest
 
   test "generates a token with correct user info" do
     user = User.create!(uname: "foo", password: "bar")
-    post "/user_token", params: {"auth": {"uname": user.uname, "password": "bar"}}
+    post "/user_token", params: {"auth": {"uname": 'foo', "password": "bar"}}
+    assert_instance_of String, response.body["jwt"]
+    assert_nil response.body["error"]
     assert_response :success
   end
 
   test "hides a token with wrong user info" do
     user = User.create!(uname: "foo", password: "bar")
-    #post "/user_token?#{user.id}"
+    post "/user_token", params: {"auth": {"uname": 'foo', "password": "boop"}}
+    assert_equal '', response.body
+    assert_response :not_found
   end
 end
