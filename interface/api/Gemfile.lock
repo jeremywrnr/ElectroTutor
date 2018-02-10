@@ -176,7 +176,6 @@ DEPENDENCIES
   capistrano-rails
   factory_bot_rails
   faker
-  jwt
   knock
   listen (>= 3.0.5, < 3.2)
   pry-rails
