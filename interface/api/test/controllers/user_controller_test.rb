@@ -12,6 +12,18 @@ class UserControllerTest < ActionDispatch::IntegrationTest
 
   # BEGIN TESTS
 
+  test "can create users" do
+    post users_url, params: {'user': {"uname": 'foo', "password": "bar"}}
+    assert_response :success
+  end
+
+  test "refuses bad user params" do
+    post users_url, params: {'user': {"password": "bar"}}
+    assert_response :unprocessable_entity
+    post users_url, params: {'user': {"uname": "foo"}}
+    assert_response :unprocessable_entity
+  end
+
   test "responds correctly" do
     get users_url, headers: authenticated_header
     assert_response :success

@@ -12,6 +12,7 @@ class User < ApplicationRecord
   end
 
   validates :uname, presence: true
+  validates :password_digest, presence: true
 
   def authenticate(pass)
     self.password == pass
