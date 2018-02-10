@@ -1,10 +1,25 @@
 require 'test_helper'
 
 class UserControllerTest < ActionDispatch::IntegrationTest
-
-  test "should get tutorial:integer" do
-    #get user_tutorial:integer_url
-    #assert_response :success
+  def user
+    user = User.create!(uname: 'John', password_digest: 'jo')
   end
 
+  def authenticated_header
+    token = Knock::AuthToken.new(payload: { sub: user.id }).token
+
+    {
+      'Authorization': "Bearer #{token}"
+    }
+  end
+
+  test "responds correctly" do
+    get users_url, headers: authenticated_header
+    assert_response :success
+  end
+
+  test "responds correctly on stub" do
+    get "/users?user_id=#{user.id}", headers: authenticated_header
+    assert_response :success
+  end
 end
