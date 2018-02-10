@@ -2,9 +2,20 @@ require 'test_helper'
 
 class ProgressControllerTest < ActionDispatch::IntegrationTest
 
-  test 'should return one progress when queried' do
-    get '/progresses?user_id=1&tutorial_id=1'
-    assert_response :success, @response.body
+  setup do
+    @user = User.new(uname: 'test', password: 'test')
+    @user.save!
   end
+
+  #test 'should get with auth' do
+    #puts @user.authenticate('test')
+    #get '/progresses'
+    #assert_response :success, @response.body
+  #end
+
+  #test 'should fail index without auth' do
+    #get '/progresses'
+    #assert_response :error, @response.body
+  #end
 
 end

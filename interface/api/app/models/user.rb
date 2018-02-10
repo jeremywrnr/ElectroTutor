@@ -1,10 +1,23 @@
-class User < ApplicationRecord
-  attr_accessor :uname, :current_tutorial
+require 'bcrypt'
 
-  has_secure_password
+class User < ApplicationRecord
+  include BCrypt
+
   has_many :tutorials, :dependent => :destroy
   has_many :progresses, :dependent => :destroy
 
-  validates :uname, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :uname, presence: true
+
+  def authenticate(pass)
+    self.password == pass
+  end
+
+  def password
+    @password ||= Password.new(password_digest)
+  end
+
+  def password=(new_password)
+    @password = Password.create(new_password)
+    self.password_digest = @password
+  end
 end

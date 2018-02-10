@@ -1,20 +1,20 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  def setup
-    @user = User.new(name: "Example User", password: "foobar", password_confirmation: "foobar")
+=begin
+  test 'valid user' do
+    user = User.new(uname: 'John', password: 'john@example.com')
+    assert user.valid?
   end
 
-  test "password should be present (nonblank)" do
-    @user.password = @user.password_confirmation = " " * 6
-    assert_not @user.valid?
+  test 'invalid without uname' do
+    user = User.new(password: 'john@example.com')
+    refute user.valid?, 'user is valid without a uname'
   end
 
-  test "password should have a minimum length" do
-    @user.password = @user.password_confirmation = "a" * 5
-    assert_not @user.valid?
+  test 'invalid without password' do
+    user = User.new(uname: 'John')
+    refute user.valid?
   end
-
-  should validate_presence_of :name
-  #should validate_presence_of :password_digest
+=end
 end

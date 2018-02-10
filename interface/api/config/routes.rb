@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   resources :notes
   resources :users
   resources :steps
-
   resources :tutorials
   resources :progress_data
 
@@ -15,9 +14,7 @@ Rails.application.routes.draw do
   resources :progresses
 
   post '/compile' => 'compile#post'
-
-  get '/authenticate' => 'authenticate'
-
+  post '/authenticate' => 'authenticate#authenticate'
   mount ActionCable.server => '/cable'
 
 end

@@ -1,13 +1,9 @@
-# https://www.pluralsight.com/guides/ruby-ruby-on-rails/building-a-crud-interface-with-react-and-ruby-on-rails
-
 class ApplicationController < ActionController::API
+  include ActionController::Helpers
+  include Knock::Authenticable
   include Response
 
-  before_action :authenticate_request
-  attr_reader :current_user
-
-  #protect_from_forgery with: :null_session
-  #helper_method :current_user
+  before_action :authenticate_user
 
   private
 
