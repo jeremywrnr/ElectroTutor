@@ -2,11 +2,9 @@ class UsersController < ApplicationController
   before_action :authenticate_user, except: :create
   before_action :set_user, only: [:show, :update, :destroy]
 
-  # GET /users
+  # GET /users => return ID of token bearer
   def index
-    @users = User.all
-
-    render json: @users
+    render json: current_user
   end
 
   # GET /users/1

@@ -44,18 +44,11 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test "generates a token with correct user info" do
-    user = User.create!(email: "foo", password: "bar")
-    post "/user_token", params: {"auth": {"email": 'foo', "password": "bar"}}
-    assert_instance_of String, response.body["jwt"]
+  test "lists active user from token" do
+    get "/users", headers: authenticated_header
+    assert_instance_of String, response.body["id"]
+    assert_instance_of String, response.body["email"]
     assert_nil response.body["error"]
     assert_response :success
-  end
-
-  test "hides a token with wrong user info" do
-    user = User.create!(email: "foo", password: "bar")
-    post "/user_token", params: {"auth": {"email": 'foo', "password": "boop"}}
-    assert_equal '', response.body
-    assert_response :not_found
   end
 end
