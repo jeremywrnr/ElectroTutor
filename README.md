@@ -1,5 +1,7 @@
 # Sir Kitz
 
+[![Build Status](https://travis-ci.com/jeremywrnr/sir-kitz.svg?token=pu8hobLVwvxgVzuUtjz8&branch=dev)](https://travis-ci.com/jeremywrnr/sir-kitz)
+
 - [hardware](/hardware)
 - [software](/interface)
 
