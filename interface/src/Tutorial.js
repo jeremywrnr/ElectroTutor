@@ -1,15 +1,16 @@
-//import ActionCable from 'actioncable'
 import React, { Component } from 'react'
 import { Container, Header, Segment, Button } from 'semantic-ui-react'
 import { HotKeys } from 'react-hotkeys'
+//import ActionCable from 'actioncable'
+import $ from 'jquery'
+
 import ListSelector from './ListSelector.js'
 import ButtonGroup from './ButtonGroup.js'
 import Grid3 from './Grid3.js'
-import Delay from './Delay.js'
+//import Delay from './Delay.js'
 import Code from './Code.js'
 import Test from './Test.js'
-import Host from './Host.js'
-import $ from 'jquery';
+import API from './API.js'
 
 class Tutorial extends Component {
   state = {
@@ -29,15 +30,15 @@ class Tutorial extends Component {
   }
 
   /**
-   * connect to db
+   * Connect to db
    */
 
   componentWillMount() {
-    //const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-    //this.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
-    //this.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
-    this.fetchUser()
-    .then(this.fetchTutorials)
+    this.api = new API(this.props.user)
+    this.api.fetchUser()
+    .then(this.handleUserUpdate)
+    .then(this.api.fetchTutorials)
+    .then(this.handleTutorialsUpdate)
   }
 
   componentWillUnmount() {
@@ -45,141 +46,37 @@ class Tutorial extends Component {
   }
 
 
-  authFetch = (route, data) => {
-    return fetch(`${Host}/${route}`, {
-      headers: new Headers({
-        'Authorization': this.props.user,
-        'Content-Type': 'application/json',
-      })
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
-  }
-
-  fetchUser = () => {
-    return this.authFetch(`users`)
-    .then(this.handleReceiveUserData)
-  }
-
-  fetchTutorials = () => {
-    return this.authFetch(`tutorials`)
-    .then(this.handleReceiveTutorials)
-  }
-
-  // TODO add a count-limiting return to this
-
-  fetchTutorial = () => {
-    return this.authFetch(`tutorials/${this.state.tutorial}`)
-    .then(this.handleReceiveTutorialData)
-  }
-
-  fetchProgress = () => {
-    return this.authFetch(`prog?user_id=${this.state.user_id}&tutorial_id=${this.state.tutorial}`)
-    .then(this.handleReceiveProgress)
-  }
-
-  fetchStep = () => {
-    return this.authFetch(`steps/${this.state.step}`)
-    .then(this.handleReceiveStepData)
-  }
-
-  fetchTest = () => {
-    return this.authFetch(`test?step_id=${this.state.step}`)
-    .then(this.handleReceiveTestData)
-  }
-
-  fetchData = () => {
-    return this.authFetch(`/pdata/${this.state.progressData}`)
-    .then(this.handleReceiveStepData)
-  }
-
-
   /**
-   * DB Update handlers
+   * Database updates
    */
 
-  handleReceiveUserData = (data) => {
-    //console.log(data)
-    if (data) {
-
-      if (data.id) {
-        this.setState({ user_id: data.id })
-      }
-
-      if (data.current_tutorial !== this.state.tutorial) {
-        this.setState({ tutorial: data.current_tutorial })
-      }
-
-    }
-  }
-
-  handleReceiveTutorials = (tutorials) => {
-    this.setState({ tutorials })
-  }
-
-  handleReceiveTutorialData = ({ id, title, source, description }) => {
-    this.setState({
-      tutorial: id,
-      tTitle: title,
-      tLink: source,
-      tDesc: description,
+  handleUserUpdate = ({ id, current_tutorial }) => {
+    return this.setState({
+      tutorial: current_tutorial,
+      user_id: id,
     })
   }
 
-  handleReceiveProgress = ({ completed, code, step_id }) => {
-    if (code && code !== this.state.code) {
-      this.setState({
-        step: step_id,
-        completed,
-        code,
-      })
-    }
-  }
-
-  handleReceiveStepData = ({ id, title, description, image }) => {
-    this.setState({
-      step: id,
-      sTitle: title,
-      sDesc: description,
-      sImage: image,
+  handleTutorialsUpdate = tutorials => {
+    return this.setState({
+      tutorials,
     })
   }
 
-  handleReceiveTestData = (data) => {
-    this.setState({ tests: data, })
+  handleOnClickCompile() {
+    this.api.handleOnClickCompile({
+      user_id: this.state.user,
+      progress_id: this.state.progress,
+      step_id: this.state.step,
+      code: this.state.code,
+    }, console.log)
   }
 
-  handleReceiveProgressData = (data) => {
-    console.log(data)
-  }
-
-
-  /**
-   * Interface handlers
-   */
-
-  handleCodeChange = code => {
-    Delay(() => {
-      console.info('saving code...')
-      this.setState({ code }, () => this.progSub.send({ code, user_id: this.state.user, tutorial_id: this.state.tutorial }))
-    }, 500 );
-  }
-
-  handleOnClickCompile = () => {
-    console.info('compiling...')
-    var data = { user_id: this.state.user, code: this.state.code, step_id: this.state.step, progress_id: this.state.progress }
-    fetch(`${Host}/compile`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({ 'Content-Type': 'application/json' })
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(res => this.setState({ deviceOut: res.output }))
-  }
 
   setTutorial = (e) => {
     const tutorial = $(e.target).closest('.ui.card').attr('id')
-    // TODO Also update on the server
     this.setState({ tutorial })
+    // TODO Also update on the server
   }
 
   /**
@@ -188,14 +85,12 @@ class Tutorial extends Component {
 
   render() {
     const tutorial_is_active = !!this.state.tutorial
-    console.log(tutorial_is_active)
-
     return (
       <div>
         {
         tutorial_is_active
         ?
-        <TutorialBody />
+        <TutorialBody api={this.api} tutorial={this.state.tutorial} />
         :
         <Container>
           <ListSelector
@@ -206,7 +101,6 @@ class Tutorial extends Component {
           <Button onClick={this.props.logout} content='Log Out' />
         </Container>
         }
-
       </div>
       )
 }
@@ -244,7 +138,10 @@ class TutorialBody extends Tutorial {
   nextStep = this.incrementStep(+1)
   prevStep = this.incrementStep(-1)
   componentWillMount() {
-    return
+    //const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
+    //this.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
+    //this.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
+
     this.fetchTutorial
     .then(this.fetchProgress)
     .then(this.fetchStep)
@@ -252,7 +149,7 @@ class TutorialBody extends Tutorial {
   }
 
   render() {
-    return <p>hi</p>
+    //return <p>hi</p>
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
