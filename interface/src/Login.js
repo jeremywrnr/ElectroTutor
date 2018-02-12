@@ -4,58 +4,73 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Form, Header } from 'semantic-ui-react'
+import {
+  Container,
+  Header,
+  Message,
+  Form } from 'semantic-ui-react';
 
 class Login extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     login: PropTypes.func.isRequired,
     create: PropTypes.func.isRequired,
+    eFlag: PropTypes.bool.isRequired,
+    eMsg: PropTypes.string.isRequired,
   }
 
   state = {
-    name: '',
+    eFlag: false,
+    user: '',
     pass: '',
+    eMsg: '',
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
   validate = () => {
-    const { name, pass } = this.state
-    return name.trim().length > 1 &&
-      pass.trim().length > 1
+    const { user, pass } = this.state
+    return user.trim().length > 1 && pass.trim().length > 1
   }
 
   loginUser = () => {
-    const { name, pass } = this.state
     if (this.validate())
-      this.props.login({ name, pass })
+      this.props.login(this.state)
     else
-      console.log('error', { name, pass })
+      console.error("Only non-empty fields accepted")
   }
 
   createUser = () => {
-    const { name, pass } = this.state
     if (this.validate())
-      this.props.create({ name, pass })
+      this.props.create(this.state)
     else
-      console.log('error', { name, pass })
+      console.error("Only non-empty fields accepted")
   }
 
   render() {
-    const { name, pass } = this.state
+    const { user, pass } = this.state
+    const { eFlag, eMsg } = this.props
+
     return (
       <Container>
         <Header size='huge'>{this.props.title}</Header>
         <Header>User Information</Header>
         <Form>
-          <Form.Input placeholder='username' label='Username' name='name' value={name} onChange={this.handleChange} />
+          <Form.Input placeholder='username' label='Username' name='user' value={user} onChange={this.handleChange} />
           <Form.Input placeholder='password' label='Password' name='pass' value={pass} onChange={this.handleChange} type='password' />
           <Form.Group>
             <Form.Button onClick={this.loginUser} primary content='Sign In' />
             <Form.Button onClick={this.createUser} content='New User'/>
           </Form.Group>
         </Form>
+        { eFlag && (
+        <Message negative>
+          <Message.Header>Account Error</Message.Header>
+          <p>{eMsg}</p>
+        </Message>
+        )}
+
+
       </Container>
       )
     }
