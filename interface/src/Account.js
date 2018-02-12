@@ -12,15 +12,15 @@ const Account = {
     return fetch(`${Host}/users`, {
       method: 'POST',
       body: JSON.stringify(user),
-      headers: new Headers({ 'Content-Type': 'application/json' })
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     })
   },
 
   setServerCredentials(user) {
-    return fetch(`${Host}/user_token`, {
+    return fetch(`${Host}/authenticate`, {
       method: 'POST',
       body: JSON.stringify(user),
-      //headers: new Headers({ 'Content-Type': 'application/json' })
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     })
   },
 
