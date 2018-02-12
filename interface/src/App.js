@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Tutorial from './Tutorial.js'
 import Account from './Account.js'
 import Login from './Login.js'
-//import Host from './Host.js'
+
 import './App.css'
 
 class App extends Component {
@@ -19,20 +19,37 @@ class App extends Component {
    * Account management
    */
 
-  loginUser = ({ user, pass }) => {
-    const newUser = { auth: { uname: user, password: pass } }
-    const handler = (res) => console.log(res)
-    //const success = res => this.setState({ user: user, isUserActive: true })
-    //const errored = err => this.setState({ eFlag: true, eMsg: err.statusText })
-    Account.setServerCredentials(newUser).then(handler)
+  createUser = ({ user, pass }) => {
+    const newUser = { user: { email: user, password: pass } }
+    Account.createUser(newUser).then(res => {
+      res.ok ?
+        this.loginUser({ user, pass }) :
+        this.setState({ eFlag: true, eMsg: res.statusText })
+    })
   }
 
-  createUser = ({ user, pass }) => {
-    const newUser = { user: { uname: user, password: pass } }
-    const handler = res => res.ok ? success() : errored(res)
-    const success = () => this.loginUser({ user, pass })
-    const errored = err => this.setState({ eFlag: true, eMsg: err.statusText })
-    Account.createUser(newUser).then(handler)
+  loginUser = ({ user, pass }) => {
+    const newUser = { auth: { email: user, password: pass } }
+    Account.setServerCredentials(newUser).then(res => {
+      if (res.jwt) {
+        Account.setLocalCredentials(res.jwt)
+        this.setState({ user: res.jwt, isUserActive: true })
+      } else {
+        this.setState({ eFlag: true, eMsg: res.statusText })
+      }
+    })
+  }
+
+  logoutUser = () => {
+    this.setState({ isUserActive: false, eFlag: false })
+    Account.clearLocalCredentials()
+  }
+
+  componentWillMount () {
+    const token = Account.getLocalCredentials()
+    if (token !== undefined) {
+      this.setState({ user: token, isUserActive: true })
+    }
   }
 
 
@@ -48,9 +65,12 @@ class App extends Component {
         {
         active
         ?
-        <Tutorial logout={() => this.setState({ isUserActive: false, eFlag: false }) } />
+        <Tutorial
+          user={this.state.user}
+          logout={this.logoutUser} />
         :
-        <Login title={this.state.title}
+        <Login
+          title={this.state.title}
           login={this.loginUser}
           create={this.createUser}
           eFlag={this.state.eFlag}

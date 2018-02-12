@@ -2,6 +2,6 @@
 #
 one:
   id: 1
-  uname: test
+  email: test
   password_digest: hm
 
