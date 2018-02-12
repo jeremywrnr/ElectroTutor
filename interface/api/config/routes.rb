@@ -2,6 +2,7 @@
 Rails.application.routes.draw do
 
   post 'user_token' => 'user_token#create'
+  post 'authenticate', to: 'user_token#create'
 
   resources :notes
   resources :users
@@ -16,7 +17,6 @@ Rails.application.routes.draw do
   resources :progresses
 
   post '/compile' => 'compile#post'
-  post '/authenticate' => 'authenticate#authenticate'
   mount ActionCable.server => '/cable'
 
 end
