@@ -65,10 +65,6 @@ class App extends Component {
 
     const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
 
-    this.userSub = cable.subscriptions.create('UsersChannel', {
-      received: this.handleReceiveUserData
-    })
-
     this.progSub = cable.subscriptions.create('ProgressesChannel', {
       received: this.handleReceiveProgress
     })
