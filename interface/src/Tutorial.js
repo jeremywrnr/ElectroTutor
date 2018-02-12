@@ -1,44 +1,39 @@
+//import ActionCable from 'actioncable'
 import React, { Component } from 'react'
-import { Header, Segment, Button } from 'semantic-ui-react'
+import { Container, Header, Segment, Button } from 'semantic-ui-react'
 import { HotKeys } from 'react-hotkeys'
-import ActionCable from 'actioncable'
+import ListSelector from './ListSelector.js'
 import ButtonGroup from './ButtonGroup.js'
-import Account from './Account.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Code from './Code.js'
 import Test from './Test.js'
 import Host from './Host.js'
 
-import './App.css'
-
 class Tutorial extends Component {
-
   state = {
     tTitle: 'Test Driven Tutorial',
     tDesc: 'Starting tutorial...',
     sTitle: 'Test Driven Steps',
+    sImage: '',
     sDesc: 'Starting step...',
     code: 'print("world")',
     isUserActive: false,
-    sImage: 'https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg?auto=compress%2Cformat&w=1280&h=960&fit=max',
-    completed: 0, // id
-    progress: -1, // id
-    tutorial: -1, // id
-    step:     -1, // id
-    user:     1, // id
+    user_id:  1, // id
+    progress: 1, // id
+    tutorial: 1, // id
+    step:     1, // id
+    completed: 0, // bool
     tests: [],
   }
 
-  map = {
-    'next': ['up', 'right'],
-    'back': ['down', 'left'],
-  }
 
-  incrementStep(inc) { // generate function for modifying current tutorial step
+  // generate function for modifying current tutorial step
+
+  incrementStep(inc) {
     return () => {
-      let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+      let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       let saveStep = () => {
         this.progSub.send({ id: this.state.user, step_id: this.state.step })
         this.fetchStep().then(this.fetchTest)
@@ -50,87 +45,72 @@ class Tutorial extends Component {
   nextStep = this.incrementStep(+1)
   prevStep = this.incrementStep(-1)
 
-  keyHandler = {
-    'next': () => {
-      this.nextStep()
-    },
-    'back': () => {
-      this.prevStep()
-    },
-  }
+
+  /**
+   * connect to db
+   */
 
   componentWillMount() {
-
-    /**
-     * connect to db
-     */
-
-    const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-
-    this.progSub = cable.subscriptions.create('ProgressesChannel', {
-      received: this.handleReceiveProgress
-    })
-
-    this.dataSub = cable.subscriptions.create('ProgressDataChannel', {
-      received: this.handleReceiveProgressData
-    })
-
-    /**
-     * Initial data creation
-     */
-
-    const user = Account.getLocalCredentials()
-
-    if (user === undefined) {
-      return
-    } else {
-      //this.setState({ isUserActive: true }, () => {})
-      this.fetchUser()
-      .then(this.fetchTutorial)
-      .then(this.fetchProgress)
-      .then(this.fetchStep)
-      .then(this.fetchTest)
-    }
+    //const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
+    //this.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
+    //this.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
+    this.fetchUser()
+    .then(this.fetchTutorials)
+    .then(this.fetchTutorial)
+    .then(this.fetchProgress)
+    .then(this.fetchStep)
+    .then(this.fetchTest)
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
   }
 
+
+  authFetch = (route, data) => {
+    return fetch(`${Host}/${route}`, {
+      headers: new Headers({
+        'Authorization': this.props.user,
+        'Content-Type': 'application/json',
+      })
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+  }
 
   fetchUser = () => {
-    return fetch(`${Host}/users/${this.state.user}`).then(data => {
-      return data.json().then(this.handleReceiveUserData)
-    })
+    return this.authFetch(`users`)
+    .then(this.handleReceiveUserData)
   }
 
+  fetchTutorials = () => {
+    return this.authFetch(`tutorials`)
+    .then(this.handleReceiveTutorials)
+  }
+
+  // TODO add a limiting feature on this...
+
   fetchTutorial = () => {
-    return fetch(`${Host}/tutorials/${this.state.tutorial}`).then(data => {
-      return data.json().then(this.handleReceiveTutorialData)
-    })
+    return this.authFetch(`tutorials/${this.state.tutorial}`)
+    .then(this.handleReceiveTutorialData)
   }
 
   fetchProgress = () => {
-    return fetch(`${Host}/prog?user_id=${this.state.user}&tutorial_id=${this.state.tutorial}`).then(data => {
-      return data.json().then(this.handleReceiveProgress)
-    })
+    return this.authFetch(`prog?user_id=${this.state.user_id}&tutorial_id=${this.state.tutorial}`)
+    .then(this.handleReceiveProgress)
   }
 
   fetchStep = () => {
-    return fetch(`${Host}/steps/${this.state.step}`).then(data => {
-      return data.json().then(this.handleReceiveStepData)
-    })
+    return this.authFetch(`steps/${this.state.step}`)
+    .then(this.handleReceiveStepData)
   }
 
   fetchTest = () => {
-    return fetch(`${Host}/test?step_id=${this.state.step}`).then(data => {
-      return data.json().then(this.handleReceiveTestData)
-    })
+    return this.authFetch(`test?step_id=${this.state.step}`)
+    .then(this.handleReceiveTestData)
   }
 
   fetchData = () => {
-    return fetch(`${Host}/pdata/${this.state.progressData}`).then(data => {
-      return data.json().then(this.handleReceiveStepData)
-    })
+    return this.authFetch(`/pdata/${this.state.progressData}`)
+    .then(this.handleReceiveStepData)
   }
 
 
@@ -138,17 +118,23 @@ class Tutorial extends Component {
    * DB Update handlers
    */
 
-  // TODO - set logged in user w/ account management and access permissions
-
   handleReceiveUserData = (data) => {
-    //console.log(data, this.state)
-    if (data && data.id === this.state.user) {
+    console.log(data)
+    if (data) {
+
+      if (data.id) {
+        this.setState({ user_id: data.id })
+      }
 
       if (data.current_tutorial !== this.state.tutorial) {
         this.setState({ tutorial: data.current_tutorial })
       }
 
     }
+  }
+
+  handleReceiveTutorials = (tutorials) => {
+    this.setState({ tutorials })
   }
 
   handleReceiveTutorialData = ({ id, title, source, description }) => {
@@ -217,6 +203,46 @@ class Tutorial extends Component {
    */
 
   render() {
+    const current_tutorial = this.state.current_tutorial
+
+    return (
+      <div>
+        {
+        current_tutorial
+        ?
+        <TutorialBody />
+        : (
+        <ListSelector
+          title='Choose a Tutorial'
+          items={this.state.tutorials} />
+        ) }
+
+        <Container>
+          <br/>
+          <Button onClick={this.props.logout} content='Log Out' />
+        </Container>
+      </div>
+      )
+}
+}
+
+class TutorialBody extends Component {
+
+  map = {
+    'next': ['up', 'right'],
+    'back': ['down', 'left'],
+  }
+
+  keyHandler = {
+    'next': () => {
+      this.nextStep()
+    },
+    'back': () => {
+      this.prevStep()
+    },
+  }
+
+  render() {
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
@@ -256,7 +282,7 @@ class Tutorial extends Component {
         />
       </HotKeys>
       )
-}
+  }
 }
 
 export default Tutorial

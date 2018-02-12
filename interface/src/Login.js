@@ -54,7 +54,6 @@ class Login extends React.Component {
     return (
       <Container>
         <Header size='huge'>{this.props.title}</Header>
-        <Header>User Information</Header>
         <Form>
           <Form.Input placeholder='username' label='Username' name='user' value={user} onChange={this.handleChange} />
           <Form.Input placeholder='password' label='Password' name='pass' value={pass} onChange={this.handleChange} type='password' />
