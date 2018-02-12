@@ -9,42 +9,24 @@ import Delay from './Delay.js'
 import Code from './Code.js'
 import Test from './Test.js'
 import Host from './Host.js'
+import $ from 'jquery';
 
 class Tutorial extends Component {
   state = {
-    tTitle: 'Test Driven Tutorial',
-    tDesc: 'Starting tutorial...',
-    sTitle: 'Test Driven Steps',
+    tTitle: 'Initializing...',
+    tDesc: 'Initializing...',
+    sTitle: 'Initializing...',
+    sDesc:  'Initializing...',
     sImage: '',
-    sDesc: 'Starting step...',
-    code: 'print("world")',
     isUserActive: false,
-    user_id:  1, // id
-    progress: 1, // id
-    tutorial: 1, // id
-    step:     1, // id
-    completed: 0, // bool
+    user_id:   undefined, // id
+    progress:  undefined, // id
+    tutorial:  undefined, // id
+    step:      undefined, // id
+    completed: undefined, // bool
+    code:  'Initializing...',
     tests: [],
   }
-
-
-  // generate function for modifying current tutorial step
-
-  incrementStep(inc) {
-    return () => {
-      //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
-      let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
-      let saveStep = () => {
-        this.progSub.send({ id: this.state.user, step_id: this.state.step })
-        this.fetchStep().then(this.fetchTest)
-      }
-      this.setState(writeStep, saveStep)
-    }
-  }
-
-  nextStep = this.incrementStep(+1)
-  prevStep = this.incrementStep(-1)
-
 
   /**
    * connect to db
@@ -56,13 +38,10 @@ class Tutorial extends Component {
     //this.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
     this.fetchUser()
     .then(this.fetchTutorials)
-    .then(this.fetchTutorial)
-    .then(this.fetchProgress)
-    .then(this.fetchStep)
-    .then(this.fetchTest)
   }
 
   componentWillUnmount() {
+    // TODO close action cable connections
   }
 
 
@@ -86,7 +65,7 @@ class Tutorial extends Component {
     .then(this.handleReceiveTutorials)
   }
 
-  // TODO add a limiting feature on this...
+  // TODO add a count-limiting return to this
 
   fetchTutorial = () => {
     return this.authFetch(`tutorials/${this.state.tutorial}`)
@@ -119,7 +98,7 @@ class Tutorial extends Component {
    */
 
   handleReceiveUserData = (data) => {
-    console.log(data)
+    //console.log(data)
     if (data) {
 
       if (data.id) {
@@ -170,7 +149,7 @@ class Tutorial extends Component {
   }
 
   handleReceiveProgressData = (data) => {
-    //console.log(data)
+    console.log(data)
   }
 
 
@@ -197,37 +176,43 @@ class Tutorial extends Component {
     .then(res => this.setState({ deviceOut: res.output }))
   }
 
+  setTutorial = (e) => {
+    const tutorial = $(e.target).closest('.ui.card').attr('id')
+    // TODO Also update on the server
+    this.setState({ tutorial })
+  }
 
   /**
    * Rendering UI
    */
 
   render() {
-    const current_tutorial = this.state.current_tutorial
+    const tutorial_is_active = !!this.state.tutorial
+    console.log(tutorial_is_active)
 
     return (
       <div>
         {
-        current_tutorial
+        tutorial_is_active
         ?
         <TutorialBody />
-        : (
-        <ListSelector
-          title='Choose a Tutorial'
-          items={this.state.tutorials} />
-        ) }
-
+        :
         <Container>
+          <ListSelector
+            title='Choose a Tutorial'
+            onClick={this.setTutorial}
+            items={this.state.tutorials} />
           <br/>
           <Button onClick={this.props.logout} content='Log Out' />
         </Container>
+        }
+
       </div>
       )
 }
 }
 
-class TutorialBody extends Component {
-
+class TutorialBody extends Tutorial {
   map = {
     'next': ['up', 'right'],
     'back': ['down', 'left'],
@@ -242,7 +227,32 @@ class TutorialBody extends Component {
     },
   }
 
+  // generate function for modifying current tutorial step
+
+  incrementStep(inc) {
+    return () => {
+      //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+      let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
+      let saveStep = () => {
+        this.progSub.send({ id: this.state.user, step_id: this.state.step })
+        this.fetchStep().then(this.fetchTest)
+      }
+      this.setState(writeStep, saveStep)
+    }
+  }
+
+  nextStep = this.incrementStep(+1)
+  prevStep = this.incrementStep(-1)
+  componentWillMount() {
+    return
+    this.fetchTutorial
+    .then(this.fetchProgress)
+    .then(this.fetchStep)
+    .then(this.fetchTest)
+  }
+
   render() {
+    return <p>hi</p>
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
@@ -255,7 +265,8 @@ class TutorialBody extends Component {
             <Segment raised content={this.state.tDesc} />
             <img id='right' alt='hardware' src={this.state.sImage}/>
             <Segment raised content={this.state.sDesc} />
-            <Button fluid icon='left chevron' content='Log out' onClick={this.props.logout} />
+            <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.props.logout} />
+            <Button fluid icon='left chevron' content='Log Out' onClick={this.props.logout} />
           </div>
           }
 
