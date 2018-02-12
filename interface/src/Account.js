@@ -17,7 +17,7 @@ const Account = {
   },
 
   setServerCredentials(user) {
-    return fetch(`${Host}/authenticate`, {
+    return fetch(`${Host}/user_token`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: new Headers({ 'Content-Type': 'application/json' }),
