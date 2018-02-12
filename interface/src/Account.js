@@ -17,16 +17,10 @@ const Account = {
   },
 
   setServerCredentials(user) {
-    return fetch(`${Host}/authenticate`, {
+    return fetch(`${Host}/user_token`, {
       method: 'POST',
       body: JSON.stringify(user),
-      headers: new Headers({ 'Content-Type': 'application/json' })
-    })
-  },
-
-  getServerCredentials(user) {
-    return fetch(`${Host}/authenticate`).then(data => {
-      return data.json().then(console.log)
+      //headers: new Headers({ 'Content-Type': 'application/json' })
     })
   },
 

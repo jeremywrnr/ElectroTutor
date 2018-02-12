@@ -20,17 +20,17 @@ class App extends Component {
    */
 
   loginUser = ({ user, pass }) => {
-    const newUser = { user: { uname: user, password: pass } }
-    const handler = res => res.ok ? success(res) : errored(res) 
-    const success = res => this.setState({ user: user, isUserActive: true })
-    const errored = err => this.setState({ eFlag: true, eMsg: err.statusText })
+    const newUser = { auth: { uname: user, password: pass } }
+    const handler = (res) => console.log(res)
+    //const success = res => this.setState({ user: user, isUserActive: true })
+    //const errored = err => this.setState({ eFlag: true, eMsg: err.statusText })
     Account.setServerCredentials(newUser).then(handler)
   }
 
   createUser = ({ user, pass }) => {
     const newUser = { user: { uname: user, password: pass } }
-    const handler = res => res.ok ? success(res) : errored(res) 
-    const success = res => this.loginUser({ user, pass })
+    const handler = res => res.ok ? success() : errored(res)
+    const success = () => this.loginUser({ user, pass })
     const errored = err => this.setState({ eFlag: true, eMsg: err.statusText })
     Account.createUser(newUser).then(handler)
   }
@@ -48,7 +48,7 @@ class App extends Component {
         {
         active
         ?
-        <Tutorial logout={() => this.setState({ isUserActive: false }) } />
+        <Tutorial logout={() => this.setState({ isUserActive: false, eFlag: false }) } />
         :
         <Login title={this.state.title}
           login={this.loginUser}
