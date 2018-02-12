@@ -9,7 +9,7 @@ import { Container, Form, Header } from 'semantic-ui-react'
 class Login extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    signin: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
     create: PropTypes.func.isRequired,
   }
 
@@ -26,10 +26,10 @@ class Login extends React.Component {
       pass.trim().length > 1
   }
 
-  signinUser = () => {
+  loginUser = () => {
     const { name, pass } = this.state
     if (this.validate())
-      this.props.signin({ name, pass })
+      this.props.login({ name, pass })
     else
       console.log('error', { name, pass })
   }
@@ -52,7 +52,7 @@ class Login extends React.Component {
           <Form.Input placeholder='username' label='Username' name='name' value={name} onChange={this.handleChange} />
           <Form.Input placeholder='password' label='Password' name='pass' value={pass} onChange={this.handleChange} type='password' />
           <Form.Group>
-            <Form.Button onClick={this.signinUser} primary content='Sign In' />
+            <Form.Button onClick={this.loginUser} primary content='Sign In' />
             <Form.Button onClick={this.createUser} content='New User'/>
           </Form.Group>
         </Form>
