@@ -40,10 +40,10 @@ class Code extends React.Component {
         value={this.props.code}
         ref={ (editor) => { this.aceEditor = editor } }
         editorProps={{
-        $blockScrolling: Infinity
+        $blockScrolling: Infinity,
+        setUseWrapMode: true,
         }}
         setOptions={{
-        setUseWrapMode: true,
         showLineNumbers: true,
         tabSize: 2,
         }}/>
