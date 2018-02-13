@@ -78,7 +78,6 @@ class API {
   }
 
   postCompile = (data, handler) => {
-    console.info('compiling...')
     fetch(`${Host}/compile`, {
       method: 'POST',
       body: JSON.stringify(data),

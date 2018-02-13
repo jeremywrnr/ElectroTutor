@@ -31,10 +31,6 @@ class Tutorial extends Component {
     .then(this.handleTutorialsUpdate)
   }
 
-  componentWillUnmount() {
-    // TODO close action cable connections
-  }
-
 
   /**
    * Database updates
@@ -65,7 +61,6 @@ class Tutorial extends Component {
   }
 
 
-
   /**
    * Rendering UI
    */
@@ -79,10 +74,10 @@ class Tutorial extends Component {
         tutorial_is_active
         ?
         <TutorialBody
-          api={this.api}
           logout={this.props.logout}
           unset={this.unsetTutorial}
-          tutorial={this.state.tutorial} />
+          tutorial={this.state.tutorial}
+          user_token={this.props.user_token} />
         :
         <Container>
           <ListSelector
@@ -104,12 +99,7 @@ class Tutorial extends Component {
  * Rendering the Tutorial UI
  */
 
-class TutorialBody extends Tutorial {
-  constructor(props) {
-    super(props)
-    this.api = props.api
-  }
-
+class TutorialBody extends Component {
   state = {
     tTitle: 'Initializing...',
     tDesc: 'Initializing...',
@@ -145,7 +135,10 @@ class TutorialBody extends Tutorial {
       let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       let saveStep = () => {
         this.api.patchStep({ step_id: this.state.step })
-        this.fetchStep().then(this.fetchTest)
+        .then(this.api.fetchStep)
+        .then(this.handleStepUpdate)
+        .then(this.api.fetchTest)
+        .then(this.handleTestUpdate)
       }
       this.setState(writeStep, saveStep)
     }
@@ -160,7 +153,10 @@ class TutorialBody extends Tutorial {
   // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
 
   componentWillMount() {
-    this.api.fetchTutorial()
+    this.api = new API(this.props.user_token) // generated from JWT auth
+    this.api.fetchUser()
+    .then(this.handleUserUpdate)
+    .then(this.api.fetchTutorial)
     .then(this.api.fetchProgress)
     .then(this.handleProgressUpdate)
     .then(this.api.fetchStep)
@@ -178,8 +174,8 @@ class TutorialBody extends Tutorial {
   handleTestUpdate() {
   }
 
-  handleOnClickCompile() {
-    this.api.handleOnClickCompile({
+  handleOnClickCompile = () => {
+    this.api.postCompile({
       user: this.state.user,
       progress_id: this.state.progress,
       step_id: this.state.step,
@@ -215,8 +211,7 @@ class TutorialBody extends Tutorial {
             <Code id='middle'
               name="codeEditor"
               code={this.state.code}
-              onChange={this.handleCodeChange}
-            />
+              onChange={this.handleCodeChange} />
           </div>
           }
 

@@ -4,8 +4,10 @@ class CompileController < ApplicationController
   before_action :compile_params, :set_code
 
   def post
-    upload @code do |out|
-      json_response({output: out})
+    upload @code do |out, err, status|
+      res = {output: out, error: err, code: status.exitstatus }
+      puts res
+      json_response res
     end
   end
 

@@ -1,3 +1,7 @@
+require 'open3'
+
+# http://blog.honeybadger.io/capturing-stdout-stderr-from-shell-commands-via-ruby/
+
 module Hardware
   @@hw_path = Rails.root.join('..', '..', 'hardware/')
   @tester_port = ''
@@ -10,6 +14,7 @@ module Hardware
 
     File.open(out, 'w') { |f| f.write code }
 
-    yield `cd #{@@hw_path} && make #{device}`
+    # stdout, stderr, status
+    yield Open3.capture3("cd #{@@hw_path} && make #{device}")
   end
 end

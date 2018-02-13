@@ -2,6 +2,9 @@
 
 To program the Arduino Unos, we use [the platformio tool][pio].
 
+- advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
+- pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
+
 The [`Makefile`][mk] provides a simpler interface for common tasks:
 
     make flash       # compile and upload to both devices
