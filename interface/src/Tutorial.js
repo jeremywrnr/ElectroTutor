@@ -55,8 +55,8 @@ class Tutorial extends Component {
 
   setTutorial = e => {
     const tutorial = $(e.target).closest('.ui.card').attr('id')
-    const user = { id: this.state.user, current_tutorial: tutorial }
-    this.api.patchUser(user).then(this.setState({ tutorial }))
+    this.api.patchUser({ current_tutorial: tutorial })
+    this.setState({ tutorial })
   }
 
   /**
@@ -71,7 +71,10 @@ class Tutorial extends Component {
         {
         tutorial_is_active
         ?
-        <TutorialBody api={this.api} tutorial={this.state.tutorial} />
+        <TutorialBody
+          api={this.api}
+          logout={this.props.logout}
+          tutorial={this.state.tutorial} />
         :
         <Container>
           <ListSelector
@@ -147,10 +150,10 @@ class TutorialBody extends Tutorial {
     //this.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
     //this.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
 
-    this.fetchTutorial
-    .then(this.fetchProgress)
-    .then(this.fetchStep)
-    .then(this.fetchTest)
+    this.api.fetchTutorial()
+    .then(this.api.fetchProgress)
+    .then(this.api.fetchStep)
+    .then(this.api.fetchTest)
   }
 
   handleOnClickCompile() {
@@ -162,9 +165,14 @@ class TutorialBody extends Tutorial {
     }, console.log)
   }
 
+  unsetTutorial = () => {
+    this.api.patchUser({ current_tutorial: '' })
+    this.setState({ tutorial: '' })
+  }
+
 
   render() {
-    //return <p>hi</p>
+    console.log(this.state)
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
@@ -177,7 +185,7 @@ class TutorialBody extends Tutorial {
             <Segment raised content={this.state.tDesc} />
             <img id='right' alt='hardware' src={this.state.sImage}/>
             <Segment raised content={this.state.sDesc} />
-            <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.props.logout} />
+            <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.unsetTutorial} />
             <Button fluid icon='left chevron' content='Log Out' onClick={this.props.logout} />
           </div>
           }
