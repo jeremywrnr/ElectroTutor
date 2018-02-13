@@ -5,6 +5,7 @@
 import Host from './Host.js'
 
 const dataKeyId = "tdtutorial.user.account"
+const headers = new Headers({ 'Content-Type': 'application/json' })
 
 const Account = {
 
@@ -12,15 +13,15 @@ const Account = {
     return fetch(`${Host}/users`, {
       method: 'POST',
       body: JSON.stringify(user),
-      headers: new Headers({ 'Content-Type': 'application/json' }),
-    })
+      headers,
+    }) // returns raw response w/ 'ok' field
   },
 
   setServerCredentials(user) {
     return fetch(`${Host}/user_token`, {
       method: 'POST',
       body: JSON.stringify(user),
-      headers: new Headers({ 'Content-Type': 'application/json' }),
+      headers,
     }).then(response => response.json())
   },
 

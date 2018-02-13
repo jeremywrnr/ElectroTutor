@@ -1,5 +1,5 @@
 /**
- * User Account setup
+ * Authenticated Method Collection
  */
 
 import Host from './Host.js'
@@ -7,15 +7,27 @@ import Host from './Host.js'
 class API {
   constructor(auth) {
     this.auth = auth
+    this.fetchUser().then(user => this.user = user)
   }
 
-  authFetch = (route) => {
-    return fetch(`${Host}/${route}`, {
-      headers: new Headers({
-        'Authorization': this.auth,
-        'Content-Type': 'application/json',
-      })
-    }).then(res => res.json())
+  authFetch = (route, method = "GET", body = undefined) => {
+    const headers =new Headers({
+      'Authorization': this.auth,
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    })
+
+    let message = {
+      method,
+      headers,
+    }
+
+    if (body !== undefined) {
+      message.body = body
+    }
+
+    return fetch(`${Host}/${route}`, message)
+    .then(res => res.json())
     .catch(error => console.error('Error:', error))
   }
 
@@ -32,8 +44,8 @@ class API {
     return this.authFetch(`tutorials/${tutorial}`)
   }
 
-  fetchProgress = (user, tutorial) => {
-    return this.authFetch(`prog?user_id=${user}&tutorial_id=${tutorial}`)
+  fetchProgress = (tutorial) => {
+    return this.authFetch(`prog?user_id=${this.user.id}&tutorial_id=${tutorial}`)
   }
 
   fetchStep = step => {
@@ -45,13 +57,21 @@ class API {
   }
 
   fetchData = data => {
-    return this.authFetch(`/pdata/${data}`)
+    return this.authFetch(`pdata/${data}`)
   }
 
 
   /**
    * Interface handlers
    */
+
+  patchUser = ({ current_tutorial }) => {
+    return this.authFetch(`users/${this.user.id}`, "PATCH", { current_tutorial })
+  }
+
+  patchTutorial = tutorial => {
+    console.log(tutorial)
+  }
 
   postCompile = (data, handler) => {
     console.info('compiling...')

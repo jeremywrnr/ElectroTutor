@@ -66,7 +66,7 @@ class App extends Component {
         active
         ?
         <Tutorial
-          user={this.state.user}
+          user_token={this.state.user}
           logout={this.logoutUser} />
         :
         <Login

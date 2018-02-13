@@ -14,27 +14,17 @@ import API from './API.js'
 
 class Tutorial extends Component {
   state = {
-    tTitle: 'Initializing...',
-    tDesc: 'Initializing...',
-    sTitle: 'Initializing...',
-    sDesc:  'Initializing...',
-    sImage: '',
-    isUserActive: false,
-    user_id:   undefined, // id
-    progress:  undefined, // id
+    user:      undefined, // id
     tutorial:  undefined, // id
-    step:      undefined, // id
-    completed: undefined, // bool
-    code:  'Initializing...',
-    tests: [],
+    tutorials: [],        // list
   }
 
   /**
-   * Connect to db
+   * Connect to DB
    */
 
   componentWillMount() {
-    this.api = new API(this.props.user)
+    this.api = new API(this.props.user_token) // generated from JWT auth
     this.api.fetchUser()
     .then(this.handleUserUpdate)
     .then(this.api.fetchTutorials)
@@ -53,7 +43,7 @@ class Tutorial extends Component {
   handleUserUpdate = ({ id, current_tutorial }) => {
     return this.setState({
       tutorial: current_tutorial,
-      user_id: id,
+      user: id,
     })
   }
 
@@ -63,20 +53,11 @@ class Tutorial extends Component {
     })
   }
 
-  handleOnClickCompile() {
-    this.api.handleOnClickCompile({
-      user_id: this.state.user,
-      progress_id: this.state.progress,
-      step_id: this.state.step,
-      code: this.state.code,
-    }, console.log)
-  }
-
-
   setTutorial = (e) => {
     const tutorial = $(e.target).closest('.ui.card').attr('id')
-    this.setState({ tutorial })
-    // TODO Also update on the server
+    const user = { id: this.state.user, current_tutorial: tutorial }
+    this.api.patchUser(user)
+    //this.setState({ tutorial })
   }
 
   /**
@@ -106,7 +87,31 @@ class Tutorial extends Component {
 }
 }
 
+
+
+/**
+ * Rendering the Tutorial UI
+ */
+
 class TutorialBody extends Tutorial {
+  constructor(props) {
+    super(props)
+    this.api = props.api
+  }
+
+  state = {
+    tTitle: 'Initializing...',
+    tDesc: 'Initializing...',
+    sTitle: 'Initializing...',
+    sDesc:  'Initializing...',
+    sImage: '',
+    progress:  undefined, // id
+    step:      undefined, // id
+    completed: undefined, // bool
+    code:  'Initializing...',
+    tests: [],
+  }
+
   map = {
     'next': ['up', 'right'],
     'back': ['down', 'left'],
@@ -147,6 +152,16 @@ class TutorialBody extends Tutorial {
     .then(this.fetchStep)
     .then(this.fetchTest)
   }
+
+  handleOnClickCompile() {
+    this.api.handleOnClickCompile({
+      user: this.state.user,
+      progress_id: this.state.progress,
+      step_id: this.state.step,
+      code: this.state.code,
+    }, console.log)
+  }
+
 
   render() {
     //return <p>hi</p>
