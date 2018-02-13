@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Container, Header, Segment, Button } from 'semantic-ui-react'
 import { HotKeys } from 'react-hotkeys'
+import $ from 'jquery' // which press
 //import ActionCable from 'actioncable'
-import $ from 'jquery'
 
 import ListSelector from './ListSelector.js'
 import ButtonGroup from './ButtonGroup.js'
@@ -12,11 +12,15 @@ import Code from './Code.js'
 import Test from './Test.js'
 import API from './API.js'
 
+
 class Tutorial extends Component {
-  state = {
-    user:      undefined, // id
-    tutorial:  undefined, // id
-    tutorials: [],        // list
+  constructor(props) {
+    super(props)
+    this.state = {
+      user:      undefined, // id
+      tutorial:  undefined, // id
+      tutorials: [],        // list
+    }
   }
 
   /**
@@ -24,10 +28,11 @@ class Tutorial extends Component {
    */
 
   componentWillMount() {
-    this.api = new API(this.props.user_token) // generated from JWT auth
-    this.api.fetchUser()
+    const api = new API(this.props.user_token) // generated from JWT auth
+    this.setState({ api })
+    api.fetchUser()
     .then(this.handleUserUpdate)
-    .then(this.api.fetchTutorials)
+    .then(api.fetchTutorials)
     .then(this.handleTutorialsUpdate)
   }
 
@@ -50,13 +55,15 @@ class Tutorial extends Component {
   }
 
   setTutorial = e => {
+    const api = this.state.api
     const tutorial = $(e.target).closest('.ui.card').attr('id')
-    this.api.patchUser({ current_tutorial: tutorial })
+    api.patchUser({ current_tutorial: tutorial })
     this.setState({ tutorial })
   }
 
   unsetTutorial = () => {
-    this.api.patchUser({ current_tutorial: '' })
+    const api = this.state.api
+    api.patchUser({ current_tutorial: '' })
     this.setState({ tutorial: '' })
   }
 
@@ -77,7 +84,7 @@ class Tutorial extends Component {
           logout={this.props.logout}
           unset={this.unsetTutorial}
           tutorial={this.state.tutorial}
-          user_token={this.props.user_token} />
+          api_auth={this.state.api.auth} />
         :
         <Container>
           <ListSelector
@@ -100,17 +107,21 @@ class Tutorial extends Component {
  */
 
 class TutorialBody extends Component {
-  state = {
-    tTitle: 'Initializing...',
-    tDesc: 'Initializing...',
-    sTitle: 'Initializing...',
-    sDesc:  'Initializing...',
-    sImage: '',
-    progress:  undefined, // id
-    step:      undefined, // id
-    completed: undefined, // bool
-    code:  'Initializing...',
-    tests: [],
+  constructor(props) {
+    super(props)
+    //this.handleCompile = this.handleCompile.bind(this)
+    this.state = {
+      tTitle: 'Initializing...',
+      tDesc: 'Initializing...',
+      sTitle: 'Initializing...',
+      sDesc:  'Initializing...',
+      sImage: '',
+      progress:  undefined, // id
+      step:      undefined, // id
+      completed: undefined, // bool
+      code:  'Initializing...',
+      tests: [],
+    }
   }
 
   map = {
@@ -129,23 +140,24 @@ class TutorialBody extends Component {
 
   // Generate functions for modifying step
 
+  nextStep = this.incrementStep(+1)
+  prevStep = this.incrementStep(-1)
+
   incrementStep(inc) {
     return () => {
+      const api = this.props.api
       //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
       let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       let saveStep = () => {
         this.api.patchStep({ step_id: this.state.step })
-        .then(this.api.fetchStep)
+        .then(api.fetchStep)
         .then(this.handleStepUpdate)
-        .then(this.api.fetchTest)
+        .then(api.fetchTest)
         .then(this.handleTestUpdate)
       }
       this.setState(writeStep, saveStep)
     }
   }
-
-  nextStep = this.incrementStep(+1)
-  prevStep = this.incrementStep(-1)
 
   // For live updates, across sessions. Not needed right now
   // Const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
@@ -153,15 +165,16 @@ class TutorialBody extends Component {
   // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
 
   componentWillMount() {
-    this.api = new API(this.props.user_token) // generated from JWT auth
-    this.api.fetchUser()
+    const api = new API(this.props.api_auth) // generated from JWT auth
+    this.setState({ api })
+    api.fetchUser()
     .then(this.handleUserUpdate)
-    .then(this.api.fetchTutorial)
-    .then(this.api.fetchProgress)
+    .then(api.fetchTutorial)
+    .then(api.fetchProgress)
     .then(this.handleProgressUpdate)
-    .then(this.api.fetchStep)
+    .then(api.fetchStep)
     .then(this.handleStepUpdate)
-    .then(this.api.fetchTest)
+    .then(api.fetchTest)
     .then(this.handleTestUpdate)
   }
 
@@ -174,13 +187,20 @@ class TutorialBody extends Component {
   handleTestUpdate() {
   }
 
-  handleOnClickCompile = () => {
-    this.api.postCompile({
+  handleCompile = c => {
+    const api = this.state.api
+    console.log(api.postCompile)
+    api.postCompile({
       user: this.state.user,
       progress_id: this.state.progress,
       step_id: this.state.step,
       code: this.state.code,
-    }, console.log)
+    }).then(console.log)
+  }
+
+  handleCodeChange = code => {
+    // To set on user
+    console.log(code)
   }
 
   render() {
@@ -192,34 +212,34 @@ class TutorialBody extends Component {
           tLink={this.state.tLink}
           mHead="Code Editor"
           left={
-          <div>
+          <Container>
             <Header content={'Step ' + this.state.step +': '+ this.state.sTitle} />
             <Segment raised content={this.state.tDesc} />
             <img id='right' alt='hardware' src={this.state.sImage}/>
             <Segment raised content={this.state.sDesc} />
             <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.props.unset} />
             <Button fluid icon='left chevron' content='Log Out' onClick={this.props.logout} />
-          </div>
+          </Container>
           }
 
           middle={
-          <div>
+          <Container>
             <ButtonGroup
               onLClick={this.prevStep}
-              onMClick={this.handleOnClickCompile}
+              onMClick={this.handleCompile}
               onRClick={this.nextStep} />
             <Code id='middle'
               name="codeEditor"
               code={this.state.code}
               onChange={this.handleCodeChange} />
-          </div>
+          </Container>
           }
 
           right={
-          <div>
+          <Container>
             { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
             { this.state.deviceOut && <Code code={this.state.deviceOut}/> }
-          </div>
+          </Container>
           }
         />
       </HotKeys>

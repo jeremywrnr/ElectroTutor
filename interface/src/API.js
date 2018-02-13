@@ -39,7 +39,7 @@ class API {
     return this.authFetch(`tutorials`)
   }
 
-  // TODO add a count-limiting return to this
+  // TODO add a count-limiting return to this (eg first 5, or do pagination)
   fetchTutorial = tutorial => {
     return this.authFetch(`tutorials/${tutorial}`)
   }
@@ -70,15 +70,15 @@ class API {
   }
 
   patchTutorial = tutorial => {
-    console.log(tutorial)
+    return console.log(tutorial)
   }
 
   patchStep = step => {
-    console.log(step)
+    return console.log(step)
   }
 
-  postCompile = (data, handler) => {
-    fetch(`${Host}/compile`, {
+  postCompile = data => {
+    return fetch(`${Host}/compile`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({ 'Content-Type': 'application/json' })
