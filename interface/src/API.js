@@ -7,7 +7,10 @@ import Host from './Host.js'
 class API {
   constructor(auth) {
     this.auth = auth
-    this.fetchUser().then(user => this.user = user)
+  }
+
+  configure() {
+    return this.fetchUser().then(user => this.user = user)
   }
 
   authFetch = (route, method = "GET", body = undefined) => {
@@ -44,8 +47,8 @@ class API {
     return this.authFetch(`tutorials/${tutorial}`)
   }
 
-  fetchProgress = (tutorial) => {
-    return this.authFetch(`prog?user_id=${this.user.id}&tutorial_id=${tutorial}`)
+  fetchProgress = tutorial => {
+    return this.authFetch(`progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`)
   }
 
   fetchStep = step => {
@@ -77,7 +80,13 @@ class API {
     return console.log(step)
   }
 
-  postCompile = data => {
+  patchCode = ({ pid, code }) => {
+    return this.authFetch(`progresses/${pid}`, "PATCH", { code })
+  }
+
+
+  postCompile = (data) => {
+    console.log(data)
     return fetch(`${Host}/compile`, {
       method: 'POST',
       body: JSON.stringify(data),

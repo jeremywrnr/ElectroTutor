@@ -5,9 +5,11 @@ class ProgressesController < ApplicationController
 
   # GET /progresses
   def index
-    @progresses = Progress.all
-
-    render json: @progresses
+    if current_user.id == params['user_id']
+      render json: @progress
+    else
+      render json: @progress.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /progresses/1
@@ -43,6 +45,7 @@ class ProgressesController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
+
   def set_progress
     @progress = Progress
       .where(user_id: params['user_id'])

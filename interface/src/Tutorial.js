@@ -7,7 +7,7 @@ import $ from 'jquery' // which press
 import ListSelector from './ListSelector.js'
 import ButtonGroup from './ButtonGroup.js'
 import Grid3 from './Grid3.js'
-//import Delay from './Delay.js'
+import Delay from './Delay.js'
 import Code from './Code.js'
 import Test from './Test.js'
 import API from './API.js'
@@ -73,10 +73,9 @@ class Tutorial extends Component {
    */
 
   render() {
-    console.log(this.state)
     const tutorial_is_active = !!this.state.tutorial
     return (
-      <div>
+      <Container>
         {
         tutorial_is_active
         ?
@@ -95,7 +94,7 @@ class Tutorial extends Component {
           <Button onClick={this.props.logout} content='Log Out' />
         </Container>
         }
-      </div>
+      </Container>
       )
 }
 }
@@ -109,7 +108,6 @@ class Tutorial extends Component {
 class TutorialBody extends Component {
   constructor(props) {
     super(props)
-    //this.handleCompile = this.handleCompile.bind(this)
     this.state = {
       tTitle: 'Initializing...',
       tDesc: 'Initializing...',
@@ -145,9 +143,10 @@ class TutorialBody extends Component {
 
   incrementStep(inc) {
     return () => {
-      const api = this.props.api
-      //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+      const api = this.state.api
       let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
+      //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
+
       let saveStep = () => {
         this.api.patchStep({ step_id: this.state.step })
         .then(api.fetchStep)
@@ -155,22 +154,18 @@ class TutorialBody extends Component {
         .then(api.fetchTest)
         .then(this.handleTestUpdate)
       }
+
       this.setState(writeStep, saveStep)
     }
   }
 
-  // For live updates, across sessions. Not needed right now
-  // Const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-  // This.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
-  // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
-
   componentWillMount() {
-    const api = new API(this.props.api_auth) // generated from JWT auth
-    this.setState({ api })
-    api.fetchUser()
-    .then(this.handleUserUpdate)
-    .then(api.fetchTutorial)
-    .then(api.fetchProgress)
+    const api = new API(this.props.api_auth) // from JWT
+    const tutorial = this.props.tutorial
+    this.setState({ api, tutorial })
+
+    api.configure()
+    .then(api.fetchProgress, tutorial)
     .then(this.handleProgressUpdate)
     .then(api.fetchStep)
     .then(this.handleStepUpdate)
@@ -178,33 +173,49 @@ class TutorialBody extends Component {
     .then(this.handleTestUpdate)
   }
 
-  handleProgressUpdate() {
+  handleProgressUpdate = progress => {
+    this.setState({ progress })
   }
 
-  handleStepUpdate() {
+  handleStepUpdate = step => {
+    this.setState({ step })
   }
 
-  handleTestUpdate() {
+  handleTestUpdate = tests => {
+    this.setState({ tests })
   }
 
-  handleCompile = c => {
-    const api = this.state.api
-    console.log(api.postCompile)
-    api.postCompile({
-      user: this.state.user,
-      progress_id: this.state.progress,
-      step_id: this.state.step,
-      code: this.state.code,
-    }).then(console.log)
+  handleProgressDataUpdate = pData => {
+    this.setState({ pData })
   }
+
+  // For live updates, across sessions. Not needed right now
+  // Const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
+  // This.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
+  // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
 
   handleCodeChange = code => {
-    // To set on user
-    console.log(code)
+    const api = this.state.api
+    Delay(() => {
+      console.info('saving code...')
+      this.setState({ code })
+      const data = { code, progress_id: this.state.progress.id }
+      api.patchCode(data)
+    }, 500 );
+  }
+
+  handleCompile = e => {
+    e.preventDefault()
+    console.info('compiling code...')
+    const api = this.state.api
+    const data = { code: this.state.code, progress_id: this.state.progress.id }
+    console.info('compiling code...', data)
+    api.postCompile(data)
+    .then(compile => this.setState({ compile }))
   }
 
   render() {
-    console.log(this.state)
+    console.log(this.state.tutorial, this.state.progress)
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
