@@ -17,6 +17,8 @@ class CompileController < ApplicationController
     params.require(:compile).permit(:step_id, :user_id, :code)
   end
 
+  # TODO this is dumb and I should use a parser generator to perform source
+  # manipulation.
   def set_code
     @code = '#include "Arduino.h"' + "\n" + params[:code]
   end

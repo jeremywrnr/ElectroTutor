@@ -1,5 +1,3 @@
-
-#include "Arduino.h"
 int ledPin = 13;                // LED connected to digital pin 13
 
 void setup()
