@@ -6,7 +6,8 @@
 - semantic ui: https://github.com/Semantic-Org/Semantic-UI-React
     - usage: https://react.semantic-ui.com/usage
     - intro: https://react.semantic-ui.com/introduction
-- from: https://engineering.musefind.com/make-your-rails-app-real-time-in-under-ten-minutes-cd5bd4a47f61
+- rails channels: https://engineering.musefind.com/make-your-rails-app-real-time-in-under-ten-minutes-cd5bd4a47f61
+- google drive: https://drive.google.com/drive/folders/1UT2fPQ3aCdSEAvMtOLFCyJpFZJyhgJG1
 
 ### frontend
 
