@@ -5,11 +5,11 @@ device:
 tester:
 	cd tester && platformio run -e uno -t upload
 
-reset: d-reset t-reset
+reset: d_reset t_reset
 d_reset:
-	cd device/src && cp -v back.cpp main.cpp
+	cp -v backup/device.cpp device/src/main.cpp
 t_reset:
-	cd tester/src && cp -v back.cpp main.cpp
+	cp -v tester/device.cpp tester/src/main.cpp
 
 d_read:
 	echo todo
@@ -18,4 +18,4 @@ t_read:
 close:
 	echo todo
 
-.PHONY: device tester d-reset t-reset d-read t-read close
+.PHONY: device tester d_reset t_reset d_read t_read close
