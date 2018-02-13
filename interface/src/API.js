@@ -11,7 +11,7 @@ class API {
   }
 
   authFetch = (route, method = "GET", body = undefined) => {
-    const headers =new Headers({
+    const headers = new Headers({
       'Authorization': this.auth,
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -71,6 +71,10 @@ class API {
 
   patchTutorial = tutorial => {
     console.log(tutorial)
+  }
+
+  patchStep = step => {
+    console.log(step)
   }
 
   postCompile = (data, handler) => {

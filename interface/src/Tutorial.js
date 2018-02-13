@@ -59,6 +59,13 @@ class Tutorial extends Component {
     this.setState({ tutorial })
   }
 
+  unsetTutorial = () => {
+    this.api.patchUser({ current_tutorial: '' })
+    this.setState({ tutorial: '' })
+  }
+
+
+
   /**
    * Rendering UI
    */
@@ -74,6 +81,7 @@ class Tutorial extends Component {
         <TutorialBody
           api={this.api}
           logout={this.props.logout}
+          unset={this.unsetTutorial}
           tutorial={this.state.tutorial} />
         :
         <Container>
@@ -129,7 +137,7 @@ class TutorialBody extends Tutorial {
     },
   }
 
-  // generate function for modifying current tutorial step
+  // Generate functions for modifying step
 
   incrementStep(inc) {
     return () => {
@@ -145,15 +153,29 @@ class TutorialBody extends Tutorial {
 
   nextStep = this.incrementStep(+1)
   prevStep = this.incrementStep(-1)
-  componentWillMount() {
-    //const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-    //this.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
-    //this.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
 
+  // For live updates, across sessions. Not needed right now
+  // Const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
+  // This.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
+  // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
+
+  componentWillMount() {
     this.api.fetchTutorial()
     .then(this.api.fetchProgress)
+    .then(this.handleProgressUpdate)
     .then(this.api.fetchStep)
+    .then(this.handleStepUpdate)
     .then(this.api.fetchTest)
+    .then(this.handleTestUpdate)
+  }
+
+  handleProgressUpdate() {
+  }
+
+  handleStepUpdate() {
+  }
+
+  handleTestUpdate() {
   }
 
   handleOnClickCompile() {
@@ -164,12 +186,6 @@ class TutorialBody extends Tutorial {
       code: this.state.code,
     }, console.log)
   }
-
-  unsetTutorial = () => {
-    this.api.patchUser({ current_tutorial: '' })
-    this.setState({ tutorial: '' })
-  }
-
 
   render() {
     console.log(this.state)
@@ -185,7 +201,7 @@ class TutorialBody extends Tutorial {
             <Segment raised content={this.state.tDesc} />
             <img id='right' alt='hardware' src={this.state.sImage}/>
             <Segment raised content={this.state.sDesc} />
-            <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.unsetTutorial} />
+            <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.props.unset} />
             <Button fluid icon='left chevron' content='Log Out' onClick={this.props.logout} />
           </div>
           }
