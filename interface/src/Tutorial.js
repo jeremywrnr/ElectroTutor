@@ -53,11 +53,10 @@ class Tutorial extends Component {
     })
   }
 
-  setTutorial = (e) => {
+  setTutorial = e => {
     const tutorial = $(e.target).closest('.ui.card').attr('id')
     const user = { id: this.state.user, current_tutorial: tutorial }
-    this.api.patchUser(user)
-    //this.setState({ tutorial })
+    this.api.patchUser(user).then(this.setState({ tutorial }))
   }
 
   /**
@@ -65,6 +64,7 @@ class Tutorial extends Component {
    */
 
   render() {
+    console.log(this.state)
     const tutorial_is_active = !!this.state.tutorial
     return (
       <div>
@@ -133,7 +133,7 @@ class TutorialBody extends Tutorial {
       //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
       let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       let saveStep = () => {
-        this.progSub.send({ id: this.state.user, step_id: this.state.step })
+        this.api.patchStep({ step_id: this.state.step })
         this.fetchStep().then(this.fetchTest)
       }
       this.setState(writeStep, saveStep)

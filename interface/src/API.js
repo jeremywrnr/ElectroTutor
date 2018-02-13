@@ -23,7 +23,7 @@ class API {
     }
 
     if (body !== undefined) {
-      message.body = body
+      message.body = JSON.stringify(body)
     }
 
     return fetch(`${Host}/${route}`, message)
