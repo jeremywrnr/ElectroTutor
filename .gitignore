@@ -45,6 +45,7 @@ hardware/**/*.cpp
 *.idb
 *.pdb
 *.ino
+*swn
 
 # Kernel Module Compile Results
 *.mod*
