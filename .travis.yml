@@ -13,14 +13,23 @@
 # Template #1: General project. Test it using existing `platformio.ini`.
 # platformio ci src/main.cpp --project-conf platformio.ini
 
-language: python
-python: 2.7
+language:
+  - python
+  - ruby
+python:
+  - 2.7
+ruby:
+  - 2.0.0
 
 install:
    - pip install -U platformio
+   - cd interface/api && bundle
+   - cd ../..
 
 script:
    - cd hardware
    - make travis
    - cd .. # root
+   - cd interface/api # backend
+   - bundle exec rake
 
