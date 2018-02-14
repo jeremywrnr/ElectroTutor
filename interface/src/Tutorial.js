@@ -139,18 +139,19 @@ class TutorialBody extends Component {
 
   incrementStep(inc) {
     return () => {
-      console.log(inc)
-      //const api = this.state.api
-      //let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
-      //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
-      //let saveStep = () => {
-      //this.api.patchStep({ step_id: this.state.step.id })
-      //.then(api.fetchStep)
-      //.then(this.handleStepUpdate)
-      //.then(api.fetchTest)
-      //.then(this.handleTestUpdate)
-      //}
-      //this.setState(writeStep, saveStep)
+      Delay(() => {
+        const api = this.state.api
+        const pid = this.state.progress.id
+        const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 4)
+        //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
+
+        api.configure()
+        .then(() => api.patchStep({ pid, step_id: step_pos }))
+        .then(() => api.fetchStep(step_pos))
+        .then(this.handleStepUpdate)
+        .then(() => api.fetchTest(this.state.step.id))
+        .then(this.handleTestUpdate)
+      }, 50 );
     }
   }
 
@@ -158,14 +159,15 @@ class TutorialBody extends Component {
     const api = new API(this.props.api_auth) // from JWT
     const tutorial = this.props.tutorial.id
     this.setState({ api, tutorial })
+    //const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 4)
 
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
-    .then(() => api.fetchStep(this.state.progress.step_id))
+    .then(() => api.fetchStep(this.state.progress.step_id)) // MRU step
     .then(this.handleStepUpdate)
-    //.then(api.fetchTest)
-    //.then(this.handleTestUpdate)
+    .then(() => api.fetchTest(this.state.step.id))
+    .then(this.handleTestUpdate)
   }
 
   handleProgressUpdate = progress => {
@@ -173,6 +175,7 @@ class TutorialBody extends Component {
   }
 
   handleStepUpdate = step => {
+    console.log(this.state, step)
     this.setState({ step })
   }
 
@@ -210,7 +213,7 @@ class TutorialBody extends Component {
   }
 
   render() {
-    console.log(this.state.tutorial, this.state.progress)
+    console.log(this.state.tests)
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
@@ -222,7 +225,6 @@ class TutorialBody extends Component {
             <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
             <Image src={this.state.step.image} />
             <Segment raised content={this.state.step.description} />
-
             <Button.Group widths='2'>
               <Button content='Log Out' onClick={this.props.logout} />
               <Button content='Exit Tutorial' onClick={this.props.unset} />

@@ -47,7 +47,6 @@ class API {
   }
 
   fetchProgress = tutorial => {
-    console.log(tutorial)
     return this.authFetch(`progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`)
   }
 
@@ -55,8 +54,8 @@ class API {
     return this.authFetch(`steps/${step}`)
   }
 
-  fetchTest = test => {
-    return this.authFetch(`test?step_id=${test}`)
+  fetchTest = step => {
+    return this.authFetch(`test?step_id=${step}`)
   }
 
   fetchData = data => {
@@ -76,8 +75,8 @@ class API {
     return console.log(tutorial)
   }
 
-  patchStep = step => {
-    return console.log(step)
+  patchStep = ({ pid, step_id }) => {
+    return this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
   }
 
   patchCode = ({ pid, code }) => {

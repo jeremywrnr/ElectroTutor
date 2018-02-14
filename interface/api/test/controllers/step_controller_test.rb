@@ -1,8 +1,10 @@
 require 'test_helper'
 
-class UserControllerTest < ActionDispatch::IntegrationTest
+class StepControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = User.create!(email: 'jo', password_digest: 'hn')
+    @user = @tuto.user
+    @tuto = Tutorial.first
+    @step = @tuto.steps.first
   end
 
   def auth
@@ -12,42 +14,41 @@ class UserControllerTest < ActionDispatch::IntegrationTest
 
   # BEGIN TESTS
 
-  test "can create users" do
-    post users_url, params: {'user': {"email": 'foo', "password": "bar"}}
+  test "can create steps" do
+    post steps_url, params: {}
     assert_response :success
   end
 
-  test "refuses bad user params" do
-    post users_url, params: {'user': {"password": "bar"}}
+  test "refuses bad step params" do
+    post steps_url, params: {}
     assert_response :unprocessable_entity
-    post users_url, params: {'user': {"email": "foo"}}
+    post steps_url, params: {}
     assert_response :unprocessable_entity
   end
 
   test "responds correctly" do
-    get users_url, headers: auth
+    get steps_url, headers: auth
     assert_response :success
   end
 
   test "responds correctly on stub" do
-    get "/users?user_id=#{@user.id}", headers: auth
+    get "/steps?step_id=#{@step.id}", headers: auth
     assert_response :success
   end
 
   test "responds correctly without auth" do
-    get "/users?user_id=#{@user.id}"
+    get "/steps?step_id=#{@step.id}"
     assert_response :unauthorized
   end
 
   test "responds correctly without auth on different id" do
-    get "/users?user_id=#{@user.id+1}"
+    get "/steps?step_id=#{@step.id+1}"
     assert_response :unauthorized
   end
 
-  test "lists active user from token" do
-    get "/users", headers: auth
+  test "lists active step from token" do
+    get "/steps", headers: auth
     assert_instance_of String, response.body["id"]
-    assert_instance_of String, response.body["email"]
     assert_nil response.body["error"]
     assert_response :success
   end
