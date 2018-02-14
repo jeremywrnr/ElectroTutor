@@ -1,11 +1,11 @@
 class ProgressesController < ApplicationController
-  before_action :set_progress, only: [:index, :show, :update, :destroy]
+  before_action :set_progress, except: [:create]
 
   # QUERY: ?user_id=1 &tutorial_id=1
 
   # GET /progresses
   def index
-    puts params
+    puts params, @progress
     authorized = (current_user.id.to_s == params['user_id'])
 
     if authorized && !@progress.nil?
@@ -58,8 +58,10 @@ class ProgressesController < ApplicationController
       .where(user_id: uid)
       .first
 
-    if @progress.nil? && current_user # create one for the current user
-      @progress = current_user.build.create!(user_id: uid, tutorial_id: tid)
+    # create for current user
+    if @progress.nil? && current_user == params['user_id']
+      @progress = current_user.progresses.build(tutorial_id: tid)
+      @progress.save!
     end
   end
 

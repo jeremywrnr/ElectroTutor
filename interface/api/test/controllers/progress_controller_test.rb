@@ -3,8 +3,9 @@ require 'test_helper'
 class ProgressControllerTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = User.create!(email: 'jo', password_digest: 'hn')
-    @params = { 'user_id': 2, 'tutorial_id': 2 }
+    @tutorial = Tutorial.first
+    @user = User.first
+    @params = { 'user_id': @user.id, 'tutorial_id': @tutorial.id  }
   end
 
   def auth
@@ -14,14 +15,14 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
 
   # BEGIN TESTS
 
-  test 'should fail getting progress without auth' do
+  test 'will fail getting progress without auth' do
     post progresses_url, params: @params
     assert_response :unprocessable_entity
     post progresses_url, params: @params
     assert_response :unprocessable_entity
   end
 
-  test 'should get progress ok with auth' do
+  test 'will get progress ok with auth' do
     get progresses_url, headers: auth, params: @params
     assert_response :success
   end
