@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { Divider, Container, Header, Segment, Button } from 'semantic-ui-react'
+import { Icon, Divider, Container, Header, Segment, Button } from 'semantic-ui-react'
 import { HotKeys } from 'react-hotkeys'
 import $ from 'jquery' // which press
 //import ActionCable from 'actioncable'
 
 import ListSelector from './ListSelector.js'
-import ButtonGroup from './ButtonGroup.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Code from './Code.js'
@@ -49,16 +48,15 @@ class Tutorial extends Component {
   }
 
   handleTutorialsUpdate = tutorials => {
-    return this.setState({
-      tutorials,
-    })
+    return this.setState({ tutorials })
   }
 
   setTutorial = e => {
     const api = this.state.api
     const tutorial = $(e.target).closest('.ui.card').attr('id')
-    api.patchUser({ current_tutorial: tutorial })
-    this.setState({ tutorial })
+    const update = () => api.patchUser({ current_tutorial: tutorial })
+    const remove = () => this.setState({ tutorial })
+    api.configure().then(update).then(remove)
   }
 
   unsetTutorial = () => {
@@ -110,15 +108,10 @@ class TutorialBody extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tTitle: 'Initializing...',
-      tDesc: 'Initializing...',
-      sTitle: 'Initializing...',
-      sDesc:  'Initializing...',
-      sImage: '',
-      progress:  undefined, // id
-      step:      undefined, // id
-      completed: undefined, // bool
       code:  'Initializing...',
+      completed: false, // bool
+      progress:  { code: '' },
+      step:      {},
       tests: [],
     }
   }
@@ -168,17 +161,14 @@ class TutorialBody extends Component {
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
-    //.then(api.fetchStep)
-    //.then(this.handleStepUpdate)
+    .then(api.fetchStep)
+    .then(this.handleStepUpdate)
     //.then(api.fetchTest)
     //.then(this.handleTestUpdate)
   }
 
   handleProgressUpdate = progress => {
-    this.setState({
-      code: progress.code,
-      progress
-    })
+    this.setState({ progress })
   }
 
   handleStepUpdate = step => {
@@ -201,8 +191,9 @@ class TutorialBody extends Component {
   handleCodeChange = code => {
     const api = this.state.api
     Delay(() => {
+      const newState = {progress: {...this.state.progress, code: code }}
+      const update = () => this.setState(newState)
       const data = { code, pid: this.state.progress.id }
-      const update = () => this.setState({ code })
       console.info('saving code...', data)
       api.patchCode(data).then(update)
     }, 500 );
@@ -212,40 +203,49 @@ class TutorialBody extends Component {
     e.preventDefault()
     console.info('compiling code...')
     const api = this.state.api
-    const data = { code: this.state.code, pid: this.state.progress.id }
+    const data = { code: this.state.progress.code, pid: this.state.progress.id }
     const update = compile => this.setState({ compile })
     api.postCompile(data).then(update)
   }
 
   render() {
-    //console.log(this.state.tutorial, this.state.progress)
+    console.log(this.state.tutorial, this.state.progress)
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
-          title={this.state.tTitle}
-          tLink={this.state.tLink}
-          mHead="Code Editor"
+          title={this.props.title}
+          tLink={this.props.tLink}
+          mHead="Editor"
           left={
           <Container>
-            <Header content={'Step ' + this.state.step +': '+ this.state.sTitle} />
+            <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
             <Segment raised content={this.state.tDesc} />
-            <img id='right' alt='hardware' src={this.state.sImage}/>
-            <Segment raised content={this.state.sDesc} />
-            <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.props.unset} />
+            <img id='right' alt='hardware' src={this.state.step.image}/>
+            <Segment raised content={this.state.step.description} />
+
+            <Button.Group widths='2'>
+              <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.props.onLClick} />
+              <Button labelPosition='right' icon='right chevron' content='Forward' onClick={this.props.onRClick} />
+            </Button.Group>
             <Divider />
-            <Button fluid icon='left chevron' content='Log Out' onClick={this.props.logout} />
+            <Button.Group widths='2'>
+              <Button content='Log Out' onClick={this.props.logout} />
+              <Button content='Exit Tutorial' onClick={this.props.unset} />
+            </Button.Group>
           </Container>
           }
 
           middle={
           <Container>
-            <ButtonGroup
-              onLClick={this.prevStep}
-              onMClick={this.handleCompile}
-              onRClick={this.nextStep} />
+            <Button animated className="fade" secondary icon onClick={this.props.onMClick} >
+              <Button.Content visible>Compile</Button.Content>
+              <Button.Content hidden>
+                <Icon name='play' />
+              </Button.Content>
+            </Button>
             <Code id='middle'
               name="codeEditor"
-              code={this.state.code}
+              code={this.state.progress.code}
               onChange={this.handleCodeChange} />
           </Container>
           }
