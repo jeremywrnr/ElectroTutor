@@ -6,7 +6,6 @@ class ProgressesController < ApplicationController
 
   # GET /progresses
   def index
-    puts params, @progress
     authorized = (current_user.id.to_s == params['user_id'])
 
     if authorized && !@progress.nil?
@@ -54,14 +53,12 @@ class ProgressesController < ApplicationController
     tid = params['tutorial_id']
     uid = params['user_id']
 
-    @progress = Progress
-      .where(tutorial_id: tid)
-      .where(user_id: uid)
-      .first
+    if current_user.id.to_s == uid
+      @progress = Progress.where(tutorial_id: tid).where(user_id: uid).first
 
-    # create for current user
-    if @progress.nil? && current_user == params['user_id']
-      @progress = current_user.progresses.create!(tutorial_id: tid)
+      if @progress.nil? # create for current user/tut
+        @progress = current_user.progresses.create!(tutorial_id: tid)
+      end
     end
   end
 
