@@ -168,14 +168,17 @@ class TutorialBody extends Component {
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
-    .then(api.fetchStep)
-    .then(this.handleStepUpdate)
-    .then(api.fetchTest)
-    .then(this.handleTestUpdate)
+    //.then(api.fetchStep)
+    //.then(this.handleStepUpdate)
+    //.then(api.fetchTest)
+    //.then(this.handleTestUpdate)
   }
 
   handleProgressUpdate = progress => {
-    this.setState({ progress })
+    this.setState({
+      code: progress.code,
+      progress
+    })
   }
 
   handleStepUpdate = step => {
@@ -198,10 +201,10 @@ class TutorialBody extends Component {
   handleCodeChange = code => {
     const api = this.state.api
     Delay(() => {
-      console.info('saving code...')
-      this.setState({ code })
-      const data = { code, progress_id: this.state.progress.id }
-      api.patchCode(data)
+      const data = { code, pid: this.state.progress.id }
+      const update = () => this.setState({ code })
+      console.info('saving code...', data)
+      api.patchCode(data).then(update)
     }, 500 );
   }
 
@@ -209,14 +212,13 @@ class TutorialBody extends Component {
     e.preventDefault()
     console.info('compiling code...')
     const api = this.state.api
-    const data = { code: this.state.code, progress_id: this.state.progress.id }
-    console.info('compiling code...', data)
-    api.postCompile(data)
-    .then(compile => this.setState({ compile }))
+    const data = { code: this.state.code, pid: this.state.progress.id }
+    const update = compile => this.setState({ compile })
+    api.postCompile(data).then(update)
   }
 
   render() {
-    console.log(this.state.tutorial, this.state.progress)
+    //console.log(this.state.tutorial, this.state.progress)
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3

@@ -50,20 +50,24 @@ class ProgressesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
 
   def set_progress
-    tid = params['tutorial_id']
+    id = params['id']
     uid = params['user_id']
+    tid = params['tutorial_id']
 
-    if current_user.id.to_s == uid
-      @progress = Progress.where(tutorial_id: tid).where(user_id: uid).first
-
+    if uid == current_user.id.to_s && id.nil? # progress id
+      @progress = Progress.where(user_id: uid).where(tutorial_id: tid).first
       if @progress.nil? # create for current user/tut
         @progress = current_user.progresses.create!(tutorial_id: tid)
       end
+
+    else # direct id param
+      @progress = Progress.find(id)
+
     end
   end
 
   # Only allow a trusted parameter "white list" through.
   def progress_params
-    params.permit(:progress, :id, :user_id, :tutorial_id)
+    params.require(:progress).permit(:code, :id, :user_id, :tutorial_id)
   end
 end

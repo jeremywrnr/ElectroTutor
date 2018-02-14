@@ -6,6 +6,7 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
     @user = User.first
     @tutorial = Tutorial.first
     @params = { 'user_id': @user.id, 'tutorial_id': @tutorial.id  }
+    @prog = @user.progresses.create(tutorial_id: @tutorial.id)
   end
 
   def auth
@@ -29,8 +30,13 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'will get progress ok with auth' do
-    get progresses_url, headers: auth, params: @params
+  test 'will fail to progress from id without auth' do
+    get "/progresses/#{@prog.id}"
+    assert_response :unauthorized
+  end
+
+  test 'will get progress from id ok with auth' do
+    get "/progresses/#{@prog.id}", headers: auth
     assert_response :success
   end
 

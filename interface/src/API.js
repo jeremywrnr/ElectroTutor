@@ -85,14 +85,9 @@ class API {
     return this.authFetch(`progresses/${pid}`, "PATCH", { code })
   }
 
-  postCompile = (data) => {
+  postCompile = data => {
     console.log(data)
-    return fetch(`${Host}/compile`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({ 'Content-Type': 'application/json' })
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
+    return this.authFetch(`compile`, "POST", { data })
   }
 }
 
