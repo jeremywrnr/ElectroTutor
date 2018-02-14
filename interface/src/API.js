@@ -42,7 +42,6 @@ class API {
     return this.authFetch(`tutorials`)
   }
 
-  // TODO add a count-limiting return to this (eg first 5, or do pagination)
   fetchTutorial = tutorial => {
     return this.authFetch(`tutorials/${tutorial}`)
   }

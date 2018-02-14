@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, Divider, Container, Header, Segment, Button } from 'semantic-ui-react'
+import { Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
 import { HotKeys } from 'react-hotkeys'
 import $ from 'jquery' // which press
 //import ActionCable from 'actioncable'
@@ -40,23 +40,25 @@ class Tutorial extends Component {
    * Database updates
    */
 
-  handleUserUpdate = ({ id, current_tutorial }) => {
-    return this.setState({
-      tutorial: current_tutorial,
-      user: id,
-    })
+  handleUserUpdate = user => {
+    return this.setState({ user })
   }
 
   handleTutorialsUpdate = tutorials => {
     return this.setState({ tutorials })
   }
 
+  handleTutorialUpdate = tutorial => {
+    return this.setState({ tutorial })
+  }
+
   setTutorial = e => {
     const api = this.state.api
-    const tutorial = $(e.target).closest('.ui.card').attr('id')
+    const tutorial = $(e.target).closest('.ui.card').attr('id') // id
     const update = () => api.patchUser({ current_tutorial: tutorial })
-    const remove = () => this.setState({ tutorial })
-    api.configure().then(update).then(remove)
+    api.configure().then(update)
+    .then(() => api.fetchTutorial(tutorial))
+    .then(this.handleTutorialUpdate)
   }
 
   unsetTutorial = () => {
@@ -122,10 +124,12 @@ class TutorialBody extends Component {
   }
 
   keyHandler = {
-    'next': 
-      this.nextStep,
-    'back':
-      this.prevStep,
+    'next': () => {
+      this.nextStep()
+    },
+    'back': () => {
+      this.prevStep()
+    },
   }
 
   // Generate functions for modifying step
@@ -135,6 +139,7 @@ class TutorialBody extends Component {
 
   incrementStep(inc) {
     return () => {
+      console.log(inc)
       //const api = this.state.api
       //let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
@@ -151,14 +156,14 @@ class TutorialBody extends Component {
 
   componentWillMount() {
     const api = new API(this.props.api_auth) // from JWT
-    const tutorial = this.props.tutorial
+    const tutorial = this.props.tutorial.id
     this.setState({ api, tutorial })
 
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
-    //.then(api.fetchStep)
-    //.then(this.handleStepUpdate)
+    .then(() => api.fetchStep(this.state.progress.step_id))
+    .then(this.handleStepUpdate)
     //.then(api.fetchTest)
     //.then(this.handleTestUpdate)
   }
@@ -215,15 +220,9 @@ class TutorialBody extends Component {
           left={
           <Container>
             <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
-            <Segment raised content={this.state.tDesc} />
-            <img id='right' alt='hardware' src={this.state.step.image}/>
+            <Image src={this.state.step.image} />
             <Segment raised content={this.state.step.description} />
 
-            <Button.Group widths='2'>
-              <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.props.onLClick} />
-              <Button labelPosition='right' icon='right chevron' content='Forward' onClick={this.props.onRClick} />
-            </Button.Group>
-            <Divider />
             <Button.Group widths='2'>
               <Button content='Log Out' onClick={this.props.logout} />
               <Button content='Exit Tutorial' onClick={this.props.unset} />
@@ -233,7 +232,7 @@ class TutorialBody extends Component {
 
           middle={
           <Container>
-            <Button fluid animated className="fade" secondary icon onClick={this.props.onMClick} >
+            <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
               <Button.Content visible>Compile</Button.Content>
               <Button.Content hidden>
                 <Icon name='play' />
@@ -248,6 +247,10 @@ class TutorialBody extends Component {
 
           right={
           <Container>
+            <Button.Group widths='2'>
+              <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
+              <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+            </Button.Group>
             { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
             { this.state.deviceOut && <Code code={this.state.deviceOut}/> }
           </Container>
