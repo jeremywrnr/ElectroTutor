@@ -18,4 +18,9 @@ t_read:
 close:
 	echo todo
 
-.PHONY: device tester d_reset t_reset d_read t_read close
+travis: reset
+	cd device && platformio run -e uno
+	cd tester && platformio run -e uno
+
+
+.PHONY: device tester d_reset t_reset d_read t_read close travis
