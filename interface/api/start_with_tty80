@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+stty cols 80 # width
+
+rails server -p 3001

@@ -83,9 +83,8 @@ class API {
     return this.authFetch(`progresses/${pid}`, "PATCH", { code })
   }
 
-  postCompile = data => {
-    console.log(data)
-    return this.authFetch(`compile`, "POST", { data })
+  postCompile = code => {
+    return this.authFetch(`compile`, "POST", { code })
   }
 }
 

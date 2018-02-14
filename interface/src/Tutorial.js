@@ -175,7 +175,6 @@ class TutorialBody extends Component {
   }
 
   handleStepUpdate = step => {
-    console.log(this.state, step)
     this.setState({ step })
   }
 
@@ -207,13 +206,12 @@ class TutorialBody extends Component {
     e.preventDefault()
     console.info('compiling code...')
     const api = this.state.api
-    const data = { code: this.state.progress.code, pid: this.state.progress.id }
+    const code = this.state.progress.code
     const update = compile => this.setState({ compile })
-    api.postCompile(data).then(update)
+    api.postCompile(code).then(update)
   }
 
   render() {
-    console.log(this.state.tests)
     return (
       <HotKeys keyMap={this.map} handlers={this.keyHandler}>
         <Grid3
@@ -254,7 +252,12 @@ class TutorialBody extends Component {
               <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
             </Button.Group>
             { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
-            { this.state.deviceOut && <Code code={this.state.deviceOut}/> }
+            { this.state.compile && (this.state.compile.status
+            ?
+            <Code code={this.state.compile.output} />
+            :
+            <Code code={this.state.compile.error} />)
+            }
           </Container>
           }
         />

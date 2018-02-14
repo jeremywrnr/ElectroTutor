@@ -44,6 +44,8 @@ class Code extends React.Component {
         setUseWrapMode: true,
         }}
         setOptions={{
+        readOnly: true,
+        useWrapMode: true,
         showLineNumbers: true,
         tabSize: 2,
         }}/>
