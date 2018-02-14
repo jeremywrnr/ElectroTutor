@@ -1,4 +1,9 @@
 -
+  title: Gyroscope Fun with NeoPixel Rings
+  description: In this project, we'll combine a gyroscope and NeoPixels to build a device that lights LEDs corresponding to the angle of inclination.
+  source: https://create.arduino.cc/projecthub/danionescu/gyroscope-fun-with-neopixel-ring-3a0b84
+  image: https://hackster.imgix.net/uploads/attachments/393480/main_rOhiO74qPh.png
+-
   title: How to Use Potentiometer - Arduino Tutorial
   source: https://www.instructables.com/id/How-to-use-Potentiometer-Arduino-Tutorial
   image: https://cdn.instructables.com/FP6/LC66/IA8WFQCA/FP6LC66IA8WFQCA.LARGE.jpg
@@ -7,8 +12,3 @@
     building circuits, you may have come across the question of how to change the
     brightness of a LED, without having to keep switching parts. Quite simply,
     the solution to this issue is a potentiometer.
--
-  title: Gyroscope Fun with NeoPixel Rings
-  description: In this project, we'll combine a gyroscope and NeoPixels to build a device that lights LEDs corresponding to the angle of inclination.
-  source: https://create.arduino.cc/projecthub/danionescu/gyroscope-fun-with-neopixel-ring-3a0b84
-  image: https://hackster.imgix.net/uploads/attachments/393480/main_rOhiO74qPh.png
