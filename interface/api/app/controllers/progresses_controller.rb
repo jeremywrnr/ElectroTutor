@@ -1,4 +1,5 @@
 class ProgressesController < ApplicationController
+  before_action :authenticate_user
   before_action :set_progress, except: [:create]
 
   # QUERY: ?user_id=1 &tutorial_id=1
@@ -60,8 +61,7 @@ class ProgressesController < ApplicationController
 
     # create for current user
     if @progress.nil? && current_user == params['user_id']
-      @progress = current_user.progresses.build(tutorial_id: tid)
-      @progress.save!
+      @progress = current_user.progresses.create!(tutorial_id: tid)
     end
   end
 

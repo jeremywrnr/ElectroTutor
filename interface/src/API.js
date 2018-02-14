@@ -85,7 +85,6 @@ class API {
     return this.authFetch(`progresses/${pid}`, "PATCH", { code })
   }
 
-
   postCompile = (data) => {
     console.log(data)
     return fetch(`${Host}/compile`, {

@@ -3,8 +3,8 @@ require 'test_helper'
 class ProgressControllerTest < ActionDispatch::IntegrationTest
 
   setup do
-    @tutorial = Tutorial.first
     @user = User.first
+    @tutorial = Tutorial.first
     @params = { 'user_id': @user.id, 'tutorial_id': @tutorial.id  }
   end
 
@@ -17,9 +17,16 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
 
   test 'will fail getting progress without auth' do
     post progresses_url, params: @params
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
     post progresses_url, params: @params
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
+  end
+
+  test 'will create progress ok with auth for user' do
+    tut = Tutorial.new(user_id: @user.id)
+    @params[:tutorial_id] = tut.id
+    get progresses_url, headers: auth, params: @params
+    assert_response :success
   end
 
   test 'will get progress ok with auth' do

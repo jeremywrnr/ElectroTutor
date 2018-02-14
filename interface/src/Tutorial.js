@@ -28,7 +28,7 @@ class Tutorial extends Component {
    */
 
   componentWillMount() {
-    const api = new API(this.props.user_token) // generated from JWT auth
+    let api = new API(this.props.user_token) // generated from JWT auth
     this.setState({ api })
     api.fetchUser()
     .then(this.handleUserUpdate)
@@ -63,8 +63,9 @@ class Tutorial extends Component {
 
   unsetTutorial = () => {
     const api = this.state.api
-    api.patchUser({ current_tutorial: '' })
-    this.setState({ tutorial: '' })
+    const update = () => api.patchUser({ current_tutorial: '' })
+    const remove = () => this.setState({ tutorial: '' })
+    api.configure().then(update).then(remove)
   }
 
 
