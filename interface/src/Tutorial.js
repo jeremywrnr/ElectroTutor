@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Header, Segment, Button } from 'semantic-ui-react'
+import { Divider, Container, Header, Segment, Button } from 'semantic-ui-react'
 import { HotKeys } from 'react-hotkeys'
 import $ from 'jquery' // which press
 //import ActionCable from 'actioncable'
@@ -165,7 +165,7 @@ class TutorialBody extends Component {
     this.setState({ api, tutorial })
 
     api.configure()
-    .then(api.fetchProgress, tutorial)
+    .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
     .then(api.fetchStep)
     .then(this.handleStepUpdate)
@@ -229,6 +229,7 @@ class TutorialBody extends Component {
             <img id='right' alt='hardware' src={this.state.sImage}/>
             <Segment raised content={this.state.sDesc} />
             <Button fluid icon='left chevron' content='Exit Tutorial' onClick={this.props.unset} />
+            <Divider />
             <Button fluid icon='left chevron' content='Log Out' onClick={this.props.logout} />
           </Container>
           }

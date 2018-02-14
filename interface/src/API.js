@@ -48,6 +48,7 @@ class API {
   }
 
   fetchProgress = tutorial => {
+    console.log(tutorial)
     return this.authFetch(`progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`)
   }
 

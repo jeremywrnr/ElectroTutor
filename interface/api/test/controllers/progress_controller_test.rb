@@ -3,19 +3,27 @@ require 'test_helper'
 class ProgressControllerTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = User.new(uname: 'test', password: 'test')
-    @user.save!
+    @user = User.create!(email: 'jo', password_digest: 'hn')
+    @params = { 'user_id': 2, 'tutorial_id': 2 }
   end
 
-  #test 'should get with auth' do
-    #puts @user.authenticate('test')
-    #get '/progresses'
-    #assert_response :success, @response.body
-  #end
+  def auth
+    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    { 'Authorization': "Bearer #{token}" }
+  end
 
-  #test 'should fail index without auth' do
-    #get '/progresses'
-    #assert_response :error, @response.body
-  #end
+  # BEGIN TESTS
+
+  test 'should fail getting progress without auth' do
+    post progresses_url, params: @params
+    assert_response :unprocessable_entity
+    post progresses_url, params: @params
+    assert_response :unprocessable_entity
+  end
+
+  test 'should get progress ok with auth' do
+    get progresses_url, headers: auth, params: @params
+    assert_response :success
+  end
 
 end
