@@ -74,7 +74,7 @@ class Tutorial extends Component {
   render() {
     const tutorial_is_active = !!this.state.tutorial
     return (
-      <Container>
+      <div>
         {
         tutorial_is_active
         ?
@@ -93,7 +93,7 @@ class Tutorial extends Component {
           <Button onClick={this.props.logout} content='Log Out' />
         </Container>
         }
-      </Container>
+      </div>
       )
 }
 }
@@ -122,12 +122,10 @@ class TutorialBody extends Component {
   }
 
   keyHandler = {
-    'next': () => {
-      this.nextStep()
-    },
-    'back': () => {
-      this.prevStep()
-    },
+    'next': 
+      this.nextStep,
+    'back':
+      this.prevStep,
   }
 
   // Generate functions for modifying step
@@ -137,19 +135,17 @@ class TutorialBody extends Component {
 
   incrementStep(inc) {
     return () => {
-      const api = this.state.api
-      let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
+      //const api = this.state.api
+      //let writeStep = (prevState, props) => { return {step: Math.min(Math.max(prevState.step + inc, 1), 4) } }
       //let writeStep = (prevState, props) => { return {step: prevState.step + inc } }
-
-      let saveStep = () => {
-        this.api.patchStep({ step_id: this.state.step })
-        .then(api.fetchStep)
-        .then(this.handleStepUpdate)
-        .then(api.fetchTest)
-        .then(this.handleTestUpdate)
-      }
-
-      this.setState(writeStep, saveStep)
+      //let saveStep = () => {
+      //this.api.patchStep({ step_id: this.state.step.id })
+      //.then(api.fetchStep)
+      //.then(this.handleStepUpdate)
+      //.then(api.fetchTest)
+      //.then(this.handleTestUpdate)
+      //}
+      //this.setState(writeStep, saveStep)
     }
   }
 
@@ -161,8 +157,8 @@ class TutorialBody extends Component {
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
-    .then(api.fetchStep)
-    .then(this.handleStepUpdate)
+    //.then(api.fetchStep)
+    //.then(this.handleStepUpdate)
     //.then(api.fetchTest)
     //.then(this.handleTestUpdate)
   }
@@ -237,7 +233,7 @@ class TutorialBody extends Component {
 
           middle={
           <Container>
-            <Button animated className="fade" secondary icon onClick={this.props.onMClick} >
+            <Button fluid animated className="fade" secondary icon onClick={this.props.onMClick} >
               <Button.Content visible>Compile</Button.Content>
               <Button.Content hidden>
                 <Icon name='play' />

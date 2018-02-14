@@ -27,6 +27,10 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
     tut = Tutorial.new(user_id: @user.id)
     @params[:tutorial_id] = tut.id
     get progresses_url, headers: auth, params: @params
+    assert_instance_of String, response.body["id"]
+    assert_instance_of String, response.body["tutorial_id"]
+    assert_instance_of String, response.body["step_id"]
+    assert_nil response.body["error"]
     assert_response :success
   end
 

@@ -57,7 +57,8 @@ class ProgressesController < ApplicationController
     if uid == current_user.id.to_s && id.nil? # progress id
       @progress = Progress.where(user_id: uid).where(tutorial_id: tid).first
       if @progress.nil? # create for current user/tut
-        @progress = current_user.progresses.create!(tutorial_id: tid)
+        step = Step.where(tutorial_id: tid).first # Set step to first step in tutorial
+        @progress = current_user.progresses.create!(tutorial_id: tid, step_id: step.id)
       end
 
     else # direct id param
