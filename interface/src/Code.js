@@ -34,6 +34,7 @@ class Code extends React.Component {
         onChange={this.props.onChange}
         showPrintMargin={true}
         showGutter={true}
+        wrapEnabled={true}
         bottom={ 0 }
         width={"100%"}
         highlightActiveLine={true}
@@ -41,11 +42,9 @@ class Code extends React.Component {
         ref={ (editor) => { this.aceEditor = editor } }
         editorProps={{
         $blockScrolling: Infinity,
-        setUseWrapMode: true,
         }}
         setOptions={{
         readOnly: true,
-        useWrapMode: true,
         showLineNumbers: true,
         tabSize: 2,
         }}/>
