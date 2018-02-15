@@ -21,9 +21,13 @@ class Code extends React.Component {
   static defaultProps = {
     code: '...',
     onChange: () => {},
+    readOnly: true,
   };
 
   render() {
+    const read = this.props.readOnly
+        //readOnly: {read},
+
     return (
       <AceEditor
         cursorStart={1}
@@ -44,7 +48,6 @@ class Code extends React.Component {
         $blockScrolling: Infinity,
         }}
         setOptions={{
-        readOnly: true,
         showLineNumbers: true,
         tabSize: 2,
         }}/>

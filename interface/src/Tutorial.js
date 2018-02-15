@@ -240,6 +240,7 @@ class TutorialBody extends Component {
             </Button>
             <Code id='middle'
               name="codeEditor"
+              readOnly={false}
               code={this.state.progress.code}
               onChange={this.handleCodeChange} />
           </Container>
