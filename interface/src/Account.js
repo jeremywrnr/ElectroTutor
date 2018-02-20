@@ -4,10 +4,10 @@
 
 import Host from './Host.js'
 
+const headers = new Headers({ 'Content-Type': 'application/json' })
 const dataKeyId = "tdtutorial.user.account"
 // TODO generalize to include tutorial data
-const dataKeyId2 = "tdtutorial.user.account"
-const headers = new Headers({ 'Content-Type': 'application/json' })
+//const dataKeyId2 = "tdtutorial.user.account"
 
 const Account = {
 

@@ -34,7 +34,7 @@ class Code extends React.Component {
         mode="c_cpp"
         cursorStart={1}
         bottom={ 0 }
-        fontSize={12}
+        fontSize={11}
         theme="github"
         showPrintMargin={true}
         showGutter={true}
