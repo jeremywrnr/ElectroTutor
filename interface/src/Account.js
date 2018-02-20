@@ -36,7 +36,7 @@ const Account = {
   },
 
   clearLocalCredentials() {
-    localStorage.setItem(dataKeyId, undefined)
+    localStorage.removeItem(dataKeyId)
   },
 
 }

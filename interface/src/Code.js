@@ -26,21 +26,21 @@ class Code extends React.Component {
 
   render() {
     const read = this.props.readOnly
-        //readOnly: {read},
 
     return (
       <AceEditor
-        cursorStart={1}
-        mode="c_cpp"
         name={this.props.name}
+        onChange={this.props.onChange}
+        mode="c_cpp"
+        cursorStart={1}
+        bottom={ 0 }
         fontSize={12}
         theme="github"
-        onChange={this.props.onChange}
         showPrintMargin={true}
         showGutter={true}
+        readOnly={read}
         wrapEnabled={true}
-        bottom={ 0 }
-        width={"100%"}
+        width="100%"
         highlightActiveLine={true}
         value={this.props.code}
         ref={ (editor) => { this.aceEditor = editor } }

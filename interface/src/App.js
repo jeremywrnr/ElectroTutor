@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Container } from 'semantic-ui-react'
+import { HotKeys } from 'react-hotkeys'
 import Tutorial from './Tutorial.js'
 import Account from './Account.js'
 import Login from './Login.js'
@@ -47,7 +49,7 @@ class App extends Component {
 
   componentWillMount () {
     const token = Account.getLocalCredentials()
-    if (token !== undefined) {
+    if (token) {
       this.setState({ user: token, isUserActive: true })
     }
   }
@@ -61,21 +63,21 @@ class App extends Component {
     const active = this.state.isUserActive
 
     return (
-      <div id="main">
-        {
-        active
-        ?
-        <Tutorial
-          user_token={this.state.user}
-          logout={this.logoutUser} />
-        :
-        <Login
-          title={this.state.title}
-          login={this.loginUser}
-          create={this.createUser}
-          eFlag={this.state.eFlag}
-          eMsg={this.state.eMsg} />
-        }
+      <div id="full">
+          {
+          active
+          ?
+          <Tutorial
+            user_token={this.state.user}
+            logout={this.logoutUser} />
+          :
+          <Login
+            title={this.state.title}
+            login={this.loginUser}
+            create={this.createUser}
+            eFlag={this.state.eFlag}
+            eMsg={this.state.eMsg} />
+          }
       </div>
       )
 }

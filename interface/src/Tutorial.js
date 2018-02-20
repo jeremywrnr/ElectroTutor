@@ -86,14 +86,14 @@ class Tutorial extends Component {
           tutorial={this.state.tutorial}
           api_auth={this.state.api.auth} />
         :
-        <Container>
+        <div className='pad'>
           <ListSelector
             title='Choose a Tutorial'
             onClick={this.setTutorial}
             items={this.state.tutorials} />
           <br/>
           <Button onClick={this.props.logout} content='Log Out' />
-        </Container>
+        </div>
         }
       </div>
       )
@@ -116,11 +116,6 @@ class TutorialBody extends Component {
       step:      {},
       tests: [],
     }
-  }
-
-  map = {
-    'next': ['up', 'right'],
-    'back': ['down', 'left'],
   }
 
   keyHandler = {
@@ -211,57 +206,65 @@ class TutorialBody extends Component {
     api.postCompile(code).then(update)
   }
 
+  // Key mapping
+  map = {
+    'next': ['right'],
+    'back': ['left'],
+  }
+
   render() {
     return (
-      <HotKeys keyMap={this.map} handlers={this.keyHandler}>
-        <Grid3
-          title={this.props.title}
-          tLink={this.props.tLink}
-          mHead="Editor"
-          left={
-          <Container>
-            <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
-            <Image src={this.state.step.image} />
-            <Segment raised content={this.state.step.description} />
-            <Button.Group widths='2'>
-              <Button content='Log Out' onClick={this.props.logout} />
-              <Button content='Exit Tutorial' onClick={this.props.unset} />
-            </Button.Group>
-          </Container>
-          }
-
-          middle={
-          <Container>
-            <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
-              <Button.Content visible>Compile</Button.Content>
-              <Button.Content hidden>
-                <Icon name='play' />
-              </Button.Content>
-            </Button>
-            <Code id='middle'
-              name="codeEditor"
-              readOnly={false}
-              code={this.state.progress.code}
-              onChange={this.handleCodeChange} />
-          </Container>
-          }
-
-          right={
-          <Container>
-            <Button.Group widths='2'>
-              <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-              <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-            </Button.Group>
-            { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
-            { this.state.compile && (this.state.compile.status
-            ?
-            <Code code={this.state.compile.output} />
-            :
-            <Code code={this.state.compile.error} />)
+      <HotKeys handlers={this.keyHandler} keyMap={this.map}>
+        <div className='pad'>
+          <Grid3
+            title={this.props.tutorial.title}
+            tLink={this.props.tLink}
+            mHead="Editor"
+            left={
+            <Container>
+              <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
+              <Button.Group widths='2'>
+                <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
+                <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+              </Button.Group>
+              <Image src={this.state.step.image} />
+              <Segment raised content={this.state.step.description} />
+              <Button.Group widths='2'>
+                <Button content='Log Out' onClick={this.props.logout} />
+                <Button content='Exit Tutorial' onClick={this.props.unset} />
+              </Button.Group>
+            </Container>
             }
-          </Container>
-          }
-        />
+
+            middle={
+            <Container>
+              <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
+                <Button.Content visible>Compile</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='play' />
+                </Button.Content>
+              </Button>
+              <Code id='middle'
+                name="codeEditor"
+                readOnly={false}
+                code={this.state.progress.code}
+                onChange={this.handleCodeChange} />
+            </Container>
+            }
+
+            right={
+            <Container>
+              { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
+              { this.state.compile && (this.state.compile.status
+              ?
+              <Code code={this.state.compile.output} />
+              :
+              <Code code={this.state.compile.error} />)
+              }
+            </Container>
+            }
+          />
+        </div>
       </HotKeys>
       )
   }

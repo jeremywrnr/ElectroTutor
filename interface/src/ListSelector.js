@@ -12,7 +12,7 @@ class ListSelector extends Component {
     const items = this.props.items
 
     return (
-      <Container>
+      <div>
         <Header size='huge'> {this.props.title} </Header>
         <Card.Group>
           { items.map(t => (
@@ -26,7 +26,7 @@ class ListSelector extends Component {
             key={t.id}
           /> ) ) }
         </Card.Group>
-      </Container>
+      </div>
       )
   }
 }
