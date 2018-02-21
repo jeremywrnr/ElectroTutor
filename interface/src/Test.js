@@ -33,7 +33,7 @@ class Test extends React.Component {
     let pass = this.props.pass
     return (
       <Message
-        header={'Task ' + this.props.i }
+        header={'Quick Check'}
         icon={ this.handlePassIcon(pass) }
         success={ pass === 'pass' }
         error={ pass === 'fail' }

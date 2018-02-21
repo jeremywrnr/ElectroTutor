@@ -19,3 +19,10 @@ div.full {
 div.pad {
     padding: 2em;
 }
+
+div.ui.raised.segment pre {
+    background: rgba(34, 36, 38, .1);
+    overflow: auto;
+    padding: 10px;
+}
+

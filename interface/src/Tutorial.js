@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
+import ReactMarkdown from 'react-markdown'
 import { HotKeys } from 'react-hotkeys'
 import $ from 'jquery' // which press
 //import ActionCable from 'actioncable'
@@ -137,12 +138,12 @@ class TutorialBody extends Component {
       Delay(() => {
         const api = this.state.api
         const pid = this.state.progress.id
-        const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 4)
+        const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 9)
         //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
 
         api.configure()
         .then(() => api.patchStep({ pid, step_id: step_pos }))
-        .then(() => api.fetchStep(step_pos))
+        .then(() => api.fetchStep(step_pos)) // TODO handle error, last step in tutorial
         .then(this.handleStepUpdate)
         .then(() => api.fetchTest(this.state.step.id))
         .then(this.handleTestUpdate)
@@ -228,7 +229,9 @@ class TutorialBody extends Component {
                 <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
               </Button.Group>
               <Image src={this.state.step.image} />
-              <Segment raised content={this.state.step.description} />
+              <Segment raised>
+                <ReactMarkdown source={this.state.step.description} />
+              </Segment>
               <Button.Group widths='2'>
                 <Button content='Log Out' onClick={this.props.logout} />
                 <Button content='Exit Tutorial' onClick={this.props.unset} />

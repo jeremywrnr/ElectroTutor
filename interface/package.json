@@ -12,6 +12,7 @@
     "react-ace": "^5.9.0",
     "react-dom": "^16.2.0",
     "react-hotkeys": "^0.10.0",
+    "react-markdown": "^3.2.1",
     "react-scripts": "1.1.0",
     "semantic-ui-css": "^2.2.14",
     "semantic-ui-react": "^0.77.2"

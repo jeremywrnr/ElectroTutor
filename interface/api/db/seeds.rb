@@ -16,14 +16,18 @@ seed_load(:tutorials).each do |t|
   tut = User.first.tutorials.create! t['tutorial']
 
   t['steps'].each_with_index do |s, i|
+    tests = s['tests']
+    s.delete 'tests'
     step = tut.steps.create! s
     step.position = i+1
     step.save!
 
-    !s['tests'].nil? && s['tests'].each_with_index do |x, i|
-      test = step.tests.create! x
-      test.position = i+1
-      test.save!
+    if !tests.nil?
+      tests.each_with_index do |x, j|
+        test = step.tests.create! x
+        test.position = j+1
+        test.save!
+      end
     end
   end
 end
