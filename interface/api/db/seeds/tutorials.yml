@@ -169,7 +169,14 @@
       title: Blinking the LED with Code
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180
       description: |
-        First, set the code to the
+        First, set the code to the specify the output pin:
+
+        ```
+        // also the internal pin
+        int led = 13;
+        ```
+
+        Then, configure that pin to be used as an output.
 
         ```
         // initialize the digital pin as an output.
