@@ -1,14 +1,149 @@
 -
-  title: Gyroscope Fun with NeoPixel Rings
-  description: In this project, we'll combine a gyroscope and NeoPixels to build a device that lights LEDs corresponding to the angle of inclination.
-  source: https://create.arduino.cc/projecthub/danionescu/gyroscope-fun-with-neopixel-ring-3a0b84
-  image: https://hackster.imgix.net/uploads/attachments/393480/main_rOhiO74qPh.png
+  tutorial:
+    title: Building a Button Blinker
+    source: https://learn.adafruit.com/adafruit-arduino-lesson-2-leds/blinking-the-led
+    image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/original/learn_arduino_overview.jpg?1396780031
+    description: In this lesson, you will learn how to change the brightness of an LED by using different values of resistor.
+  progress:
+    code: '// Edit me'
+  steps:
+    -
+      title: Introduction
+      image: https://hackster.imgix.net/uploads/attachments/393483/2017-12-10_16_29_40_SYvpi0cUi5.jpg
+      description: description
+      tests:
+        -
+          description: MyText
+          exec: MyString
+          image: MyString
+          output: MyText
+          pass: pass
+        -
+          description: MyText
+          exec: MyString
+          image: MyString
+          output: MyText
+          pass: fail
+        -
+          description: MyText
+          exec: MyString
+          image: MyString
+          output: MyText
+          pass: info
+
+
+
 -
-  title: How to Use Potentiometer - Arduino Tutorial
-  source: https://www.instructables.com/id/How-to-use-Potentiometer-Arduino-Tutorial
-  image: https://cdn.instructables.com/FP6/LC66/IA8WFQCA/FP6LC66IA8WFQCA.LARGE.jpg
-  description: >
-    For those beginning to learn about robotics, particularly in the area of
-    building circuits, you may have come across the question of how to change the
-    brightness of a LED, without having to keep switching parts. Quite simply,
-    the solution to this issue is a potentiometer.
+  tutorial:
+    title: Gyroscope Fun with NeoPixel Rings
+    source: https://create.arduino.cc/projecthub/danionescu/gyroscope-fun-with-neopixel-ring-3a0b84
+    image: https://hackster.imgix.net/uploads/attachments/393480/main_rOhiO74qPh.png
+    description: In this project, we'll combine a gyroscope and NeoPixels to build a device that lights LEDs corresponding to the angle of inclination.
+  progress:
+    code: '// Edit me'
+  steps:
+    -
+      title: Introduction
+      image: https://hackster.imgix.net/uploads/attachments/393483/2017-12-10_16_29_40_SYvpi0cUi5.jpg
+      description: >
+        In this tutorial, we'll use the MPU6050 gyroscope, a NeoPixel Ring and an
+        Arduino to build a device that lights LEDs corresponding to the angle of
+        inclination.
+
+        This is a simple and fun project and it's going to be assembled on a
+        breadboard. If you'll follow the steps you'll build what you saw in the
+        video. It's a good tutorial for learning about gyroscope and the NeoPixel
+        Ring.
+
+        I'm building this tutorial because of the interest i saw on some other
+        tutorial of min. In this tutorial i've replaced simple led's with a NeoPixel
+        Ring. The ring it's simpler to use through an Adafruit library and it's
+        definitely more spectacular.
+
+        So if you have these components lying around this is a great way to make use of
+        them, i'll try to take you step by step through building the device and also
+        explain how it works in the last step.
+    -
+      title: Things Required
+      image: https://hackster.imgix.net/uploads/attachments/404768/dsc00467_PoC89Gk3vq.jpg
+      description: >
+        Parts - 1. Arduino Pro Mini 328P, 2. Breadboard, 3. MPU6050 gyroscope, 4. 24
+        NeoPixel LED Ring, 5. 4 x AA battery pack with 4 batteries, 6. U-shape
+        jumper cables (optional). I've used these jumper cables because they look
+        better on the breadboard, and the leds are more visible this way. You can
+        find a box of 140 on ebay at about 4$. If you don't have these cables you
+        can replace them with dupont wires.
+
+        Tools - 1. USB to serial FTDI adapter FT232RL to programm the arduino pro
+        mini, 2. Arduino IDE.
+
+        Skills - 1. Soldering, 2. Basic arduino programming.
+    -
+      title: Assembly
+      image: https://hackster.imgix.net/uploads/attachments/393484/sketch_bb_sZWFCbWVne.png
+      description: >
+        I've attached the fritzing schematic in fzz format and a picture of it for easy visualization of the connections.
+        1. You need to solder 3 male pins on the back of the neopixel ring like shown in the picture
+        - solder the positive pin
+        - solder the ground
+        - solder the data input pin
+        2. Then the 4x battery holder should have a way of a connecting to the breadboard, a easy solution is to solder two male dupont wires to it's terminals.
+        3. Prepare the breadboard.
+        - place the neopixel ring, microcontroller and gyroscope on the breadboard like in the image
+        - place all the negative wires: to the microcontroller, neopixel ring, gyro
+        - place all the positive wires: to the microcontroller, neopixel ring, gyro
+        - place all the data wires:
+        * SDA and SCL from the to the microcontroller to the gyro
+        * pin D6 from the microcontroller to the neopixel ring
+        - double check all connections before powering
+        - optionally using duct tape, tape the battery pack on the back of the bradboard to hold it in place and make it more portable
+    -
+      title: The Code and the Calibration
+      image: https://hackster.imgix.net/uploads/attachments/393480/main_rOhiO74qPh.png
+      description: >
+        Upload the code: Using the FTDI adapter upload the code to the arduino.
+
+        Connect the power supply (batteries)
+
+        For calibration: The most important thing to calibrate here is "LED_OFFSET" constant. In my
+        example is 12. You need to adjust this from 0 to 23 so that after powering
+        the board the led will light in the direction you tilt the board.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+  tutorial:
+    title: How to Use Potentiometer - Arduino Tutorial
+    source: https://www.instructables.com/id/How-to-use-Potentiometer-Arduino-Tutorial
+    image: https://cdn.instructables.com/FP6/LC66/IA8WFQCA/FP6LC66IA8WFQCA.LARGE.jpg
+    description: >
+      For those beginning to learn about robotics, particularly in the area of
+      building circuits, you may have come across the question of how to change the
+      brightness of a LED, without having to keep switching parts. Quite simply,
+      the solution to this issue is a potentiometer.
+  progress:
+    code: '// Edit me'
+  steps:
+    -
+      title: Introduction
+      image: https://hackster.imgix.net/uploads/attachments/393483/2017-12-10_16_29_40_SYvpi0cUi5.jpg
+      description: description

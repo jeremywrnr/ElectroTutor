@@ -19,7 +19,7 @@ class Code extends React.Component {
   };
 
   static defaultProps = {
-    code: '...',
+    code: "void setup() {\n\n}\nvoid loop() {\n\n}",
     onChange: () => {},
     readOnly: true,
   };
