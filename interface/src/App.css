@@ -3,10 +3,6 @@
     width: 100vw;
 }
 
-#codeEditor {
-    height: 80vh !important;
-}
-
 img {
     max-width: 100%;
 }
@@ -24,4 +20,50 @@ div.ui.raised.segment pre {
     background: rgba(34, 36, 38, .1);
     overflow: auto;
     padding: 10px;
+}
+
+/* https://stackoverflow.com/questions/28785588 */
+
+div.flex-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 100%;
+}
+
+div.ace_editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+div.gutter.gutter-vertical {
+    background: rgba(34, 36, 38, .1);
+    z-index: 100000000;
+}
+
+div.gutter.gutter-vertical:hover { 
+    background: rgba(34, 36, 38, .2);
+}
+
+div.gutter.gutter-vertical:active { 
+    background: rgba(34, 36, 38, .3);
+}
+
+#status_container, #code_editor {
+    min-height: 100px;
+}
+#status_container {
+    background: cyan;
+}
+#code_editor {
+    background: pink;
+}
+
+.split {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }

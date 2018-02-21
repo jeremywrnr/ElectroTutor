@@ -7,8 +7,7 @@ import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 
 import 'brace';
-import 'brace/theme/github';
-import 'brace/theme/monokai';
+import 'brace/theme/tomorrow';
 import 'brace/mode/c_cpp';
 
 class Code extends React.Component {
@@ -22,6 +21,7 @@ class Code extends React.Component {
     code: "void setup() {\n\n}\nvoid loop() {\n\n}",
     onChange: () => {},
     onUpdate: () => {},
+    showLines: true,
     readOnly: true,
   };
 
@@ -41,12 +41,11 @@ class Code extends React.Component {
         cursorStart={1}
         bottom={ 0 }
         fontSize={11}
-        theme="github"
+        theme="tomorrow"
         showPrintMargin={true}
         showGutter={true}
         readOnly={this.props.readOnly}
         wrapEnabled={true}
-        width="100%"
         highlightActiveLine={true}
         value={this.props.code}
         ref={ (editor) => { this.aceEditor = editor } }
@@ -54,7 +53,7 @@ class Code extends React.Component {
         $blockScrolling: Infinity,
         }}
         setOptions={{
-        showLineNumbers: true,
+        showLineNumbers: this.props.showLines,
         tabSize: 2,
         }}/>
       );
