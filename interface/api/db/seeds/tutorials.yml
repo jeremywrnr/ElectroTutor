@@ -196,6 +196,24 @@
         -
           description: Do you see the light blinking?
           pass: info # pass, fail
+    -
+      title: Adding a Button Press
+      image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
+      description: |
+        Insert a button in between the resistor and the positive voltage power line connected to the LED.
+      tests:
+        -
+          description: Does the button press control whether the light is flashing or not?
+          pass: info # pass, fail
+    -
+      title: Congrats!
+      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
+      description: |
+        You have successfully completed the tutorial
+      tests:
+        -
+          description: You have successfully completed the tutorial
+          pass: pass
 
 
 

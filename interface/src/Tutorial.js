@@ -139,7 +139,7 @@ class TutorialBody extends Component {
       Delay(() => {
         const api = this.state.api
         const pid = this.state.progress.id
-        const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 9)
+        const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 11)
         //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
 
         api.configure()
