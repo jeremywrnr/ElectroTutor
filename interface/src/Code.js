@@ -9,24 +9,30 @@ import AceEditor from 'react-ace';
 import 'brace';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
-import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
 
 class Code extends React.Component {
   static propTypes = {
-    code: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    code: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     code: "void setup() {\n\n}\nvoid loop() {\n\n}",
     onChange: () => {},
+    onUpdate: () => {},
     readOnly: true,
   };
 
-  render() {
-    const read = this.props.readOnly
+  componentWillUpdate = e => {
+    this.props.onUpdate(e)
+  }
 
+  // Alias mounting flash with component flash
+  componentWillMount = this.componentWillUpdate
+
+  render() {
     return (
       <AceEditor
         name={this.props.name}
@@ -38,7 +44,7 @@ class Code extends React.Component {
         theme="github"
         showPrintMargin={true}
         showGutter={true}
-        readOnly={read}
+        readOnly={this.props.readOnly}
         wrapEnabled={true}
         width="100%"
         highlightActiveLine={true}

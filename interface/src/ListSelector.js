@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Container, Header } from 'semantic-ui-react'
+import { Card, Header } from 'semantic-ui-react'
 
 // TODO add some progress information for the user
 

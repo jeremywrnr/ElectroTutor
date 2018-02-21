@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Container } from 'semantic-ui-react'
-import { HotKeys } from 'react-hotkeys'
 import Tutorial from './Tutorial.js'
 import Account from './Account.js'
 import Login from './Login.js'
+
+//import { Container } from 'semantic-ui-react'
+//import { HotKeys } from 'react-hotkeys'
 
 import './App.css'
 

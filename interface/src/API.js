@@ -84,7 +84,11 @@ class API {
   }
 
   postCompile = code => {
-    return this.authFetch(`compile`, "POST", { code })
+    return this.authFetch(`compile`, "POST", { code, task: 'c_device' })
+  }
+
+  postUpload = code => {
+    return this.authFetch(`compile`, "POST", { code, task: 'device' })
   }
 }
 

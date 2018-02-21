@@ -112,6 +112,7 @@ class TutorialBody extends Component {
     super(props)
     this.state = {
       code:  'Initializing...',
+      compile: false,
       completed: false, // bool
       progress:  { code: '' },
       step:      {},
@@ -187,15 +188,19 @@ class TutorialBody extends Component {
   // This.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
   // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
 
-  handleCodeChange = code => {
+  handleCodeChange = code => { // user changes code
     const api = this.state.api
     Delay(() => {
       const newState = {progress: {...this.state.progress, code: code }}
       const update = () => this.setState(newState)
       const data = { code, pid: this.state.progress.id }
-      console.info('saving code...', data)
+      console.info('saving code...')
       api.patchCode(data).then(update)
     }, 500 );
+  }
+
+  handleCodeUpdate = e => { // UI changes code - flash
+    console.log(e)
   }
 
   handleCompile = e => {
@@ -203,8 +208,24 @@ class TutorialBody extends Component {
     console.info('compiling code...')
     const api = this.state.api
     const code = this.state.progress.code
+    this.setState({ compiling: true })
     const update = compile => this.setState({ compile })
     api.postCompile(code).then(update)
+    var div = $("#compileOutput");
+    div.animate({opacity: '0.2'}, 100);
+    div.animate({opacity: '1.0'}, 1000);
+  }
+
+  handleUpload = e => {
+    e.preventDefault()
+    console.info('uploading code...')
+    const api = this.state.api
+    const code = this.state.progress.code
+    const update = compile => this.setState({ compile })
+    api.postUpload(code).then(update)
+    var div = $("#compileOutput");
+    div.animate({opacity: '0.2'}, 100);
+    div.animate({opacity: '1.0'}, 1000);
   }
 
   // Key mapping
@@ -214,12 +235,15 @@ class TutorialBody extends Component {
   }
 
   render() {
+    const compile_finished = this.state.compile
+    const compile_success = compile_finished && this.state.compile.code === 0
+
     return (
       <HotKeys handlers={this.keyHandler} keyMap={this.map}>
         <div className='pad'>
           <Grid3
             title={this.props.tutorial.title}
-            tLink={this.props.tLink}
+            tLink={this.props.tutorial.source}
             mHead="Editor"
             left={
             <Container>
@@ -241,12 +265,20 @@ class TutorialBody extends Component {
 
             middle={
             <Container>
-              <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
-                <Button.Content visible>Compile</Button.Content>
-                <Button.Content hidden>
-                  <Icon name='play' />
-                </Button.Content>
-              </Button>
+              <Button.Group widths='2'>
+                <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
+                  <Button.Content visible>Compile</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name='play' />
+                  </Button.Content>
+                </Button>
+                <Button fluid animated className="fade" secondary icon onClick={this.handleUpload} >
+                  <Button.Content visible>Upload</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name='upload' />
+                  </Button.Content>
+                </Button>
+              </Button.Group>
               <Code id='middle'
                 name="codeEditor"
                 readOnly={false}
@@ -258,11 +290,11 @@ class TutorialBody extends Component {
             right={
             <Container>
               { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
-              { this.state.compile && (this.state.compile.status
-              ?
-              <Code code={this.state.compile.output} />
-              :
-              <Code code={this.state.compile.error} />)
+              { compile_finished && (
+              <div id='compileOutput'>
+                <Code code={compile_success ? this.state.compile.output : this.state.compile.error} />
+              </div>
+              )
               }
             </Container>
             }
