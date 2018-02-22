@@ -66,11 +66,11 @@ class TutorialBody extends Component {
   editorContainerIds = ["#code_editor", "#status_container"]
   editorNames = ["code", "compile"]
 
-  generatePaneSplit = (sizes=[85, 15]) => {
+  generatePaneSplit = (sizes=[90, 10]) => {
     const split = Split(this.editorContainerIds, {
       direction: 'vertical',
       gutterSize: 35,
-      minSize: 70,
+      minSize: 50,
       sizes: sizes,
       onDrag: this.updateEditHeight,
     })
