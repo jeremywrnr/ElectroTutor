@@ -66,11 +66,11 @@ class TutorialBody extends Component {
   editorContainerIds = ["#code_editor", "#status_container"]
   editorNames = ["code", "compile"]
 
-  generatePaneSplit = (sizes=[75, 25]) => {
+  generatePaneSplit = (sizes=[85, 15]) => {
     const split = Split(this.editorContainerIds, {
       direction: 'vertical',
       gutterSize: 35,
-      minSize: 100,
+      minSize: 70,
       sizes: sizes,
       onDrag: this.updateEditHeight,
     })
@@ -211,7 +211,8 @@ class TutorialBody extends Component {
             }
 
             middle={
-            <div className='full'>
+            <div className='arduino full'>
+
               <Button.Group widths='2'>
                 <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
                   <Button.Content visible>Compile</Button.Content>
@@ -237,16 +238,15 @@ class TutorialBody extends Component {
                     readOnly={false}
                     highlightActiveLine={true}
                     value={this.state.progress.code}
-                    onChange={this.handleCodeChange}
-                  />
+                    onChange={this.handleCodeChange} />
                 </div>
 
                 <div id="status_container">
                   <Code
-                    name="compile"
+                    name={"compile"}
                     mode={"c_cpp"}
                     value={compile_value}
-                  />
+                    theme={'gob'} />
                 </div>
               </div>
             </div>

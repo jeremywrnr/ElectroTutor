@@ -8,6 +8,8 @@ import AceEditor from 'react-ace';
 
 import 'brace';
 import 'brace/theme/tomorrow';
+import 'brace/theme/ambiance';
+import 'brace/theme/gob';
 import 'brace/mode/c_cpp';
 
 class Code extends React.Component {
@@ -22,9 +24,13 @@ class Code extends React.Component {
     onChange: function(){},
     onUpdate: function(){},
     mode: "text",
+    width: "100%",
+    fontSize: 12,
+    cursorStart: 1,
     readOnly: true,
     showLines: false,
     showGutter: false,
+    theme: 'tomorrow',
     wrapEnabled: true,
     showPrintMargin: true,
     highlightActiveLine: false,
@@ -50,14 +56,9 @@ class Code extends React.Component {
     return (
       <AceEditor
         {...this.props}
-        cursorStart={1}
-        fontSize={12}
-        width="100%"
-        theme="tomorrow"
         editorProps={editProps}
         setOptions={options}
-        ref={ (editor) => { this.aceEditor = editor } }
-      />
+        ref={ (editor) => { this.aceEditor = editor } } />
       );
   };
 }
