@@ -12,50 +12,52 @@ import 'brace/mode/c_cpp';
 
 class Code extends React.Component {
   static propTypes = {
-    onChange: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    code: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    onUpdate: PropTypes.func,
+    value: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
-    code: "void setup() {\n\n}\nvoid loop() {\n\n}",
-    onChange: () => {},
-    onUpdate: () => {},
-    showLines: true,
+    onChange: function(){},
+    onUpdate: function(){},
+    mode: "text",
     readOnly: true,
+    showLines: false,
+    showGutter: false,
+    wrapEnabled: true,
+    showPrintMargin: true,
+    highlightActiveLine: false,
+    value: "void setup() {\n\n}\n\nvoid loop() {\n\n}",
   };
 
-  componentWillUpdate = e => {
-    this.props.onUpdate(e)
-  }
-
   // Alias mounting flash with component flash
+  componentWillUpdate = e => this.props.onUpdate(e)
   componentWillMount = this.componentWillUpdate
 
   render() {
+    const editProps = {
+      $blockScrolling: Infinity,
+    }
+
+    const options = {
+      showLineNumbers: this.props.showLines,
+      //maxLines: Infinity,
+      scrollPastEnd: true,
+      tabSize: 2,
+    }
+
     return (
       <AceEditor
-        name={this.props.name}
-        onChange={this.props.onChange}
-        mode="c_cpp"
+        {...this.props}
         cursorStart={1}
-        bottom={ 0 }
-        fontSize={11}
+        fontSize={12}
+        width="100%"
         theme="tomorrow"
-        showPrintMargin={true}
-        showGutter={true}
-        readOnly={this.props.readOnly}
-        wrapEnabled={true}
-        highlightActiveLine={true}
-        value={this.props.code}
+        editorProps={editProps}
+        setOptions={options}
         ref={ (editor) => { this.aceEditor = editor } }
-        editorProps={{
-        $blockScrolling: Infinity,
-        }}
-        setOptions={{
-        showLineNumbers: this.props.showLines,
-        tabSize: 2,
-        }}/>
+      />
       );
   };
 }
