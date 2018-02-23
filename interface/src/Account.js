@@ -24,7 +24,7 @@ const Account = {
       method: 'POST',
       body: JSON.stringify(user),
       headers,
-    }).then(response => response.json())
+    })
   },
 
   setLocalCredentials(data) {

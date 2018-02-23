@@ -2,7 +2,6 @@ img {
     max-width: 100%;
 }
 #full {
-    background: linen;
     height: 100vh;
     width: 100vw;
 }
@@ -15,7 +14,7 @@ div.pad {
 }
 div.column-content {
     overflow-y: auto;
-        max-height: calc(100vh - 4em - 40px);
+        max-height: calc(100vh - 4em - 28px);
 }
 div.ui.raised.segment pre {
     background: rgba(34, 36, 38, .1);
@@ -72,6 +71,7 @@ div.arduino {
     /*border: 1px solid black;*/
 }
 div.arduino button.ui {
+    border-radius: 0px;
     background: #17a1a5;
     color: #006468;
 }

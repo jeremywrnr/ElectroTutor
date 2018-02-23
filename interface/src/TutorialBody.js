@@ -45,21 +45,22 @@ class TutorialBody extends Component {
   // Generate functions for modifying step
 
   incrementStep = inc => {
-    return throttle(inc => {
+    return throttle(() => {
       const api = this.state.api
       const pid = this.state.progress.id
-      const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 11)
+      let step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 11)
       //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
 
-      console.log(step_pos)
+      console.log('step', step_pos)
+      if (!step_pos) step_pos = 1
 
-      api.configure()
-      .then(() => api.patchStep({ pid, step_id: step_pos }))
-      .catch(console.error) // TODO handle tutorial bounds
-      .then(() => api.fetchStep(step_pos))
-      .then(this.handleStepUpdate)
-      .then(() => api.fetchTest(this.state.step.id))
-      .then(this.handleTestUpdate)
+        api.configure()
+        .then(() => api.patchStep({ pid, step_id: step_pos }))
+        .catch(console.error) // TODO handle tutorial bounds
+        .then(() => api.fetchStep(step_pos))
+        .then(this.handleStepUpdate)
+        .then(() => api.fetchTest(this.state.step.id))
+        .then(this.handleTestUpdate)
     }, 100 )
   }
 
@@ -204,10 +205,6 @@ class TutorialBody extends Component {
             left={
             <Container className="full" >
               <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
-              <Button.Group widths='2'>
-                <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-                <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-              </Button.Group>
               <Image src={this.state.step.image} />
               <Segment raised>
                 <ReactMarkdown source={this.state.step.description} />
@@ -243,6 +240,8 @@ class TutorialBody extends Component {
                     name="code"
                     mode={"c_cpp"}
                     readOnly={false}
+                    showLines={true}
+                    showGutter={true}
                     highlightActiveLine={true}
                     value={this.state.progress.code}
                     onChange={this.handleCodeChange} />
@@ -274,10 +273,7 @@ class TutorialBody extends Component {
               (
               <Segment>
                 <Test head={'No checks.'} task={'Continue once you are ready!'} pass={'info'}/>
-                <Button.Group widths='2'>
-                  <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-                  <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-                </Button.Group>
+                <Button fluid labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
               </Segment>
               )
               }
@@ -296,6 +292,4 @@ class TutorialBody extends Component {
       };
 
       //mHead="Editor"
-      //showLines={true}
-      //showGutter={true}
       export default TutorialBody

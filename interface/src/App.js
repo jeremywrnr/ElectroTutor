@@ -24,21 +24,29 @@ class App extends Component {
     Account.createUser(newUser).then(res => {
       res.ok ?
         this.loginUser({ user, pass }) :
-        this.setState({ eFlag: true, eMsg: res.statusText })
+        this.handleError(res)
     })
   }
 
   loginUser = ({ user, pass }) => {
     const newUser = { auth: { email: user, password: pass } }
-    Account.setServerCredentials(newUser).then(res => {
-      if (res.jwt) {
-        Account.setLocalCredentials(res.jwt)
-        this.setState({ user: res.jwt, isUserActive: true })
+    Account.setServerCredentials(newUser).then(req => {
+      if (req.ok) {
+        req.json().then(res => {
+          if (res.jwt) {
+            Account.setLocalCredentials(res.jwt)
+            this.setState({ user: res.jwt, isUserActive: true })
+          } else {
+            this.handleError(res)
+          }
+        });
       } else {
-        this.setState({ eFlag: true, eMsg: res.statusText })
+        this.handleError(req)
       }
     })
   }
+
+  handleError = r => this.setState({ eFlag: true, eMsg: r.statusText })
 
   logoutUser = () => {
     this.setState({ isUserActive: false, eFlag: false })
@@ -62,20 +70,20 @@ class App extends Component {
 
     return (
       <div id="full">
-          {
-          active
-          ?
-          <Tutorial
-            user_token={this.state.user}
-            logout={this.logoutUser} />
-          :
-          <Login
-            title={this.state.title}
-            login={this.loginUser}
-            create={this.createUser}
-            eFlag={this.state.eFlag}
-            eMsg={this.state.eMsg} />
-          }
+        {
+        active
+        ?
+        <Tutorial
+          user_token={this.state.user}
+          logout={this.logoutUser} />
+        :
+        <Login
+          title={this.state.title}
+          login={this.loginUser}
+          create={this.createUser}
+          eFlag={this.state.eFlag}
+          eMsg={this.state.eMsg} />
+        }
       </div>
       )
 }
