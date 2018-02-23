@@ -9,6 +9,7 @@ import AceEditor from 'react-ace';
 import 'brace';
 import 'brace/theme/tomorrow';
 import 'brace/theme/ambiance';
+import 'brace/theme/terminal';
 import 'brace/theme/gob';
 import 'brace/mode/c_cpp';
 
@@ -26,7 +27,7 @@ class Code extends React.Component {
     mode: "text",
     width: "100%",
     fontSize: 12,
-    cursorStart: 1,
+    //cursorStart: 1,
     readOnly: true,
     showLines: false,
     showGutter: false,

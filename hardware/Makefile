@@ -1,14 +1,14 @@
 # Convenience link layer between server and hw
 
 device:
-	cd device && platformio run -e uno -t upload
+	@cd device && platformio run -e uno -t upload
 tester:
-	cd tester && platformio run -e uno -t upload
+	@cd tester && platformio run -e uno -t upload
 
 c_device:
-	cd device && platformio run -e uno
+	@cd device && platformio run -e uno
 c_tester:
-	cd tester && platformio run -e uno
+	@cd tester && platformio run -e uno
 
 d_reset:
 	@cp -v backup/device.cpp device/src/main.cpp

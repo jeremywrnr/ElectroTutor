@@ -4,10 +4,12 @@ import $ from 'jquery' // animations
 import ReactMarkdown from 'react-markdown'
 import { HotKeys } from 'react-hotkeys'
 import * as ace from 'brace';
+import { throttle } from 'lodash'
 import Split from 'split.js'
 
 //import ActionCable from 'actioncable'
 
+import AccordionStyled from './AccordionStyled.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
 import Code from './Code.js'
@@ -152,21 +154,21 @@ class TutorialBody extends Component {
     div.animate({opacity: '1.0'}, 500);
   }
 
-  handleServerCode = (e, handler, msg) => {
+  handleServerCode = throttle((e, handler, msg) => {
     e.preventDefault()
     console.info(msg)
     const code = this.state.progress.code
-    this.setState({ compile_loading: true })
+    this.setState({ compile_loading: msg })
     const finish = compile => this.setState({ compile, compile_loading: false })
     handler(code).then(finish).then(this.handleCodeUpdate)
-  }
+  }, 2000)
 
   handleCompile = e => {
-    this.handleServerCode(e, this.state.api.postCompile, 'compiling code...')
+    this.handleServerCode(e, this.state.api.postCompile, 'Compiling sketch...')
   }
 
   handleUpload = e => {
-    this.handleServerCode(e, this.state.api.postUpload, 'uploading code...')
+    this.handleServerCode(e, this.state.api.postUpload, 'Uploading code...')
   }
 
   // Key mapping
@@ -176,12 +178,12 @@ class TutorialBody extends Component {
   }
 
   render() {
-    let compile_value;
+    let compile_value, compile_success;
     if (this.state.compile_loading) {
-      compile_value = "LOADING..."
+      compile_value = this.state.compile_loading
     } else {
       const compile_finished = this.state.compile
-      const compile_success = compile_finished && this.state.compile.code === 0
+      compile_success = compile_finished && this.state.compile.code === 0
       compile_value = (compile_success ? this.state.compile.output : this.state.compile.error) || ''
     }
 
@@ -191,9 +193,8 @@ class TutorialBody extends Component {
           <Grid3
             title={this.props.tutorial.title}
             tLink={this.props.tutorial.source}
-            mHead="Editor"
             left={
-            <Container className="full">
+            <Container className="full" >
               <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
               <Button.Group widths='2'>
                 <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
@@ -214,16 +215,16 @@ class TutorialBody extends Component {
             <div className='arduino full'>
 
               <Button.Group widths='2'>
-                <Button fluid animated className="fade" secondary icon onClick={this.handleCompile} >
-                  <Button.Content visible>Compile</Button.Content>
-                  <Button.Content hidden>
-                    <Icon name='play' />
+                <Button fluid animated className="fade" icon onClick={this.handleCompile} >
+                  <Button.Content visible>
+                    <Icon name='check' />
                   </Button.Content>
+                  <Button.Content hidden>Verify</Button.Content>
                 </Button>
-                <Button fluid animated className="fade" secondary icon onClick={this.handleUpload} >
-                  <Button.Content visible>Upload</Button.Content>
-                  <Button.Content hidden>
-                    <Icon name='upload' />
+                <Button fluid animated className="fade" icon onClick={this.handleUpload} >
+                  <Button.Content hidden>Upload</Button.Content>
+                  <Button.Content visible>
+                    <Icon name='arrow right' />
                   </Button.Content>
                 </Button>
               </Button.Group>
@@ -246,7 +247,7 @@ class TutorialBody extends Component {
                     name={"compile"}
                     mode={"c_cpp"}
                     value={compile_value}
-                    theme={'gob'} />
+                    theme={compile_success ? 'gob' : 'terminal'} />
                 </div>
               </div>
             </div>
@@ -254,7 +255,27 @@ class TutorialBody extends Component {
 
             right={
             <Container>
+              { this.state.tests.length ?
+              (
+              <Segment>
+
               { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
+
+              <AccordionStyled />
+              </Segment>
+              )
+              :
+              (
+              <Segment>
+              <Test task={'No tests - continue once you are ready!'} pass={'info'}/>
+              <Button.Group widths='2'>
+                <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
+                <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+              </Button.Group>
+              </Segment>
+              )
+              }
+
               <div id="tutorial-menu">
                 <Button content='Exit Tutorial' onClick={this.props.unset} />
                 <Button content='Log Out' onClick={this.props.logout} />
@@ -264,8 +285,9 @@ class TutorialBody extends Component {
           />
         </div>
       </HotKeys>
-      )
-      }
-      }
+      );
+      };
+      };
 
+      //mHead="Editor"
       export default TutorialBody

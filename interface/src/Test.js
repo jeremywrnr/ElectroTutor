@@ -18,15 +18,10 @@ class Test extends React.Component {
 
   //className={ pass ? 'success' : 'info' }
 
-  handlePassIcon(p) {
-    if (p === 'pass')
-      return 'check'
-    else if (p === 'fail')
-      return 'info'
-    else if (p === 'info')
-      return false
-    else
-      return 'bug'
+  handlePassIcon = {
+    pass: 'check',
+    fail: 'info',
+    info: false,
   }
 
   render() {
@@ -34,7 +29,7 @@ class Test extends React.Component {
     return (
       <Message
         header={'Quick Check'}
-        icon={ this.handlePassIcon(pass) }
+        icon={ this.handlePassIcon[pass] }
         success={ pass === 'pass' }
         error={ pass === 'fail' }
         content={this.props.task}

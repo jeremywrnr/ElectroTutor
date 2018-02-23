@@ -14,7 +14,7 @@ div.pad {
 }
 div.column-content {
     overflow-y: auto;
-    max-height: calc(100vh - 70px);
+        max-height: calc(100vh - 4em - 40px);
 }
 div.ui.raised.segment pre {
     background: rgba(34, 36, 38, .1);
@@ -41,13 +41,10 @@ div.flex-container {
     max-width: 100%;
 }
 div.gutter.gutter-vertical {
-    background: rgba(34, 36, 38, .1);
+    background: #17a1a5;
 }
 div.gutter.gutter-vertical:hover {
-    background: rgba(34, 36, 38, .3);
-}
-div.gutter.gutter-vertical:active {
-    background: rgba(34, 36, 38, .3);
+    background: #006468;
 }
 
 
@@ -66,4 +63,15 @@ div.ace_editor {
     right: 0;
     bottom: 0;
     left: 0;
+}
+
+/*ARDUINO*/
+
+div.arduino button.ui {
+    background: #17a1a5;
+    color: #006468;
+}
+div.arduino button.ui:hover {
+    background: #006468;
+    color: white;
 }
