@@ -2,6 +2,6 @@
 
 stty cols 80 # width
 
-source activate py2
+source activate py27
 
 rails server -p 3001
