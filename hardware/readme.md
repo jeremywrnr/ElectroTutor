@@ -2,6 +2,10 @@
 
 To program the Arduino Unos, we use [the platformio tool][pio].
 
+You can install this with conda and the environment file:
+
+    conda env create -f environment.yml
+
 - advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
 - pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
 

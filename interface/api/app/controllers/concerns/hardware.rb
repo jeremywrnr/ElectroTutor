@@ -15,6 +15,16 @@ module Hardware
     File.open(out, 'w') { |f| f.write code }
 
     # stdout, stderr, status
-    yield Open3.capture3("cd #{@@hw_path} && make #{task}")
+    yield Open3.popen3("cd #{@@hw_path} && make #{task}")
+  end
+
+  # TODO timeout template if process is hanging
+
+  def timeout
+    if no_block_given?
+      raise "Must give block"
+    else
+      yield self
+    end
   end
 end

@@ -2,4 +2,6 @@
 
 stty cols 80 # width
 
+source activate py2
+
 rails server -p 3001

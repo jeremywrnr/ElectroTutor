@@ -17,11 +17,14 @@ t_reset:
 reset: d_reset t_reset
 
 d_read:
-	echo todo
+	@cd device && platformio device monitor
 t_read:
+	@cd tester && platformio device monitor
+d_close:
 	echo todo
-close:
+t_close:
 	echo todo
+close: d_close t_close
 
 travis: reset
 	cd device && platformio run -e uno
