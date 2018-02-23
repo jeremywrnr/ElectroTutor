@@ -51,7 +51,7 @@ class API {
   }
 
   fetchStep = step => {
-    return this.authFetch(`steps/${step}`)
+    return this.stepCheck(step) && this.authFetch(`steps/${step}`)
   }
 
   fetchTest = step => {
@@ -76,7 +76,7 @@ class API {
   }
 
   patchStep = ({ pid, step_id }) => {
-    return this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
+    return this.stepCheck(step_id) && this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
   }
 
   patchCode = ({ pid, code }) => {
@@ -89,6 +89,15 @@ class API {
 
   postUpload = code => {
     return this.authFetch(`compile`, "POST", { code, task: 'device' })
+  }
+
+  /**
+   * Parameter helpers
+   */
+
+  stepCheck = step => {
+    const s = Number(step)
+    return typeof(s) === 'number' && Number.isInteger(s)
   }
 }
 

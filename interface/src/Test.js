@@ -8,12 +8,14 @@ import { Message } from 'semantic-ui-react'
 
 class Test extends React.Component {
   static propTypes = {
-    task: PropTypes.string.isRequired,
+    task: PropTypes.string,
+    head: PropTypes.string,
   };
 
   static defaultProps = {
     pass: undefined,
-    task: '...',
+    head: 'Quick Check',
+    task: '',
   };
 
   //className={ pass ? 'success' : 'info' }
@@ -28,7 +30,7 @@ class Test extends React.Component {
     let pass = this.props.pass
     return (
       <Message
-        header={'Quick Check'}
+        header={this.props.head}
         icon={ this.handlePassIcon[pass] }
         success={ pass === 'pass' }
         error={ pass === 'fail' }

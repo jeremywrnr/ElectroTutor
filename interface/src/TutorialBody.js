@@ -28,8 +28,8 @@ class TutorialBody extends Component {
       compile: false,
       completed: false, // bool
       progress:  { code: '' },
-      step: {},
       tests: [],
+      step: {},
     }
   }
 
@@ -44,26 +44,27 @@ class TutorialBody extends Component {
 
   // Generate functions for modifying step
 
+  incrementStep = inc => {
+    return throttle(inc => {
+      const api = this.state.api
+      const pid = this.state.progress.id
+      const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 11)
+      //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
+
+      console.log(step_pos)
+
+      api.configure()
+      .then(() => api.patchStep({ pid, step_id: step_pos }))
+      .catch(console.error) // TODO handle tutorial bounds
+      .then(() => api.fetchStep(step_pos))
+      .then(this.handleStepUpdate)
+      .then(() => api.fetchTest(this.state.step.id))
+      .then(this.handleTestUpdate)
+    }, 100 )
+  }
+
   nextStep = this.incrementStep(+1)
   prevStep = this.incrementStep(-1)
-
-  incrementStep(inc) {
-    return () => {
-      Delay(() => {
-        const api = this.state.api
-        const pid = this.state.progress.id
-        const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 11)
-        //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
-
-        api.configure()
-        .then(() => api.patchStep({ pid, step_id: step_pos }))
-        .then(() => api.fetchStep(step_pos)) // TODO handle error, last step in tutorial
-        .then(this.handleStepUpdate)
-        .then(() => api.fetchTest(this.state.step.id))
-        .then(this.handleTestUpdate)
-      }, 50 );
-    }
-  }
 
   editorContainerIds = ["#code_editor", "#status_container"]
   editorNames = ["code", "compile"]
@@ -102,6 +103,7 @@ class TutorialBody extends Component {
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
+    .then(this.handleStepError)
     .then(() => api.fetchStep(this.state.progress.step_id)) // MRU step
     .then(this.handleStepUpdate)
     .then(() => api.fetchTest(this.state.step.id))
@@ -122,6 +124,12 @@ class TutorialBody extends Component {
 
   handleStepUpdate = step => {
     this.setState({ step })
+  }
+
+  handleStepError = () => {
+    if (!this.state.progress.step) {
+      this.setState({ step: 1 })
+    }
   }
 
   handleTestUpdate = tests => {
@@ -234,8 +242,6 @@ class TutorialBody extends Component {
                   <Code
                     name="code"
                     mode={"c_cpp"}
-                    showGutter={true}
-                    showLines={true}
                     readOnly={false}
                     highlightActiveLine={true}
                     value={this.state.progress.code}
@@ -259,19 +265,19 @@ class TutorialBody extends Component {
               (
               <Segment>
 
-              { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
+                { this.state.tests.map( (t, i) => { return <Test task={t.description} pass={t.pass} output={t.output} key={i+1} i={i+1} /> }) }
 
-              <AccordionStyled />
+                <AccordionStyled />
               </Segment>
               )
               :
               (
               <Segment>
-              <Test task={'No tests - continue once you are ready!'} pass={'info'}/>
-              <Button.Group widths='2'>
-                <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-                <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-              </Button.Group>
+                <Test head={'No checks.'} task={'Continue once you are ready!'} pass={'info'}/>
+                <Button.Group widths='2'>
+                  <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
+                  <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+                </Button.Group>
               </Segment>
               )
               }
@@ -290,4 +296,6 @@ class TutorialBody extends Component {
       };
 
       //mHead="Editor"
+      //showLines={true}
+      //showGutter={true}
       export default TutorialBody
