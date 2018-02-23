@@ -219,6 +219,7 @@ class TutorialBody extends Component {
 
             middle={
             <div id='arduino' className='arduino full'>
+
               <Button.Group widths='2'>
                 <Button fluid animated className="fade" icon onClick={this.handleCompile} >
                   <Button.Content visible>
@@ -259,33 +260,35 @@ class TutorialBody extends Component {
             }
 
             right={
-            <Container>
-              <Segment basic>
-                {
-                this.state.tests.length > 0
-                ?
-                <AccordionStyled tests={this.state.tests} />
-                :
-                <div>
-                  <Test head={'No checks.'} task={'Continue once you are ready!'} pass={'info'}/>
-                  <Button fluid labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-                </div>
-                }
-              </Segment>
-
-              <div id="tutorial-menu">
-                <Button content='Exit Tutorial' onClick={this.props.unset} />
-                <Button content='Log Out' onClick={this.props.logout} />
-              </div>
-            </Container>
+            { this.state.tests.length
+            ?
+            (
+            <Segment>
+              <AccordionStyled tests={this.state.tests} />
+            </Segment>
+            )
+            :
+            (
+            <Segment>
+              <Test head={'No checks.'} task={'Continue once you are ready!'} pass={'info'}/>
+              <Button fluid labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+            </Segment>
+            )
             }
-          />
-        </div>
-      </HotKeys>
-      );
-};
-};
 
-//mHead="Editor"
-//<TestGroup ={this.state.tests} />
-export default TutorialBody
+            <div id="tutorial-menu">
+              <Button content='Exit Tutorial' onClick={this.props.unset} />
+              <Button content='Log Out' onClick={this.props.logout} />
+            </div>
+          </Container>
+          }
+        />
+      </div>
+    </HotKeys>
+    );
+      };
+      };
+
+      //mHead="Editor"
+      //<TestGroup ={this.state.tests} />
+      export default TutorialBody

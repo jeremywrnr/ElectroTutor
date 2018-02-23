@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20180207164107) do
   create_table "tests", force: :cascade do |t|
     t.integer "step_id"
     t.integer "position"
+    t.text "title"
     t.text "description"
     t.string "image"
     t.text "output"

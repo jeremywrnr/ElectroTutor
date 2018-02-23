@@ -3,6 +3,7 @@ class CreateTests < ActiveRecord::Migration[5.1]
     create_table :tests do |t|
       t.belongs_to :step, index: true
       t.integer :position
+      t.text :title
       t.text :description
       t.string :image
 

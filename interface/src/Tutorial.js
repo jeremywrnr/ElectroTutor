@@ -76,11 +76,12 @@ class Tutorial extends Component {
    */
 
   render() {
-    const tutorial_is_active = !!this.state.tutorial
+    const is_active = !!this.state.user && this.state.tutorial
+
     return (
       <div className='full'>
         {
-        tutorial_is_active
+        is_active
         ?
         <TutorialBody
           logout={this.props.logout}

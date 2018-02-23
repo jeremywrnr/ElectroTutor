@@ -12,6 +12,9 @@ div.full {
 div.pad {
     padding: 2em;
 }
+div.margin-pad {
+    margin: 1em;
+}
 div.column-content {
     overflow-y: auto;
         max-height: calc(100vh - 4em - 28px);
@@ -67,15 +70,15 @@ div.ace_editor {
 
 /*ARDUINO*/
 
-div.arduino {
-    /*border: 1px solid black;*/
+div#arduino button.ui {
+    border-radius: 0 !important;
 }
 div.arduino button.ui {
-    border-radius: 0px;
     background: #17a1a5;
     color: #006468;
 }
-div.arduino button.ui:hover {
+div.arduino button.ui:hover,
+div.arduino button.ui:focus {
     background: #006468;
     color: white;
 }

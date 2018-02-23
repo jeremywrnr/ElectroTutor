@@ -42,9 +42,11 @@
         Turning out the lights might help even more.
       tests:
         -
+          title: Positive V => Longer Leg
           description: Make sure to connect the LED's longer leg with the positive voltage!
           pass: info # pass, fail
         -
+          title: LED Glowing
           description: Is the LED glowing as we would expect?
           image: https://cdn-learn.adafruit.com/assets/assets/000/002/170/medium640/learn_arduino_overview.jpg?1396780130
           pass: info # pass, fail
@@ -111,8 +113,9 @@
 
       tests:
         -
+          title: Blinking Light?
           description: Do you see the light blinking?
-          pass: info # pass, fail
+          pass: fail # pass, fail
     -
       title: Adding a Button Press
       image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
@@ -126,10 +129,10 @@
       title: Congrats!
       image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
       description: |
-        You have successfully completed the tutorial
+        You have successfully completed the tutorial!
       tests:
         -
-          description: You have successfully completed the tutorial
+          description: You have successfully completed the tutorial!
           pass: pass
 
 
