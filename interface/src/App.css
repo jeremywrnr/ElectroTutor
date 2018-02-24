@@ -19,7 +19,7 @@ div.column-content {
     overflow-y: auto;
         max-height: calc(100vh - 4em - 28px);
 }
-div.ui.raised.segment pre {
+div.ui.segment pre {
     background: rgba(34, 36, 38, .1);
     overflow: auto;
     padding: 10px;
@@ -40,7 +40,7 @@ div.split {
     box-sizing: border-box;
 }
 div.flex-container {
-    max-height: calc(100% - 40px);
+    max-height: calc(100% - 36px);
     max-width: 100%;
 }
 div.gutter.gutter-vertical {
@@ -53,6 +53,11 @@ div.gutter.gutter-vertical:hover {
 
 /*EDITOR*/
 
+#browser {
+    height: 100%;
+    padding: 2rem 0 0 0;
+    border-bottom: 0;
+}
 #status_container, #code_editor {
     position: relative;
 }
@@ -70,15 +75,15 @@ div.ace_editor {
 
 /*ARDUINO*/
 
-div#arduino button.ui {
+div#arduino div.ui.button {
     border-radius: 0 !important;
 }
-div.arduino button.ui {
+div.arduino div.ui.button,
+div.arduino div.ui.button:focus {
     background: #17a1a5;
     color: #006468;
 }
-div.arduino button.ui:hover,
-div.arduino button.ui:focus {
+div.arduino div.ui.button:hover {
     background: #006468;
     color: white;
 }

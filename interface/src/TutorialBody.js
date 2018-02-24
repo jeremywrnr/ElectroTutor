@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
+import { Browser } from 'react-window-ui'
 import $ from 'jquery' // animations
 import ReactMarkdown from 'react-markdown'
 import { HotKeys } from 'react-hotkeys'
@@ -219,42 +220,44 @@ class TutorialBody extends Component {
 
             middle={
             <div id='arduino' className='arduino full'>
-              <Button.Group widths='2'>
-                <Button fluid animated className="fade" icon onClick={this.handleCompile} >
-                  <Button.Content visible>
-                    <Icon name='check' />
-                  </Button.Content>
-                  <Button.Content hidden>Verify</Button.Content>
-                </Button>
-                <Button fluid animated className="fade" icon onClick={this.handleUpload} >
-                  <Button.Content hidden>Upload</Button.Content>
-                  <Button.Content visible>
-                    <Icon name='arrow right' />
-                  </Button.Content>
-                </Button>
-              </Button.Group>
+              <Browser id="browser">
+                <Button.Group widths='2'>
+                  <Button as={'div'}fluid animated className="fade" icon onClick={this.handleCompile} >
+                    <Button.Content visible>
+                      <Icon name='check' />
+                    </Button.Content>
+                    <Button.Content hidden>Verify</Button.Content>
+                  </Button>
+                  <Button as={'div'}fluid animated className="fade" icon onClick={this.handleUpload} >
+                    <Button.Content hidden>Upload</Button.Content>
+                    <Button.Content visible>
+                      <Icon name='arrow right' />
+                    </Button.Content>
+                  </Button>
+                </Button.Group>
 
-              <div className="full flex-container">
-                <div id="code_editor">
-                  <Code
-                    name="code"
-                    mode={"c_cpp"}
-                    readOnly={false}
-                    showLines={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    value={this.state.progress.code}
-                    onChange={this.handleCodeChange} />
-                </div>
+                <div className="full flex-container">
+                  <div id="code_editor">
+                    <Code
+                      name="code"
+                      mode={"c_cpp"}
+                      readOnly={false}
+                      showLines={true}
+                      showGutter={true}
+                      highlightActiveLine={true}
+                      value={this.state.progress.code}
+                      onChange={this.handleCodeChange} />
+                  </div>
 
-                <div id="status_container">
-                  <Code
-                    name={"compile"}
-                    mode={"c_cpp"}
-                    value={compile_value}
-                    theme={compile_success ? 'gob' : 'terminal'} />
+                  <div id="status_container">
+                    <Code
+                      name={"compile"}
+                      mode={"c_cpp"}
+                      value={compile_value}
+                      theme={compile_success ? 'gob' : 'terminal'} />
+                  </div>
                 </div>
-              </div>
+              </Browser>
             </div>
             }
 
