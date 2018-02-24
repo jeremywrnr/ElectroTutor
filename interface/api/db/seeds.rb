@@ -31,12 +31,3 @@ seed_load(:tutorials).each do |t|
     end
   end
 end
-
-=begin
-# todo - make progress data load for each user.
-seed_load(:progress_data).each_with_index do |x, i|
-  data = Progress.first.progress_data.build x
-  data.test_id = i+1
-  data.save!
-end
-=end

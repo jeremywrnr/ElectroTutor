@@ -1,51 +1,65 @@
 class ProgressDataController < ApplicationController
-  before_action :set_test, only: [:show, :update, :destroy]
+  before_action :set_progress_data, only: [:show, :update, :destroy]
 
   # GET /progress_data
   def index
-    @progress_data = Test.all
+    @progress_data = ProgressDatum.all
 
     render json: @progress_data
   end
 
   # GET /progress_data/1
   def show
-    render json: @test
+    render json: @progress_data
   end
 
   # POST /progress_data
   def create
-    @test = Test.new(test_params)
+    @progress_data = ProgressDatum.new(progress_data_params)
 
-    if @test.save
-      render json: @test, status: :created, location: @test
+    if @progress_data.save
+      render json: @progress_data, status: :created, location: @progress_data
     else
-      render json: @test.errors, status: :unprocessable_entity
+      render json: @progress_data.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /progress_data/1
   def update
-    if @test.update(test_params)
-      render json: @test
+    if @progress_data.update(progress_data_params)
+      render json: @progress_data
     else
-      render json: @test.errors, status: :unprocessable_entity
+      render json: @progress_data.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /progress_data/1
   def destroy
-    @test.destroy
+    @progress_data.destroy
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_test
-    @test = Test.find(params[:id])
+
+  def set_progress
+    id = params['id']
+    uid = params['user_id']
+    tid = params['progress_id']
+
+    if uid == current_user.id.to_s && id.nil? # progress id
+      @progress_datum = Progress.where(user_id: uid).where(tutorial_id: tid).first
+      if @progress.nil? # create for current user/tut
+        step = Step.where(tutorial_id: tid).first # Set step to first step in tutorial
+        @progress_datum = current_user.progresses.create!(tutorial_id: tid, step_id: step.id)
+      end
+
+    else # direct id param
+      @progress_datum = Progress.find(id)
+
+    end
   end
 
   # Only allow a trusted parameter "white list" through.
-  def test_params
-    params.require(:test).permit(:test_id, :progress_id)
+  def progress_data_params
+    params.require(:progress_datum).permit(:progress_datum_id, :progress_id)
   end
 end
