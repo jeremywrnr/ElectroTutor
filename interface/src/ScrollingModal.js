@@ -3,7 +3,7 @@ import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react'
 
 class ModalScrollingContent extends Component {
 
-  //size={'small'} 
+  //size={'small'}
 
   render() {
     return (
@@ -11,7 +11,7 @@ class ModalScrollingContent extends Component {
         <Modal.Header>Tutorial System Guide</Modal.Header>
 
         <Modal.Content image scrolling>
-          { this.props.image &&
+          { this.props.image && // sidebar image
           <Image
             size="medium"
             src={this.props.image}
@@ -37,6 +37,7 @@ class GuideScrollingModal extends Component {
     <Modal.Description className='guide'>
       <Header>{this.props.tutorial.title}</Header>
       <p>{this.props.tutorial.description}</p>
+      <Image size="medium" src={this.props.tutorial.image} />
 
       <Header>Interface Overview</Header>
       <Image src='/interface.png' />
@@ -54,8 +55,8 @@ class GuideScrollingModal extends Component {
 
       <Header>Uploading Code</Header>
       <p>Click the right arrow in the microcontroller code editor to compile and upload your code.</p>
-      <p>If the microcontroller is not plugged in, this command will fail. Plug it in first!</p>
       <Image src='/upload.gif' />
+      <p>If the microcontroller is not plugged in, this command will fail. Plug it in first!</p>
 
       <Header>Running Checks</Header>
       <p>TODO</p>

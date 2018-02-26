@@ -3,14 +3,14 @@
     title: Simple LED Button Flasher
     source: https://learn.adafruit.com/adafruit-arduino-lesson-2-leds/blinking-the-led
     image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/original/learn_arduino_overview.jpg?1396780031
-    description: In this lesson, you will learn how to flash an LED with a button press.
+    description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
   progress:
     code: '// Edit me'
   steps:
     -
       title: Introduction
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/medium640/learn_arduino_overview.jpg?1396780031
-      description: In this lesson, you will learn how to flash an LED with a button press.
+      description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
     -
       title: Collecting Parts
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/165/medium800/learn_arduino_uno_r3_web.jpg?1396780086
@@ -64,6 +64,7 @@
         long as it is there somewhere.
       tests:
         -
+          title: LED Brightness
           description: Has the LEDs brightness changed at all?
           pass: info # pass, fail
     -
@@ -73,6 +74,7 @@
         Insert a button in between the resistor and the positive voltage power line connected to the LED.
       tests:
         -
+          title: Button Press Control
           description: Does the button press control whether the light is on or not?
           pass: info # pass, fail
     -
@@ -124,7 +126,7 @@
       tests:
         -
           description: Does the button press control whether the light is flashing or not?
-          pass: info # pass, fail
+          pass: info # pass, fail -> actually shoud be output which passes and updates progress data
     -
       title: Congrats!
       image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
@@ -132,6 +134,7 @@
         You have successfully completed the tutorial!
       tests:
         -
+          title: Congrats!
           description: You have successfully completed the tutorial!
           pass: pass
 
