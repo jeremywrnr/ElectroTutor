@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
+import { Modal, Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
 import { Browser } from 'react-window-ui'
 import $ from 'jquery' // animations
 import ReactMarkdown from 'react-markdown'
@@ -9,9 +9,10 @@ import { throttle } from 'lodash'
 import Split from 'split.js'
 
 //import ActionCable from 'actioncable'
+//import TestGroup from './TestGroup.js'
 
+import { GuideScrollingModal } from './ScrollingModal.js'
 import AccordionStyled from './AccordionStyled.js'
-import TestGroup from './TestGroup.js'
 import Test from './Test.js'
 import Grid3 from './Grid3.js'
 import Delay from './Delay.js'
@@ -27,9 +28,9 @@ class TutorialBody extends Component {
     super(props)
     this.state = {
       code:  'Initializing...',
-      compile: false,
-      completed: false, // bool
       progress:  { code: '' },
+      compile: false,
+      splash: false,
       tests: [],
       step: {},
     }
@@ -50,24 +51,32 @@ class TutorialBody extends Component {
     return throttle(() => {
       const api = this.state.api
       const pid = this.state.progress.id
-      let step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 11)
+      let step_pos = Math.min(Math.max(this.state.step.position + inc, 0), 11)
       //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
 
       console.log('step', step_pos)
-      if (!step_pos) step_pos = 1
+      if (!step_pos) {
+        this.splash()
+        step_pos = 1
+      } else {
+        this.deSplash()
+      }
 
-        api.configure()
-        .then(() => api.patchStep({ pid, step_id: step_pos }))
-        .catch(console.error) // TODO handle tutorial bounds
-        .then(() => api.fetchStep(step_pos))
-        .then(this.handleStepUpdate)
-        .then(() => api.fetchTest(this.state.step.id))
-        .then(this.handleTestUpdate)
+      api.configure()
+      .then(() => api.patchStep({ pid, step_id: step_pos }))
+      .catch(console.error) // TODO handle tutorial bounds
+      .then(() => api.fetchStep(step_pos))
+      .then(this.handleStepUpdate)
+      .then(() => api.fetchTest(this.state.step.id))
+      .then(this.handleTestUpdate)
     }, 100 )
   }
 
   nextStep = this.incrementStep(+1)
   prevStep = this.incrementStep(-1)
+
+  splash = () => this.setState({ splash: true })
+  deSplash = () => this.setState({ splash: false })
 
   editorContainerIds = ["#code_editor", "#status_container"]
   editorNames = ["code", "compile"]
@@ -132,6 +141,7 @@ class TutorialBody extends Component {
   handleStepError = () => {
     if (!this.state.progress.step) {
       this.setState({ step: 1 })
+      this.splash()
     }
   }
 
@@ -201,6 +211,11 @@ class TutorialBody extends Component {
     return (
       <HotKeys className='full' handlers={this.keyHandler} keyMap={this.map}>
         <div className='full pad'>
+          <GuideScrollingModal
+            open={this.state.splash}
+            onClick={this.deSplash}
+            tutorial={this.props.tutorial}
+          />
           <Grid3
             title={this.props.tutorial.title}
             tLink={this.props.tutorial.source}
@@ -222,7 +237,7 @@ class TutorialBody extends Component {
             <div id='arduino' className='arduino full'>
               <Browser id="browser">
                 <Button.Group widths='2'>
-                  <Button as={'div'}fluid animated className="fade" icon onClick={this.handleCompile} >
+                  <Button as={'div'} fluid animated className="fade" icon onClick={this.handleCompile} >
                     <Button.Content visible>
                       <Icon name='check' />
                     </Button.Content>
@@ -277,6 +292,7 @@ class TutorialBody extends Component {
               </Segment>
 
               <div id="tutorial-menu">
+                <Button content='Show Guide' onClick={this.splash} />
                 <Button content='Exit Tutorial' onClick={this.props.unset} />
                 <Button content='Log Out' onClick={this.props.logout} />
               </div>
@@ -290,5 +306,6 @@ class TutorialBody extends Component {
 };
 
 //mHead="Editor"
+//idea - show overview of tests initially
 //<TestGroup ={this.state.tests} />
 export default TutorialBody
