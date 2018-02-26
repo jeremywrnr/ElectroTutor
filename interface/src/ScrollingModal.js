@@ -1,8 +1,10 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react'
 
 class ModalScrollingContent extends Component {
+
+  //size={'small'} 
+
   render() {
     return (
       <Modal dimmer={'blurring'} {...this.props} >
@@ -35,6 +37,9 @@ class GuideScrollingModal extends Component {
     <Modal.Description className='guide'>
       <Header>{this.props.tutorial.title}</Header>
       <p>{this.props.tutorial.description}</p>
+
+      <Header>Interface Overview</Header>
+      <Image src='/interface.png' />
 
       <Header>Moving Around</Header>
       <p>Click the back or next buttons to advance through the tutorial.</p>

@@ -27,7 +27,7 @@ div.ui.segment pre {
 div.guide img {
     border: 0px dotted rgba(34, 36, 38, .25);
     border-width: 0px 2px 0px 0px;
-    max-width: 600px !important;
+    max-width: 800px !important;
 }
 #tutorial-menu {
     position: absolute;
