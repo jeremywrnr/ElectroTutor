@@ -211,25 +211,23 @@ class TutorialBody extends Component {
     return (
       <HotKeys className='full' handlers={this.keyHandler} keyMap={this.map}>
         <div className='full pad'>
-          <GuideScrollingModal
-            open={this.state.splash}
-            onClick={this.deSplash}
-            tutorial={this.props.tutorial}
-          />
           <Grid3
             title={this.props.tutorial.title}
             tLink={this.props.tutorial.source}
             left={
             <Container className="full" >
-              <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
+              <Header float wrapped content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
               <Image src={this.state.step.image} />
               <Segment>
                 <ReactMarkdown source={this.state.step.description} />
               </Segment>
-              <Button.Group widths='2'>
+
+              <br/>
+
+              <div className="tutorial-menu">
                 <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-                <Button labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-              </Button.Group>
+                <Button className='pull-right' labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+              </div>
             </Container>
             }
 
@@ -243,7 +241,7 @@ class TutorialBody extends Component {
                     </Button.Content>
                     <Button.Content hidden>Verify</Button.Content>
                   </Button>
-                  <Button as={'div'}fluid animated className="fade" icon onClick={this.handleUpload} >
+                  <Button as={'div'} fluid animated className="fade" icon onClick={this.handleUpload} >
                     <Button.Content hidden>Upload</Button.Content>
                     <Button.Content visible>
                       <Icon name='arrow right' />
@@ -291,17 +289,26 @@ class TutorialBody extends Component {
                 }
               </Segment>
 
-              <div id="tutorial-menu">
-                <Button content='Show Guide' onClick={this.splash} />
-                <Button content='Exit Tutorial' onClick={this.props.unset} />
-                <Button content='Log Out' onClick={this.props.logout} />
+              <div className='tutorial-menu'>
+                <div class="pull-right">
+                  <Button content='Show Guide' onClick={this.splash} />
+                  <Button content='Exit Tutorial' onClick={this.props.unset} />
+                  <Button content='Log Out' onClick={this.props.logout} />
+                </div>
               </div>
             </Container>
             }
           />
-        </div>
-      </HotKeys>
-      );
+
+        <GuideScrollingModal
+          open={this.state.splash}
+          onClick={this.deSplash}
+          tutorial={this.props.tutorial}
+        />
+
+    </div>
+  </HotKeys>
+  );
 };
 };
 

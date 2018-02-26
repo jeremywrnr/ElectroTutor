@@ -19,6 +19,9 @@ div.column-content {
     overflow-y: auto;
     max-height: calc(100vh - 4em - 28px);
 }
+div#middle-col > div.column-content {
+    max-height: calc(100vh - 3em);
+}
 div.ui.segment pre {
     background: rgba(34, 36, 38, .1);
     overflow: auto;
@@ -29,10 +32,24 @@ div.guide img {
     border-width: 0px 2px 0px 0px;
     max-width: 800px !important;
 }
-#tutorial-menu {
+div.ui.grid > div.row {
+    padding-bottom: 0rem;
+}
+
+
+/*TUTORIAL MENU*/
+
+.tutorial-menu {
     position: absolute;
+    padding-right: 2rem;
+    width: 100%;
     bottom: 0;
-    right: 0;
+}
+.pull-right {
+    float: right;
+}
+.left {
+    float: left;
 }
 
 
@@ -53,6 +70,28 @@ div.gutter.gutter-vertical {
 }
 div.gutter.gutter-vertical:hover {
     background: #006468;
+}
+
+
+/*ARDUINO*/
+
+div#arduino div.ui.button {
+    border-radius: 0 !important;
+}
+div#arduino div.ui.button:last-child {
+    border-left: 1px dotted #006468;
+}
+div.arduino div.ui.button,
+div.arduino div.ui.button:focus {
+    background: #17a1a5;
+    color: #006468;
+}
+div.arduino div.ui.button:hover {
+    background: #006468;
+    color: white;
+}
+div.arduino i.icon {
+    border-radius: 2em;
 }
 
 
@@ -79,17 +118,3 @@ div.ace_editor {
     left: 0;
 }
 
-/*ARDUINO*/
-
-div#arduino div.ui.button {
-    border-radius: 0 !important;
-}
-div.arduino div.ui.button,
-div.arduino div.ui.button:focus {
-    background: #17a1a5;
-    color: #006468;
-}
-div.arduino div.ui.button:hover {
-    background: #006468;
-    color: white;
-}

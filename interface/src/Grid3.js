@@ -18,6 +18,7 @@ class Grid3 extends Component {
             tLink={this.props.tLink} />
 
           <Column
+            id='middle-col'
             key='middle-col'
             header={this.props.mHead}
             main={this.props.middle} />

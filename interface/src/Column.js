@@ -18,7 +18,7 @@ class Column extends Component {
     }
 
   return (
-    <Grid.Column className="full">
+    <Grid.Column id={this.props.id || ''} className="full">
       {head}
       <div className='full column-content'>{this.props.main}</div>
     </Grid.Column>

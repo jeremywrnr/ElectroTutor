@@ -11,6 +11,7 @@ import 'brace/theme/tomorrow';
 import 'brace/theme/ambiance';
 import 'brace/theme/terminal';
 import 'brace/theme/gob';
+import 'brace/mode/markdown';
 import 'brace/mode/c_cpp';
 
 class Code extends React.Component {

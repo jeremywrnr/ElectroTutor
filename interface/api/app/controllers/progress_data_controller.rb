@@ -1,4 +1,5 @@
 class ProgressDataController < ApplicationController
+  before_action :authenticate_user
   before_action :set_progress_data, only: [:show, :update, :destroy]
 
   # GET /progress_data
@@ -40,26 +41,27 @@ class ProgressDataController < ApplicationController
 
   private
 
-  def set_progress
+  def set_progress_data
     id = params['id']
-    uid = params['user_id']
-    tid = params['progress_id']
+    tid = params['test_id']
+    pid = params['progress_id']
 
-    if uid == current_user.id.to_s && id.nil? # progress id
-      @progress_datum = Progress.where(user_id: uid).where(tutorial_id: tid).first
-      if @progress.nil? # create for current user/tut
-        step = Step.where(tutorial_id: tid).first # Set step to first step in tutorial
-        @progress_datum = current_user.progresses.create!(tutorial_id: tid, step_id: step.id)
+    if id.nil? # progress_data id
+      @progress_data = ProgressDatum.where(test: tid).where(progress: pid).first
+
+      if @progress_data.nil? # create for current test/progress
+        progress = Progress.find(pid)
+        @progress_data = progress.progress_data.create!(test: tid)
       end
 
     else # direct id param
-      @progress_datum = Progress.find(id)
+      @progress_data = ProgressDatum.find(id)
 
     end
   end
 
   # Only allow a trusted parameter "white list" through.
   def progress_data_params
-    params.require(:progress_datum).permit(:progress_datum_id, :progress_id)
+    params.permit(:progress_data_id, :progress_id, :test_id)
   end
 end
