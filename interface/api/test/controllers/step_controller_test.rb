@@ -2,9 +2,9 @@ require 'test_helper'
 
 class StepControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = @tuto.user
-    @tuto = Tutorial.first
-    @step = @tuto.steps.first
+    @user = User.create!(email: 'jo', password_digest: 'hn')
+    @tuto = @user.tutorials.create!(title: 'ho', description: 'hi')
+    @step = @tuto.steps.create!(description: 'hi')
   end
 
   def auth
@@ -12,17 +12,19 @@ class StepControllerTest < ActionDispatch::IntegrationTest
     { 'Authorization': "Bearer #{token}" }
   end
 
+  def params
+    { 'step': { 'id': @step.id }, 'tutorial_id': @tuto.id }
+  end
+
   # BEGIN TESTS
 
   test "can create steps" do
-    post steps_url, params: {}
+    post steps_url, params: params, headers: auth
     assert_response :success
   end
 
   test "refuses bad step params" do
-    post steps_url, params: {}
-    assert_response :unprocessable_entity
-    post steps_url, params: {}
+    post steps_url, params: {'user': {"password": "bar"}}, headers: auth
     assert_response :unprocessable_entity
   end
 

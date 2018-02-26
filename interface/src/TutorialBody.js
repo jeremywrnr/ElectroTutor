@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
+import { Image, Icon, Container, Header, Segment, Button } from 'semantic-ui-react'
 import { Browser } from 'react-window-ui'
 import $ from 'jquery' // animations
 import ReactMarkdown from 'react-markdown'
