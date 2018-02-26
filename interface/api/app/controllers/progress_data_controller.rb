@@ -25,7 +25,7 @@ class ProgressDataController < ApplicationController
     end
   end
 
-  # PATCH/PUT /progress_data/1
+  # PATCH/tUT /progress_data/1
   def update
     if @progress_data.update(progress_data_params)
       render json: @progress_data
@@ -51,6 +51,7 @@ class ProgressDataController < ApplicationController
 
       if @progress_data.nil? # create for current test/progress
         progress = Progress.find(pid)
+
         @progress_data = progress.progress_data.create!(test: tid)
       end
 
@@ -62,6 +63,6 @@ class ProgressDataController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_data_params
-    params.permit(:progress_data_id, :progress_id, :test_id)
+    params.require(:progress_data).permit(:id, :progress_id, :test_id)
   end
 end
