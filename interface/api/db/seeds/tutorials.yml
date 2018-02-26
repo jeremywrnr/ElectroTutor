@@ -125,6 +125,7 @@
         Insert a button in between the resistor and the positive voltage power line connected to the LED.
       tests:
         -
+          title: Button Press Control
           description: Does the button press control whether the light is flashing or not?
           pass: info # pass, fail -> actually shoud be output which passes and updates progress data
     -
