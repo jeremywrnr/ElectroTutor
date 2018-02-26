@@ -17,20 +17,20 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
   # BEGIN TESTS
 
   test 'will fail getting progress without auth' do
-    post progresses_url, params: @params
-    assert_response :unauthorized
-    post progresses_url, params: @params
+    post "/progresses", params: @params
     assert_response :unauthorized
   end
 
   test 'will create progress ok with auth for user' do
-    tut = Tutorial.new(user_id: @user.id)
+    tut = Tutorial.create!(user_id: @user.id)
     @params[:tutorial_id] = tut.id
-    get progresses_url, headers: auth, params: @params
-    assert_instance_of String, response.body["id"]
-    assert_instance_of String, response.body["tutorial_id"]
-    assert_instance_of String, response.body["step_id"]
-    assert_nil response.body["error"]
+    tut.steps.create!
+
+    get "/progresses", headers: auth, params: @params
+    res = JSON.parse response.body
+
+    ["id", "tutorial_id", "step_id"].map {|x| assert_instance_of Integer, res[x] }
+    assert_nil res["error"]
     assert_response :success
   end
 

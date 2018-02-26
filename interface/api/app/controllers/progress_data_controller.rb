@@ -1,12 +1,18 @@
 class ProgressDataController < ApplicationController
   before_action :authenticate_user
-  before_action :set_progress_data, only: [:show, :update, :destroy]
+  before_action :set_progress_data, only: [:index, :show, :update, :destroy]
 
-  # GET /progress_data
+  # QUERY: ?user_id=1 &test_id=1 &progress_id=1
+
+  # GET /progresses
   def index
-    @progress_data = ProgressDatum.all
+    authorized = (current_user.id.to_s == progress_data_params['user_id'])
 
-    render json: @progress_data
+    if authorized && !@progress_data.nil?
+      render json: @progress_data
+    else
+      render json: @progress_data.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /progress_data/1
@@ -47,12 +53,12 @@ class ProgressDataController < ApplicationController
     pid = params['progress_id']
 
     if id.nil? # progress_data id
-      @progress_data = ProgressDatum.where(test: tid).where(progress: pid).first
+      @progress_data = ProgressDatum.where(test_id: tid).where(progress_id: pid).first
 
       if @progress_data.nil? # create for current test/progress
         progress = Progress.find(pid)
 
-        @progress_data = progress.progress_data.create!(test: tid)
+        @progress_data = progress.progress_data.create!(test_id: tid)
       end
 
     else # direct id param
@@ -63,6 +69,6 @@ class ProgressDataController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_data_params
-    params.require(:progress_data).permit(:id, :progress_id, :test_id)
+    params.permit(:id, :progress_id, :test_id, :user_id)
   end
 end
