@@ -1,14 +1,10 @@
 class ProgressDataController < ApplicationController
   before_action :authenticate_user
-  before_action :set_progress_data, only: [:index, :show, :update, :destroy]
+  before_action :set_progress_data, except: [:create]
 
-  # QUERY: ?user_id=1 &test_id=1 &progress_id=1
-
-  # GET /progresses
+  # GET ?progress_id=1  &tids[]=1 &tids[]=2
   def index
-    authorized = (current_user.id.to_s == progress_data_params['user_id'])
-
-    if authorized && !@progress_data.nil?
+    if current_user && !@progress_data.nil?
       render json: @progress_data
     else
       render json: @progress_data.errors, status: :unprocessable_entity
@@ -24,7 +20,7 @@ class ProgressDataController < ApplicationController
   def create
     @progress_data = ProgressDatum.new(progress_data_params)
 
-    if @progress_data.save
+    if @progress_data.save!
       render json: @progress_data, status: :created, location: @progress_data
     else
       render json: @progress_data.errors, status: :unprocessable_entity
@@ -46,26 +42,31 @@ class ProgressDataController < ApplicationController
   end
 
   private
-
   def set_progress_data
     id = params['id']
+    tids = params['t_ids']
     tid = params['test_id']
     pid = params['progress_id']
 
-    puts params
-
-    if id.nil? # progress_data id
-      @progress_data = ProgressDatum.where(test_id: tid).where(progress_id: pid).first
-
-      if @progress_data.nil? # create for current test/progress
-        progress = Progress.find(pid)
-
-        @progress_data = progress.progress_data.create!(test_id: tid)
-      end
-
-    else # direct id param
+    if !id.nil?
       @progress_data = ProgressDatum.find(id)
 
+    elsif tid && pid
+      @progress_data = ProgressDatum.where(test_id: tid).where(progress_id: pid)
+
+    elsif tids && pid
+      @progress_data = tids.uniq.map do |tid|
+        data = ProgressDatum.where(test_id: tid).where(progress_id: pid).first
+        if data.nil?
+          prog = Progress.find(pid)
+          data = prog.progress_data.create!(test_id: tid.to_i)
+        end
+        data
+      end
+    end
+
+    if @progress_data.nil?
+      @progress_data = {"errors": "Unable to fetch progress. Need valid user-auth, progress, and test."}
     end
   end
 
