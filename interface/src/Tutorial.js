@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
 import $ from 'jquery' // which press
 import TutorialBody from './TutorialBody.js'
 import ListSelector from './ListSelector.js'
@@ -35,7 +35,6 @@ class Tutorial extends Component {
       }
     })
   }
-
 
   /**
    * Database updates
@@ -79,7 +78,7 @@ class Tutorial extends Component {
     const is_active = !!this.state.user && this.state.tutorial
 
     return (
-      <div className='full'>
+      <Segment basic className='full no-pad'>
         {
         is_active
         ?
@@ -98,7 +97,7 @@ class Tutorial extends Component {
           <Button onClick={this.props.logout} content='Log Out' />
         </div>
         }
-      </div>
+      </Segment>
       )
 }
 }

@@ -15,6 +15,9 @@ div.pad {
 div.margin-pad {
     margin: 1em;
 }
+div.no-pad {
+    padding: 0em !important;
+}
 div.column-content {
     overflow-y: auto;
     max-height: calc(100vh - 4em - 28px);

@@ -30,6 +30,7 @@ class TutorialBody extends Component {
       code:  'Initializing...',
       progress:  { code: '' },
       compile: false,
+      loading: true,
       splash: false,
       tests: [],
       step: {},
@@ -49,6 +50,8 @@ class TutorialBody extends Component {
 
   incrementStep = inc => {
     return throttle(() => {
+      this.setState({ loading: true })
+
       const api = this.state.api
       const pid = this.state.progress.id
 
@@ -60,11 +63,7 @@ class TutorialBody extends Component {
       .then(() => api.patchStep({ pid, step_id: step_pos }))
       .catch(console.error) // TODO handle tutorial bounds
       .then(() => api.fetchStep(step_pos))
-      .then(this.handleStepUpdate)
-      .then(() => api.fetchTest(this.state.step.id))
-      .then(this.handleTestUpdate)
-      .then(() => api.fetchData(this.state.tests))
-      .then(this.handleProgressDataUpdate)
+      .then(() => this.dataUpdate(api))
     }, 100 )
   }
 
@@ -76,6 +75,19 @@ class TutorialBody extends Component {
 
   editorContainerIds = ["#code_editor", "#status_container"]
   editorNames = ["code", "compile"]
+
+  dataUpdate = api => {
+    return api.configure()
+    .then(() => api.fetchProgress(this.state.tutorial))
+    .then(this.handleProgressUpdate)
+    .then(() => api.fetchStep(this.state.progress.step_id)) // MRU step
+    .then(this.handleStepUpdate)
+    .then(() => api.fetchTest(this.state.step.id))
+    .then(this.handleTestUpdate)
+    .then(() => api.fetchData(this.state.progress.id, this.state.tests))
+    .then(this.handleProgressDataUpdate)
+    .then(() => this.setState({ loading: false }))
+  }
 
   generatePaneSplit = (sizes=[90, 10]) => {
     const split = Split(this.editorContainerIds, {
@@ -106,16 +118,7 @@ class TutorialBody extends Component {
     const api = new API(this.props.api_auth) // from JWT
     const tutorial = this.props.tutorial.id
     this.setState({ api, tutorial })
-
-    api.configure()
-    .then(() => api.fetchProgress(tutorial))
-    .then(this.handleProgressUpdate)
-    .then(() => api.fetchStep(this.state.progress.step_id)) // MRU step
-    .then(this.handleStepUpdate)
-    .then(() => api.fetchTest(this.state.step.id))
-    .then(this.handleTestUpdate)
-    .then(() => api.fetchData(this.state.tests))
-    .then(this.handleProgressDataUpdate)
+    this.dataUpdate(api)
   }
 
   componentDidMount() {
@@ -139,7 +142,7 @@ class TutorialBody extends Component {
     if (!step_pos) {
       console.warn("error: resetting step pos to 1")
       this.splash()
-      return ( 1 )
+      return (1)
     } else {
       this.deSplash()
       return step_pos
@@ -152,7 +155,6 @@ class TutorialBody extends Component {
 
   handleProgressDataUpdate = pData => {
     this.setState({ pData })
-    console.log(pData)
   }
 
   // For live updates, across sessions. Not needed right now
@@ -201,6 +203,7 @@ class TutorialBody extends Component {
   }
 
   render() {
+    const loading = this.state.loading
     let compile_value, compile_success;
     if (this.state.compile_loading) {
       compile_value = this.state.compile_loading
@@ -211,110 +214,112 @@ class TutorialBody extends Component {
     }
 
     return (
-      <HotKeys className='full' handlers={this.keyHandler} keyMap={this.map}>
-        <div className='full pad'>
-          <Grid3
-            title={this.props.tutorial.title}
-            tLink={this.props.tutorial.source}
-            left={
-            <Container className="full" >
-              <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
-              <Image src={this.state.step.image} />
-              <Segment>
-                <ReactMarkdown source={this.state.step.description} />
-              </Segment>
+      <Segment basic className='no-pad full' loading={loading}>
+        <HotKeys className='full' handlers={this.keyHandler} keyMap={this.map}>
+          <div className='full pad'>
+            <Grid3
+              title={this.props.tutorial.title}
+              tLink={this.props.tutorial.source}
+              left={
+              <Container className="full" >
+                <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
+                <Image src={this.state.step.image} />
+                <Segment>
+                  <ReactMarkdown source={this.state.step.description} />
+                </Segment>
 
-              <br/>
+                <br/>
 
-              <div className="tutorial-menu">
-                <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-                <Button className='pull-right' labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-              </div>
-            </Container>
-            }
+                <div className="tutorial-menu">
+                  <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
+                  <Button className='pull-right' labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+                </div>
+              </Container>
+              }
 
-            middle={
-            <div id='arduino' className='arduino full'>
-              <Browser id="browser">
-                <Button.Group widths='2'>
-                  <Button as={'div'} fluid animated className="fade" icon onClick={this.handleCompile} >
-                    <Button.Content visible>
-                      <Icon name='check' />
-                    </Button.Content>
-                    <Button.Content hidden>Verify</Button.Content>
-                  </Button>
-                  <Button as={'div'} fluid animated className="fade" icon onClick={this.handleUpload} >
-                    <Button.Content hidden>Upload</Button.Content>
-                    <Button.Content visible>
-                      <Icon name='arrow right' />
-                    </Button.Content>
-                  </Button>
-                </Button.Group>
+              middle={
+              <div id='arduino' className='arduino full'>
+                <Browser id="browser">
+                  <Button.Group widths='2'>
+                    <Button as={'div'} fluid animated className="fade" icon onClick={this.handleCompile} >
+                      <Button.Content visible>
+                        <Icon name='check' />
+                      </Button.Content>
+                      <Button.Content hidden>Verify</Button.Content>
+                    </Button>
+                    <Button as={'div'} fluid animated className="fade" icon onClick={this.handleUpload} >
+                      <Button.Content hidden>Upload</Button.Content>
+                      <Button.Content visible>
+                        <Icon name='arrow right' />
+                      </Button.Content>
+                    </Button>
+                  </Button.Group>
 
-                <div className="full flex-container">
-                  <div id="code_editor">
-                    <Code
-                      name="code"
-                      mode={"c_cpp"}
-                      readOnly={false}
-                      showLines={true}
-                      showGutter={true}
-                      highlightActiveLine={true}
-                      value={this.state.progress.code}
-                      onChange={this.handleCodeChange} />
+                  <div className="full flex-container">
+                    <div id="code_editor">
+                      <Code
+                        name="code"
+                        mode={"c_cpp"}
+                        readOnly={false}
+                        showLines={true}
+                        showGutter={true}
+                        highlightActiveLine={true}
+                        value={this.state.progress.code}
+                        onChange={this.handleCodeChange} />
+                    </div>
+
+                    <div id="status_container">
+                      <Code
+                        name={"compile"}
+                        mode={"c_cpp"}
+                        value={compile_value}
+                        theme={compile_success ? 'gob' : 'terminal'} />
+                    </div>
                   </div>
+                </Browser>
+              </div>
+              }
 
-                  <div id="status_container">
-                    <Code
-                      name={"compile"}
-                      mode={"c_cpp"}
-                      value={compile_value}
-                      theme={compile_success ? 'gob' : 'terminal'} />
+              right={
+              <Container>
+                <Segment basic>
+                  {
+                  this.state.tests.length > 0
+                  ?
+                  <AccordionStyled tests={this.state.tests} data={this.state.pData} />
+                  :
+                  <div>
+                    <Test head={'No checks.'} task={'Continue once you are ready!'} pass={'info'}/>
+                    <Button fluid labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+                  </div>
+                  }
+                </Segment>
+
+                <div className='tutorial-menu'>
+                  <div className="pull-right">
+                    <Button content='Show Guide' onClick={this.splash} />
+                    <Button content='Exit Tutorial' onClick={this.props.unset} />
+                    <Button content='Log Out' onClick={this.props.logout} />
                   </div>
                 </div>
-              </Browser>
-            </div>
-            }
+              </Container>
+              }
+            />
 
-            right={
-            <Container>
-              <Segment basic>
-                {
-                this.state.tests.length > 0
-                ?
-                <AccordionStyled tests={this.state.tests} />
-                :
-                <div>
-                  <Test head={'No checks.'} task={'Continue once you are ready!'} pass={'info'}/>
-                  <Button fluid labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
-                </div>
-                }
-              </Segment>
-
-              <div className='tutorial-menu'>
-                <div className="pull-right">
-                  <Button content='Show Guide' onClick={this.splash} />
-                  <Button content='Exit Tutorial' onClick={this.props.unset} />
-                  <Button content='Log Out' onClick={this.props.logout} />
-                </div>
-              </div>
-            </Container>
-            }
+          <GuideScrollingModal
+            open={this.state.splash}
+            onClick={this.deSplash}
+            tutorial={this.props.tutorial}
           />
 
-        <GuideScrollingModal
-          open={this.state.splash}
-          onClick={this.deSplash}
-          tutorial={this.props.tutorial}
-        />
-
-    </div>
-  </HotKeys>
+      </div>
+    </HotKeys>
+  </Segment>
   );
 };
 };
 
-//mHead="Editor"
-//idea - show overview of tests initially
-//<TestGroup ={this.state.tests} />
+// mHead="Editor"
+// idea - show overview of tests initially
+
 export default TutorialBody

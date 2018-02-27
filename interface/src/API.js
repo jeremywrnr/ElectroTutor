@@ -58,9 +58,13 @@ class API {
     return this.authFetch(`test?step_id=${step}`)
   }
 
-  fetchData = tests => {
+  fetchData = (prog, tests) => {
     const t_uri = encodeURI(tests.map(t => `&t_ids[]=${t.id}`).join(''))
-    return this.authFetch(`progress_data?user_id=${this.user.id}${t_uri}`)
+    if (tests.length) {
+      return this.authFetch(`progress_data?progress_id=${prog}${t_uri}`)
+    } else {
+      return {}
+    }
   }
 
 
@@ -82,6 +86,10 @@ class API {
 
   patchCode = ({ pid, code }) => {
     return this.authFetch(`progresses/${pid}`, "PATCH", { code })
+  }
+
+  patchData = ({ id, completed }) => {
+    return this.authFetch(`progress_data/${id}`, "PATCH", { completed })
   }
 
   postCompile = code => {

@@ -66,7 +66,11 @@ class ProgressDataController < ApplicationController
     end
 
     if @progress_data.nil?
-      @progress_data = {"errors": "Unable to fetch progress. Need valid user-auth, progress, and test."}
+      if pid && (tid || tids)
+        @progress_data = {"errors": "Unable to fetch progress, resource not found.", "params": params }
+      else
+        @progress_data = {"errors": "Unable to fetch progress. Need valid user-auth, progress, and test.", "params": params }
+      end
     end
   end
 

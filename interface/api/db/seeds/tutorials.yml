@@ -49,7 +49,7 @@
           title: LED Glowing
           description: Is the LED glowing as we would expect?
           image: https://cdn-learn.adafruit.com/assets/assets/000/002/170/medium640/learn_arduino_overview.jpg?1396780130
-          pass: info # pass, fail
+          pass: info # actually normally output, user state is coupled with progress_data
     -
       title: Moving the Resistor
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
