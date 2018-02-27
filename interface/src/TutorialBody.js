@@ -51,16 +51,10 @@ class TutorialBody extends Component {
     return throttle(() => {
       const api = this.state.api
       const pid = this.state.progress.id
-      let step_pos = Math.min(Math.max(this.state.step.position + inc, 0), 11)
-      //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
 
-      console.log('step', step_pos)
-      if (!step_pos) {
-        this.splash()
-        step_pos = 1
-      } else {
-        this.deSplash()
-      }
+      //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
+      let step_pos = Math.min(Math.max(this.state.step.position + inc, 0), 11)
+      step_pos = this.handleStepError(step_pos)
 
       api.configure()
       .then(() => api.patchStep({ pid, step_id: step_pos }))
@@ -69,6 +63,8 @@ class TutorialBody extends Component {
       .then(this.handleStepUpdate)
       .then(() => api.fetchTest(this.state.step.id))
       .then(this.handleTestUpdate)
+      .then(() => api.fetchData(this.state.tests))
+      .then(this.handleProgressDataUpdate)
     }, 100 )
   }
 
@@ -110,16 +106,16 @@ class TutorialBody extends Component {
     const api = new API(this.props.api_auth) // from JWT
     const tutorial = this.props.tutorial.id
     this.setState({ api, tutorial })
-    //const step_pos = Math.min(Math.max(this.state.step.position + inc, 1), 4)
 
     api.configure()
     .then(() => api.fetchProgress(tutorial))
     .then(this.handleProgressUpdate)
-    .then(this.handleStepError)
     .then(() => api.fetchStep(this.state.progress.step_id)) // MRU step
     .then(this.handleStepUpdate)
     .then(() => api.fetchTest(this.state.step.id))
     .then(this.handleTestUpdate)
+    .then(() => api.fetchData(this.state.tests))
+    .then(this.handleProgressDataUpdate)
   }
 
   componentDidMount() {
@@ -138,10 +134,15 @@ class TutorialBody extends Component {
     this.setState({ step })
   }
 
-  handleStepError = () => {
-    if (!this.state.progress.step) {
-      this.setState({ step: 1 })
+  handleStepError = step_pos => {
+    console.log('step', step_pos)
+    if (!step_pos) {
+      console.warn("error: resetting step pos to 1")
       this.splash()
+      return ( 1 )
+    } else {
+      this.deSplash()
+      return step_pos
     }
   }
 
@@ -151,6 +152,7 @@ class TutorialBody extends Component {
 
   handleProgressDataUpdate = pData => {
     this.setState({ pData })
+    console.log(pData)
   }
 
   // For live updates, across sessions. Not needed right now
@@ -216,7 +218,7 @@ class TutorialBody extends Component {
             tLink={this.props.tutorial.source}
             left={
             <Container className="full" >
-              <Header float wrapped content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
+              <Header content={'Step ' + this.state.step.position +': '+ this.state.step.title} />
               <Image src={this.state.step.image} />
               <Segment>
                 <ReactMarkdown source={this.state.step.description} />
@@ -290,7 +292,7 @@ class TutorialBody extends Component {
               </Segment>
 
               <div className='tutorial-menu'>
-                <div class="pull-right">
+                <div className="pull-right">
                   <Button content='Show Guide' onClick={this.splash} />
                   <Button content='Exit Tutorial' onClick={this.props.unset} />
                   <Button content='Log Out' onClick={this.props.logout} />

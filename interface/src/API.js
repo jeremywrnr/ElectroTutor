@@ -58,8 +58,9 @@ class API {
     return this.authFetch(`test?step_id=${step}`)
   }
 
-  fetchData = data => {
-    return this.authFetch(`pdata/${data}`)
+  fetchData = tests => {
+    const t_uri = encodeURI(tests.map(t => `&t_ids[]=${t.id}`).join(''))
+    return this.authFetch(`progress_data?user_id=${this.user.id}${t_uri}`)
   }
 
 

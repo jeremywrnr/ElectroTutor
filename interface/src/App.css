@@ -102,6 +102,7 @@ div.arduino i.icon {
     padding: 2rem 0 0 0;
     border-bottom: 0;
     overflow: hidden;
+    box-shadow: none;
 }
 #status_container, #code_editor {
     position: relative;

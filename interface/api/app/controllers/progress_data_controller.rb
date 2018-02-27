@@ -52,6 +52,8 @@ class ProgressDataController < ApplicationController
     tid = params['test_id']
     pid = params['progress_id']
 
+    puts params
+
     if id.nil? # progress_data id
       @progress_data = ProgressDatum.where(test_id: tid).where(progress_id: pid).first
 
@@ -69,6 +71,6 @@ class ProgressDataController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_data_params
-    params.permit(:id, :progress_id, :test_id, :user_id)
+    params.permit(:id, :progress_id, :test_id, :user_id, :t_ids)
   end
 end

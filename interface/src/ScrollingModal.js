@@ -15,7 +15,6 @@ class ModalScrollingContent extends Component {
           <Image
             size="medium"
             src={this.props.image}
-            wrapped
           />
           }
 
@@ -23,7 +22,7 @@ class ModalScrollingContent extends Component {
         </Modal.Content>
 
         <Modal.Actions>
-          <Button primary onclick={this.props.onClick} >
+          <Button primary onClick={this.props.onClick} >
             Continue <Icon name='right chevron' />
           </Button>
         </Modal.Actions>
