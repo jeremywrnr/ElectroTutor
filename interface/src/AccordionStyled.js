@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Accordion, Message, Icon } from 'semantic-ui-react'
+import { Accordion, Button, Message, Icon } from 'semantic-ui-react'
 import PropTypes from 'prop-types';
 
 class AccordionTestItem extends Component {
@@ -24,13 +24,16 @@ class AccordionTestItem extends Component {
     // user progress
     let comp = this.props.data.completed
     return (
-      <Message
-        compact
-        icon={icon}
-        success={icon && comp}
-        error={icon && !pass}
-        content={desc}
-      />
+      <div className="full">
+        <Message
+          compact
+          basic
+          icon={icon}
+          success={icon && comp}
+          error={icon && !comp}>{desc}
+        </Message>
+          <Button fluid>Check Condition</Button>
+      </div>
       )
   }
 }
@@ -50,7 +53,6 @@ export default class AccordionStyled extends Component {
     let tests = this.props.tests
     let data = this.props.data
     let activeIndex = tests.map((x, i) => i)
-
     let progress = tests.map((t, i) => {
       const match = data.find(d => d.test_id === t.id)
       return {test: t, data: match}

@@ -27,7 +27,7 @@ class TutorialBody extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      code:  'Initializing...',
+      code: 'Initializing...',
       progress:  { code: '' },
       compile: false,
       page_loading: true,
@@ -235,8 +235,10 @@ class TutorialBody extends Component {
                 <br/>
 
                 <div className="tutorial-menu">
-                  <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
-                  <Button className='pull-right' labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+                  <Button.Group fluid widths='2'>
+                    <Button labelPosition='left' icon='left chevron' content='Back' onClick={this.prevStep} />
+                    <Button className='pull-right' labelPosition='right' icon='right chevron' content='Next' onClick={this.nextStep} />
+                  </Button.Group>
                 </div>
               </Container>
               }
@@ -272,6 +274,7 @@ class TutorialBody extends Component {
                         onChange={this.handleCodeChange} />
                     </div>
 
+
                     <div id="status_container">
                       <Code
                         name={"compile"}
@@ -300,11 +303,10 @@ class TutorialBody extends Component {
                 </Segment>
 
                 <div className='tutorial-menu'>
-                  <div className="pull-right">
+                  <Button.Group fluid widths='2'>
                     <Button content='Show Guide' onClick={this.splash} />
                     <Button content='Exit Tutorial' onClick={this.props.unset} />
-                    <Button content='Log Out' onClick={this.props.logout} />
-                  </div>
+                  </Button.Group>
                 </div>
               </Container>
               }
@@ -325,5 +327,6 @@ class TutorialBody extends Component {
 
 // mHead="Editor"
 // idea - show overview of tests initially
+// <Button content='Log Out' onClick={this.props.logout} />
 
 export default TutorialBody
