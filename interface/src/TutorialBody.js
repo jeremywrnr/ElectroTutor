@@ -65,7 +65,7 @@ class TutorialBody extends Component {
       .catch(console.error) // TODO handle tutorial bounds
       .then(() => api.fetchStep(step_pos))
       .then(() => this.dataUpdate(api))
-    }, 100 )
+    }, 250 )
   }
 
   nextStep = this.incrementStep(+1)

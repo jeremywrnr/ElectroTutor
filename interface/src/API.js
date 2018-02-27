@@ -63,7 +63,7 @@ class API {
     if (tests.length) {
       return this.authFetch(`progress_data?progress_id=${prog}${t_uri}`)
     } else {
-      return {}
+      return []
     }
   }
 
