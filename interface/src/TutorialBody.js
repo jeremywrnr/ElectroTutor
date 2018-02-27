@@ -30,7 +30,8 @@ class TutorialBody extends Component {
       code:  'Initializing...',
       progress:  { code: '' },
       compile: false,
-      loading: true,
+      page_loading: true,
+      step_loading: false,
       splash: false,
       tests: [],
       step: {},
@@ -50,7 +51,7 @@ class TutorialBody extends Component {
 
   incrementStep = inc => {
     return throttle(() => {
-      this.setState({ loading: true })
+      this.setState({ step_loading: true })
 
       const api = this.state.api
       const pid = this.state.progress.id
@@ -86,7 +87,8 @@ class TutorialBody extends Component {
     .then(this.handleTestUpdate)
     .then(() => api.fetchData(this.state.progress.id, this.state.tests))
     .then(this.handleProgressDataUpdate)
-    .then(() => this.setState({ loading: false }))
+    .then(() => this.setState({ step_loading: false }))
+    .then(() => this.setState({ page_loading: false }))
   }
 
   generatePaneSplit = (sizes=[90, 10]) => {
@@ -203,7 +205,9 @@ class TutorialBody extends Component {
   }
 
   render() {
-    const loading = this.state.loading
+    const page_loading = this.state.page_loading
+    const step_loading = this.state.step_loading
+
     let compile_value, compile_success;
     if (this.state.compile_loading) {
       compile_value = this.state.compile_loading
@@ -214,7 +218,7 @@ class TutorialBody extends Component {
     }
 
     return (
-      <Segment basic className='no-pad full' loading={loading}>
+      <Segment basic className='no-pad full' loading={page_loading}>
         <HotKeys className='full' handlers={this.keyHandler} keyMap={this.map}>
           <div className='full pad'>
             <Grid3
@@ -282,7 +286,7 @@ class TutorialBody extends Component {
 
               right={
               <Container>
-                <Segment basic>
+                <Segment basic loading={step_loading}>
                   {
                   this.state.tests.length > 0
                   ?
