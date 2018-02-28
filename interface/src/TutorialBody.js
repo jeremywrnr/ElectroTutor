@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Image,
-  Icon,
-  Container,
-  Header,
-  Segment,
-  Button
-} from "semantic-ui-react";
+import { Image, Icon, Container, Segment, Button } from "semantic-ui-react";
 import { Browser } from "react-window-ui";
 import $ from "jquery"; // animations
 import ReactMarkdown from "react-markdown";
@@ -217,14 +210,16 @@ class TutorialBody extends Component {
     }, 500);
   };
 
+  // UI changes code - flash
   handleCodeUpdate = e => {
-    // UI changes code - flash
     var div = $("#status_container");
-    div.animate({ opacity: "0.4" }, 0);
     div.animate({ opacity: "1.0" }, 500);
   };
 
   handleServerCode = throttle((e, handler, msg) => {
+    var div = $("#status_container");
+    div.animate({ opacity: "0.6" }, 500);
+
     e.preventDefault();
     console.info(msg);
     const code = this.state.progress.code;
@@ -266,23 +261,17 @@ class TutorialBody extends Component {
           : this.state.compile.error) || "";
     }
 
+    const step = this.state.step;
+    const step_header = "Step " + step.position + ": " + step.title;
+
     return (
       <Segment basic className="no-pad full" loading={page_loading}>
         <HotKeys className="full" handlers={this.keyHandler} keyMap={this.map}>
           <div className="full pad">
             <Grid3
-              title={this.props.tutorial.title}
-              tLink={this.props.tutorial.source}
+              title={step_header}
               left={
-                <Container className="full">
-                  <Header
-                    content={
-                      "Step " +
-                      this.state.step.position +
-                      ": " +
-                      this.state.step.title
-                    }
-                  />
+                <div className="full">
                   <Image src={this.state.step.image} />
                   <Segment>
                     <ReactMarkdown source={this.state.step.description} />
@@ -307,7 +296,7 @@ class TutorialBody extends Component {
                       />
                     </Button.Group>
                   </div>
-                </Container>
+                </div>
               }
               middle={
                 <div id="arduino" className="arduino full">
@@ -422,5 +411,6 @@ class TutorialBody extends Component {
 // mHead="Editor"
 // idea - show overview of tests initially
 // <Button content='Log Out' onClick={this.props.logout} />
+//<Header content={step_header} />
 
 export default TutorialBody;

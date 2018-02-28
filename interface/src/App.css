@@ -18,6 +18,9 @@ div.margin-pad {
 div.no-pad {
     padding: 0em !important;
 }
+div.inline {
+    display: inline !important;
+}
 div.column-content {
     overflow-y: auto;
     max-height: calc(100vh - 4em - 28px);
@@ -32,7 +35,7 @@ div.ui.segment pre {
 }
 div.guide img {
     border: 0px dotted rgba(34, 36, 38, 0.25);
-    border-width: 0px 2px 0px 0px;
+    border-width: 0px 2px 2px 0px;
     max-width: 800px !important;
 }
 div.ui.grid > div.row {
@@ -124,5 +127,11 @@ div.ace_editor {
 /* TEST PANES */
 
 div.ui.styled.accordion div.title {
-    color: red;
+    background: rgba(34, 36, 38, 0.1) !important;
+}
+div.ui.styled.accordion div.title:hover {
+    background: #cacbcd !important;
+}
+div.ui.styled.accordion .ui.label > .icon {
+    margin: 0;
 }

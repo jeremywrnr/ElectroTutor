@@ -1,6 +1,26 @@
 import React, { Component } from "react";
-import { Accordion, Button, Message, Label, Icon } from "semantic-ui-react";
+import { Accordion, Button, Segment, Label } from "semantic-ui-react";
 import PropTypes from "prop-types";
+
+class AccordionTestTitle extends Component {
+  handlePassColor = {
+    test: "grey",
+    pass: "green",
+    fail: "red"
+  };
+
+  render() {
+    // quick tip info, no icon
+    const i = this.props.test.info;
+    const state = this.props.data.state;
+    const color = !i && this.handlePassColor[state];
+    return (
+      <Label size="large" color={color}>
+        {this.props.test.title}
+      </Label>
+    );
+  }
+}
 
 class AccordionTestItem extends Component {
   static propTypes = {
@@ -10,41 +30,30 @@ class AccordionTestItem extends Component {
   };
 
   handlePassColor = {
-    test: "white",
+    test: "grey",
     pass: "green",
     fail: "red"
   };
 
-  handlePassIcon = {
-    test: "info",
-    pass: "check",
-    fail: "close"
-  };
-
   render() {
     // test type and progress status
-    const data = this.props.data;
-    const test = this.props.test;
-    const state = data.state;
-    const desc = test.description;
-    const info = test.info; // quick tip info, no icon
-    const icon = !info && this.handlePassIcon[state];
-    const color = !info && this.handlePassColor[state];
-    const pass = !info && state === "pass";
-    const fail = !info && state === "fail";
-    const patch = () => this.props.handleClick(data, test);
+    const t = this.props.test;
+    const i = this.props.test.info;
+    const patch = () => this.props.handleClick(this.props.data, t);
+
+    const state = this.props.data.state;
+    const color = !i && this.handlePassColor[state];
 
     return (
       <div className="full">
-        <Label as="a" color={color} ribbon>
-          {icon && <Icon name={icon} />}
-        </Label>
-        <Message success={pass} error={fail}>
-          {desc} state: {state} icon: {icon}
-        </Message>
-        <Button fluid onClick={() => patch(test, data)}>
-          Check Condition
-        </Button>
+        <Segment color={color}>
+          {this.props.test.description} <br /> state: {state}
+        </Segment>
+        {!i && (
+          <Button fluid onClick={patch}>
+            Check Condition
+          </Button>
+        )}
       </div>
     );
   }
@@ -58,31 +67,39 @@ export default class AccordionStyled extends Component {
   };
 
   static defaultProps = {
-    run: function() {},
+    //run: function() {},
     data: []
   };
+
+  generatePanels(progress) {
+    return progress.map((t, i) => ({
+      title: {
+        content: <AccordionTestTitle {...t} />,
+        key: `title-${i}`
+      },
+      content: {
+        content: <AccordionTestItem key={t.key} {...t} />,
+        key: `content-${i}`
+      }
+    }));
+  }
 
   render() {
     let tests = this.props.tests;
     let data = this.props.data;
     let activeIndex = tests.map((x, i) => i);
     let progress = tests.map((t, i) => {
-      const match = data.find(d => d.test_id === t.id);
+      const match = data.find(d => d.test_id === t.id) || {};
       return {
         test: t,
-        data: match || {},
+        data: match,
+        pass: !t.info && data.state === "pass",
+        fail: !t.info && data.state === "fail",
         handleClick: this.props.handleClick
       };
     });
 
-    const panels = progress.map((t, i) => {
-      return {
-        title: { content: t.test.title, key: `title-${i}` },
-        content: {
-          content: <AccordionTestItem key={t.key} {...t} />
-        }
-      };
-    });
+    const panels = this.generatePanels(progress);
 
     return (
       <Accordion
