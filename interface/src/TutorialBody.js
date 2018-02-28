@@ -56,7 +56,7 @@ class TutorialBody extends Component {
 
   // Generate functions for modifying step
 
-  incrementStep = inc => {
+  patchStep = inc => {
     return throttle(() => {
       this.setState({ step_loading: true });
 
@@ -76,8 +76,41 @@ class TutorialBody extends Component {
     }, 250);
   };
 
-  nextStep = this.incrementStep(+1);
-  prevStep = this.incrementStep(-1);
+  patchProgressData = () => {
+    return throttle((data, test) => {
+      this.setState({ step_loading: true });
+
+      // MOCKING OUT ACTUALLY RUNNING THE TESTS
+      let state;
+      switch (data.state) {
+        case "test":
+          state = "fail";
+          break;
+        case "fail":
+          state = "pass";
+          break;
+        case "pass":
+          state = "fail";
+          break;
+        default:
+          state = "fail";
+      }
+
+      const id = data.id;
+      const api = this.state.api;
+      console.log(id, state);
+
+      api
+        .configure()
+        .then(() => api.patchData({ id, state }))
+        .then(() => api.fetchData(this.state.progress.id, this.state.tests))
+        .then(this.handleProgressDataUpdate)
+        .then(() => this.setState({ step_loading: false }));
+    }, 250);
+  };
+
+  nextStep = this.patchStep(+1);
+  prevStep = this.patchStep(-1);
 
   splash = () => this.setState({ splash: true });
   deSplash = () => this.setState({ splash: false });
@@ -96,8 +129,7 @@ class TutorialBody extends Component {
       .then(this.handleTestUpdate)
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)
-      .then(() => this.setState({ step_loading: false }))
-      .then(() => this.setState({ page_loading: false }));
+      .then(() => this.setState({ step_loading: false, page_loading: false }));
   };
 
   generatePaneSplit = (sizes = [90, 10]) => {
@@ -340,6 +372,7 @@ class TutorialBody extends Component {
                   <Segment basic loading={step_loading}>
                     {this.state.tests.length > 0 ? (
                       <AccordionStyled
+                        handleClick={this.patchProgressData()}
                         tests={this.state.tests}
                         data={this.state.pData}
                       />

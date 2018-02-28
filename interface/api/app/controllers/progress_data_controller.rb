@@ -76,6 +76,6 @@ class ProgressDataController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_data_params
-    params.permit(:id, :progress_id, :test_id, :user_id, :t_ids)
+    params.permit(:id, :progress_id, :test_id, :user_id, :t_ids, :state, :progress_datum)
   end
 end

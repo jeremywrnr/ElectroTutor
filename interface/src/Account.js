@@ -2,43 +2,41 @@
  * User Account setup
  */
 
-import Host from './Host.js'
+import Host from "./Host.js";
 
-const headers = new Headers({ 'Content-Type': 'application/json' })
-const dataKeyId = "tdtutorial.user.account"
+const headers = new Headers({ "Content-Type": "application/json" });
+const dataKeyId = "tdtutorial.user.account";
 // TODO generalize to include tutorial data
 //const dataKeyId2 = "tdtutorial.user.account"
 
 const Account = {
-
   createUser(user) {
     return fetch(`${Host}/users`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(user),
-      headers,
-    }) // returns raw response w/ 'ok' field
+      headers
+    }); // returns raw response w/ 'ok' field
   },
 
   setServerCredentials(user) {
     return fetch(`${Host}/user_token`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(user),
-      headers,
-    })
+      headers
+    });
   },
 
   setLocalCredentials(data) {
-    localStorage.setItem(dataKeyId, data)
+    localStorage.setItem(dataKeyId, data);
   },
 
   getLocalCredentials() {
-    return localStorage.getItem(dataKeyId)
+    return localStorage.getItem(dataKeyId);
   },
 
   clearLocalCredentials() {
-    localStorage.removeItem(dataKeyId)
-  },
+    localStorage.removeItem(dataKeyId);
+  }
+};
 
-}
-
-export default Account
+export default Account;

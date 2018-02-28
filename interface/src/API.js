@@ -94,8 +94,8 @@ class API {
     return this.authFetch(`progresses/${pid}`, "PATCH", { code });
   };
 
-  patchData = ({ id, completed }) => {
-    return this.authFetch(`progress_data/${id}`, "PATCH", { completed });
+  patchData = ({ id, state }) => {
+    return this.authFetch(`progress_data/${id}`, "PATCH", { state });
   };
 
   postCompile = code => {
