@@ -1,76 +1,83 @@
-import React, { Component } from 'react'
-import { Accordion, Button, Message, Icon } from 'semantic-ui-react'
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { Accordion, Button, Message } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 class AccordionTestItem extends Component {
   static defaultProps = {
     data: {},
-    test: {},
+    test: {}
   };
 
   handlePassIcon = {
-    newt: 'info',
-    pass: 'check',
-    fail: 'error',
-    info: false,
+    test: "info",
+    pass: "check",
+    fail: "error"
   };
 
   render() {
-    // test type
-    let pass = this.props.test.pass
-    const icon = this.handlePassIcon[pass]
-    const desc = this.props.test.description
+    // test type and progress status
+    const info = this.props.test.info;
+    const state = this.props.data.state;
+    const pass = state === "pass";
+    const icon = !info && this.handlePassIcon[state];
+    const desc = this.props.test.description;
 
-    // user progress
-    let comp = this.props.data.completed
     return (
       <div className="full">
         <Message
           compact
           basic
           icon={icon}
-          success={icon && comp}
-          error={icon && !comp}>{desc}
+          success={icon && pass}
+          error={icon && !pass}
+        >
+          {desc} {pass}
         </Message>
-          <Button fluid>Check Condition</Button>
+        <Button fluid onClick={() => this.props.onClick(this.props.data)}>
+          Check Condition
+        </Button>
       </div>
-      )
+    );
   }
 }
 
 export default class AccordionStyled extends Component {
   static propTypes = {
+    patchData: PropTypes.func.isRequired,
     data: PropTypes.array.isRequired,
-    run: PropTypes.func,
+    run: PropTypes.func
   };
 
   static defaultProps = {
     run: function() {},
-    data: [],
+    data: []
   };
 
   render() {
-    let tests = this.props.tests
-    let data = this.props.data
-    let activeIndex = tests.map((x, i) => i)
+    let tests = this.props.tests;
+    let data = this.props.data;
+    let activeIndex = tests.map((x, i) => i);
     let progress = tests.map((t, i) => {
-      const match = data.find(d => d.test_id === t.id)
-      return {test: t, data: match}
-    })
+      const match = data.find(d => d.test_id === t.id);
+      return { test: t, data: match };
+    });
 
     const panels = progress.map((t, i) => {
       return {
-        title: { content: t.test.title, key: `title-${i}`, },
-        content: { content: (<AccordionTestItem {...t} />) },
-    }
-  })
+        title: { content: t.test.title, key: `title-${i}` },
+        content: {
+          content: <AccordionTestItem {...t} onClick={this.props.patchData} />
+        }
+      };
+    });
 
-  return (
-    <Accordion
-      defaultActiveIndex={activeIndex}
-      exclusive={false}
-      panels={panels}
-      styled
-    />)
-}
+    return (
+      <Accordion
+        defaultActiveIndex={activeIndex}
+        exclusive={false}
+        panels={panels}
+        styled
+      />
+    );
+  }
 }

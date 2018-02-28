@@ -4,7 +4,7 @@ class CreateProgressData < ActiveRecord::Migration[5.1]
       t.belongs_to :progress, index: true
       t.belongs_to :test,     index: true
 
-      t.boolean :completed, :default => false
+      t.string :state, :default => 'test'
       t.string :output
 
       t.timestamps

@@ -44,12 +44,11 @@
         -
           title: Positive V => Longer Leg
           description: Make sure to connect the LED's longer leg with the positive voltage!
-          pass: info # pass, fail
+          info: true
         -
           title: LED Glowing
           description: Is the LED glowing as we would expect?
           image: https://cdn-learn.adafruit.com/assets/assets/000/002/170/medium640/learn_arduino_overview.jpg?1396780130
-          pass: info # actually normally output, user state is coupled with progress_data
     -
       title: Moving the Resistor
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
@@ -66,7 +65,6 @@
         -
           title: LED Brightness
           description: Has the LEDs brightness changed at all?
-          pass: info # pass, fail
     -
       title: Adding a Button Press
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
@@ -76,7 +74,6 @@
         -
           title: Button Press Control
           description: Does the button press control whether the light is on or not?
-          pass: info # pass, fail
     -
       title: Getting Ready to Blink the LED
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180
@@ -117,7 +114,6 @@
         -
           title: Blinking Light?
           description: Do you see the light blinking?
-          pass: fail # pass, fail
     -
       title: Adding a Button Press
       image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
@@ -127,7 +123,6 @@
         -
           title: Button Press Control
           description: Does the button press control whether the light is flashing or not?
-          pass: info # pass, fail -> actually shoud be output which passes and updates progress data
     -
       title: Congrats!
       image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
@@ -137,7 +132,7 @@
         -
           title: Congrats!
           description: You have successfully completed the tutorial!
-          pass: pass
+
 
 
 

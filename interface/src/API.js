@@ -2,112 +2,118 @@
  * Authenticated Method Collection
  */
 
-import Host from './Host.js'
+import Host from "./Host.js";
 
 class API {
   constructor(auth) {
-    this.auth = auth
+    this.auth = auth;
   }
 
   configure() {
-    return this.fetchUser().then(user => this.user = user)
+    return this.fetchUser().then(user => (this.user = user));
   }
 
   authFetch = (route, method = "GET", body = undefined) => {
     const headers = new Headers({
-      'Authorization': this.auth,
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    })
+      Authorization: this.auth,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    });
 
     let message = {
       method,
-      headers,
-    }
+      headers
+    };
 
     if (body !== undefined) {
-      message.body = JSON.stringify(body)
+      message.body = JSON.stringify(body);
     }
 
     return fetch(`${Host}/${route}`, message)
-    .then(res => res.json())
-    .catch(error => console.error('Error:', error))
-  }
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error));
+  };
 
   fetchUser = () => {
-    return this.authFetch(`users`)
-  }
+    return this.authFetch(`users`);
+  };
 
   fetchTutorials = () => {
-    return this.authFetch(`tutorials`)
-  }
+    return this.authFetch(`tutorials`);
+  };
 
   fetchTutorial = tutorial => {
-    return this.authFetch(`tutorials/${tutorial}`)
-  }
+    return this.authFetch(`tutorials/${tutorial}`);
+  };
 
   fetchProgress = tutorial => {
-    return this.authFetch(`progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`)
-  }
+    return this.authFetch(
+      `progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`
+    );
+  };
 
   fetchStep = step => {
-    return this.stepCheck(step) && this.authFetch(`steps/${step}`)
-  }
+    return this.stepCheck(step) && this.authFetch(`steps/${step}`);
+  };
 
   fetchTest = step => {
-    return this.authFetch(`test?step_id=${step}`)
-  }
+    return this.authFetch(`test?step_id=${step}`);
+  };
 
   fetchData = (prog, tests) => {
-    const t_uri = encodeURI(tests.map(t => `&t_ids[]=${t.id}`).join(''))
+    const t_uri = encodeURI(tests.map(t => `&t_ids[]=${t.id}`).join(""));
     if (tests.length) {
-      return this.authFetch(`progress_data?progress_id=${prog}${t_uri}`)
+      return this.authFetch(`progress_data?progress_id=${prog}${t_uri}`);
     } else {
-      return []
+      return [];
     }
-  }
-
+  };
 
   /**
    * Interface handlers
    */
 
   patchUser = ({ current_tutorial }) => {
-    return this.authFetch(`users/${this.user.id}`, "PATCH", { current_tutorial })
-  }
+    return this.authFetch(`users/${this.user.id}`, "PATCH", {
+      current_tutorial
+    });
+  };
 
   patchTutorial = tutorial => {
-    return console.log(tutorial)
-  }
+    return console.log(tutorial);
+  };
 
   patchStep = ({ pid, step_id }) => {
-    return this.stepCheck(step_id) && this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
-  }
+    return (
+      this.stepCheck(step_id) &&
+      this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
+    );
+  };
 
   patchCode = ({ pid, code }) => {
-    return this.authFetch(`progresses/${pid}`, "PATCH", { code })
-  }
+    return this.authFetch(`progresses/${pid}`, "PATCH", { code });
+  };
 
   patchData = ({ id, completed }) => {
-    return this.authFetch(`progress_data/${id}`, "PATCH", { completed })
-  }
+    return this.authFetch(`progress_data/${id}`, "PATCH", { completed });
+  };
 
   postCompile = code => {
-    return this.authFetch(`compile`, "POST", { code, task: 'c_device' })
-  }
+    return this.authFetch(`compile`, "POST", { code, task: "c_device" });
+  };
 
   postUpload = code => {
-    return this.authFetch(`compile`, "POST", { code, task: 'device' })
-  }
+    return this.authFetch(`compile`, "POST", { code, task: "device" });
+  };
 
   /**
    * Parameter helpers
    */
 
   stepCheck = step => {
-    const s = Number(step)
-    return typeof(s) === 'number' && Number.isInteger(s)
-  }
+    const s = Number(step);
+    return typeof s === "number" && Number.isInteger(s);
+  };
 }
 
-export default API
+export default API;
