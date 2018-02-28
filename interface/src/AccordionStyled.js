@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Accordion, Button, Message } from "semantic-ui-react";
+import { Accordion, Button, Message, Label, Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 class AccordionTestItem extends Component {
@@ -9,35 +9,37 @@ class AccordionTestItem extends Component {
     test: PropTypes.object.isRequired
   };
 
+  handlePassColor = {
+    test: "white",
+    pass: "green",
+    fail: "red"
+  };
+
   handlePassIcon = {
     test: "info",
     pass: "check",
-    fail: "error"
+    fail: "close"
   };
 
   render() {
-    if (!this.props.data) {
-      return null;
-    }
-
     // test type and progress status
     const data = this.props.data;
     const test = this.props.test;
     const state = data.state;
-    const pass = state === "pass";
     const desc = test.description;
     const info = test.info; // quick tip info, no icon
     const icon = !info && this.handlePassIcon[state];
+    const color = !info && this.handlePassColor[state];
+    const pass = !info && state === "pass";
+    const fail = !info && state === "fail";
     const patch = () => this.props.handleClick(data, test);
 
     return (
       <div className="full">
-        <Message
-          compact
-          icon={icon}
-          success={icon && pass}
-          error={icon && !pass}
-        >
+        <Label as="a" color={color} ribbon>
+          {icon && <Icon name={icon} />}
+        </Label>
+        <Message success={pass} error={fail}>
           {desc} state: {state} icon: {icon}
         </Message>
         <Button fluid onClick={() => patch(test, data)}>
@@ -77,7 +79,7 @@ export default class AccordionStyled extends Component {
       return {
         title: { content: t.test.title, key: `title-${i}` },
         content: {
-          content: <AccordionTestItem key={`test-${i}`} {...t} />
+          content: <AccordionTestItem key={t.key} {...t} />
         }
       };
     });

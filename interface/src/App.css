@@ -26,19 +26,18 @@ div#middle-col > div.column-content {
     max-height: calc(100vh - 3em);
 }
 div.ui.segment pre {
-    background: rgba(34, 36, 38, .1);
+    background: rgba(34, 36, 38, 0.1);
     overflow: auto;
     padding: 10px;
 }
 div.guide img {
-    border: 0px dotted rgba(34, 36, 38, .25);
+    border: 0px dotted rgba(34, 36, 38, 0.25);
     border-width: 0px 2px 0px 0px;
     max-width: 800px !important;
 }
 div.ui.grid > div.row {
     padding-bottom: 0rem;
 }
-
 
 /*TUTORIAL MENU*/
 
@@ -55,7 +54,6 @@ div.ui.grid > div.row {
 .left {
     float: left;
 }
-
 
 /*SPLITJS*/
 /* https://stackoverflow.com/questions/28785588 */
@@ -75,7 +73,6 @@ div.gutter.gutter-vertical {
 div.gutter.gutter-vertical:hover {
     background: #006468;
 }
-
 
 /*ARDUINO*/
 
@@ -98,7 +95,6 @@ div.arduino i.icon {
     border-radius: 2em;
 }
 
-
 /*EDITOR*/
 
 #browser {
@@ -108,10 +104,12 @@ div.arduino i.icon {
     overflow: hidden;
     box-shadow: none;
 }
-#status_container, #code_editor {
+#status_container,
+#code_editor {
     position: relative;
 }
-#code, #compile {
+#code,
+#compile {
     max-height: 100%;
     height: 100% !important;
 }
@@ -123,3 +121,8 @@ div.ace_editor {
     left: 0;
 }
 
+/* TEST PANES */
+
+div.ui.styled.accordion div.title {
+    color: red;
+}
