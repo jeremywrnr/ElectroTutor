@@ -8,7 +8,7 @@ You can install this with conda and the environment file:
 
 - advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
 - pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
-- em-serialport: https://github.com/railsbob/em-serialport
+- arduino-create-agent: https://github.com/arduino/arduino-create-agent
 
 The [`Makefile`][mk] provides a simpler interface for common tasks:
 
