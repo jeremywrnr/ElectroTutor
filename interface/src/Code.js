@@ -34,7 +34,7 @@ class Code extends React.Component {
     showGutter: false,
     theme: 'tomorrow',
     wrapEnabled: true,
-    showPrintMargin: true,
+    showPrintMargin: false,
     highlightActiveLine: false,
     value: "void setup() {\n\n}\n\nvoid loop() {\n\n}",
   };
