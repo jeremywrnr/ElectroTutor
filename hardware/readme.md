@@ -6,10 +6,9 @@ You can install this with conda and the environment file:
 
     conda env create -f environment.yml
 
-- advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
+- serial-port-json-server: https://github.com/chilipeppr/serial-port-json-server/releases
 - pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
-- arduino-create-agent: https://github.com/arduino/arduino-create-agent
-- serial-port-json-server: https://github.com/chilipeppr/serial-port-json-server
+- advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
 
 The [`Makefile`][mk] provides a simpler interface for common tasks:
 
