@@ -30,7 +30,7 @@ class API {
       message.body = JSON.stringify(body);
     }
 
-    return fetch(`${rails['rails']}/${route}`, message)
+    return fetch(`${rails}/${route}`, message)
     .then(res => res.json())
     .catch(error => console.error("Error:", error));
   };
