@@ -3,6 +3,7 @@
  */
 
 import Host from "./Host.js";
+const rails = Host.rails;
 
 class API {
   constructor(auth) {
@@ -29,8 +30,7 @@ class API {
       message.body = JSON.stringify(body);
     }
 
-    console.log(Host)
-    return fetch(`${Host['rails']}/${route}`, message)
+    return fetch(`${rails['rails']}/${route}`, message)
     .then(res => res.json())
     .catch(error => console.error("Error:", error));
   };
