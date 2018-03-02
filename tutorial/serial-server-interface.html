@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta>
+    <meta charset="UTF-8">
+    <title>Serial Port Example</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        var conn;
+        var msg = $("#msg");
+        var log = $("#log");
+
+        function appendLog(msg) {
+          var d = log[0]
+          var doScroll = d.scrollTop == d.scrollHeight - d.clientHeight;
+          msg.appendTo(log)
+          if (doScroll) {
+            d.scrollTop = d.scrollHeight - d.clientHeight;
+          }
+        }
+
+        $("#form").submit(function() {
+          if (!conn) {
+            return false;
+          }
+          if (!msg.val()) {
+            return false;
+          }
+          conn.send(msg.val() + "\n");
+          msg.val("");
+          return false
+        });
+
+        conn = new WebSocket("ws://localhost:8989/ws");
+        conn.onclose = function(evt) {
+          appendLog($("<div><b>Connection closed.</b></div>"))
+        }
+        conn.onmessage = function(evt) {
+          appendLog($("<div/>").text(evt.data))
+        }
+
+      })
+    </script>
+  </head>
+  <body>
+    <form id="form">
+      <input type="text" id="msg" size="64"/>
+      <input type="submit" value="Send" />
+    </form>
+    <div id="log"></div>
+  </body>
+</html>
