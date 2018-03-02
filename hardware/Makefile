@@ -1,5 +1,8 @@
 # Convenience link layer between rails and hw
 
+server:
+	serial-port-json-server-1.94_macosx/serial-port-json-server -regex usb
+
 device:
 	@cd device && platformio run -e uno -t upload
 compile:
