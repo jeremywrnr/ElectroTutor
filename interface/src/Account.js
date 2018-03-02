@@ -2,7 +2,7 @@
  * User Account setup
  */
 
-import Host from "./Host.js";
+import { rails } as Host from "./Host.js";
 
 const headers = new Headers({ "Content-Type": "application/json" });
 const dataKeyId = "tdtutorial.user.account";

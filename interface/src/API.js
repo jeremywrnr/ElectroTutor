@@ -29,9 +29,10 @@ class API {
       message.body = JSON.stringify(body);
     }
 
-    return fetch(`${Host}/${route}`, message)
-      .then(res => res.json())
-      .catch(error => console.error("Error:", error));
+    console.log(Host)
+    return fetch(`${Host['rails']}/${route}`, message)
+    .then(res => res.json())
+    .catch(error => console.error("Error:", error));
   };
 
   fetchUser = () => {
@@ -86,7 +87,7 @@ class API {
   patchStep = ({ pid, step_id }) => {
     return (
       this.stepCheck(step_id) &&
-      this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
+        this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
     );
   };
 
