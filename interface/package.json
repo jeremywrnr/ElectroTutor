@@ -10,6 +10,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-ace": "^5.9.0",
+    "react-chartjs": "^1.2.0",
     "react-dom": "^16.2.0",
     "react-hotkeys": "^0.10.0",
     "react-markdown": "^3.2.1",

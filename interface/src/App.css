@@ -82,9 +82,10 @@ div.gutter.gutter-vertical:hover {
 
 div#arduino div.ui.button {
   border-radius: 0 !important;
-}
-div#arduino div.ui.button:last-child {
   border-left: 1px dotted #006468;
+}
+div#arduino div.ui.button:first-child {
+  border-left: 0px;
 }
 div.arduino div.ui.button,
 div.arduino div.ui.button:focus {

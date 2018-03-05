@@ -1,24 +1,17 @@
-import React, { Component } from "react";
-import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
+import React, {Component} from 'react';
+import {Button, Header, Icon, Image, Modal} from 'semantic-ui-react';
+import Dygraph from 'dygraphs';
 
 class ModalScrollingContent extends Component {
   //size={'small'}
 
   render() {
     return (
-      <Modal dimmer={"blurring"} {...this.props}>
-        <Modal.Header>Tutorial System Guide</Modal.Header>
+      <Modal dimmer={'blurring'} {...this.props}>
+        <Modal.Header>{this.props.title}</Modal.Header>
 
         <Modal.Content image scrolling>
-          {this.props.image && (
-            <Image
-              size="medium"
-              src={
-                this.props.image // sidebar image
-              }
-            />
-          )}
-
+          {this.props.image && <Image size="medium" src={this.props.image} />}
           {this.props.modalContent}
         </Modal.Content>
 
@@ -32,7 +25,62 @@ class ModalScrollingContent extends Component {
   }
 }
 
-class GuideScrollingModal extends Component {
+class SerialModal extends Component {
+  constructor(props) {
+    super(props);
+    this.data = [];
+  }
+
+  componentWillMount() {
+    var t = new Date();
+    let data = [];
+    for (var i = 50; i >= 0; i--) {
+      var x = new Date(t.getTime() - i * 1000);
+      data.push([x, Math.random()]);
+    }
+
+    this.setState({data});
+  }
+
+  componentDidMount() {
+    const data = this.state.data;
+    var g = new Dygraph(document.getElementById('div_g'), data, {
+      drawPoints: true,
+      showRoller: true,
+      valueRange: [0.0, 1.2],
+      labels: ['Time', 'Random'],
+    });
+
+    // It sucks that these things aren't objects, and we need to store state in window.
+    return;
+
+    window.intervalId = setInterval(function() {
+      var x = new Date(); // current time
+      var y = Math.random();
+      data.push([x, y]);
+      g.updateOptions({file: data});
+    }, 1000);
+  }
+
+  componentWillUnmount() {}
+
+  content = (
+    <div className="full">
+      <Button primary onClick={this.props.onClick}>
+        Continue <Icon name="right chevron" />
+      </Button>
+      <div id="div_g" className="full">
+        graph
+      </div>
+    </div>
+  );
+
+  render = () => (
+    <ModalScrollingContent {...this.props} modalContent={this.content} />
+  );
+}
+
+class GuideModal extends Component {
   content = (
     <Modal.Description className="guide">
       <Header>{this.props.tutorial.title}</Header>
@@ -81,4 +129,4 @@ class GuideScrollingModal extends Component {
   );
 }
 
-export { ModalScrollingContent, GuideScrollingModal };
+export {ModalScrollingContent, GuideModal, SerialModal};

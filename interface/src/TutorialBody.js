@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import { Image, Icon, Container, Segment, Button } from "semantic-ui-react";
-import { Browser } from "react-window-ui";
-import $ from "jquery"; // animations
-import ReactMarkdown from "react-markdown";
-import { HotKeys } from "react-hotkeys";
-import * as ace from "brace";
-import { throttle } from "lodash";
-import Split from "split.js";
+import React, {Component} from 'react';
+import {Image, Icon, Container, Segment, Button} from 'semantic-ui-react';
+import {Browser} from 'react-window-ui';
+import $ from 'jquery'; // animations
+import ReactMarkdown from 'react-markdown';
+import {HotKeys} from 'react-hotkeys';
+import * as ace from 'brace';
+import {throttle} from 'lodash';
+import Split from 'split.js';
 
 //import ActionCable from 'actioncable'
 //import TestGroup from './TestGroup.js'
 
-import { GuideScrollingModal } from "./ScrollingModal.js";
-import AccordionStyled from "./AccordionStyled.js";
-import Test from "./Test.js";
-import Grid3 from "./Grid3.js";
-import Delay from "./Delay.js";
-import Code from "./Code.js";
-import API from "./API.js";
+import {GuideModal, SerialModal} from './ScrollingModal.js';
+import AccordionStyled from './AccordionStyled.js';
+import Test from './Test.js';
+import Grid3 from './Grid3.js';
+import Delay from './Delay.js';
+import Code from './Code.js';
+import API from './API.js';
 
 /**
  * Rendering the Tutorial UI
@@ -27,14 +27,15 @@ class TutorialBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: "Initializing...",
-      progress: { code: "" },
+      code: 'Initializing...',
+      progress: {code: ''},
       compile: false,
       page_loading: true,
       step_loading: false,
+      port_monitor: false,
       splash: false,
       tests: [],
-      step: {}
+      step: {},
     };
   }
 
@@ -44,14 +45,14 @@ class TutorialBody extends Component {
     },
     back: () => {
       this.prevStep();
-    }
+    },
   };
 
   // Generate functions for modifying step
 
   patchStep = inc => {
     return throttle(() => {
-      this.setState({ step_loading: true });
+      this.setState({step_loading: true});
 
       const api = this.state.api;
       const pid = this.state.progress.id;
@@ -62,7 +63,7 @@ class TutorialBody extends Component {
 
       api
         .configure()
-        .then(() => api.patchStep({ pid, step_id: step_pos }))
+        .then(() => api.patchStep({pid, step_id: step_pos}))
         .catch(console.error) // TODO handle tutorial bounds
         .then(() => api.fetchStep(step_pos))
         .then(() => this.dataUpdate(api));
@@ -71,22 +72,22 @@ class TutorialBody extends Component {
 
   patchProgressData = () => {
     return throttle((data, test) => {
-      this.setState({ step_loading: true });
+      this.setState({step_loading: true});
 
       // MOCKING OUT ACTUALLY RUNNING THE TESTS
       let state;
       switch (data.state) {
-        case "test":
-          state = "fail";
+        case 'test':
+          state = 'fail';
           break;
-        case "fail":
-          state = "pass";
+        case 'fail':
+          state = 'pass';
           break;
-        case "pass":
-          state = "fail";
+        case 'pass':
+          state = 'fail';
           break;
         default:
-          state = "fail";
+          state = 'fail';
       }
 
       const id = data.id;
@@ -95,21 +96,21 @@ class TutorialBody extends Component {
 
       api
         .configure()
-        .then(() => api.patchData({ id, state }))
+        .then(() => api.patchData({id, state}))
         .then(() => api.fetchData(this.state.progress.id, this.state.tests))
         .then(this.handleProgressDataUpdate)
-        .then(() => this.setState({ step_loading: false }));
+        .then(() => this.setState({step_loading: false}));
     }, 250);
   };
 
   nextStep = this.patchStep(+1);
   prevStep = this.patchStep(-1);
 
-  splash = () => this.setState({ splash: true });
-  deSplash = () => this.setState({ splash: false });
+  splash = () => this.setState({splash: true});
+  deSplash = () => this.setState({splash: false});
 
-  editorContainerIds = ["#code_editor", "#status_container"];
-  editorNames = ["code", "compile"];
+  editorContainerIds = ['#code_editor', '#status_container'];
+  editorNames = ['code', 'compile'];
 
   dataUpdate = api => {
     return api
@@ -122,16 +123,16 @@ class TutorialBody extends Component {
       .then(this.handleTestUpdate)
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)
-      .then(() => this.setState({ step_loading: false, page_loading: false }));
+      .then(() => this.setState({step_loading: false, page_loading: false}));
   };
 
   generatePaneSplit = (sizes = [90, 10]) => {
     const split = Split(this.editorContainerIds, {
-      direction: "vertical",
+      direction: 'vertical',
       gutterSize: 35,
       minSize: 50,
       sizes: sizes,
-      onDrag: this.updateEditHeight
+      onDrag: this.updateEditHeight,
     });
 
     this.split = split;
@@ -153,7 +154,7 @@ class TutorialBody extends Component {
   componentWillMount() {
     const api = new API(this.props.api_auth); // from JWT
     const tutorial = this.props.tutorial.id;
-    this.setState({ api, tutorial });
+    this.setState({api, tutorial});
     this.dataUpdate(api);
   }
 
@@ -166,17 +167,17 @@ class TutorialBody extends Component {
   }
 
   handleProgressUpdate = progress => {
-    this.setState({ progress });
+    this.setState({progress});
   };
 
   handleStepUpdate = step => {
-    this.setState({ step });
+    this.setState({step});
   };
 
   handleStepError = step_pos => {
-    console.log("step", step_pos);
+    console.log('step', step_pos);
     if (!step_pos) {
-      console.warn("error: resetting step pos to 1");
+      console.warn('error: resetting step pos to 1');
       this.splash();
       return 1;
     } else {
@@ -186,11 +187,11 @@ class TutorialBody extends Component {
   };
 
   handleTestUpdate = tests => {
-    this.setState({ tests });
+    this.setState({tests});
   };
 
   handleProgressDataUpdate = pData => {
-    this.setState({ pData });
+    this.setState({pData});
   };
 
   // For live updates, across sessions. Not needed right now
@@ -202,47 +203,54 @@ class TutorialBody extends Component {
     // user changes code
     const api = this.state.api;
     Delay(() => {
-      const newState = { progress: { ...this.state.progress, code: code } };
+      const newState = {progress: {...this.state.progress, code: code}};
       const update = () => this.setState(newState);
-      const data = { code, pid: this.state.progress.id };
-      console.info("saving code...");
+      const data = {code, pid: this.state.progress.id};
+      console.info('saving code...');
       api.patchCode(data).then(update);
     }, 500);
   };
 
   // UI changes code - flash
   handleCodeUpdate = e => {
-    var div = $("#status_container");
-    div.animate({ opacity: "1.0" }, 500);
+    var div = $('#status_container');
+    div.animate({opacity: '1.0'}, 500);
   };
 
   handleServerCode = throttle((e, handler, msg) => {
-    var div = $("#status_container");
-    div.animate({ opacity: "0.6" }, 500);
+    var div = $('#status_container');
+    div.animate({opacity: '0.6'}, 500);
 
     e.preventDefault();
     console.info(msg);
     const code = this.state.progress.code;
-    this.setState({ compile_loading: msg });
-    const finish = compile =>
-      this.setState({ compile, compile_loading: false });
+    this.setState({compile_loading: msg});
+    const finish = compile => this.setState({compile, compile_loading: false});
     handler(code)
       .then(finish)
       .then(this.handleCodeUpdate);
   }, 2000);
 
   handleCompile = e => {
-    this.handleServerCode(e, this.state.api.postCompile, "Compiling sketch...");
+    this.handleServerCode(e, this.state.api.postCompile, 'Compiling sketch...');
   };
 
   handleUpload = e => {
-    this.handleServerCode(e, this.state.api.postUpload, "Uploading code...");
+    this.handleServerCode(e, this.state.api.postUpload, 'Uploading code...');
+  };
+
+  handleMonitor = e => {
+    this.setState({port_viewing: true});
+  };
+
+  handleDemonitor = e => {
+    this.setState({port_viewing: false});
   };
 
   // Key mapping
   map = {
-    next: ["right"],
-    back: ["left"]
+    next: ['right'],
+    back: ['left'],
   };
 
   render() {
@@ -258,11 +266,11 @@ class TutorialBody extends Component {
       compile_value =
         (compile_success
           ? this.state.compile.output
-          : this.state.compile.error) || "";
+          : this.state.compile.error) || '';
     }
 
     const step = this.state.step;
-    const step_header = "Step " + step.position + ": " + step.title;
+    const step_header = 'Step ' + step.position + ': ' + step.title;
 
     return (
       <Segment basic className="no-pad full" loading={page_loading}>
@@ -301,31 +309,41 @@ class TutorialBody extends Component {
               middle={
                 <div id="arduino" className="arduino full">
                   <Browser id="browser">
-                    <Button.Group widths="2">
+                    <Button.Group widths="3">
                       <Button
-                        as={"div"}
+                        as={'div'}
                         fluid
                         animated
                         className="fade"
                         icon
-                        onClick={this.handleCompile}
-                      >
+                        onClick={this.handleCompile}>
                         <Button.Content visible>
                           <Icon name="check" />
                         </Button.Content>
                         <Button.Content hidden>Verify</Button.Content>
                       </Button>
                       <Button
-                        as={"div"}
+                        as={'div'}
                         fluid
                         animated
                         className="fade"
                         icon
-                        onClick={this.handleUpload}
-                      >
+                        onClick={this.handleUpload}>
                         <Button.Content hidden>Upload</Button.Content>
                         <Button.Content visible>
                           <Icon name="arrow right" />
+                        </Button.Content>
+                      </Button>
+                      <Button
+                        as={'div'}
+                        icon
+                        fluid
+                        animated
+                        className="fade"
+                        onClick={this.handleMonitor}>
+                        <Button.Content hidden>Monitor</Button.Content>
+                        <Button.Content visible>
+                          <Icon name="search" />
                         </Button.Content>
                       </Button>
                     </Button.Group>
@@ -334,7 +352,7 @@ class TutorialBody extends Component {
                       <div id="code_editor">
                         <Code
                           name="code"
-                          mode={"c_cpp"}
+                          mode={'c_cpp'}
                           readOnly={false}
                           showLines={true}
                           showGutter={true}
@@ -346,10 +364,10 @@ class TutorialBody extends Component {
 
                       <div id="status_container">
                         <Code
-                          name={"compile"}
-                          mode={"c_cpp"}
+                          name={'compile'}
+                          mode={'c_cpp'}
                           value={compile_value}
-                          theme={compile_success ? "gob" : "terminal"}
+                          theme={compile_success ? 'gob' : 'terminal'}
                         />
                       </div>
                     </div>
@@ -368,9 +386,9 @@ class TutorialBody extends Component {
                     ) : (
                       <div>
                         <Test
-                          head={"No checks."}
-                          task={"Continue once you are ready!"}
-                          pass={"info"}
+                          head={'No checks.'}
+                          task={'Continue once you are ready!'}
+                          pass={'info'}
                         />
                         <Button
                           fluid
@@ -396,9 +414,16 @@ class TutorialBody extends Component {
               }
             />
 
-            <GuideScrollingModal
+            <SerialModal
+              title={'Serial Port Monitor'}
+              open={this.state.port_viewing}
+              onClick={this.handleDemonitor}
+            />
+
+            <GuideModal
               open={this.state.splash}
               onClick={this.deSplash}
+              title={'Tutorial System Guide'}
               tutorial={this.props.tutorial}
             />
           </div>
