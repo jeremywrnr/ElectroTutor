@@ -2,7 +2,7 @@
  * Authenticated Method Collection
  */
 
-import Host from "./Host.js";
+import Host from './Host.js';
 const rails = Host.rails;
 
 class API {
@@ -14,16 +14,16 @@ class API {
     return this.fetchUser().then(user => (this.user = user));
   }
 
-  authFetch = (route, method = "GET", body = undefined) => {
+  authFetch = (route, method = 'GET', body = undefined) => {
     const headers = new Headers({
       Authorization: this.auth,
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     });
 
     let message = {
       method,
-      headers
+      headers,
     };
 
     if (body !== undefined) {
@@ -31,8 +31,8 @@ class API {
     }
 
     return fetch(`${rails}/${route}`, message)
-    .then(res => res.json())
-    .catch(error => console.error("Error:", error));
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error));
   };
 
   fetchUser = () => {
@@ -49,7 +49,7 @@ class API {
 
   fetchProgress = tutorial => {
     return this.authFetch(
-      `progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`
+      `progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`,
     );
   };
 
@@ -62,7 +62,7 @@ class API {
   };
 
   fetchData = (prog, tests) => {
-    const t_uri = encodeURI(tests.map(t => `&t_ids[]=${t.id}`).join(""));
+    const t_uri = encodeURI(tests.map(t => `&t_ids[]=${t.id}`).join(''));
     if (tests.length) {
       return this.authFetch(`progress_data?progress_id=${prog}${t_uri}`);
     } else {
@@ -74,9 +74,9 @@ class API {
    * Interface handlers
    */
 
-  patchUser = ({ current_tutorial }) => {
-    return this.authFetch(`users/${this.user.id}`, "PATCH", {
-      current_tutorial
+  patchUser = ({current_tutorial}) => {
+    return this.authFetch(`users/${this.user.id}`, 'PATCH', {
+      current_tutorial,
     });
   };
 
@@ -84,27 +84,27 @@ class API {
     return console.log(tutorial);
   };
 
-  patchStep = ({ pid, step_id }) => {
+  patchStep = ({pid, step_id}) => {
     return (
       this.stepCheck(step_id) &&
-        this.authFetch(`progresses/${pid}`, "PATCH", { step_id })
+      this.authFetch(`progresses/${pid}`, 'PATCH', {step_id})
     );
   };
 
-  patchCode = ({ pid, code }) => {
-    return this.authFetch(`progresses/${pid}`, "PATCH", { code });
+  patchCode = ({pid, code}) => {
+    return this.authFetch(`progresses/${pid}`, 'PATCH', {code});
   };
 
-  patchData = ({ id, state }) => {
-    return this.authFetch(`progress_data/${id}`, "PATCH", { state });
+  patchData = ({id, state}) => {
+    return this.authFetch(`progress_data/${id}`, 'PATCH', {state});
   };
 
   postCompile = code => {
-    return this.authFetch(`compile`, "POST", { code, task: "c_device" });
+    return this.authFetch(`compile`, 'POST', {code, task: 'compile'});
   };
 
   postUpload = code => {
-    return this.authFetch(`compile`, "POST", { code, task: "device" });
+    return this.authFetch(`compile`, 'POST', {code, task: 'device'});
   };
 
   /**
@@ -113,7 +113,7 @@ class API {
 
   stepCheck = step => {
     const s = Number(step);
-    return typeof s === "number" && Number.isInteger(s);
+    return typeof s === 'number' && Number.isInteger(s);
   };
 }
 
