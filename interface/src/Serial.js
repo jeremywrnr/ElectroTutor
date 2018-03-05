@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Form, Input, Button, List, Segment} from 'semantic-ui-react';
-import {throttle} from 'lodash';
+import {Form, List, Segment} from 'semantic-ui-react';
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip} from 'recharts';
 import Host from './Host.js';
 
 // GENERAL SERIAL MONITOR
@@ -8,10 +8,12 @@ import Host from './Host.js';
 class SerialMonitor extends Component {
   constructor(props) {
     super(props);
+    this.start = Date.now();
     this.baud = 115200;
     this.port = '/dev/cu.usbmodem1421';
     this.state = {
       value: '',
+      data: [],
       log: [],
     };
   }
@@ -32,8 +34,20 @@ class SerialMonitor extends Component {
   };
 
   appendLog = msg => {
-    //msg.key = Date.now();
-    this.setState({log: [msg, ...this.state.log]});
+    try {
+      let json_msg = JSON.parse(msg);
+      json_msg.date = Date.now() - this.start;
+      if (json_msg.D && json_msg.D.endsWith('\n')) {
+        json_msg.D = Number(json_msg.D);
+        this.setState({data: [...this.state.data, json_msg]});
+      } else {
+        json_msg.key = json_msg.date;
+        this.setState({log: [json_msg, ...this.state.log]});
+      }
+    } catch (e) {
+      const str_msg = `${msg} + ${Date.now()} - ${this.start}`;
+      this.setState({log: [str_msg, ...this.state.log]});
+    }
   };
 
   startConnection = e => {
@@ -70,6 +84,14 @@ class SerialMonitor extends Component {
   render() {
     return (
       <div className="full">
+        <LineChart width={800} height={400} data={this.state.data}>
+          <Line type="monotone" dataKey="D" stroke=" #17a1a5" />
+          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+        </LineChart>
+
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
             <Form.Input
@@ -78,13 +100,13 @@ class SerialMonitor extends Component {
               onChange={this.handleChange}
             />
             <Form.Button content="Submit" />
-            <Button onClick={this.openPort} content="Open Port" />
-            <Button onClick={this.startConnection} content="Reopen WS" />
+            <Form.Button onClick={this.openPort} content="Open Port" />
+            <Form.Button onClick={this.startConnection} content="Reopen WS" />
           </Form.Group>
         </Form>
         <div id="log">messages: {this.state.log.length}</div>
         <Segment inverted>
-          //<List divided inverted relaxed items={this.state.log} />
+          <List divided inverted relaxed items={this.state.log} />
         </Segment>
       </div>
     );
