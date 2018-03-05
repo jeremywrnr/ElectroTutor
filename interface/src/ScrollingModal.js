@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Image, Modal} from 'semantic-ui-react';
-import Dygraph from 'dygraphs';
+import {LineChart, Line} from 'recharts';
+import SerialMonitor from './Serial.js';
+
+// GENERAL SCROLLING MODAL
 
 class ModalScrollingContent extends Component {
-  //size={'small'}
-
   render() {
+    const close = this.props.onClick;
+    const modProps = Object.assign({}, this.props);
+    delete modProps.onClick;
+
     return (
-      <Modal dimmer={'blurring'} {...this.props}>
+      <Modal dimmer={'blurring'} {...modProps}>
         <Modal.Header>{this.props.title}</Modal.Header>
 
         <Modal.Content image scrolling>
@@ -16,7 +21,7 @@ class ModalScrollingContent extends Component {
         </Modal.Content>
 
         <Modal.Actions>
-          <Button primary onClick={this.props.onClick}>
+          <Button primary onClick={close}>
             Continue <Icon name="right chevron" />
           </Button>
         </Modal.Actions>
@@ -25,53 +30,30 @@ class ModalScrollingContent extends Component {
   }
 }
 
+// SERIAL MODAL
+
 class SerialModal extends Component {
   constructor(props) {
     super(props);
     this.data = [];
   }
 
-  componentWillMount() {
-    var t = new Date();
-    let data = [];
-    for (var i = 50; i >= 0; i--) {
-      var x = new Date(t.getTime() - i * 1000);
-      data.push([x, Math.random()]);
-    }
-
-    this.setState({data});
-  }
-
-  componentDidMount() {
-    const data = this.state.data;
-    var g = new Dygraph(document.getElementById('div_g'), data, {
-      drawPoints: true,
-      showRoller: true,
-      valueRange: [0.0, 1.2],
-      labels: ['Time', 'Random'],
-    });
-
-    // It sucks that these things aren't objects, and we need to store state in window.
-    return;
-
-    window.intervalId = setInterval(function() {
-      var x = new Date(); // current time
-      var y = Math.random();
-      data.push([x, y]);
-      g.updateOptions({file: data});
-    }, 1000);
-  }
-
-  componentWillUnmount() {}
+  data = [
+    {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+    {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+    {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+    {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+    {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
+    {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
+    {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+  ];
 
   content = (
     <div className="full">
-      <Button primary onClick={this.props.onClick}>
-        Continue <Icon name="right chevron" />
-      </Button>
-      <div id="div_g" className="full">
-        graph
-      </div>
+      <LineChart width={400} height={400} data={this.data}>
+        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+      </LineChart>
+      <SerialMonitor />
     </div>
   );
 
@@ -79,6 +61,8 @@ class SerialModal extends Component {
     <ModalScrollingContent {...this.props} modalContent={this.content} />
   );
 }
+
+// USER GUIDE MODAL
 
 class GuideModal extends Component {
   content = (

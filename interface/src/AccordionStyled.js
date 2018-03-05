@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Accordion, Button, Segment, Label } from "semantic-ui-react";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
+import {Accordion, Button, Segment, Label} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 class AccordionTestTitle extends Component {
   handlePassColor = {
-    test: "grey",
-    pass: "green",
-    fail: "red"
+    test: 'grey',
+    pass: 'green',
+    fail: 'red',
   };
 
   render() {
@@ -26,13 +26,13 @@ class AccordionTestItem extends Component {
   static propTypes = {
     handleClick: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
-    test: PropTypes.object.isRequired
+    test: PropTypes.object.isRequired,
   };
 
   handlePassColor = {
-    test: "grey",
-    pass: "green",
-    fail: "red"
+    test: 'grey',
+    pass: 'green',
+    fail: 'red',
   };
 
   render() {
@@ -63,24 +63,24 @@ export default class AccordionStyled extends Component {
   static propTypes = {
     handleClick: PropTypes.func.isRequired,
     data: PropTypes.array.isRequired,
-    run: PropTypes.func
+    run: PropTypes.func,
   };
 
   static defaultProps = {
     //run: function() {},
-    data: []
+    data: [],
   };
 
   generatePanels(progress) {
     return progress.map((t, i) => ({
       title: {
         content: <AccordionTestTitle {...t} />,
-        key: `title-${i}`
+        key: `title-${i}`,
       },
       content: {
         content: <AccordionTestItem key={t.key} {...t} />,
-        key: `content-${i}`
-      }
+        key: `content-${i}`,
+      },
     }));
   }
 
@@ -93,9 +93,9 @@ export default class AccordionStyled extends Component {
       return {
         test: t,
         data: match,
-        pass: !t.info && data.state === "pass",
-        fail: !t.info && data.state === "fail",
-        handleClick: this.props.handleClick
+        pass: !t.info && data.state === 'pass',
+        fail: !t.info && data.state === 'fail',
+        handleClick: this.props.handleClick,
       };
     });
 

@@ -17,11 +17,11 @@ The [`Makefile`][mk] provides a simpler interface for common tasks.
 
 ### related
 
-- serial-port-json-server: https://github.com/chilipeppr/serial-port-json-server/releases
-- pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
-- advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
+* serial-port-json-server: https://github.com/chilipeppr/serial-port-json-server/releases
+* pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
+* advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
+* analog read: https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
 
-[spjs]:https://github.com/platformio/platformio-core
-[pio]:https://github.com/platformio/platformio-core
-[mk]:./Makefile
-
+[spjs]: https://github.com/platformio/platformio-core
+[pio]: https://github.com/platformio/platformio-core
+[mk]: ./Makefile
