@@ -2,28 +2,28 @@
  * User Account setup
  */
 
-import Host from "./Host.js";
+import Host from './Host.js';
 const rails = Host.rails;
 
-const headers = new Headers({ "Content-Type": "application/json" });
-const dataKeyId = "tdtutorial.user.account";
+const headers = new Headers({'Content-Type': 'application/json'});
+const dataKeyId = 'tdtutorial.user.account';
 // TODO generalize to include tutorial data
 //const dataKeyId2 = "tdtutorial.user.account"
 
 const Account = {
   createUser(user) {
     return fetch(`${rails}/users`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(user),
-      headers
+      headers,
     }); // returns raw response w/ 'ok' field
   },
 
   setServerCredentials(user) {
     return fetch(`${rails}/user_token`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(user),
-      headers
+      headers,
     });
   },
 
@@ -37,7 +37,7 @@ const Account = {
 
   clearLocalCredentials() {
     localStorage.removeItem(dataKeyId);
-  }
+  },
 };
 
 export default Account;

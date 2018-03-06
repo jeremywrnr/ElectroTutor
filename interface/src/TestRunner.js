@@ -6,7 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Message} from 'semantic-ui-react';
 
-class Test extends React.Component {
+class TestRunner extends React.Component {
   static propTypes = {
     task: PropTypes.string,
     head: PropTypes.string,
@@ -40,4 +40,4 @@ class Test extends React.Component {
   }
 }
 
-export default Test;
+export default TestRunner;

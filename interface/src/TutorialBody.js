@@ -8,9 +8,6 @@ import * as ace from 'brace';
 import {throttle} from 'lodash';
 import Split from 'split.js';
 
-//import ActionCable from 'actioncable'
-//import TestGroup from './TestGroup.js'
-
 import {GuideModal, SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
 import Test from './Test.js';

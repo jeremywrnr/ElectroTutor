@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Segment, Button } from "semantic-ui-react";
-import $ from "jquery"; // which press
-import TutorialBody from "./TutorialBody.js";
-import ListSelector from "./ListSelector.js";
-import API from "./API.js";
+import React, {Component} from 'react';
+import {Segment, Button} from 'semantic-ui-react';
+import $ from 'jquery'; // which press
+import TutorialBody from './TutorialBody.js';
+import ListSelector from './ListSelector.js';
+import API from './API.js';
 
 class Tutorial extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class Tutorial extends Component {
     this.state = {
       user: undefined, // id
       tutorial: undefined, // id
-      tutorials: [] // list
+      tutorials: [], // list
     };
   }
 
@@ -21,7 +21,7 @@ class Tutorial extends Component {
 
   componentWillMount() {
     let api = new API(this.props.user_token); // generated from JWT auth
-    this.setState({ api });
+    this.setState({api});
     api
       .fetchUser()
       .then(this.handleUserUpdate)
@@ -41,23 +41,23 @@ class Tutorial extends Component {
    */
 
   handleUserUpdate = user => {
-    return this.setState({ user });
+    return this.setState({user});
   };
 
   handleTutorialsUpdate = tutorials => {
-    return this.setState({ tutorials });
+    return this.setState({tutorials});
   };
 
   handleTutorialUpdate = tutorial => {
-    return this.setState({ tutorial });
+    return this.setState({tutorial});
   };
 
   setTutorial = e => {
     const api = this.state.api;
     const tutorial = $(e.target)
-      .closest(".ui.card")
-      .attr("id"); // id
-    const update = () => api.patchUser({ current_tutorial: tutorial });
+      .closest('.ui.card')
+      .attr('id'); // id
+    const update = () => api.patchUser({current_tutorial: tutorial});
     api
       .configure()
       .then(update)
@@ -67,8 +67,8 @@ class Tutorial extends Component {
 
   unsetTutorial = () => {
     const api = this.state.api;
-    const update = () => api.patchUser({ current_tutorial: "" });
-    const remove = () => this.setState({ tutorial: "" });
+    const update = () => api.patchUser({current_tutorial: ''});
+    const remove = () => this.setState({tutorial: ''});
     api
       .configure()
       .then(update)

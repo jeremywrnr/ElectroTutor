@@ -1,36 +1,35 @@
-import React, { Component } from 'react'
-import { Grid } from 'semantic-ui-react'
-import Column from './Column.js'
+import React, {Component} from 'react';
+import {Grid} from 'semantic-ui-react';
+import Column from './Column.js';
 
 class Grid3 extends Component {
   static defaultProps = {
     mHead: '',
   };
 
-  render () {
+  render() {
     return (
-      <Grid className="full" columns='three'>
+      <Grid className="full" columns="three">
         <Grid.Row>
           <Column
-            key='left-col'
+            key="left-col"
             main={this.props.left}
             header={this.props.title}
-            tLink={this.props.tLink} />
+            tLink={this.props.tLink}
+          />
 
           <Column
-            id='middle-col'
-            key='middle-col'
+            id="middle-col"
+            key="middle-col"
             header={this.props.mHead}
-            main={this.props.middle} />
+            main={this.props.middle}
+          />
 
-          <Column
-            key='right-col'
-            main={this.props.right}
-            header='Testing' />
+          <Column key="right-col" main={this.props.right} header="Testing" />
         </Grid.Row>
       </Grid>
-      )
+    );
   }
 }
 
-export default Grid3
+export default Grid3;

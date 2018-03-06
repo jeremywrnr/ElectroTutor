@@ -119,6 +119,7 @@ class SerialMonitor extends Component {
     e && e.preventDefault();
     const conn = this.state.conn;
     if (conn) {
+      this.closePort();
       this.setState({conn: undefined});
       conn.close();
     }
@@ -131,6 +132,19 @@ class SerialMonitor extends Component {
   openPort = e => {
     e && e.preventDefault();
     this.setState({value: `open ${this.port} ${this.baud}`}, this.handleSubmit);
+  };
+
+  sendPort = e => {
+    e && e.preventDefault();
+    this.setState({value: `open ${this.port} ${this.baud}`}, this.handleSubmit);
+  };
+
+  closePort = e => {
+    e && e.preventDefault();
+    this.setState(
+      {value: `close ${this.port} ${this.baud}`},
+      this.handleSubmit,
+    );
   };
 
   componentDidMount = () => {
@@ -146,15 +160,16 @@ class SerialMonitor extends Component {
       <div className="full">
         {this.state.data.length > 0 && <SerialGraph data={this.state.data} />}
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group>
+          <Form.Group fluid>
+            <Form.Button onClick={this.openPort} content="Open" />
+            <Form.Button onClick={this.closePort} content="Close" />
+            <Form.Button content="Send" />
             <Form.Input
               placeholder="serial message"
               value={this.state.value}
               onChange={this.handleChange}
             />
-            <Form.Button content="Submit" />
-            <Form.Button onClick={this.openPort} content="Open Port" />
-            <Form.Button onClick={this.startConnection} content="Reopen WS" />
+            <Form.Button onClick={this.startConnection} content="Reconnect" />
           </Form.Group>
         </Form>
         <div id="log">
