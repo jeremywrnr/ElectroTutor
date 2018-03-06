@@ -6,24 +6,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Message} from 'semantic-ui-react';
 
+class NumericRunner extends React.Component {
+  render() {
+    return <Message content={'hello'} />;
+  }
+}
+
 class TestRunner extends React.Component {
   static propTypes = {
-    task: PropTypes.string,
-    head: PropTypes.string,
+    type: PropTypes.string,
   };
 
   static defaultProps = {
-    pass: undefined,
-    head: 'Quick Check',
-    task: '',
-  };
-
-  //className={ pass ? 'success' : 'info' }
-
-  handlePassIcon = {
-    pass: 'check',
-    fail: 'info',
-    info: false,
+    type: undefined,
   };
 
   render() {

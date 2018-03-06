@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Image, Icon, Container, Segment, Button} from 'semantic-ui-react';
-import {Browser} from 'react-window-ui';
+import {Image, Container, Segment, Button} from 'semantic-ui-react';
 import $ from 'jquery'; // animations
 import ReactMarkdown from 'react-markdown';
 import {HotKeys} from 'react-hotkeys';
@@ -10,10 +9,10 @@ import Split from 'split.js';
 
 import {GuideModal, SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
+import ArduinoWindow from './Arduino.js';
 import Test from './Test.js';
 import Grid3 from './Grid3.js';
 import Delay from './Delay.js';
-import Code from './Code.js';
 import API from './API.js';
 
 /**
@@ -26,7 +25,7 @@ class TutorialBody extends Component {
     this.state = {
       code: 'Initializing...',
       progress: {code: ''},
-      compile: false,
+      compile: false, // hydrated after compile/error
       page_loading: true,
       step_loading: false,
       port_monitor: false,
@@ -251,23 +250,10 @@ class TutorialBody extends Component {
   };
 
   render() {
-    const page_loading = this.state.page_loading;
-    const step_loading = this.state.step_loading;
-
-    let compile_value, compile_success;
-    if (this.state.compile_loading) {
-      compile_value = this.state.compile_loading;
-    } else {
-      const compile_finished = this.state.compile;
-      compile_success = compile_finished && this.state.compile.code === 0;
-      compile_value =
-        (compile_success
-          ? this.state.compile.output
-          : this.state.compile.error) || '';
-    }
-
     const step = this.state.step;
     const step_header = 'Step ' + step.position + ': ' + step.title;
+    const page_loading = this.state.page_loading;
+    const step_loading = this.state.step_loading;
 
     return (
       <Segment basic className="no-pad full" loading={page_loading}>
@@ -277,13 +263,11 @@ class TutorialBody extends Component {
               title={step_header}
               left={
                 <div className="full">
-                  <Image src={this.state.step.image} />
+                  <Image src={step.image} />
                   <Segment>
-                    <ReactMarkdown source={this.state.step.description} />
+                    <ReactMarkdown source={step.description} />
                   </Segment>
-
                   <br />
-
                   <div className="tutorial-menu">
                     <Button.Group fluid widths="2">
                       <Button
@@ -304,72 +288,14 @@ class TutorialBody extends Component {
                 </div>
               }
               middle={
-                <div id="arduino" className="arduino full">
-                  <Browser id="browser">
-                    <Button.Group widths="3">
-                      <Button
-                        as={'div'}
-                        fluid
-                        animated
-                        className="fade"
-                        icon
-                        onClick={this.handleCompile}>
-                        <Button.Content visible>
-                          <Icon name="check" />
-                        </Button.Content>
-                        <Button.Content hidden>Verify</Button.Content>
-                      </Button>
-                      <Button
-                        as={'div'}
-                        fluid
-                        animated
-                        className="fade"
-                        icon
-                        onClick={this.handleUpload}>
-                        <Button.Content hidden>Upload</Button.Content>
-                        <Button.Content visible>
-                          <Icon name="arrow right" />
-                        </Button.Content>
-                      </Button>
-                      <Button
-                        as={'div'}
-                        icon
-                        fluid
-                        animated
-                        className="fade"
-                        onClick={this.handleMonitor}>
-                        <Button.Content hidden>Monitor</Button.Content>
-                        <Button.Content visible>
-                          <Icon name="search" />
-                        </Button.Content>
-                      </Button>
-                    </Button.Group>
-
-                    <div className="full flex-container">
-                      <div id="code_editor">
-                        <Code
-                          name="code"
-                          mode={'c_cpp'}
-                          readOnly={false}
-                          showLines={true}
-                          showGutter={true}
-                          highlightActiveLine={true}
-                          value={this.state.progress.code}
-                          onChange={this.handleCodeChange}
-                        />
-                      </div>
-
-                      <div id="status_container">
-                        <Code
-                          name={'compile'}
-                          mode={'c_cpp'}
-                          value={compile_value}
-                          theme={compile_success ? 'gob' : 'terminal'}
-                        />
-                      </div>
-                    </div>
-                  </Browser>
-                </div>
+                <ArduinoWindow
+                  progress={this.state.progress}
+                  compile={this.state.compile}
+                  loading={this.state.compile_loading}
+                  handleCompile={this.handleCompile}
+                  handleUpload={this.handleUpload}
+                  handleMonitor={this.handleMonitor}
+                />
               }
               right={
                 <Container>
