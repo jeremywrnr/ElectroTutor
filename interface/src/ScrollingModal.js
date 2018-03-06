@@ -20,7 +20,7 @@ class ModalScrollingContent extends Component {
         </Modal.Content>
 
         <Modal.Actions>
-          <Button primary onClick={close}>
+          <Button onClick={close}>
             Continue <Icon name="right chevron" />
           </Button>
         </Modal.Actions>
