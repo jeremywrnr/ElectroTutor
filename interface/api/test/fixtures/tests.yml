@@ -3,12 +3,10 @@
 one:
   id: 1
   description: MyText
-  exec: MyString
   image: MyString
   output: MyText
 two:
   id: 2
   description: MyText
-  exec: MyString
   image: MyString
   output: MyText
