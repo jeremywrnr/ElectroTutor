@@ -21,6 +21,7 @@ The [`Makefile`][mk] provides a simpler interface for common tasks.
 * pio testing: http://docs.platformio.org/en/latest/plus/unit-testing.html
 * advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
 * analog read: https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
+  * shorter example: https://www.arduino.cc/en/Tutorial/ReadAnalogVoltage
 
 [spjs]: https://github.com/platformio/platformio-core
 [pio]: https://github.com/platformio/platformio-core

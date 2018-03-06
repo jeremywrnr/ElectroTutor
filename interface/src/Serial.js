@@ -1,9 +1,50 @@
 import React, {Component} from 'react';
-import {Form, List, Segment} from 'semantic-ui-react';
-import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip} from 'recharts';
+import {throttle} from 'lodash';
 import Host from './Host.js';
 
+import {Form, List, Segment} from 'semantic-ui-react';
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ReferenceLine,
+} from 'recharts';
+
 // GENERAL SERIAL MONITOR
+
+class SerialGraph extends Component {
+  render() {
+    return (
+      <LineChart width={820} height={400} data={this.props.data}>
+        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+        <YAxis domain={[0, 5]} />
+        <Tooltip />
+        <XAxis
+          domain={['dataMin * 0.9', 'dataMax * 1.1']}
+          type="linear"
+          dataKey="date"
+        />
+        <Line
+          type="linear"
+          isAnimationActive={false}
+          stroke=" #17a1a5"
+          dataKey="V"
+          dot={false}
+        />
+        <ReferenceLine
+          y={5}
+          label="Max"
+          alwaysShow={true}
+          stroke="red"
+          strokeDasharray="3 3"
+        />
+      </LineChart>
+    );
+  }
+}
 
 class SerialMonitor extends Component {
   constructor(props) {
@@ -33,22 +74,30 @@ class SerialMonitor extends Component {
     return false;
   };
 
-  appendLog = msg => {
+  appendLog = throttle(msg => {
     try {
       let json_msg = JSON.parse(msg);
       json_msg.date = Date.now() - this.start;
-      if (json_msg.D && json_msg.D.endsWith('\n')) {
-        json_msg.D = Number(json_msg.D);
-        this.setState({data: [...this.state.data, json_msg]});
+      if (json_msg.D) {
+        const numbers = json_msg.D.split('\r\n')
+          .slice(1, -1)
+          .map((d, i) => {
+            return {V: Number(d), date: (json_msg.date + i * 3) / 1000.0};
+          });
+        console.log(json_msg);
+        const joined = [...this.state.data, ...numbers];
+        const start = Math.max(joined.length - 10000, 1);
+        const data = joined.slice(start, -1);
+        this.setState({data});
       } else {
         json_msg.key = json_msg.date;
-        this.setState({log: [json_msg, ...this.state.log]});
+        this.setState({log: [JSON.stringify(json_msg), ...this.state.log]});
       }
     } catch (e) {
-      const str_msg = `${msg} + ${Date.now()} - ${this.start}`;
+      const str_msg = `${msg} +${Date.now() - this.start}`;
       this.setState({log: [str_msg, ...this.state.log]});
     }
-  };
+  }, 5);
 
   startConnection = e => {
     e && e.preventDefault();
@@ -57,7 +106,6 @@ class SerialMonitor extends Component {
     if (this.state.conn) {
       this.state.conn.close(); // reset
     }
-
     let conn = new WebSocket(Host.serial);
     conn.onclose = function(evt) {
       append('Connection closed.');
@@ -66,6 +114,15 @@ class SerialMonitor extends Component {
       append(evt.data);
     };
     this.setState({conn});
+  };
+
+  closeConnection = e => {
+    e && e.preventDefault();
+    const conn = this.state.conn;
+    if (conn) {
+      this.setState({conn: undefined});
+      conn.close();
+    }
   };
 
   handleChange = event => {
@@ -77,21 +134,18 @@ class SerialMonitor extends Component {
     this.setState({value: `open ${this.port} ${this.baud}`}, this.handleSubmit);
   };
 
-  componentWillMount() {
+  componentDidMount = () => {
     this.startConnection();
-  }
+  };
+
+  componentWillUnmount = () => {
+    this.closeConnection();
+  };
 
   render() {
     return (
       <div className="full">
-        <LineChart width={800} height={400} data={this.state.data}>
-          <Line type="monotone" dataKey="D" stroke=" #17a1a5" />
-          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-        </LineChart>
-
+        {this.state.data.length > 0 && <SerialGraph data={this.state.data} />}
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
             <Form.Input
@@ -104,7 +158,9 @@ class SerialMonitor extends Component {
             <Form.Button onClick={this.startConnection} content="Reopen WS" />
           </Form.Group>
         </Form>
-        <div id="log">messages: {this.state.log.length}</div>
+        <div id="log">
+          data: {this.state.data.length}, messages: {this.state.log.length}
+        </div>
         <Segment inverted>
           <List divided inverted relaxed items={this.state.log} />
         </Segment>
