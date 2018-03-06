@@ -28,15 +28,14 @@ class SerialGraph extends Component {
           dataKey="date"
         />
         <Line
-          type="linear"
           isAnimationActive={false}
+          type="monotone"
           stroke=" #17a1a5"
           dataKey="V"
           dot={false}
         />
         <ReferenceLine
           y={5}
-          label="Max"
           alwaysShow={true}
           stroke="red"
           strokeDasharray="3 3"
@@ -97,7 +96,7 @@ class SerialMonitor extends Component {
       const str_msg = `${msg} +${Date.now() - this.start}`;
       this.setState({log: [str_msg, ...this.state.log]});
     }
-  }, 5);
+  }, 100);
 
   startConnection = e => {
     e && e.preventDefault();
