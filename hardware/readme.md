@@ -23,6 +23,6 @@ The [`Makefile`][mk] provides a simpler interface for common tasks.
 * analog read: https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
   * shorter example: https://www.arduino.cc/en/Tutorial/ReadAnalogVoltage
 
-[spjs]: https://github.com/platformio/platformio-core
+[spjs]: https://github.com/chilipeppr/serial-port-json-server
 [pio]: https://github.com/platformio/platformio-core
 [mk]: ./Makefile
