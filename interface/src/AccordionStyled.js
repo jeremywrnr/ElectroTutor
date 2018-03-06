@@ -49,11 +49,7 @@ class AccordionTestItem extends Component {
         <Segment color={color}>
           {this.props.test.description} <br /> state: {state}
         </Segment>
-        {!i && (
-          <Button fluid onClick={patch}>
-            Check Condition
-          </Button>
-        )}
+        {!i && <Button fluid onClick={patch} content="Check Condition" />}
       </div>
     );
   }

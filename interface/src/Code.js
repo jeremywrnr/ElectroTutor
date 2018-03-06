@@ -25,7 +25,7 @@ class Code extends React.Component {
   static defaultProps = {
     onChange: function() {},
     onUpdate: function() {},
-    mode: 'text',
+    mode: 'c_cpp',
     width: '100%',
     fontSize: 12,
     //cursorStart: 1,

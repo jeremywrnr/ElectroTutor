@@ -14,7 +14,7 @@ class NumericRunner extends React.Component {
 
 class TestRunner extends React.Component {
   static propTypes = {
-    type: PropTypes.string,
+    type: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -22,16 +22,7 @@ class TestRunner extends React.Component {
   };
 
   render() {
-    let pass = this.props.pass;
-    return (
-      <Message
-        header={this.props.head}
-        icon={this.handlePassIcon[pass]}
-        success={pass === 'pass'}
-        error={pass === 'fail'}
-        content={this.props.task}
-      />
-    );
+    return <Message content={this.props.type} />;
   }
 }
 

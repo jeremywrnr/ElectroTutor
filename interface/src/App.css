@@ -131,7 +131,9 @@ div.ace_editor {
 }
 
 /* TEST PANES */
-
+div.ui.styled.accordion {
+  margin-bottom: 1em;
+}
 div.ui.styled.accordion div.title {
   background: rgba(34, 36, 38, 0.1) !important;
 }

@@ -34,6 +34,7 @@ class ArduinoWindow extends Component {
     const compile = this.props.handleCompile;
     const upload = this.props.handleUpload;
     const monitor = this.props.handleMonitor;
+    const change = this.props.handleCodeChange;
 
     let compile_value, compile_success;
     if (this.props.loading) {
@@ -57,20 +58,18 @@ class ArduinoWindow extends Component {
             <div id="code_editor">
               <Code
                 name="code"
-                mode={'c_cpp'}
                 readOnly={false}
                 showLines={true}
                 showGutter={true}
+                onChange={change}
                 highlightActiveLine={true}
                 value={this.props.progress.code}
-                onChange={this.handleCodeChange}
               />
             </div>
 
             <div id="status_container">
               <Code
                 name={'compile'}
-                mode={'c_cpp'}
                 value={compile_value}
                 theme={compile_success ? 'gob' : 'terminal'}
               />

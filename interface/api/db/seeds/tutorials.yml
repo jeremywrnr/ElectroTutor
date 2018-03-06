@@ -173,3 +173,79 @@
 
 
 
+-
+  tutorial:
+    title: Simplest LED Button Flasher
+    source: https://learn.adafruit.com/adafruit-arduino-lesson-2-leds/blinking-the-led
+    image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/original/learn_arduino_overview.jpg?1396780031
+    description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
+  progress:
+    code: '// Edit me'
+  steps:
+    -
+      title: Introduction
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/medium640/learn_arduino_overview.jpg?1396780031
+      description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
+    -
+      title: Adding a Button Press
+      image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
+      description: |
+        Insert a button in between the resistor and the positive voltage power line connected to the LED.
+      tests:
+        -
+          title: Button Press Control
+          description: Does the button press control whether the light is flashing or not?
+        -
+          title: Button Press Control
+          description: Does the button press control whether the light is flashing or not?
+          type: manual
+    -
+      title: Congrats!
+      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
+      description: |
+        You have successfully completed the tutorial!
+      tests:
+        -
+          title: Congrats!
+          description: You have successfully completed the tutorial!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

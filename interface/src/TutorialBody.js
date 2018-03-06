@@ -10,7 +10,7 @@ import Split from 'split.js';
 import {GuideModal, SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
 import ArduinoWindow from './Arduino.js';
-import Test from './Test.js';
+import Continue from './Continue.js';
 import Grid3 from './Grid3.js';
 import Delay from './Delay.js';
 import API from './API.js';
@@ -26,6 +26,7 @@ class TutorialBody extends Component {
       code: 'Initializing...',
       progress: {code: ''},
       compile: false, // hydrated after compile/error
+      tests_passed: false,
       page_loading: true,
       step_loading: false,
       port_monitor: false,
@@ -37,7 +38,13 @@ class TutorialBody extends Component {
 
   keyHandler = {
     next: () => {
-      this.nextStep();
+      if (this.state.tests_passed) {
+        this.nextStep();
+      } else {
+        // TODO block going forward if the step is not completed
+        // BONUS TODO: tell the user that they must complete test
+        this.nextStep();
+      }
     },
     back: () => {
       this.prevStep();
@@ -69,6 +76,8 @@ class TutorialBody extends Component {
   patchProgressData = () => {
     return throttle((data, test) => {
       this.setState({step_loading: true});
+
+      console.log(data, test);
 
       // MOCKING OUT ACTUALLY RUNNING THE TESTS
       let state;
@@ -119,7 +128,8 @@ class TutorialBody extends Component {
       .then(this.handleTestUpdate)
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)
-      .then(() => this.setState({step_loading: false, page_loading: false}));
+      .then(() => this.setState({step_loading: false, page_loading: false}))
+      .then(this.testProgressCheck);
   };
 
   generatePaneSplit = (sizes = [90, 10]) => {
@@ -147,6 +157,10 @@ class TutorialBody extends Component {
     this.editorNames.map(editor => ace.edit(editor).resize());
   };
 
+  //
+  // COMPONENT LIFE CYCLE
+  //
+
   componentWillMount() {
     const api = new API(this.props.api_auth); // from JWT
     const tutorial = this.props.tutorial.id;
@@ -161,6 +175,10 @@ class TutorialBody extends Component {
   componentWillUpdate() {
     this.updatePaneSplit();
   }
+
+  //
+  // STATE UPDATE HANDLERS
+  //
 
   handleProgressUpdate = progress => {
     this.setState({progress});
@@ -190,11 +208,6 @@ class TutorialBody extends Component {
     this.setState({pData});
   };
 
-  // For live updates, across sessions. Not needed right now
-  // Const cable = ActionCable.createConsumer('ws://localhost:3001/cable')
-  // This.progSub = cable.subscriptions.create('ProgressesChannel', { received: this.handleReceiveProgress })
-  // This.dataSub = cable.subscriptions.create('ProgressDataChannel', { received: this.handleReceiveProgressData })
-
   handleCodeChange = code => {
     // user changes code
     const api = this.state.api;
@@ -207,8 +220,8 @@ class TutorialBody extends Component {
     }, 500);
   };
 
-  // UI changes code - flash
   handleCodeUpdate = e => {
+    // UI changes code - flash
     var div = $('#status_container');
     div.animate({opacity: '1.0'}, 500);
   };
@@ -243,7 +256,10 @@ class TutorialBody extends Component {
     this.setState({port_viewing: false});
   };
 
-  // Key mapping
+  //
+  // KEY MAPPING
+  //
+
   map = {
     next: ['right'],
     back: ['left'],
@@ -254,6 +270,7 @@ class TutorialBody extends Component {
     const step_header = 'Step ' + step.position + ': ' + step.title;
     const page_loading = this.state.page_loading;
     const step_loading = this.state.step_loading;
+    const passed = this.state.tests_passed;
 
     return (
       <Segment basic className="no-pad full" loading={page_loading}>
@@ -295,32 +312,23 @@ class TutorialBody extends Component {
                   handleCompile={this.handleCompile}
                   handleUpload={this.handleUpload}
                   handleMonitor={this.handleMonitor}
+                  handleCodeChange={this.handleCodeChange}
                 />
               }
               right={
                 <Container>
                   <Segment basic loading={step_loading}>
                     {this.state.tests.length > 0 ? (
-                      <AccordionStyled
-                        handleClick={this.patchProgressData()}
-                        tests={this.state.tests}
-                        data={this.state.pData}
-                      />
-                    ) : (
-                      <div>
-                        <Test
-                          head={'No checks.'}
-                          task={'Continue once you are ready!'}
-                          pass={'info'}
+                      <div className="full">
+                        <AccordionStyled
+                          handleClick={this.patchProgressData()}
+                          tests={this.state.tests}
+                          data={this.state.pData}
                         />
-                        <Button
-                          fluid
-                          labelPosition="right"
-                          icon="right chevron"
-                          content="Next"
-                          onClick={this.nextStep}
-                        />
+                        {passed && <Continue nextStep={this.nextStep} />}
                       </div>
+                    ) : (
+                      <Continue head={'No checks.'} nextStep={this.nextStep} />
                     )}
                   </Segment>
 
@@ -355,10 +363,5 @@ class TutorialBody extends Component {
     );
   }
 }
-
-// mHead="Editor"
-// idea - show overview of tests initially
-// <Button content='Log Out' onClick={this.props.logout} />
-//<Header content={step_header} />
 
 export default TutorialBody;
