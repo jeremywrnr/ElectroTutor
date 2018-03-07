@@ -3,5 +3,5 @@ class Test < ApplicationRecord
 
   has_many :progress_data
 
-  acts_as_list
+  acts_as_list scope: :step
 end

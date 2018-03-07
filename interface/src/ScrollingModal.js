@@ -16,7 +16,7 @@ class ModalScrollingContent extends Component {
 
         <Modal.Content image scrolling>
           {this.props.image && <Image size="medium" src={this.props.image} />}
-          {this.props.modalContent}
+          {this.props.modalcontent}
         </Modal.Content>
 
         <Modal.Actions>
@@ -35,7 +35,7 @@ class SerialModal extends Component {
   content = <SerialMonitor />;
 
   render = () => (
-    <ModalScrollingContent {...this.props} modalContent={this.content} />
+    <ModalScrollingContent {...this.props} modalcontent={this.content} />
   );
 }
 
@@ -86,7 +86,7 @@ class GuideModal extends Component {
   );
 
   render = () => (
-    <ModalScrollingContent {...this.props} modalContent={this.content} />
+    <ModalScrollingContent {...this.props} modalcontent={this.content} />
   );
 }
 

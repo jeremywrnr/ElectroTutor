@@ -64,10 +64,13 @@ class TutorialBody extends Component {
       let step_pos = Math.min(Math.max(this.state.step.position + inc, 0), 11);
       step_pos = this.handleStepError(step_pos);
 
+      // TODO handle tutorial bounds
+      // TODO use actual id vs position
+
       api
         .configure()
         .then(() => api.patchStep({pid, step_id: step_pos}))
-        .catch(console.error) // TODO handle tutorial bounds
+        .catch(console.error)
         .then(() => api.fetchStep(step_pos))
         .then(() => this.dataUpdate(api));
     }, 250);
@@ -128,8 +131,8 @@ class TutorialBody extends Component {
       .then(this.handleTestUpdate)
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)
-      .then(() => this.setState({step_loading: false, page_loading: false}))
-      .then(this.testProgressCheck);
+      .then(this.updateStepProgress)
+      .then(() => this.setState({step_loading: false, page_loading: false}));
   };
 
   generatePaneSplit = (sizes = [90, 10]) => {
@@ -143,6 +146,15 @@ class TutorialBody extends Component {
 
     this.split = split;
     this.updateEditHeight();
+  };
+
+  updateStepProgress = () => {
+    const pData = this.state.pData;
+    const has_tests = pData.length > 0;
+    const active_tests = pData.filter(t => t.form);
+    const pass_all = active_tests.every(t => t.state === 'pass');
+    const tests_passed = has_tests && pass_all;
+    this.setState({tests_passed});
   };
 
   updatePaneSplit = () => {
