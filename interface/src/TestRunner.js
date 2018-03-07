@@ -8,7 +8,14 @@ import {Message} from 'semantic-ui-react';
 
 class DynamicRunner extends React.Component {
   render() {
-    return <Message content={'dynamic'} />;
+    return (
+      <div className="full">
+        <Message content={'dynamic'} />;
+        {this.props.test.description}
+        <br />
+        {this.props.test.jsondata}
+      </div>
+    );
   }
 }
 

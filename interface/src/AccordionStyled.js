@@ -31,6 +31,7 @@ class AccordionTestItem extends Component {
   };
 
   handleRunText = {
+    dynamic: 'Examine',
     manual: 'Confirm',
     question: 'Submit',
     numeric: 'Measure',
@@ -51,14 +52,15 @@ class AccordionTestItem extends Component {
     const state = this.props.data.state;
     const color = !i && this.handlePassColor[state];
 
+    const form = this.props.test.form;
+    const rtext = !i && this.handleRunText[form];
+
     return (
       <div className="full">
         <Segment attached basic color={color}>
-          {this.props.test.description}
-          <br />
-          {this.props.test.jsondata}
+          <TestRunner {...this.props} />
         </Segment>
-        {!i && <Button attached="bottom" onClick={patch} content="Confirm" />}
+        {!i && <Button attached="bottom" onClick={patch} content={rtext} />}
       </div>
     );
   }

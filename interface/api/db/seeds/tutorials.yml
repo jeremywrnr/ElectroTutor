@@ -66,6 +66,12 @@
       tests:
         -
           title: LED Brightness
+          description: Which leg of the LED should be connected to the positive voltage?
+          jsondata: '{options: ["shorter", "longer"]}'
+          form: manual
+          output: 1
+        -
+          title: LED Brightness
           description: Has the LEDs brightness changed at all?
           form: manual
     -
