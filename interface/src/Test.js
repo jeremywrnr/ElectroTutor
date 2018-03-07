@@ -33,8 +33,6 @@ class Test extends React.Component {
         attached
         header={this.props.head}
         icon={this.handlePassIcon[pass]}
-        success={pass === 'pass'}
-        error={pass === 'fail'}
         content={this.props.task}
       />
     );

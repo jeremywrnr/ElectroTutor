@@ -16,6 +16,9 @@ div.pad {
 div.margin-pad {
   margin: 1em;
 }
+div.margin-bottom {
+  margin-bottom: 1em;
+}
 div.no-margin {
   margin: 0em !important;
 }

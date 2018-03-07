@@ -39,13 +39,7 @@ class TutorialBody extends Component {
 
   keyHandler = {
     next: () => {
-      if (this.state.tests_passed) {
-        this.nextStep();
-      } else {
-        // TODO block going forward if the step is not completed
-        // BONUS TODO: tell the user that they must complete test
-        //this.nextStep();
-      }
+      this.nextStep();
     },
     back: () => {
       this.prevStep();
@@ -56,24 +50,33 @@ class TutorialBody extends Component {
 
   patchStep = inc => {
     return throttle(() => {
-      this.setState({step_loading: true});
+      if (!this.state.tests_passed && inc > 0) {
+        // TODO block going forward if the step is not completed
+        // BONUS TODO: tell the user that they must complete test
+        //this.nextStep();
+      } else {
+        this.setState({step_loading: true});
 
-      const api = this.state.api;
-      const pid = this.state.progress.id;
+        const api = this.state.api;
+        const pid = this.state.progress.id;
 
-      //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
-      let step_pos = Math.min(Math.max(this.state.step.position + inc, 0), 11);
-      step_pos = this.handleStepError(step_pos);
+        //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
+        let step_pos = Math.min(
+          Math.max(this.state.step.position + inc, 0),
+          11,
+        );
+        step_pos = this.handleStepError(step_pos);
 
-      // TODO handle tutorial bounds
-      // TODO use actual id vs position
+        // TODO handle tutorial bounds
+        // TODO use actual id vs position
 
-      api
-        .configure()
-        .then(() => api.patchStep({pid, step_id: step_pos}))
-        .catch(console.error)
-        .then(() => api.fetchStep(step_pos))
-        .then(() => this.dataUpdate(api));
+        api
+          .configure()
+          .then(() => api.patchStep({pid, step_id: step_pos}))
+          .catch(console.error)
+          .then(() => api.fetchStep(step_pos))
+          .then(() => this.dataUpdate(api));
+      }
     }, 250);
   };
 
@@ -339,12 +342,26 @@ class TutorialBody extends Component {
                   <Segment basic loading={step_loading}>
                     {this.state.tests.length > 0 ? (
                       <div className="full">
+                        {p ? (
+                          <Continue
+                            pass={'pass'}
+                            color={'green'}
+                            next={this.nextStep}
+                          />
+                        ) : (
+                          <Continue
+                            pass={'fail'}
+                            disabled={true}
+                            head={'Unpassed Tests'}
+                            task={'Pass the tests to continue.'}
+                            next={this.nextStep}
+                          />
+                        )}
                         <AccordionStyled
                           handleClick={this.patchProgressData()}
                           tests={this.state.tests}
                           data={this.state.pData}
                         />
-                        {p && <Continue pass={'pass'} next={this.nextStep} />}
                       </div>
                     ) : (
                       <Continue head={'No checks.'} next={this.nextStep} />

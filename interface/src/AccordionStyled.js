@@ -47,7 +47,7 @@ class AccordionTestItem extends Component {
     return (
       <div className="full">
         <Segment attached basic color={color}>
-          {this.props.test.description} <br /> state: {state}
+          {this.props.test.description}
         </Segment>
         {!i && (
           <Button attached="bottom" onClick={patch} content="Check Condition" />

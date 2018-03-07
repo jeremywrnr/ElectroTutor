@@ -10,6 +10,7 @@ class Continue extends React.Component {
   static defaultProps = {
     head: 'Tests Passed',
     task: 'Continue once you are ready!',
+    color: undefined,
     pass: 'check',
   };
 
@@ -18,7 +19,12 @@ class Continue extends React.Component {
     return (
       <div>
         <Test {...this.props} />
-        <Button attached="bottom" content="Next" onClick={next} />
+        <Button
+          {...this.props}
+          attached="bottom"
+          content="Next"
+          onClick={next}
+        />
       </div>
     );
   }
