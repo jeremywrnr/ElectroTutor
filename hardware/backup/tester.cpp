@@ -5,21 +5,12 @@
 
 #include "Arduino.h"
 
-int enable = 4;
-int sense = A0;
-int enabled, sensed;
-float voltage;
+int probePin = A5;
 
 void setup() {
-  pinMode(enable, INPUT);
-  pinMode(sense, INPUT);
-  Serial.begin(115200);
+    Serial.begin(115200);
 }
 
 void loop() {
-  if (digitalRead(enable) == HIGH) {
-    sensed = analogRead(sense);
-    voltage = sensed * (5.0 / 1023.0);
-    Serial.println(voltage);
-  }
+    Serial.println(analogRead(probePin));
 }

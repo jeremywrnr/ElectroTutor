@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Accordion, Button, Segment, Label} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import TestRunner from './TestRunner.js';
 
 class AccordionTestTitle extends Component {
   handlePassColor = {
@@ -29,6 +30,12 @@ class AccordionTestItem extends Component {
     test: PropTypes.object.isRequired,
   };
 
+  handleRunText = {
+    manual: 'Confirm',
+    question: 'Submit',
+    numeric: 'Measure',
+  };
+
   handlePassColor = {
     test: 'grey',
     pass: 'green',
@@ -48,10 +55,10 @@ class AccordionTestItem extends Component {
       <div className="full">
         <Segment attached basic color={color}>
           {this.props.test.description}
+          <br />
+          {this.props.test.jsondata}
         </Segment>
-        {!i && (
-          <Button attached="bottom" onClick={patch} content="Check Condition" />
-        )}
+        {!i && <Button attached="bottom" onClick={patch} content="Confirm" />}
       </div>
     );
   }

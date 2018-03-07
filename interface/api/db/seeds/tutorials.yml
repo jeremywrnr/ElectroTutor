@@ -120,7 +120,7 @@
           title: Blinking Light?
           description: Do you see the light blinking?
           jsondata: '{options: ["yes", "no"]}'
-          form: manual
+          form: question
           output: 0
     -
       title: Adding a Button Press
