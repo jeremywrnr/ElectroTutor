@@ -107,6 +107,7 @@ class TutorialBody extends Component {
         .then(() => api.patchData({id, state}))
         .then(() => api.fetchData(this.state.progress.id, this.state.tests))
         .then(this.handleProgressDataUpdate)
+        .then(this.updateStepProgress)
         .then(() => this.setState({step_loading: false}));
     }, 250);
   };
