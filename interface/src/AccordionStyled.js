@@ -46,10 +46,12 @@ class AccordionTestItem extends Component {
 
     return (
       <div className="full">
-        <Segment color={color}>
+        <Segment attached basic color={color}>
           {this.props.test.description} <br /> state: {state}
         </Segment>
-        {!i && <Button fluid onClick={patch} content="Check Condition" />}
+        {!i && (
+          <Button attached="bottom" onClick={patch} content="Check Condition" />
+        )}
       </div>
     );
   }
@@ -95,10 +97,20 @@ export default class AccordionStyled extends Component {
       };
     });
 
+    // Append success state to test list rendering
+    let passed = progress.every(p => p.state === 'pass');
+    if (passed) {
+      progress.push({
+        handleClick: this.props.handleClick,
+        pass: true,
+      });
+    }
+
     const panels = this.generatePanels(progress);
 
     return (
       <Accordion
+        className="test-accordion"
         defaultActiveIndex={activeIndex}
         exclusive={false}
         panels={panels}

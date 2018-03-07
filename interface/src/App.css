@@ -16,6 +16,9 @@ div.pad {
 div.margin-pad {
   margin: 1em;
 }
+div.no-margin {
+  margin: 0em !important;
+}
 div.no-pad {
   padding: 0em !important;
 }
@@ -133,6 +136,9 @@ div.ace_editor {
 /* TEST PANES */
 div.ui.styled.accordion {
   margin-bottom: 1em;
+}
+div.ui.styled.accordion.test-accordion .content {
+  padding: 0em;
 }
 div.ui.styled.accordion div.title {
   background: rgba(34, 36, 38, 0.1) !important;

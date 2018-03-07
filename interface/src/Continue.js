@@ -14,17 +14,11 @@ class Continue extends React.Component {
   };
 
   render() {
-    const next = this.props.nextStep;
+    const next = this.props.next;
     return (
       <div>
         <Test {...this.props} />
-        <Button
-          fluid
-          labelPosition="right"
-          icon="right chevron"
-          content="Next"
-          onClick={next}
-        />
+        <Button attached="bottom" content="Next" onClick={next} />
       </div>
     );
   }

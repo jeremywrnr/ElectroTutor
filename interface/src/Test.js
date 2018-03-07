@@ -30,6 +30,7 @@ class Test extends React.Component {
     let pass = this.props.pass;
     return (
       <Message
+        attached
         header={this.props.head}
         icon={this.handlePassIcon[pass]}
         success={pass === 'pass'}

@@ -31,6 +31,7 @@ class TutorialBody extends Component {
       step_loading: false,
       port_monitor: false,
       splash: false,
+      pData: [],
       tests: [],
       step: {},
     };
@@ -43,7 +44,7 @@ class TutorialBody extends Component {
       } else {
         // TODO block going forward if the step is not completed
         // BONUS TODO: tell the user that they must complete test
-        this.nextStep();
+        //this.nextStep();
       }
     },
     back: () => {
@@ -151,10 +152,15 @@ class TutorialBody extends Component {
 
   updateStepProgress = () => {
     const pData = this.state.pData;
+    const tests = this.state.tests;
     const has_tests = pData.length > 0;
-    const active_tests = pData.filter(t => t.form);
-    const pass_all = active_tests.every(t => t.state === 'pass');
-    const tests_passed = has_tests && pass_all;
+    const pass_all = pData
+      .filter(p => {
+        const test = tests.find(t => t.id === p.test_id);
+        return !!test.form && !test.info; // test exists
+      })
+      .every(p => p.state === 'pass');
+    const tests_passed = pass_all || !has_tests;
     this.setState({tests_passed});
   };
 
@@ -283,7 +289,7 @@ class TutorialBody extends Component {
     const step_header = 'Step ' + step.position + ': ' + step.title;
     const page_loading = this.state.page_loading;
     const step_loading = this.state.step_loading;
-    const passed = this.state.tests_passed;
+    const p = this.state.tests_passed;
 
     return (
       <Segment basic className="no-pad full" loading={page_loading}>
@@ -338,10 +344,10 @@ class TutorialBody extends Component {
                           tests={this.state.tests}
                           data={this.state.pData}
                         />
-                        {passed && <Continue nextStep={this.nextStep} />}
+                        {p && <Continue pass={'pass'} next={this.nextStep} />}
                       </div>
                     ) : (
-                      <Continue head={'No checks.'} nextStep={this.nextStep} />
+                      <Continue head={'No checks.'} next={this.nextStep} />
                     )}
                   </Segment>
 
