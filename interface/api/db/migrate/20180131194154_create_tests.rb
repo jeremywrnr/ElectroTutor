@@ -7,8 +7,8 @@ class CreateTests < ActiveRecord::Migration[5.1]
       t.text :description
       t.string :image
 
+      t.string :form
       t.text :output
-      t.string :type
 
       t.boolean :info, default: false
       t.string :jsondata, default: '{}'

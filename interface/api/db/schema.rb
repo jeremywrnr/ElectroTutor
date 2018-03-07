@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(version: 20180207164107) do
     t.text "title"
     t.text "description"
     t.string "image"
+    t.string "form"
     t.text "output"
-    t.string "type"
     t.boolean "info", default: false
     t.string "jsondata", default: "{}"
     t.datetime "created_at", null: false
