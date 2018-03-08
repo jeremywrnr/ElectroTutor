@@ -2,9 +2,8 @@
  * Authenticated Method Collection
  */
 
-import Host from './Host.js';
+import Config from './Config.js';
 import Account from './Account.js';
-const rails = Host.rails;
 
 class API {
   constructor(auth) {
@@ -35,7 +34,7 @@ class API {
       message.body = JSON.stringify(body);
     }
 
-    return fetch(`${rails}/${route}`, message)
+    return fetch(`${Config.rails}/${route}`, message)
       .then(res => res.json())
       .catch(error => console.error('Error:', error));
   };

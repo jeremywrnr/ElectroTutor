@@ -2,8 +2,7 @@
  * User Account setup
  */
 
-import Host from './Host.js';
-const rails = Host.rails;
+import Config from './Config.js';
 
 const headers = new Headers({'Content-Type': 'application/json'});
 const dataKeyId = 'tdtutorial.user.account';
@@ -12,7 +11,7 @@ const dataKeyId = 'tdtutorial.user.account';
 
 const Account = {
   createUser(user) {
-    return fetch(`${rails}/users`, {
+    return fetch(`${Config.rails}/users`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers,
@@ -20,7 +19,7 @@ const Account = {
   },
 
   setServerCredentials(user) {
-    return fetch(`${rails}/user_token`, {
+    return fetch(`${Config.rails}/user_token`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers,

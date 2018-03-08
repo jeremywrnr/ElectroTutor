@@ -15,15 +15,15 @@ class Continue extends React.Component {
   };
 
   render() {
-    const next = this.props.next;
+    const {next, ...bProps} = this.props;
     return (
       <div>
         <Test {...this.props} />
         <Button
-          {...this.props}
+          {...bProps}
           attached="bottom"
           content="Next"
-          onClick={next}
+          onClick={this.props.next}
         />
       </div>
     );
