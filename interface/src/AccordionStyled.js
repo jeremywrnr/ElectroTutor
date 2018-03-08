@@ -125,6 +125,7 @@ export default class AccordionStyled extends Component {
 
     return (
       <Accordion
+        fluid
         className="test-accordion"
         defaultActiveIndex={activeIndex}
         exclusive={false}
