@@ -124,16 +124,30 @@ class MultipleRunner extends Component {
   }
 }
 
+// TODO cache the users last output to save their answers.
+
 class QuestionRunner extends Component {
-  // Always set to true. (or toggle?)
-  verify = () => {
-    console.log('verifying question runner...');
-    const {data, patch} = this.props;
-    patch(data, true);
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '',
+    };
+  }
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
+  };
+
+  handleChange = e => {
+    this.setState({value: e.target.value});
+  };
+
+  // Always set to true. (or toggle?)
+  verify = () => {
+    console.log('verifying question runner...');
+    const output = this.props.test.output;
+    const value = this.state.value;
+    this.props.patch(value === output);
   };
 
   render() {
@@ -142,7 +156,12 @@ class QuestionRunner extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <Input fluid placeholder="Answer here..." />
+        <Input
+          fluid
+          value={this.state.inputValue}
+          onChange={this.handleChange}
+          placeholder="Answer here..."
+        />
       </div>
     );
   }

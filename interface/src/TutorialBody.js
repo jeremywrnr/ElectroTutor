@@ -81,10 +81,11 @@ class TutorialBody extends Component {
   };
 
   patchProgressData = () => {
-    return throttle((data, state) => {
+    return throttle((data, pass) => {
       this.setState({step_loading: true});
       const id = data.id;
       const api = this.state.api;
+      const state = pass ? 'pass' : 'fail';
       console.log(data, state);
 
       api
