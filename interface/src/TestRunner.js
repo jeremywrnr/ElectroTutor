@@ -16,21 +16,25 @@ import {
 } from 'semantic-ui-react';
 
 class DynamicRunner extends React.Component {
-  verify = () => {};
+  verify = () => {
+    console.log('verifying dynamic...');
+    const {data, patch, test} = this.props;
+    return true;
+  };
 
-  componentDidMount = () => (this.props.button.onClick = this.verify);
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+  };
 
   render() {
     return (
       <div className="full">
-        <Segment attached basic color={this.props.color}>
-          <Message content={'dynamic test yet to be implemented'} />
-          {this.props.test.description}
-          <br />
-          jsondata: {this.props.test.jsondata}
-          <br />
-          output: {this.props.test.output}
-        </Segment>
+        <Message content={'dynamic test yet to be implemented'} />
+        {this.props.test.description}
+        <br />
+        jsondata: {this.props.test.jsondata}
+        <br />
+        output: {this.props.test.output}
       </div>
     );
   }
@@ -38,18 +42,12 @@ class DynamicRunner extends React.Component {
 
 class NumericRunnerShell extends Component {
   verify = () => {
-    console.log('verify');
+    console.log('verify numeric runner...');
     return true;
   };
 
-  // VERY hacky way to bind arbitary button to element specific event handler.
-  // this should only be in the running once, like in component will mount
-
   componentWillMount = () => {
-    if (this.props.button) {
-      const button = this.props.button;
-      button.handleClick = this.verify;
-    }
+    this.props.button.handleClick = this.verify;
   };
 
   // Compute running average of last n frames to help with noise.
@@ -83,89 +81,87 @@ class NumericRunnerShell extends Component {
 const NumericRunner = withSerial(NumericRunnerShell, 30);
 
 class MultipleRunnerField extends Component {
-  verify = () => {};
-
   render() {
     return (
-      <div className="full">
-        <Segment attached basic color={this.props.color}>
-          <Form.Field>
-            <Checkbox {...this.props} radio name="checkboxRadioGroup" />
-          </Form.Field>
-        </Segment>
-        {!this.props.test.info && (
-          <Button basic attached="bottom" content={this.props.rtext} />
-        )}
-      </div>
+      <Form.Field className="full">
+        <Checkbox {...this.props} radio name="checkboxRadioGroup" />
+      </Form.Field>
     );
   }
 }
 class MultipleRunner extends Component {
-  verify = () => {};
+  verify = () => {
+    console.log('verify multiple runner...');
+    return true;
+  };
 
   state = {};
   handleChange = (e, {value}) => this.setState({value});
+
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+  };
 
   render() {
     const opts = JSON.parse(this.props.test.jsondata);
 
     return (
-      <div className="full">
-        <Segment attached basic color={this.props.color}>
-          <Form className="full">
-            <Form.Field>{this.props.test.description}</Form.Field>
-            {opts.map((opt, i) => {
-              return (
-                <MultipleRunnerField
-                  onChange={this.handleChange}
-                  checked={this.state.value === i}
-                  key={`key-${i}-${opt}`}
-                  label={opt}
-                  value={i}
-                />
-              );
-            })}
-          </Form>
-        </Segment>
-      </div>
+      <Form className="full">
+        <Form.Field>{this.props.test.description}</Form.Field>
+        {opts.map((opt, i) => {
+          return (
+            <MultipleRunnerField
+              onChange={this.handleChange}
+              checked={this.state.value === i}
+              key={`key-${i}-${opt}`}
+              label={opt}
+              value={i}
+            />
+          );
+        })}
+      </Form>
     );
   }
 }
 
 class QuestionRunner extends Component {
-  verify = () => {};
+  // Always set to true. (or toggle?)
+  verify = () => {
+    console.log('verifying question runner...');
+    const {data, patch} = this.props;
+    patch(data, true);
+  };
+
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+  };
 
   render() {
     return (
       <div className="full">
-        <Segment attached basic color={this.props.color}>
-          {this.props.test.description}
-          <br />
-          <br />
-          <Input fluid placeholder="Answer here..." />
-        </Segment>
-        {!this.props.test.info && (
-          <Button basic attached="bottom" content={this.props.rtext} />
-        )}
+        {this.props.test.description}
+        <br />
+        <br />
+        <Input fluid placeholder="Answer here..." />
       </div>
     );
   }
 }
 
 class ManualRunner extends Component {
-  verify = () => {};
+  // Always set to true. (or toggle?)
+  verify = () => {
+    console.log('verifying manual runner...');
+    const {patch, data} = this.props;
+    patch(data, true);
+  };
+
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+  };
 
   render() {
-    return (
-      <div className="full">
-        <Segment attached basic color={this.props.color}>
-          {this.props.test.description}
-        </Segment>
-        {!this.props.test.info && (
-          <Button basic attached="bottom" content={this.props.rtext} />
-        )}
-      </div>
-    );
+    return <div className="full">{this.props.test.description}</div>;
   }
 }
 
@@ -213,12 +209,13 @@ class TestRunner extends React.Component {
   render() {
     const button = this.state.button;
     const tProps = {button, ...this.props};
+    const render = tProps && !tProps.test.info;
     return (
       <div className="full">
         <Segment attached basic color={tProps.color}>
           {this.generateTestRunner(tProps)}
         </Segment>
-        {!tProps.test.info && (
+        {render && (
           <Button
             basic
             attached="bottom"

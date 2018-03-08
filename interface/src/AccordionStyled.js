@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Label} from 'semantic-ui-react';
+import {Accordion, Header, Label} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import TestRunner from './TestRunner.js';
 
@@ -16,9 +16,9 @@ class AccordionTestTitle extends Component {
     const state = this.props.data.state;
     const color = !i && this.handlePassColor[state];
     return (
-      <Label size="large" color={color}>
+      <Header as="h4" color={color}>
         {this.props.test.title}
-      </Label>
+      </Header>
     );
   }
 }
@@ -50,7 +50,7 @@ class AccordionTestItem extends Component {
   render() {
     // test type and progress status
     const t = this.props.test;
-    const d = this.props.test;
+    const d = this.props.data;
 
     // Passing in progress data, and the current state to set.
     // The correctness check is performed in the individual test runner

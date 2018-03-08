@@ -146,6 +146,9 @@ div.ui.styled.accordion.test-accordion .content {
 div.ui.styled.accordion div.title {
   background: rgba(34, 36, 38, 0.1) !important;
 }
+div.ui.styled.accordion div.title .ui.header {
+  display: inline;
+}
 div.ui.styled.accordion div.title:hover {
   background: #cacbcd !important;
 }
