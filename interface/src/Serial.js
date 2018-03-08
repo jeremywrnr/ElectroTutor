@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {throttle} from 'lodash';
 import {Form, List, Segment} from 'semantic-ui-react';
+import Config from './Config.js';
 import {
   LineChart,
   Line,
@@ -10,9 +11,6 @@ import {
   Tooltip,
   ReferenceLine,
 } from 'recharts';
-
-import Host from './Host.js';
-const serial = Host.serial;
 
 // GENERAL SERIAL MONITOR
 
@@ -50,8 +48,8 @@ class SerialMonitor extends Component {
   constructor(props) {
     super(props);
     this.start = Date.now();
-    this.baud = 115200;
-    this.port = '/dev/cu.usbmodem1421';
+    this.baud = Config.serial.baud;
+    this.port = Config.serial.port;
     this.state = {
       value: '',
       data: [],
@@ -106,7 +104,7 @@ class SerialMonitor extends Component {
     if (this.state.conn) {
       this.state.conn.close(); // reset
     }
-    let conn = new WebSocket(serial);
+    let conn = new WebSocket(Config.serial.host);
     conn.onclose = function(evt) {
       append('Connection closed.');
     };
