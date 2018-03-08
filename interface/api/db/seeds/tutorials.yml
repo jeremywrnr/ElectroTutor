@@ -83,7 +83,7 @@
           title: Button-Press Light Control
           description: Use the two probes to test the signal for the light!
           form: numeric
-          output: 5
+          output: 5.0
     -
       title: Getting Ready to Blink the LED
       image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180

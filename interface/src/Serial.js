@@ -161,11 +161,11 @@ class SerialMonitor extends Component {
       <div className="full">
         {this.state.data.length > 0 && <SerialGraph data={this.state.data} />}
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group fluid>
+          <Form.Group>
             <Form.Button onClick={this.openPort} content="Open" />
             <Form.Button onClick={this.closePort} content="Close" />
-            <Form.Button content="Send" />
             <Form.Input
+              action="Send"
               placeholder="serial message"
               value={this.state.value}
               onChange={this.handleChange}
@@ -184,4 +184,6 @@ class SerialMonitor extends Component {
   }
 }
 
-export default SerialMonitor;
+class Serial extends Component {}
+
+export {SerialMonitor, Serial};

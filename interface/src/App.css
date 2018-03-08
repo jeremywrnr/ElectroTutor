@@ -152,3 +152,6 @@ div.ui.styled.accordion div.title:hover {
 div.ui.styled.accordion .ui.label > .icon {
   margin: 0;
 }
+div.ui.styled.accordion .ui.basic.attached.bottom.button:hover {
+  background: rgba(34, 36, 38, 0.1) !important;
+}

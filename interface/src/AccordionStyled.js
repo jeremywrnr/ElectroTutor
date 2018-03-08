@@ -64,7 +64,9 @@ class AccordionTestItem extends Component {
         <Segment attached basic color={color}>
           <TestRunner {...this.props} />
         </Segment>
-        {!i && <Button attached="bottom" onClick={patch} content={rtext} />}
+        {!i && (
+          <Button basic attached="bottom" onClick={patch} content={rtext} />
+        )}
       </div>
     );
   }
