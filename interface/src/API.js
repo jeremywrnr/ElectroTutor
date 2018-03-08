@@ -3,6 +3,7 @@
  */
 
 import Host from './Host.js';
+import Account from './Account.js';
 const rails = Host.rails;
 
 class API {
@@ -15,6 +16,10 @@ class API {
   }
 
   authFetch = (route, method = 'GET', body = undefined) => {
+    if (route !== 'users' && this.auth === undefined) {
+      Account.clearLocalCredentials(); // no auth or db reseeded
+    }
+
     const headers = new Headers({
       Authorization: this.auth,
       'Content-Type': 'application/json',

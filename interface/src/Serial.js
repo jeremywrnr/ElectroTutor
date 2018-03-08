@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {throttle} from 'lodash';
-import Host from './Host.js';
-
 import {Form, List, Segment} from 'semantic-ui-react';
 import {
   LineChart,
@@ -12,6 +10,9 @@ import {
   Tooltip,
   ReferenceLine,
 } from 'recharts';
+
+import Host from './Host.js';
+const serial = Host.serial;
 
 // GENERAL SERIAL MONITOR
 
@@ -105,7 +106,7 @@ class SerialMonitor extends Component {
     if (this.state.conn) {
       this.state.conn.close(); // reset
     }
-    let conn = new WebSocket(Host.serial);
+    let conn = new WebSocket(serial);
     conn.onclose = function(evt) {
       append('Connection closed.');
     };

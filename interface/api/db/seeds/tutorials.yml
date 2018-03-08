@@ -45,7 +45,6 @@
           title: Positive V => Longer Leg
           description: Make sure to connect the LED's longer leg with the positive voltage!
           form: manual
-          info: true
         -
           title: LED Glowing
           description: Is the LED glowing as we would expect?
@@ -65,10 +64,10 @@
         long as it is there somewhere.
       tests:
         -
-          title: LED Brightness
+          title: LED Polarity
           description: Which leg of the LED should be connected to the positive voltage?
-          jsondata: '{options: ["shorter", "longer"]}'
-          form: manual
+          jsondata: '["shorter", "longer"]'
+          form: multiple
           output: 1
         -
           title: LED Brightness
@@ -123,11 +122,16 @@
 
       tests:
         -
+          title: Light Frequency
+          description: What rate (times/second or Hz) is the light blinking?
+          form: question
+          output: 0.5 # enable loose query... some tolerances
+        -
           title: Blinking Light?
           description: Do you see the light blinking?
-          jsondata: '{options: ["yes", "no"]}'
-          form: question
-          output: 0
+          jsondata: '["yes", "no"]'
+          form: multiple
+          output: 0 # denotes the ordering of the test
     -
       title: Adding a Button Press
       image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
@@ -147,6 +151,7 @@
         -
           title: Congrats!
           description: You have successfully completed the tutorial!
+          info: true
 
 
 

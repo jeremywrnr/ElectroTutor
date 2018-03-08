@@ -2,9 +2,10 @@
  * Rendering and running tests
  */
 
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Statistic, Icon, Message, Input} from 'semantic-ui-react';
+import {Form, Checkbox} from 'semantic-ui-react';
+import {Statistic, Message, Input} from 'semantic-ui-react';
 
 class DynamicRunner extends React.Component {
   render() {
@@ -21,7 +22,7 @@ class DynamicRunner extends React.Component {
   }
 }
 
-class NumericRunner extends React.Component {
+class NumericRunner extends Component {
   render() {
     return (
       <div className="full">
@@ -44,20 +45,42 @@ class NumericRunner extends React.Component {
   }
 }
 
-class MultipleRunner extends React.Component {
+class MultipleRunnerField extends Component {
   render() {
     return (
-      <div className="full">
-        <Message content={'question'} />
-        {this.props.test.description}
-        <br />
-        {this.props.test.jsondata}
-      </div>
+      <Form.Field>
+        <Checkbox {...this.props} radio name="checkboxRadioGroup" />
+      </Form.Field>
+    );
+  }
+}
+class MultipleRunner extends Component {
+  state = {};
+  handleChange = (e, {value}) => this.setState({value});
+
+  render() {
+    const opts = JSON.parse(this.props.test.jsondata);
+
+    return (
+      <Form className="full">
+        <Form.Field>{this.props.test.description}</Form.Field>
+        {opts.map((opt, i) => {
+          return (
+            <MultipleRunnerField
+              onChange={this.handleChange}
+              checked={this.state.value === i}
+              key={`key-${i}-${opt}`}
+              label={opt}
+              value={i}
+            />
+          );
+        })}
+      </Form>
     );
   }
 }
 
-class QuestionRunner extends React.Component {
+class QuestionRunner extends Component {
   render() {
     return (
       <div className="full">
@@ -70,14 +93,9 @@ class QuestionRunner extends React.Component {
   }
 }
 
-class ManualRunner extends React.Component {
+class ManualRunner extends Component {
   render() {
-    return (
-      <div className="full">
-        <Icon circular name="info" />
-        {this.props.test.description}
-      </div>
-    );
+    return <div className="full">{this.props.test.description}</div>;
   }
 }
 

@@ -30,10 +30,14 @@ class AccordionTestItem extends Component {
     test: PropTypes.object.isRequired,
   };
 
+  // TODO - check that the expected output matched and pass back true or false
+  // from this call rather than computing itin the parent container
+
   handleRunText = {
     dynamic: 'Examine',
     manual: 'Confirm',
     question: 'Submit',
+    multiple: 'Submit',
     numeric: 'Measure',
   };
 
