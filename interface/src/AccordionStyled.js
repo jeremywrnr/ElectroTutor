@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Button, Segment, Label} from 'semantic-ui-react';
+import {Accordion, Label} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import TestRunner from './TestRunner.js';
 
@@ -50,25 +50,27 @@ class AccordionTestItem extends Component {
   render() {
     // test type and progress status
     const t = this.props.test;
-    const i = this.props.test.info;
-    const patch = () => this.props.handleClick(this.props.data, t);
+    const d = this.props.test;
 
-    const state = this.props.data.state;
-    const color = !i && this.handlePassColor[state];
+    // Passing in progress data, and the current state to set.
+    // The correctness check is performed in the individual test runner
+    const patch = state => this.props.handleClick(d, state);
+    const info = t.info;
+    const form = t.form;
+    const state = d.state;
+    const rtext = !info && this.handleRunText[form];
+    const color = !info && this.handlePassColor[state];
 
-    const form = this.props.test.form;
-    const rtext = !i && this.handleRunText[form];
+    const tProps = {
+      ...this.props,
+      patch,
+      info,
+      form,
+      rtext,
+      color,
+    };
 
-    return (
-      <div className="full">
-        <Segment attached basic color={color}>
-          <TestRunner {...this.props} />
-        </Segment>
-        {!i && (
-          <Button basic attached="bottom" onClick={patch} content={rtext} />
-        )}
-      </div>
-    );
+    return <TestRunner {...tProps} />;
   }
 }
 
