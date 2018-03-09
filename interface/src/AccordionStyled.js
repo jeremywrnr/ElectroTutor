@@ -113,7 +113,7 @@ export default class AccordionStyled extends Component {
     const pdata = this.props.pdata;
     this.props.tests.map((t, i) => {
       const match = pdata.find(d => d.test_id === t.id) || {};
-      match.state !== 'pass' && active.add(i);
+      return match.state !== 'pass' && active.add(i);
     });
     this.setState({active});
   };

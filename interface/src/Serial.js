@@ -146,6 +146,9 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     componentDidMount = () => this.openSPJS();
     componentWillUnmount = () => this.closeSPJS();
 
+    // TODO maybe list the actual ports which are available and only open them
+    // when it is necessary to do so. calling open on open ports is not good
+
     openSPJS = () => {
       this.closeSPJS();
       const append = this.appendLog;
@@ -157,17 +160,13 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
         append(evt.data);
       };
       this.setState({conn});
-      setTimeout(() => this.openPort(), 4000);
     };
 
     handleSendSPJS = msg => {
-      console.log(msg);
+      console.log('spjs:', msg);
       const conn = this.state.conn;
-      if (!msg || !conn || conn.readyState !== WebSocket.OPEN) {
-        return false;
-      } else {
+      if (msg && conn && conn.readyState === WebSocket.OPEN) {
         conn.send(msg);
-        return true;
       }
     };
 
@@ -176,8 +175,8 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       const conn = this.state.conn;
       if (conn) {
         this.closePort();
-        this.setState({conn: undefined});
         conn.close();
+        this.setState({conn: undefined});
       }
     };
 
@@ -220,7 +219,6 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       } catch (e) {
         const str_msg = `${msg} +${Date.now() - this.state.start}`;
         this.setState({log: [str_msg, ...this.state.log]});
-        console.log(str_msg);
       }
     }, 100);
 
