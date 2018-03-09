@@ -107,8 +107,7 @@ export default class AccordionStyled extends Component {
     }));
   }
 
-  // Initialize the component with tests that are not passed.
-  componentWillMount = () => {
+  generateActive = () => {
     let active = this.state.active;
     const pdata = this.props.pdata;
     this.props.tests.map((t, i) => {
@@ -116,6 +115,16 @@ export default class AccordionStyled extends Component {
       return match.state !== 'pass' && active.add(i);
     });
     this.setState({active});
+  }
+
+  // Initialize the component with tests that are not passed.
+  componentWillMount = () => {
+  };
+
+// Initialize the component with tests that are not passed.
+  componentWillUpdate = () => {
+    // check for step differemce
+    // on difference, update state
   };
 
   handleTitleClick = (e, itemProps) => {

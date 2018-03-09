@@ -52,36 +52,33 @@ class NumericRunnerShell extends Component {
     log: [],
   };
 
-  verify = () => {
-    console.log('verify numeric runner...');
-    setTimeout(() => {
-      this.generateAverage();
-      const val = this.state.value;
-      const out = Number(this.props.test.output);
-      // Potentially add in a test option here to have it be exact
-      const pass = 0.9 * out < val && val < 1.1 * out;
-      this.props.patch(pass);
-    });
-  };
+  // Potentially add in a test option here to have it be exact
+  // Also figure out how to best deal with serial ports.
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.props.button.handleClick = this.verify;
   };
 
   // Compute running average of last n frames to help with noise.
-  generateAverage = () => {
-    let sum = 0;
+
+  verify = () => {
+    this.props.openPort();
+    console.log('verify numeric runner...');
     const d = this.props.data;
+    let sum = 0;
     d.map(x => (sum += x.V));
     const value = d.length > 0 ? sum / d.length : '-';
+    const out = Number(this.props.test.output);
+    const pass = 0.9 * out < value && value < 1.1 * out;
+    console.log(d, value, pass);
     this.setState({value});
+    this.props.patch(pass);
   };
 
   render() {
     const val = this.state.value;
-    const output = this.props.test.output;
-    const input = val === '-' ? val : +this.state.value.toFixed(2);
-
+    const out = Number(this.props.test.output);
+    const input = val === '-' ? val : +val.toFixed(2);
     return (
       <div className="full">
         {this.props.test.description}
@@ -93,7 +90,7 @@ class NumericRunnerShell extends Component {
             <Statistic.Label>measured</Statistic.Label>
           </Statistic>
           <Statistic color="green">
-            <Statistic.Value>{output}</Statistic.Value>
+            <Statistic.Value>{out}</Statistic.Value>
             <Statistic.Label>expected</Statistic.Label>
           </Statistic>
         </Container>
@@ -196,8 +193,6 @@ class ManualRunner extends Component {
   // Always set to true. (or toggle?)
   verify = () => {
     console.log('verifying manual runner...');
-    //const output = this.props.test.output;
-    //const value = this.state.value;
     this.props.patch(true);
   };
 

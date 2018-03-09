@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {throttle} from 'lodash';
-import {Form, List, Segment} from 'semantic-ui-react';
+import {Header, Button, Input, List, Segment} from 'semantic-ui-react';
 import Config from './Config.js';
 import {
   LineChart,
@@ -85,32 +85,29 @@ class SerialMonitorShell extends Component {
       <div className="full">
         {d_length > 0 && <SerialGraph data={this.props.data} />}
 
-        <Form onSubmit={this.sendSerial}>
-          <label>Serial Port</label>
-          <Form.Group>
-            <Form.Button onClick={this.props.openPort} content="Open" />
-            <Form.Button onClick={this.props.closePort} content="Close" />
-            <Form.Input
-              action="Send"
-              placeholder="serial message"
-              value={this.state.serial}
-              onChange={this.handleSerialChange}
-            />
-          </Form.Group>
-        </Form>
-
-        <Form onSubmit={this.sendSPJS}>
-          <label> Websockets Connection </label>
-          <Form.Group>
-            <Form.Button onClick={this.props.openSPJS} content="Reconnect" />
-            <Form.Input
-              action="Send"
-              placeholder="websocket command"
-              onChange={this.handleSPJSChange}
-              value={this.state.spjs}
-            />
-          </Form.Group>
-        </Form>
+        <Header as="h5">Serial Port</Header>
+        <Segment basic>
+          <Button onClick={this.props.openPort} content="Open" />
+          <Button onClick={this.props.closePort} content="Close" />
+          <Input
+            action="Send"
+            placeholder="serial message"
+            value={this.state.serial}
+            onChange={this.handleSerialChange}
+            onSubmit={this.sendSerial}
+          />
+        </Segment>
+        <Header as="h5">Websockets Connection</Header>
+        <Segment basic>
+          <Button onClick={this.props.openSPJS} content="Reconnect" />
+          <Input
+            action="Send"
+            placeholder="websocket command"
+            onChange={this.handleSPJSChange}
+            onSubmit={this.sendSPJS}
+            value={this.state.spjs}
+          />
+        </Segment>
 
         <div id="log">
           data: {d_length}, messages: {l_length}
@@ -143,22 +140,16 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       };
     }
 
-    componentDidMount = () => this.openSPJS();
+    componentWillMount = () => this.openSPJS();
     componentWillUnmount = () => this.closeSPJS();
 
     // TODO maybe list the actual ports which are available and only open them
     // when it is necessary to do so. calling open on open ports is not good
 
     openSPJS = () => {
-      this.closeSPJS();
-      const append = this.appendLog;
       let conn = new WebSocket(this.state.host);
-      conn.onclose = function(evt) {
-        append('Connection closed.');
-      };
-      conn.onmessage = function(evt) {
-        append(evt.data);
-      };
+      conn.onmessage = evt => this.handleMessage(evt.data);
+      conn.onclose = evt => this.handleMessage('Connection closed.');
       this.setState({conn});
     };
 
@@ -171,13 +162,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     };
 
     closeSPJS = () => {
-      this.setState({data: [], log: []});
-      const conn = this.state.conn;
-      if (conn) {
-        this.closePort();
-        conn.close();
-        this.setState({conn: undefined});
-      }
+      this.state.conn.close();
     };
 
     openPort = () => {
@@ -195,9 +180,10 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     //
     // two categories of data: log messages from spjs, and data from the serial
     // monitor, which are stored respectively in the component's log or data.
+    // TODO: split into different names for device/tester serial data.
     //
 
-    appendLog = throttle(msg => {
+    handleMessage = throttle(msg => {
       try {
         let json_msg = JSON.parse(msg);
         json_msg.date = Date.now() - this.state.start;
