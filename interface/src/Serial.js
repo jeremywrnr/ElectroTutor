@@ -68,9 +68,17 @@ class SerialMonitorShell extends Component {
   handleSerialChange = e => this.setState({serial: e.target.value});
   handleSPJSChange = e => this.setState({spjs: e.target.value});
 
+  openSerial = () => {
+    this.props.openPort();
+  };
+
   sendSerial = () => {
     this.props.sendPort(this.state.serial);
     this.setState({serial: ''});
+  };
+
+  closeSerial = () => {
+    this.props.closePort();
   };
 
   sendSPJS = () => {
@@ -87,8 +95,8 @@ class SerialMonitorShell extends Component {
 
         <Header as="h5">Serial Port</Header>
         <Segment basic>
-          <Button onClick={this.props.openPort} content="Open" />
-          <Button onClick={this.props.closePort} content="Close" />
+          <Button onClick={this.openSerial} content="Open" />
+          <Button onClick={this.closeSerial} content="Close" />
           <Input
             action={{
               onClick: this.sendSerial,
@@ -132,12 +140,19 @@ class SerialMonitorShell extends Component {
 //
 
 function withSerial(WrappedComponent, sampleWindowWidth) {
+  function getDisplayName(WrappedComponent) {
+    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  }
+
+  const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
+
   class WithSerial extends React.Component {
     constructor(props) {
       super(props);
       const now = Date.now();
       this.state = {
         ...Config.serial,
+        displayName,
         start: now,
         data: [],
         log: [],
@@ -151,15 +166,17 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     // when it is necessary to do so. calling open on open ports is not good
 
     openSPJS = () => {
+      console.log(`opening spjs - ${this.state.displayName}`);
       this.setState({data: [], log: []});
       let conn = new WebSocket(this.state.host);
       conn.onmessage = evt => this.handleMessage(evt.data);
       conn.onclose = evt => this.handleMessage('Connection closed.');
+      this.openPort();
       this.setState({conn});
     };
 
     handleSendSPJS = msg => {
-      console.log('spjs:', msg);
+      console.log('spjs:', msg, ` - [${this.state.displayName}]`);
       const conn = this.state.conn;
       if (msg && conn && conn.readyState === WebSocket.OPEN) {
         conn.send(msg);
@@ -167,25 +184,28 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     };
 
     closeSPJS = () => {
+      console.log(`closing spjs - ${this.state.displayName}`);
       this.state.conn.close();
     };
 
-    openPort = () => {
-      return this.handleSendSPJS(`open ${this.state.port} ${this.state.baud}`);
+    openPort = (port = this.state.device) => {
+      console.log(port);
+      return this.handleSendSPJS(`open ${port} ${this.state.baud}`);
     };
 
-    sendPort = msg => {
-      return this.handleSendSPJS(`send ${this.state.port} ${msg}`);
+    sendPort = (msg, port = this.state.device) => {
+      console.log(msg, port);
+      return this.handleSendSPJS(`send ${port} ${msg}`);
     };
 
-    closePort = () => {
-      return this.handleSendSPJS(`close ${this.state.port} ${this.state.baud}`);
+    closePort = (port = this.state.device) => {
+      console.log(port);
+      return this.handleSendSPJS(`close ${port} ${this.state.baud}`);
     };
 
     //
     // two categories of data: log messages from spjs, and data from the serial
     // monitor, which are stored respectively in the component's log or data.
-    // TODO: split into different names for device/tester serial data.
     //
 
     handleMessage = throttle(msg => {
@@ -198,6 +218,10 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
             .map((d, i) => {
               return {V: Number(d), date: (json_msg.date + i * 3) / 1000.0};
             });
+
+          // TODO: split into different names for device/tester serial data.
+          // TODO check any of the number conversion failed, and throw
+
           //console.log(json_msg);
           const joined = [...this.state.data, ...numbers];
           const start = Math.max(joined.length - sampleWindowWidth, 1);
@@ -228,12 +252,8 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     }
   }
 
-  function getDisplayName(WrappedComponent) {
-    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  }
-
   // #convention-pass-unrelated-props-through-to-the-wrapped-component
-  WithSerial.displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
+  WithSerial.displayName = displayName;
   return WithSerial;
 }
 
