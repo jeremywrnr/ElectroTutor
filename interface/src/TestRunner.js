@@ -3,14 +3,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withSerial} from './Serial.js';
-import {Button, Segment} from 'semantic-ui-react';
 import {
   Form,
   Checkbox,
   Statistic,
   Container,
+  Segment,
   Message,
   Input,
+  Button,
+  Icon,
 } from 'semantic-ui-react';
 
 class DynamicRunner extends React.Component {
@@ -43,6 +45,8 @@ class NumericRunnerShell extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      measuring: false,
+      interval: undefined,
       value: '-',
     };
   }
@@ -60,19 +64,31 @@ class NumericRunnerShell extends Component {
   };
 
   // Compute running average of last n frames to help with noise.
+  // TODO pass in a desired error margin from the test itself
 
   verify = () => {
     this.props.openPort();
+    const err = 0.03; // three percent
     console.log('verify numeric runner...');
-    const d = this.props.data;
-    let sum = 0;
-    d.map(x => (sum += x.V));
-    const value = d.length > 0 ? sum / d.length : '-';
-    const out = Number(this.props.test.output);
-    const pass = 0.9 * out < value && value < 1.1 * out;
-    console.log(d, value, pass);
-    this.setState({value});
-    this.props.patch(pass);
+    const interval = setInterval(() => {
+      const d = this.props.data;
+      let sum = 0;
+      d.map(x => (sum += x.V));
+      const value = d.length > 0 ? sum / d.length : '-';
+      const out = Number(this.props.test.output);
+      const pass = (1 - err) * out < value && value < (1 + err) * out;
+      const prev = this.props.pdata.state === 'pass';
+      console.log(d, value, pass);
+      this.setState({value});
+      if (pass !== prev) {
+        this.props.patch(pass);
+        if (pass) {
+          clearInterval(interval);
+          this.setState({measuring: false});
+        }
+      }
+    }, 100);
+    this.setState({interval, measuring: true});
   };
 
   render() {
@@ -94,6 +110,15 @@ class NumericRunnerShell extends Component {
             <Statistic.Label>expected</Statistic.Label>
           </Statistic>
         </Container>
+        {this.state.measuring && (
+          <Message icon>
+            <Icon name="circle notched" loading />
+            <Message.Content>
+              <Message.Header>Measuring...</Message.Header>
+              Analyzing probe values...
+            </Message.Content>
+          </Message>
+        )}
       </div>
     );
   }
