@@ -56,8 +56,10 @@ class NumericRunnerShell extends Component {
     console.log('verify numeric runner...');
     setTimeout(() => {
       this.generateAverage();
-      const test = this.props.test;
-      const pass = this.state.value == test.output;
+      const val = this.state.value;
+      const out = Number(this.props.test.output);
+      // Potentially add in a test option here to have it be exact
+      const pass = 0.9 * out < val && val < 1.1 * out;
       this.props.patch(pass);
     });
   };
@@ -76,7 +78,10 @@ class NumericRunnerShell extends Component {
   };
 
   render() {
+    const val = this.state.value;
     const output = this.props.test.output;
+    const input = val === '-' ? val : +this.state.value.toFixed(2);
+
     return (
       <div className="full">
         {this.props.test.description}
@@ -84,7 +89,7 @@ class NumericRunnerShell extends Component {
         <br />
         <Container textAlign="center">
           <Statistic color="grey">
-            <Statistic.Value>{this.state.value}</Statistic.Value>
+            <Statistic.Value>{input}</Statistic.Value>
             <Statistic.Label>measured</Statistic.Label>
           </Statistic>
           <Statistic color="green">

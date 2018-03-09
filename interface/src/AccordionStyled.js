@@ -75,6 +75,13 @@ class AccordionTestItem extends Component {
 }
 
 export default class AccordionStyled extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: new Set(),
+    };
+  }
+
   static propTypes = {
     handleClick: PropTypes.func.isRequired,
     tests: PropTypes.array.isRequired,
@@ -89,6 +96,7 @@ export default class AccordionStyled extends Component {
   generatePanels(progress) {
     return progress.map((t, i) => ({
       title: {
+        onClick: this.handleTitleClick,
         content: <AccordionTestTitle {...t} />,
         key: `title-${i}`,
       },
@@ -99,12 +107,27 @@ export default class AccordionStyled extends Component {
     }));
   }
 
-  // TODO have smarter way for whether the tests are expanded at first
+  // Initialize the component with tests that are not passed.
+  componentWillMount = () => {
+    let active = this.state.active;
+    const pdata = this.props.pdata;
+    this.props.tests.map((t, i) => {
+      const match = pdata.find(d => d.test_id === t.id) || {};
+      match.state !== 'pass' && active.add(i);
+    });
+    this.setState({active});
+  };
+
+  handleTitleClick = (e, itemProps) => {
+    const i = itemProps.index;
+    let {active} = this.state;
+    active.has(i) ? active.delete(i) : active.add(i);
+    this.setState({active});
+  };
 
   render() {
     const tests = this.props.tests;
     const pdata = this.props.pdata;
-    const activeIndex = tests.map((x, i) => i);
     const progress = tests.map((t, i) => {
       const match = pdata.find(d => d.test_id === t.id) || {};
       return {
@@ -114,16 +137,16 @@ export default class AccordionStyled extends Component {
       };
     });
 
+    const active = Array.from(this.state.active);
     const panels = this.generatePanels(progress);
-
     return (
       <Accordion
         fluid
+        styled
         className="test-accordion"
-        defaultActiveIndex={activeIndex}
+        activeIndex={active}
         exclusive={false}
         panels={panels}
-        styled
       />
     );
   }

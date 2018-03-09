@@ -37,9 +37,10 @@ class SerialGraph extends Component {
         />
         <ReferenceLine
           y={5}
+          stroke="grey"
           alwaysShow={true}
-          stroke="red"
-          strokeDasharray="3 3"
+          strokeWidth="1"
+          strokeDasharray="5 15"
         />
       </LineChart>
     );

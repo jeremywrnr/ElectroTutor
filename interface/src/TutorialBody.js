@@ -335,11 +335,13 @@ class TutorialBody extends Component {
                             next={this.nextStep}
                           />
                         )}
-                        <AccordionStyled
-                          handleClick={this.patchProgressData()}
-                          tests={this.state.tests}
-                          pdata={this.state.pData}
-                        />
+                        {!step_loading && (
+                          <AccordionStyled
+                            handleClick={this.patchProgressData()}
+                            tests={this.state.tests}
+                            pdata={this.state.pData}
+                          />
+                        )}
                       </div>
                     ) : (
                       <Continue head={'No checks.'} next={this.nextStep} />
