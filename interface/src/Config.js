@@ -2,7 +2,8 @@ const Config = {
   rails: 'http://localhost:3001',
   serial: {
     host: 'ws://localhost:8989/ws',
-    port: '/dev/cu.usbmodem1421',
+    tester: '/dev/cu.usbmodem14221',
+    device: '/dev/cu.usbmodem14211',
     baud: 115200,
   },
 };
