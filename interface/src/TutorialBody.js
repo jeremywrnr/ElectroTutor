@@ -292,17 +292,16 @@ class TutorialBody extends Component {
                   <div className="tutorial-menu">
                     <Button.Group fluid widths="2">
                       <Button
+                        onClick={this.prevStep}
                         labelPosition="left"
                         icon="left chevron"
                         content="Back"
-                        onClick={this.prevStep}
                       />
                       <Button
-                        className="pull-right"
+                        onClick={this.nextStep}
                         labelPosition="right"
                         icon="right chevron"
                         content="Next"
-                        onClick={this.nextStep}
                       />
                     </Button.Group>
                   </div>

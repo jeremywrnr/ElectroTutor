@@ -77,12 +77,12 @@ class AccordionTestItem extends Component {
 export default class AccordionStyled extends Component {
   static propTypes = {
     handleClick: PropTypes.func.isRequired,
+    tests: PropTypes.array.isRequired,
     data: PropTypes.array.isRequired,
-    run: PropTypes.func,
   };
 
   static defaultProps = {
-    //run: function() {},
+    tests: [],
     data: [],
   };
 
@@ -99,29 +99,20 @@ export default class AccordionStyled extends Component {
     }));
   }
 
+  // TODO have smarter way for whether the tests are expanded at first
+
   render() {
-    let tests = this.props.tests;
-    let data = this.props.data;
-    let activeIndex = tests.map((x, i) => i);
-    let progress = tests.map((t, i) => {
+    const tests = this.props.tests;
+    const data = this.props.data;
+    const activeIndex = tests.map((x, i) => i);
+    const progress = tests.map((t, i) => {
       const match = data.find(d => d.test_id === t.id) || {};
       return {
         test: t,
         data: match,
-        pass: !t.info && data.state === 'pass',
-        fail: !t.info && data.state === 'fail',
         handleClick: this.props.handleClick,
       };
     });
-
-    // Append success state to test list rendering
-    let passed = progress.every(p => p.state === 'pass');
-    if (passed) {
-      progress.push({
-        handleClick: this.props.handleClick,
-        pass: true,
-      });
-    }
 
     const panels = this.generatePanels(progress);
 

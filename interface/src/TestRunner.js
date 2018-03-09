@@ -18,8 +18,9 @@ import {
 class DynamicRunner extends React.Component {
   verify = () => {
     console.log('verifying dynamic...');
-    const {data, patch, test} = this.props;
-    return true;
+    //const output = this.props.test.output;
+    //const value = this.state.value;
+    this.props.patch(true);
   };
 
   componentWillMount = () => {
@@ -43,7 +44,9 @@ class DynamicRunner extends React.Component {
 class NumericRunnerShell extends Component {
   verify = () => {
     console.log('verify numeric runner...');
-    return true;
+    //const output = this.props.test.output;
+    //const value = this.state.value;
+    this.props.patch(true);
   };
 
   componentWillMount = () => {
@@ -77,22 +80,14 @@ class NumericRunnerShell extends Component {
     );
   }
 }
+const NumericRunner = withSerial(NumericRunnerShell, 30); // max samples
 
-const NumericRunner = withSerial(NumericRunnerShell, 30);
-
-class MultipleRunnerField extends Component {
-  render() {
-    return (
-      <Form.Field className="full">
-        <Checkbox {...this.props} radio name="checkboxRadioGroup" />
-      </Form.Field>
-    );
-  }
-}
 class MultipleRunner extends Component {
   verify = () => {
-    console.log('verify multiple runner...');
-    return true;
+    console.log('verify multiples...');
+    const output = this.props.test.output;
+    const value = this.state.value;
+    this.props.patch(output == value);
   };
 
   state = {};
@@ -120,6 +115,15 @@ class MultipleRunner extends Component {
           );
         })}
       </Form>
+    );
+  }
+}
+class MultipleRunnerField extends Component {
+  render() {
+    return (
+      <Form.Field className="full">
+        <Checkbox {...this.props} radio name="checkboxRadioGroup" />
+      </Form.Field>
     );
   }
 }
@@ -171,8 +175,9 @@ class ManualRunner extends Component {
   // Always set to true. (or toggle?)
   verify = () => {
     console.log('verifying manual runner...');
-    const {patch, data} = this.props;
-    patch(data, true);
+    //const output = this.props.test.output;
+    //const value = this.state.value;
+    this.props.patch(true);
   };
 
   componentWillMount = () => {
@@ -211,9 +216,7 @@ class TestRunner extends React.Component {
         case 'manual':
           return <ManualRunner {...tProps} />;
         case 'info':
-          return (
-            <Message error content={`info is not an accepted test type`} />
-          );
+          return <Message error content={`info is not accepted`} />;
         default:
           return <Message error content={`unknown: ${tProps.test.form}`} />;
       }
