@@ -90,21 +90,25 @@ class SerialMonitorShell extends Component {
           <Button onClick={this.props.openPort} content="Open" />
           <Button onClick={this.props.closePort} content="Close" />
           <Input
-            action="Send"
+            action={{
+              onClick: this.sendSerial,
+              content: 'Send',
+            }}
             placeholder="serial message"
-            value={this.state.serial}
             onChange={this.handleSerialChange}
-            onSubmit={this.sendSerial}
+            value={this.state.serial}
           />
         </Segment>
         <Header as="h5">Websockets Connection</Header>
         <Segment basic>
           <Button onClick={this.props.openSPJS} content="Reconnect" />
           <Input
-            action="Send"
+            action={{
+              onClick: this.sendSPJS,
+              content: 'Send',
+            }}
             placeholder="websocket command"
             onChange={this.handleSPJSChange}
-            onSubmit={this.sendSPJS}
             value={this.state.spjs}
           />
         </Segment>
@@ -147,6 +151,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     // when it is necessary to do so. calling open on open ports is not good
 
     openSPJS = () => {
+      this.setState({data: [], log: []});
       let conn = new WebSocket(this.state.host);
       conn.onmessage = evt => this.handleMessage(evt.data);
       conn.onclose = evt => this.handleMessage('Connection closed.');
@@ -193,7 +198,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
             .map((d, i) => {
               return {V: Number(d), date: (json_msg.date + i * 3) / 1000.0};
             });
-          console.log(json_msg);
+          //console.log(json_msg);
           const joined = [...this.state.data, ...numbers];
           const start = Math.max(joined.length - sampleWindowWidth, 1);
           const data = joined.slice(start, -1);
