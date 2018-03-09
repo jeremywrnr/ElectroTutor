@@ -52,24 +52,22 @@ class TutorialBody extends Component {
     return throttle(() => {
       if (!this.state.tests_passed && inc > 0) {
         // TODO block going forward if the step is not completed
-        // BONUS TODO: tell the user that they must complete test
+        // TODO: tell the user that they must complete test
         //this.nextStep();
       } else {
         this.setState({step_loading: true});
-
         const api = this.state.api;
         const pid = this.state.progress.id;
 
         //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
         let step_pos = Math.min(
           Math.max(this.state.step.position + inc, 0),
-          11,
+          10,
         );
-        step_pos = this.handleStepError(step_pos);
 
         // TODO handle tutorial bounds
         // TODO use actual id vs position
-
+        step_pos = this.handleStepError(step_pos);
         api
           .configure()
           .then(() => api.patchStep({pid, step_id: step_pos}))
@@ -81,13 +79,11 @@ class TutorialBody extends Component {
   };
 
   patchProgressData = () => {
-    return throttle((data, pass) => {
+    return throttle((pdata, pass) => {
       this.setState({step_loading: true});
-      const id = data.id;
+      const id = pdata.id;
       const api = this.state.api;
       const state = pass ? 'pass' : 'fail';
-      console.log(data, state);
-
       api
         .configure()
         .then(() => api.patchData({id, state}))
@@ -298,6 +294,7 @@ class TutorialBody extends Component {
                         content="Back"
                       />
                       <Button
+                        disabled={!p}
                         onClick={this.nextStep}
                         labelPosition="right"
                         icon="right chevron"
@@ -341,7 +338,7 @@ class TutorialBody extends Component {
                         <AccordionStyled
                           handleClick={this.patchProgressData()}
                           tests={this.state.tests}
-                          data={this.state.pData}
+                          pdata={this.state.pData}
                         />
                       </div>
                     ) : (

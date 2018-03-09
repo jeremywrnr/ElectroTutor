@@ -1,6 +1,4 @@
-/**
- * Rendering and running tests
- */
+/*eslint eqeqeq:0*/
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
@@ -42,24 +40,42 @@ class DynamicRunner extends React.Component {
 }
 
 class NumericRunnerShell extends Component {
-  verify = () => {
-    console.log('verify numeric runner...');
-    //const output = this.props.test.output;
-    //const value = this.state.value;
-    this.props.patch(true);
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '-',
+    };
+  }
+
+  static defaultProps = {
+    data: [],
+    log: [],
   };
 
-  componentWillMount = () => {
+  verify = () => {
+    console.log('verify numeric runner...');
+    setTimeout(() => {
+      this.generateAverage();
+      const test = this.props.test;
+      const pass = this.state.value == test.output;
+      this.props.patch(pass);
+    });
+  };
+
+  componentDidMount = () => {
     this.props.button.handleClick = this.verify;
   };
 
   // Compute running average of last n frames to help with noise.
   generateAverage = () => {
-    return '-';
+    let sum = 0;
+    const d = this.props.data;
+    d.map(x => (sum += x.V));
+    const value = d.length > 0 ? sum / d.length : '-';
+    this.setState({value});
   };
 
   render() {
-    const input = this.generateAverage();
     const output = this.props.test.output;
     return (
       <div className="full">
@@ -68,7 +84,7 @@ class NumericRunnerShell extends Component {
         <br />
         <Container textAlign="center">
           <Statistic color="grey">
-            <Statistic.Value>{input}</Statistic.Value>
+            <Statistic.Value>{this.state.value}</Statistic.Value>
             <Statistic.Label>measured</Statistic.Label>
           </Statistic>
           <Statistic color="green">
@@ -193,13 +209,13 @@ class TestRunner extends React.Component {
   state = {};
 
   static propTypes = {
+    pdata: PropTypes.object.isRequired,
     test: PropTypes.object.isRequired,
-    data: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
+    pdata: {},
     test: {},
-    data: {},
   };
 
   generateTestRunner = tProps => {

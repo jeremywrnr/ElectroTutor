@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Header, Label} from 'semantic-ui-react';
+import {Accordion, Header} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import TestRunner from './TestRunner.js';
 
@@ -13,7 +13,7 @@ class AccordionTestTitle extends Component {
   render() {
     // quick tip info, no icon
     const i = this.props.test.info;
-    const state = this.props.data.state;
+    const state = this.props.pdata.state;
     const color = !i && this.handlePassColor[state];
     return (
       <Header as="h4" color={color}>
@@ -26,7 +26,7 @@ class AccordionTestTitle extends Component {
 class AccordionTestItem extends Component {
   static propTypes = {
     handleClick: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
+    pdata: PropTypes.object.isRequired,
     test: PropTypes.object.isRequired,
   };
 
@@ -50,7 +50,7 @@ class AccordionTestItem extends Component {
   render() {
     // test type and progress status
     const t = this.props.test;
-    const d = this.props.data;
+    const d = this.props.pdata;
 
     // Passing in progress data, and the current state to set.
     // The correctness check is performed in the individual test runner
@@ -78,12 +78,12 @@ export default class AccordionStyled extends Component {
   static propTypes = {
     handleClick: PropTypes.func.isRequired,
     tests: PropTypes.array.isRequired,
-    data: PropTypes.array.isRequired,
+    pdata: PropTypes.array.isRequired,
   };
 
   static defaultProps = {
     tests: [],
-    data: [],
+    pdata: [],
   };
 
   generatePanels(progress) {
@@ -103,13 +103,13 @@ export default class AccordionStyled extends Component {
 
   render() {
     const tests = this.props.tests;
-    const data = this.props.data;
+    const pdata = this.props.pdata;
     const activeIndex = tests.map((x, i) => i);
     const progress = tests.map((t, i) => {
-      const match = data.find(d => d.test_id === t.id) || {};
+      const match = pdata.find(d => d.test_id === t.id) || {};
       return {
         test: t,
-        data: match,
+        pdata: match,
         handleClick: this.props.handleClick,
       };
     });

@@ -125,6 +125,8 @@ class SerialMonitorShell extends Component {
 //
 // Higher order component:
 // This function takes a component and returns another component.
+// Still kind of implies that there will only be one of these running
+// .. or does the message get piped out to all of the channels?
 //
 
 function withSerial(WrappedComponent, sampleWindowWidth) {
@@ -143,9 +145,9 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     componentDidMount = () => this.openSPJS();
     componentWillUnmount = () => this.closeSPJS();
 
-    openSPJS = handleMessage => {
-      const append = this.appendLog;
+    openSPJS = () => {
       this.closeSPJS();
+      const append = this.appendLog;
       let conn = new WebSocket(this.state.host);
       conn.onclose = function(evt) {
         append('Connection closed.');
@@ -154,11 +156,12 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
         append(evt.data);
       };
       this.setState({conn});
+      setTimeout(() => this.openPort(), 4000);
     };
 
     handleSendSPJS = msg => {
-      const conn = this.state.conn;
       console.log(msg);
+      const conn = this.state.conn;
       if (!msg || !conn || conn.readyState !== WebSocket.OPEN) {
         return false;
       } else {
@@ -178,16 +181,21 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
     };
 
     openPort = () => {
-      this.handleSendSPJS(`open ${this.state.port} ${this.state.baud}`);
+      return this.handleSendSPJS(`open ${this.state.port} ${this.state.baud}`);
     };
 
     sendPort = msg => {
-      this.handleSendSPJS(`send ${this.state.port} ${msg}`);
+      return this.handleSendSPJS(`send ${this.state.port} ${msg}`);
     };
 
     closePort = () => {
-      this.handleSendSPJS(`close ${this.state.port} ${this.state.baud}`);
+      return this.handleSendSPJS(`close ${this.state.port} ${this.state.baud}`);
     };
+
+    //
+    // two categories of data: log messages from spjs, and data from the serial
+    // monitor, which are stored respectively in the component's log or data.
+    //
 
     appendLog = throttle(msg => {
       try {
@@ -211,6 +219,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       } catch (e) {
         const str_msg = `${msg} +${Date.now() - this.state.start}`;
         this.setState({log: [str_msg, ...this.state.log]});
+        console.log(str_msg);
       }
     }, 100);
 
