@@ -1,8 +1,9 @@
 /*eslint eqeqeq:0*/
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withSerial } from "./Serial.js";
+import API from "./API.js";
 import {
   Form,
   Checkbox,
@@ -12,12 +13,39 @@ import {
   Message,
   Input,
   Button,
-  Icon,
-} from 'semantic-ui-react';
+  Icon
+} from "semantic-ui-react";
 
-class DynamicRunner extends React.Component {
+class CodeRunner extends React.Component {
   verify = () => {
-    console.log('verifying dynamic...');
+    console.log("verifying code snippet...");
+    //const output = this.props.test.output;
+    //const value = this.state.value;
+    this.props.patch(true);
+  };
+
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+    this.API = API;
+  };
+
+  render() {
+    return (
+      <div className="full">
+        <Message content={"code snippet test yet to be implemented"} />
+        {this.props.test.description}
+        <br />
+        jsondata: {this.props.test.jsondata}
+        <br />
+        output: {this.props.test.output}
+      </div>
+    );
+  }
+}
+
+class CompileRunner extends React.Component {
+  verify = () => {
+    console.log("verifying compile...");
     //const output = this.props.test.output;
     //const value = this.state.value;
     this.props.patch(true);
@@ -30,7 +58,59 @@ class DynamicRunner extends React.Component {
   render() {
     return (
       <div className="full">
-        <Message content={'dynamic test yet to be implemented'} />
+        <Message content={"compile test yet to be implemented"} />
+        {this.props.test.description}
+        <br />
+        jsondata: {this.props.test.jsondata}
+        <br />
+        output: {this.props.test.output}
+      </div>
+    );
+  }
+}
+
+class UploadRunner extends React.Component {
+  verify = () => {
+    console.log("verifying upload...");
+    //const output = this.props.test.output;
+    //const value = this.state.value;
+    this.props.patch(true);
+  };
+
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+  };
+
+  render() {
+    return (
+      <div className="full">
+        <Message content={"upload test yet to be implemented"} />
+        {this.props.test.description}
+        <br />
+        jsondata: {this.props.test.jsondata}
+        <br />
+        output: {this.props.test.output}
+      </div>
+    );
+  }
+}
+
+class DynamicRunner extends React.Component {
+  verify = () => {
+    console.log("verifying dynamic...");
+    //const output = this.props.test.output;
+    //const value = this.state.value;
+    this.props.patch(true);
+  };
+
+  componentWillMount = () => {
+    this.props.button.handleClick = this.verify;
+  };
+
+  render() {
+    return (
+      <div className="full">
+        <Message content={"dynamic test yet to be implemented"} />
         {this.props.test.description}
         <br />
         jsondata: {this.props.test.jsondata}
@@ -47,13 +127,13 @@ class NumericRunnerShell extends Component {
     this.state = {
       measuring: false,
       interval: undefined,
-      value: '-',
+      value: "-"
     };
   }
 
   static defaultProps = {
     data: [],
-    log: [],
+    log: []
   };
 
   // Potentially add in a test option here to have it be exact
@@ -69,32 +149,32 @@ class NumericRunnerShell extends Component {
   verify = () => {
     this.props.openPort();
     const err = 0.03; // three percent
-    console.log('verify numeric runner...');
+    console.log("verify numeric runner...");
     const interval = setInterval(() => {
       const d = this.props.data;
       let sum = 0;
       d.map(x => (sum += x.V));
-      const value = d.length > 0 ? sum / d.length : '-';
+      const value = d.length > 0 ? sum / d.length : "-";
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
-      const prev = this.props.pdata.state === 'pass';
+      const prev = this.props.pdata.state === "pass";
       console.log(d, value, pass);
-      this.setState({value});
+      this.setState({ value });
       if (pass !== prev) {
         this.props.patch(pass);
         if (pass) {
           clearInterval(interval);
-          this.setState({measuring: false});
+          this.setState({ measuring: false });
         }
       }
     }, 100);
-    this.setState({interval, measuring: true});
+    this.setState({ interval, measuring: true });
   };
 
   render() {
     const val = this.state.value;
     const out = Number(this.props.test.output);
-    const input = val === '-' ? val : +val.toFixed(2);
+    const input = val === "-" ? val : +val.toFixed(2);
     return (
       <div className="full">
         {this.props.test.description}
@@ -127,14 +207,14 @@ const NumericRunner = withSerial(NumericRunnerShell, 30); // max samples
 
 class MultipleRunner extends Component {
   verify = () => {
-    console.log('verify multiples...');
+    console.log("verify multiples...");
     const output = this.props.test.output;
     const value = this.state.value;
     this.props.patch(output == value);
   };
 
   state = {};
-  handleChange = (e, {value}) => this.setState({value});
+  handleChange = (e, { value }) => this.setState({ value });
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
@@ -177,7 +257,7 @@ class QuestionRunner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: ""
     };
   }
 
@@ -186,12 +266,12 @@ class QuestionRunner extends Component {
   };
 
   handleChange = e => {
-    this.setState({value: e.target.value});
+    this.setState({ value: e.target.value });
   };
 
   // Always set to true. (or toggle?)
   verify = () => {
-    console.log('verifying question runner...');
+    console.log("verifying question runner...");
     const output = this.props.test.output;
     const value = this.state.value;
     this.props.patch(value === output);
@@ -217,7 +297,7 @@ class QuestionRunner extends Component {
 class ManualRunner extends Component {
   // Always set to true. (or toggle?)
   verify = () => {
-    console.log('verifying manual runner...');
+    console.log("verifying manual runner...");
     this.props.patch(true);
   };
 
@@ -235,28 +315,34 @@ class TestRunner extends React.Component {
 
   static propTypes = {
     pdata: PropTypes.object.isRequired,
-    test: PropTypes.object.isRequired,
+    test: PropTypes.object.isRequired
   };
 
   static defaultProps = {
     pdata: {},
-    test: {},
+    test: {}
   };
 
   generateTestRunner = tProps => {
     if (tProps.button) {
       switch (tProps.test.form) {
-        case 'dynamic':
+        case "code":
+          return <CodeRunner {...tProps} />;
+        case "compile":
+          return <CompileRunner {...tProps} />;
+        case "upload":
+          return <UploadRunner {...tProps} />;
+        case "dynamic":
           return <DynamicRunner {...tProps} />;
-        case 'numeric':
+        case "numeric":
           return <NumericRunner {...tProps} />;
-        case 'multiple':
+        case "multiple":
           return <MultipleRunner {...tProps} />;
-        case 'question':
+        case "question":
           return <QuestionRunner {...tProps} />;
-        case 'manual':
+        case "manual":
           return <ManualRunner {...tProps} />;
-        case 'info':
+        case "info":
           return <Message error content={`info is not accepted`} />;
         default:
           return <Message error content={`unknown: ${tProps.test.form}`} />;
@@ -271,7 +357,7 @@ class TestRunner extends React.Component {
 
   render() {
     const button = this.state.button;
-    const tProps = {button, ...this.props};
+    const tProps = { button, ...this.props };
     const render = tProps && !tProps.test.info;
     return (
       <div className="full">
@@ -283,7 +369,7 @@ class TestRunner extends React.Component {
             basic
             attached="bottom"
             content={tProps.rtext}
-            ref={button => !this.state.button && this.setState({button})}
+            ref={button => !this.state.button && this.setState({ button })}
           />
         )}
       </div>
