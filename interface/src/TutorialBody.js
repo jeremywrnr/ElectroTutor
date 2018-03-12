@@ -222,13 +222,13 @@ class TutorialBody extends Component {
 
   handleCodeUpdate = e => {
     // UI changes code - flash
-    var div = $('#status_container');
-    div.animate({opacity: '1.0'}, 500);
+    //var div = $('#status_container');
+    //div.animate({opacity: '1.0'}, 500);
   };
 
   handleServerCode = throttle((e, handler, msg) => {
-    var div = $('#status_container');
-    div.animate({opacity: '0.6'}, 500);
+    //var div = $('#status_container');
+    //div.animate({opacity: '0.6'}, 500);
 
     e.preventDefault();
     console.info(msg);

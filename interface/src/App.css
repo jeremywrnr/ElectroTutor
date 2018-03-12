@@ -122,6 +122,7 @@ div.arduino i.icon {
 #status_container,
 #code_editor {
   position: relative;
+  border: none;
 }
 #code,
 #compile {

@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {Browser} from 'react-window-ui';
-import {Button, Icon} from 'semantic-ui-react';
+import {Segment, Dimmer, Loader, Button, Icon} from 'semantic-ui-react';
 import Code from './Code.js';
-
-// TODO add some progress information for the user
 
 class ArduinoButton extends Component {
   render() {
@@ -67,13 +65,16 @@ class ArduinoWindow extends Component {
               />
             </div>
 
-            <div id="status_container">
+            <Segment className="no-pad no-margin" id="status_container">
+              <Dimmer active={this.props.loading}>
+                <Loader size="large">{this.props.loading}</Loader>
+              </Dimmer>
               <Code
                 name={'compile'}
                 value={compile_value}
                 theme={compile_success ? 'gob' : 'terminal'}
               />
-            </div>
+            </Segment>
           </div>
         </Browser>
       </div>
