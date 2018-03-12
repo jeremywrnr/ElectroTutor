@@ -8,6 +8,10 @@
   * usage: https://react.semantic-ui.com/usage
   * intro: https://react.semantic-ui.com/introduction
 
+### installing dependencies
+
+    yarn install
+
 ### starting react w/ webpack
 
     yarn start
