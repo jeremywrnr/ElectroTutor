@@ -66,7 +66,7 @@ class ArduinoWindow extends Component {
             </div>
 
             <Segment className="no-pad no-margin" id="status_container">
-              <Dimmer active={this.props.loading}>
+              <Dimmer active={!!this.props.loading}>
                 <Loader size="large">{this.props.loading}</Loader>
               </Dimmer>
               <Code

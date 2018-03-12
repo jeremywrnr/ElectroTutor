@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Image, Container, Segment, Button} from 'semantic-ui-react';
-import $ from 'jquery'; // animations
 import ReactMarkdown from 'react-markdown';
 import {HotKeys} from 'react-hotkeys';
 import * as ace from 'brace';
 import {throttle} from 'lodash';
 import Split from 'split.js';
+
+//import $ from 'jquery'; // animations
 
 import {GuideModal, SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
@@ -118,7 +119,7 @@ class TutorialBody extends Component {
       .then(() => this.setState({step_loading: false, page_loading: false}));
   };
 
-  generatePaneSplit = (sizes = [90, 10]) => {
+  generatePaneSplit = (sizes = [80, 20]) => {
     const split = Split(this.editorContainerIds, {
       direction: 'vertical',
       gutterSize: 35,
@@ -220,40 +221,35 @@ class TutorialBody extends Component {
     }, 500);
   };
 
-  handleCodeUpdate = e => {
-    // UI changes code - flash
-    //var div = $('#status_container');
-    //div.animate({opacity: '1.0'}, 500);
-  };
+  handleCodeUpdate = e => {};
 
   handleServerCode = throttle((e, handler, msg) => {
-    //var div = $('#status_container');
-    //div.animate({opacity: '0.6'}, 500);
-
-    e.preventDefault();
+    e && e.preventDefault();
     console.info(msg);
     const code = this.state.progress.code;
     this.setState({compile_loading: msg});
     const finish = compile => this.setState({compile, compile_loading: false});
-    handler(code)
+    return handler(code)
       .then(finish)
       .then(this.handleCodeUpdate);
   }, 2000);
 
   handleCompile = e => {
-    this.handleServerCode(e, this.state.api.postCompile, 'Compiling sketch...');
+    const compile = this.state.api.postCompile;
+    return this.handleServerCode(e, compile, 'Compiling sketch...');
   };
 
   handleUpload = e => {
-    this.handleServerCode(e, this.state.api.postUpload, 'Uploading code...');
+    const upload = this.state.api.postUpload;
+    return this.handleServerCode(e, upload, 'Uploading code...');
   };
 
   handleMonitor = e => {
-    this.setState({port_viewing: true});
+    return this.setState({port_viewing: true});
   };
 
   handleDemonitor = e => {
-    this.setState({port_viewing: false});
+    return this.setState({port_viewing: false});
   };
 
   //
@@ -336,9 +332,17 @@ class TutorialBody extends Component {
                           />
                         )}
                         <AccordionStyled
+                          progress={this.state.progress}
+                          compile={this.state.compile}
+                          loading={this.state.compile_loading}
+                          handleCompile={this.handleCompile}
+                          handleUpload={this.handleUpload}
+                          handleMonitor={this.handleMonitor}
                           handleClick={this.patchProgressData()}
                           tests={this.state.tests}
                           pdata={this.state.pData}
+                          code={this.state.api}
+                          api={this.state.api}
                         />
                       </div>
                     ) : (
