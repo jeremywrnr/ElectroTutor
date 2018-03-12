@@ -406,7 +406,7 @@ class TestRunner extends React.Component {
     const render = tProps && !tProps.test.info;
     return (
       <div className="full">
-        <Segment attached basic color={tProps.color}>
+        <Segment attached basic color={tProps.color || 'grey'}>
           {this.generateTestRunner(tProps)}
         </Segment>
         {render && (
