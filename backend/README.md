@@ -17,3 +17,8 @@ run the test suite:
 start the server with `conda` py2.7 env:
 
     ./start
+
+### links
+
+* rails guide: https://www.railstutorial.org/book/modeling_users
+* rails channels: https://engineering.musefind.com/make-your-rails-app-real-time-in-under-ten-minutes-cd5bd4a47f61

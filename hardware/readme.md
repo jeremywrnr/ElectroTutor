@@ -10,6 +10,7 @@ For reading from the serial ports, [spjs][spjs] is used.
 
 The [`Makefile`][mk] provides a simpler interface for common tasks.
 
+    make         # start SPJS server
     make compile # compile device project
     make device  # compile & upload device project
     make tester  # read testing probe
