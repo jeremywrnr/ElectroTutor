@@ -1,12 +1,19 @@
-# RAILS BACKEND FOR DATA PROCESSING
+# rails backend for persistent data
 
-Links to the frontend React UI with ActionCable.
+_works as a json api_
 
-Database initialization
+app installation:
+
+    bundle install
+
+database initialization:
 
     bin/rails db:environment:set RAILS_ENV=development db:drop db:create db:migrate db:seed
 
-How to run the test suite
+run the test suite:
 
     rake
 
+start the server with `conda` py2.7 env:
+
+    ./start
