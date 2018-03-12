@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id               :integer          not null, primary key
+#  email            :string           not null
+#  password_digest  :string           not null
+#  current_tutorial :integer
+#
+
 require 'bcrypt'
 
 class User < ApplicationRecord
