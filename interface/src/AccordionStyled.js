@@ -35,6 +35,9 @@ class AccordionTestItem extends Component {
 
   handleRunText = {
     dynamic: 'Examine',
+    compile: 'Compile',
+    upload: 'Upload',
+    code: 'Test Code',
     manual: 'Confirm',
     question: 'Submit',
     multiple: 'Submit',
@@ -115,13 +118,12 @@ export default class AccordionStyled extends Component {
       return match.state !== 'pass' && active.add(i);
     });
     this.setState({active});
-  }
-
-  // Initialize the component with tests that are not passed.
-  componentWillMount = () => {
   };
 
-// Initialize the component with tests that are not passed.
+  // Initialize the component with tests that are not passed.
+  componentWillMount = () => {};
+
+  // Initialize the component with tests that are not passed.
   componentWillUpdate = () => {
     // check for step differemce
     // on difference, update state
