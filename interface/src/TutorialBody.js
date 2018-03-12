@@ -313,42 +313,44 @@ class TutorialBody extends Component {
               }
               right={
                 <Container>
-                  <Segment basic loading={step_loading}>
-                    {this.state.tests.length > 0 ? (
-                      <div className="full">
-                        {p ? (
+                  {step_loading ? (
+                    <Segment padded basic>
+                      <Segment basic loading />
+                    </Segment>
+                  ) : (
+                    <Segment basic>
+                      {this.state.tests.length > 0 ? (
+                        <div className="full">
                           <Continue
-                            pass={'pass'}
-                            color={'green'}
+                            disabled={!p}
+                            color={(p && 'green') || undefined}
                             next={this.nextStep}
+                            pass={p ? 'pass' : 'fail'}
+                            head={p ? 'Tests Passed' : 'Unpassed Tests'}
+                            task={
+                              p
+                                ? 'Continue once you are ready.'
+                                : 'Pass the tests to continue.'
+                            }
                           />
-                        ) : (
-                          <Continue
-                            pass={'fail'}
-                            disabled={true}
-                            head={'Unpassed Tests'}
-                            task={'Pass the tests to continue.'}
-                            next={this.nextStep}
+                          <AccordionStyled
+                            progress={this.state.progress}
+                            compile={this.state.compile}
+                            loading={this.state.compile_loading}
+                            handleCompile={this.handleCompile}
+                            handleUpload={this.handleUpload}
+                            handleMonitor={this.handleMonitor}
+                            handleClick={this.patchProgressData()}
+                            tests={this.state.tests}
+                            pdata={this.state.pData}
+                            api={this.state.api}
                           />
-                        )}
-                        <AccordionStyled
-                          progress={this.state.progress}
-                          compile={this.state.compile}
-                          loading={this.state.compile_loading}
-                          handleCompile={this.handleCompile}
-                          handleUpload={this.handleUpload}
-                          handleMonitor={this.handleMonitor}
-                          handleClick={this.patchProgressData()}
-                          tests={this.state.tests}
-                          pdata={this.state.pData}
-                          code={this.state.api}
-                          api={this.state.api}
-                        />
-                      </div>
-                    ) : (
-                      <Continue head={'No checks.'} next={this.nextStep} />
-                    )}
-                  </Segment>
+                        </div>
+                      ) : (
+                        <Continue head={'No checks.'} next={this.nextStep} />
+                      )}
+                    </Segment>
+                  )}
 
                   <div className="tutorial-menu">
                     <Button.Group fluid widths="2">

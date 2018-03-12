@@ -90,6 +90,7 @@ export default class AccordionStyled extends Component {
     super(props);
     this.state = {
       active: new Set(),
+      active_step: 0, // dirty hack to track step changes
     };
   }
 
@@ -122,19 +123,15 @@ export default class AccordionStyled extends Component {
     let active = this.state.active;
     const pdata = this.props.pdata;
     this.props.tests.map((t, i) => {
-      const match = pdata.find(d => d.test_id === t.id) || {};
-      return match.state !== 'pass' && active.add(i);
+      const match = pdata.find(d => d.test_id === t.id);
+      match && match.state !== 'pass' && active.add(i);
+      return this.setState({active});
     });
-    this.setState({active});
   };
 
   // Initialize the component with tests that are not passed.
-  componentWillMount = () => {};
-
-  // Initialize the component with tests that are not passed.
-  componentWillUpdate = () => {
-    // check for step differemce
-    // on difference, update state
+  componentDidMount = () => {
+    this.generateActive();
   };
 
   handleTitleClick = (e, itemProps) => {
