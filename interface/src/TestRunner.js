@@ -369,8 +369,9 @@ class TestRunner extends React.Component {
   };
 
   generateTestRunner = tProps => {
-    if (tProps.button) {
-      switch (tProps.test.form) {
+    const form = tProps.test.form;
+    if (tProps.button || form === 'info') {
+      switch (form) {
         case 'code':
           return <CodeRunner {...tProps} />;
         case 'compile':
@@ -388,7 +389,7 @@ class TestRunner extends React.Component {
         case 'manual':
           return <ManualRunner {...tProps} />;
         case 'info':
-          return <Message error content={`info is not accepted`} />;
+          return <Message info content={this.props.test.description} />;
         default:
           return <Message error content={`unknown: ${tProps.test.form}`} />;
       }

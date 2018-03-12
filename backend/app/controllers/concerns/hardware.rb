@@ -3,7 +3,7 @@ require 'open3'
 # http://blog.honeybadger.io/capturing-stdout-stderr-from-shell-commands-via-ruby/
 
 module Hardware
-  @@hw_path = Rails.root.join('..', '..', 'hardware/')
+  @@hw_path = Rails.root.join('..', 'hardware/')
   @tester_port = ''
   @device_port = ''
 

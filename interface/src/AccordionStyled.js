@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
-import {Accordion, Header} from 'semantic-ui-react';
+import {Icon, Accordion, Header} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import TestRunner from './TestRunner.js';
 
 class AccordionTestTitle extends Component {
+  handlePassIcon = {
+    test: 'info',
+    pass: 'checkmark',
+    fail: 'remove',
+  };
+
   handlePassColor = {
     test: 'grey',
     pass: 'green',
@@ -12,11 +18,13 @@ class AccordionTestTitle extends Component {
 
   render() {
     // quick tip info, no icon
-    const i = this.props.test.info;
+    const i = this.props.test.info || this.props.test.form === 'info';
     const state = this.props.pdata.state;
     const color = !i && this.handlePassColor[state];
+    const pIcon = !i && this.handlePassIcon[state];
     return (
-      <Header as="h4" color={color}>
+      <Header as="h4" color={color || 'grey'}>
+        {!i && <Icon name={pIcon} />}
         {this.props.test.title}
       </Header>
     );
