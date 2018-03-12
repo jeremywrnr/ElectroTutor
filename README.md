@@ -1,7 +1,5 @@
 # Test Driven Tutorial Project
 
-[![Build Status](https://travis-ci.com/jeremywrnr/sir-kitz.svg?token=pu8hobLVwvxgVzuUtjz8&branch=dev)](https://travis-ci.com/jeremywrnr/sir-kitz)
-
 * [interface](/interface)
 * [backend](/backend)
 * [hardware](/hardware)
@@ -26,4 +24,3 @@
 * tdd wikipedia: https://en.wikipedia.org/wiki/Test-driven_development
 * interfacing with tty: https://playground.arduino.cc/Interfacing/LinuxTTY
 * instructables: http://www.instructables.com/technology/
-
