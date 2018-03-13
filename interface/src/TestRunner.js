@@ -12,8 +12,6 @@ import {StatCouple} from './DynamicStat.js';
 import {
   Form,
   Checkbox,
-  Statistic,
-  Container,
   Segment,
   Message,
   Input,
@@ -121,10 +119,12 @@ class UploadRunner extends React.Component {
     );
   }
 }
-
+//
+//
 //
 //
 //// HARDWARE ANALYSIS
+//
 //
 //
 class DynamicRunner extends React.Component {
@@ -211,25 +211,8 @@ class ContinuityRunnerShell extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <Container textAlign="center">
-          <Statistic color="grey">
-            <Statistic.Value>{input}</Statistic.Value>
-            <Statistic.Label>measured</Statistic.Label>
-          </Statistic>
-          <Statistic color="green">
-            <Statistic.Value>{out}</Statistic.Value>
-            <Statistic.Label>expected</Statistic.Label>
-          </Statistic>
-        </Container>
-        {this.state.measuring && (
-          <Message icon>
-            <Icon name="circle notched" loading />
-            <Message.Content>
-              <Message.Header>Measuring...</Message.Header>
-              Analyzing probe values...
-            </Message.Content>
-          </Message>
-        )}
+        <StatCouple unit="" input={input} out={out} />
+        {this.state.measuring && <MeasuringMessage />}
       </div>
     );
   }
@@ -292,25 +275,8 @@ class ResistanceRunnerShell extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <Container textAlign="center">
-          <Statistic color="grey">
-            <Statistic.Value>{input}</Statistic.Value>
-            <Statistic.Label>measured</Statistic.Label>
-          </Statistic>
-          <Statistic color="green">
-            <Statistic.Value>{out}</Statistic.Value>
-            <Statistic.Label>expected</Statistic.Label>
-          </Statistic>
-        </Container>
-        {this.state.measuring && (
-          <Message icon>
-            <Icon name="circle notched" loading />
-            <Message.Content>
-              <Message.Header>Measuring...</Message.Header>
-              Analyzing probe values...
-            </Message.Content>
-          </Message>
-        )}
+        <StatCouple unit=" ohms" input={input} out={out} />
+        {this.state.measuring && <MeasuringMessage />}
       </div>
     );
   }
@@ -376,23 +342,13 @@ class NumericRunnerShell extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <Container textAlign="center">
-          <Statistic color="grey">
-            <Statistic.Value>{input}</Statistic.Value>
-            <Statistic.Label horizontal>measured</Statistic.Label>
-            <Statistic.Label>measured</Statistic.Label>
-          </Statistic>
-          <Statistic color="green">
-            <Statistic.Value>{out}</Statistic.Value>
-            <Statistic.Label>expected</Statistic.Label>
-          </Statistic>
-        </Container>
+        <StatCouple unit=" V" input={input} out={out} />
         {this.state.measuring && <MeasuringMessage />}
       </div>
     );
   }
 }
-const ContinuityRunner = withSerial(ContiniutyRunnerShell, 30); // max samples
+const ContinuityRunner = withSerial(ContinuityRunnerShell, 30); // max samples
 const ResistanceRunner = withSerial(ResistanceRunnerShell, 30); // max samples
 const NumericRunner = withSerial(NumericRunnerShell, 30); // max samples
 
@@ -542,7 +498,7 @@ class TestRunner extends React.Component {
           return <CodeRunner {...tProps} />;
         case 'continuity':
           return <ContinuityRunner {...tProps} />;
-        case 'continuity':
+        case 'resistance':
           return <ResistanceRunner {...tProps} />;
         case 'compile':
           return <CompileRunner {...tProps} />;
