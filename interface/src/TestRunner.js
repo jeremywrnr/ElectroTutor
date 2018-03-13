@@ -151,7 +151,6 @@ class NumericRunnerShell extends Component {
     super(props);
     this.state = {
       measuring: false,
-      interval: undefined,
       value: '-',
     };
   }
@@ -173,11 +172,11 @@ class NumericRunnerShell extends Component {
 
   verify = () => {
     this.props.openPort();
-    const err = 0.03; // three percent
+    const err = 0.02; // two percent
     console.log('verify numeric runner...');
     const interval = setInterval(() => {
-      const d = this.props.data;
       let sum = 0;
+      const d = this.props.data;
       d.map(x => (sum += x.V));
       const value = d.length > 0 ? sum / d.length : '-';
       const out = Number(this.props.test.output);
@@ -186,14 +185,14 @@ class NumericRunnerShell extends Component {
       console.log(d, value, pass);
       this.setState({value});
       if (pass !== prev) {
-        this.props.patch(pass);
-        if (pass) {
-          clearInterval(interval);
-          this.setState({measuring: false});
-        }
+        clearInterval(interval);
+        this.setState({measuring: false});
+        setTimeout(() => {
+          this.props.patch(pass);
+        }, 200);
       }
     }, 100);
-    this.setState({interval, measuring: true});
+    this.setState({measuring: true});
   };
 
   render() {
