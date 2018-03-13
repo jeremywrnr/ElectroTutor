@@ -16,7 +16,6 @@ import {
   Message,
   Input,
   Button,
-  Icon,
 } from 'semantic-ui-react';
 
 //
@@ -57,7 +56,6 @@ class CodeRunner extends React.Component {
 class CompileRunner extends React.Component {
   state = {};
   verify = () => {
-    console.log('Verifying compile...');
     this.setState({loading: true});
     this.props
       .handleCompile()
@@ -77,10 +75,7 @@ class CompileRunner extends React.Component {
       <div className="full">
         {this.props.test.description}
         <br />
-        jsondata: {this.props.test.jsondata}
-        <br />
-        output: {this.props.test.output}
-        {this.state.loading && <TestLoading head="Compiling..." />}
+        {this.state.loading && <MeasuringMessage head="Compiling..." />}
       </div>
     );
   }
@@ -92,7 +87,6 @@ class UploadRunner extends React.Component {
   state = {};
   verify = () => {
     this.setState({loading: true});
-    console.log('Verifying upload...');
     this.props
       .handleUpload()
       .then(() => this.setState({loading: false}))
@@ -111,10 +105,7 @@ class UploadRunner extends React.Component {
       <div className="full">
         {this.props.test.description}
         <br />
-        jsondata: {this.props.test.jsondata}
-        <br />
-        output: {this.props.test.output}
-        {this.state.loading && <TestLoading head="Uploading..." />}
+        {this.state.loading && <MeasuringMessage head="Uploading..." />}
       </div>
     );
   }
@@ -211,7 +202,7 @@ class ContinuityRunnerShell extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <StatCouple unit="" input={input} out={out} />
+        <StatCouple input={input} out={out} />
         {this.state.measuring && <MeasuringMessage />}
       </div>
     );
@@ -275,7 +266,7 @@ class ResistanceRunnerShell extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <StatCouple unit=" ohms" input={input} out={out} />
+        <StatCouple unit="Ω" input={input} out={out} />
         {this.state.measuring && <MeasuringMessage />}
       </div>
     );
@@ -342,7 +333,7 @@ class NumericRunnerShell extends Component {
         {this.props.test.description}
         <br />
         <br />
-        <StatCouple unit=" V" input={input} out={out} />
+        <StatCouple unit="V" input={input} out={out} />
         {this.state.measuring && <MeasuringMessage />}
       </div>
     );
@@ -458,25 +449,6 @@ class ManualRunner extends Component {
 
 // Global Test Helper
 //
-class TestLoading extends Component {
-  static defaultProps = {
-    head: 'Testing...',
-    text: 'Test in progress...',
-  };
-
-  render() {
-    return (
-      <Message icon>
-        <Icon name="circle notched" loading />
-        <Message.Content>
-          <Message.Header>{this.props.head}</Message.Header>
-          {this.props.text}
-        </Message.Content>
-      </Message>
-    );
-  }
-}
-
 class TestRunner extends React.Component {
   state = {};
 

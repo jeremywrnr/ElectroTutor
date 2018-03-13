@@ -159,3 +159,6 @@ div.ui.styled.accordion .ui.label > .icon {
 div.ui.styled.accordion .ui.basic.attached.bottom.button:hover {
   background: rgba(34, 36, 38, 0.1) !important;
 }
+div.ui.styled.accordion .ui.statistic .value small {
+  font-size: 16px;
+}

@@ -35,7 +35,9 @@ class DynamicStat extends Component {
       <Statistic color={color}>
         <Statistic.Value>
           {value}
-          <small>{value !== '-' && unit}</small>
+          <sub>
+            {unit}
+          </sub>
         </Statistic.Value>
         <Statistic.Label>{label}</Statistic.Label>
       </Statistic>
