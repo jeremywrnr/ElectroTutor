@@ -88,10 +88,7 @@ class AccordionTestItem extends Component {
 export default class AccordionStyled extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      active: new Set(),
-      active_step: 0, // dirty hack to track step changes
-    };
+    this.state = {active: new Set()};
   }
 
   static propTypes = {
@@ -119,6 +116,10 @@ export default class AccordionStyled extends Component {
     }));
   }
 
+  componentDidMount = () => {
+    setTimeout(() => this.generateActive(), 50);
+  };
+
   generateActive = () => {
     let active = this.state.active;
     const pdata = this.props.pdata;
@@ -127,11 +128,6 @@ export default class AccordionStyled extends Component {
       match && match.state !== 'pass' && active.add(i);
       return this.setState({active});
     });
-  };
-
-  // Initialize the component with tests that are not passed.
-  componentDidMount = () => {
-    this.generateActive();
   };
 
   handleTitleClick = (e, itemProps) => {
