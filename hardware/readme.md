@@ -23,6 +23,9 @@ The [`Makefile`][mk] provides a simpler interface for common tasks.
 * advanced pio: http://docs.platformio.org/en/latest/projectconf/advanced_scripting.html
 * analog read: https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
   * shorter example: https://www.arduino.cc/en/Tutorial/ReadAnalogVoltage
+* simulation: https://www.nongnu.org/simulavr/
+  * gnu simulAVR: https://www.nongnu.org/simulavr/
+  * github/newer: https://github.com/buserror/simavr
 
 [spjs]: https://github.com/chilipeppr/serial-port-json-server
 [pio]: https://github.com/platformio/platformio-core
