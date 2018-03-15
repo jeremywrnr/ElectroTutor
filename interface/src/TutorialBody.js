@@ -209,17 +209,28 @@ class TutorialBody extends Component {
     this.setState({pData});
   };
 
+  // user changes code
   handleCodeChange = code => {
-    // user changes code
     const api = this.state.api;
+    const newState = {progress: {...this.state.progress, code: code}};
+    this.setState(newState);
     Delay(() => {
-      const newState = {progress: {...this.state.progress, code: code}};
-      const update = () => this.setState(newState);
-      const data = {code, pid: this.state.progress.id};
       console.info('saving code...');
-      api.patchCode(data).then(update);
+      const data = {code, pid: this.state.progress.id};
+      api.patchCode(data);
     }, 500);
   };
+
+  // user changes selected code
+  handleSelectionChange = sel => {
+    const selected = sel.session.getTextRange(sel.getRange());
+    this.throttledSelect(selected.trim());
+  };
+
+  throttledSelect = throttle(selected => {
+    this.setState({selected});
+    console.log(selected);
+  }, 50);
 
   handleCodeUpdate = e => {};
 
@@ -309,6 +320,7 @@ class TutorialBody extends Component {
                   handleUpload={this.handleUpload}
                   handleMonitor={this.handleMonitor}
                   handleCodeChange={this.handleCodeChange}
+                  handleSelectionChange={this.handleSelectionChange}
                 />
               }
               right={
@@ -335,6 +347,7 @@ class TutorialBody extends Component {
                           />
                           <AccordionStyled
                             progress={this.state.progress}
+                            selected={this.state.selected}
                             compile={this.state.compile}
                             loading={this.state.compile_loading}
                             handleCompile={this.handleCompile}

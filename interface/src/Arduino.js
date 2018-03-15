@@ -33,6 +33,7 @@ class ArduinoWindow extends Component {
     const upload = this.props.handleUpload;
     const monitor = this.props.handleMonitor;
     const change = this.props.handleCodeChange;
+    const select = this.props.handleSelectionChange;
 
     let compile_value, compile_success;
     if (this.props.loading) {
@@ -60,6 +61,7 @@ class ArduinoWindow extends Component {
                 showLines={true}
                 showGutter={true}
                 onChange={change}
+                onSelectionChange={select}
                 highlightActiveLine={true}
                 value={this.props.progress.code}
               />

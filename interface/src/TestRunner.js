@@ -38,14 +38,12 @@ class CodeRunner extends React.Component {
   };
 
   render() {
+    const sel = this.props.selected;
     return (
       <div className="full">
-        <Message content={'code snippet test yet to be implemented'} />
         {this.props.test.description}
         <br />
-        jsondata: {this.props.test.jsondata}
-        <br />
-        output: {this.props.test.output}
+        {sel && <pre>{this.props.selected}</pre>}
       </div>
     );
   }

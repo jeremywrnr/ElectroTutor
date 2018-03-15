@@ -41,6 +41,7 @@ div.ui.modals.active div.item {
 }
 div.ui.segment pre {
   background: rgba(34, 36, 38, 0.1);
+  font-size: 12px;
   overflow: auto;
   padding: 10px;
 }

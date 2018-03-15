@@ -13,6 +13,7 @@ import 'brace/theme/terminal';
 import 'brace/theme/gob';
 import 'brace/mode/markdown';
 import 'brace/mode/c_cpp';
+import 'brace/ext/language_tools.js';
 
 class Code extends React.Component {
   static propTypes = {
@@ -49,8 +50,10 @@ class Code extends React.Component {
     };
 
     const options = {
-      showLineNumbers: this.props.showLines,
       //maxLines: Infinity,
+      enableBasicAutocompletion: true,
+      enableLiveAutocompletion: true,
+      showLineNumbers: this.props.showLines,
       scrollPastEnd: true,
       tabSize: 2,
     };
