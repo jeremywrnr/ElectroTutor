@@ -81,6 +81,10 @@ class SerialMonitorShell extends Component {
     this.props.closePort();
   };
 
+  closeSerial = () => {
+    this.props.closePort();
+  };
+
   sendSPJS = () => {
     this.props.sendSPJS(this.state.spjs);
     this.setState({spjs: ''});
@@ -97,6 +101,7 @@ class SerialMonitorShell extends Component {
         <Segment basic>
           <Button onClick={this.openSerial} content="Open" />
           <Button onClick={this.closeSerial} content="Close" />
+          <Button onClick={this.clearSerial} content="Clear" />
           <Input
             action={{
               onClick: this.sendSerial,
@@ -203,6 +208,10 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       return this.handleSendSPJS(`close ${port} ${this.state.baud}`);
     };
 
+    clearPortData = () => {
+      this.setState({data: []});
+    };
+
     //
     // two categories of data: log messages from spjs, and data from the serial
     // monitor, which are stored respectively in the component's log or data.
@@ -244,6 +253,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
         openPort: this.openPort,
         sendPort: this.sendPort,
         closePort: this.closePort,
+        clearPort: this.clearPort,
         data: this.state.data,
         log: this.state.log,
       };
@@ -261,6 +271,6 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
 // HOOK SERIAL MONITOR INTERFACE INTO SPJS WEBSOCKETS
 //
 
-const SerialMonitor = withSerial(SerialMonitorShell, 10000);
+const SerialMonitor = withSerial(SerialMonitorShell, 1000);
 
 export {SerialMonitor, withSerial};
