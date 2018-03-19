@@ -29,10 +29,11 @@ import {
 class CodeRunner extends React.Component {
   verify = () => {
     console.log('Verifying snippet...');
-    //console.log('code props', this.props);
-    //const output = this.props.test.output;
-    //const value = this.state.value;
-    this.props.patch(true);
+    const code = this.props.selected;
+    const data = JSON.parse(this.props.test.jsondata);
+    const regex = new RegExp(data.match, data.flag || '');
+    const pass = regex.test(code);
+    this.props.patch(pass);
   };
 
   componentWillMount = () => {

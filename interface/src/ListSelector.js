@@ -22,7 +22,6 @@ class ListSelector extends Component {
               header={t.title}
               onClick={this.props.onClick}
               description={t.description}
-              meta="Progress: "
               key={t.id}
             />
           ))}
@@ -31,5 +30,7 @@ class ListSelector extends Component {
     );
   }
 }
+
+//meta="Progress: "
 
 export default ListSelector;

@@ -1,3 +1,84 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -
   tutorial:
     title: Simple LED Button Flasher
@@ -151,8 +232,9 @@
           description: Does the code upload?
           form: upload
         -
-          title: Snippet Test
-          description: Highlight your code with the pin selection to test it.
+          title: Code Selection
+          description: Highlight your code with the pin mode setting.
+          jsondata: '{"match": "pinMode"}'
           form: code
     -
       title: Congrats!
@@ -189,6 +271,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -
   tutorial:
     title: Light Sensitive Alarm Clock
@@ -200,4 +297,6 @@
     -
       title: Introduction
       description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+
+
 
