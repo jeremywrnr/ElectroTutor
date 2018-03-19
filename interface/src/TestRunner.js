@@ -12,6 +12,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import {StatCouple} from './DynamicStat.js';
 import {
   Form,
+  Label,
   Checkbox,
   Segment,
   Message,
@@ -53,6 +54,14 @@ class CodeRunner extends React.Component {
     );
   }
 }
+
+const errorLabel = (text = '') => {
+  return (
+    <Label attached="top right" color="red">
+      {text}
+    </Label>
+  );
+};
 
 // Code Compile testing
 //
@@ -107,11 +116,14 @@ class UploadRunner extends React.Component {
   };
 
   render() {
+    const ok = this.props.compile.code === 0;
+    const err = this.props.compile.error;
     return (
       <div className="full">
         {this.props.test.description}
         <br />
         {this.state.loading && <MeasuringMessage head="Uploading..." />}
+        {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
       </div>
     );
   }

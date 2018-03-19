@@ -27,7 +27,7 @@ module Hardware
 
   def process_error_message(m)
     m.gsub!(/src\/main\.cpp/, 'code')
-    m.gsub!(/^\*\*\*.*\n/, '')
+    m.gsub!(/^.*pioenvs\/uno.*\n/, '')
     m.gsub!(/^.*\*\*\*/, '')
     m.gsub!(/={3,}/, '')
     m.gsub!(/^\s+/, '')

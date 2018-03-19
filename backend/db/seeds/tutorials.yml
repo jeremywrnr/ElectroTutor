@@ -189,3 +189,15 @@
 
 
 
+-
+  tutorial:
+    title: Light Sensitive Alarm Clock
+    image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+    description: When the sun rises, alert the user with sound and light. Who needs roosters?
+  progress:
+    code: '// Edit me'
+  steps:
+    -
+      title: Introduction
+      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+
