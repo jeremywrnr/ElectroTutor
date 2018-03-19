@@ -19,8 +19,10 @@ module Hardware
   end
 
   def process_output_message(m)
-    puts 'todo'
-    m
+    m.gsub!(/={3,}/, '')
+    m.gsub!(/^\s+/, '')
+    m.gsub!(/^(?!\[).*\n/, '')
+    m.strip
   end
 
   def process_error_message(m)
