@@ -312,6 +312,10 @@ class NumericRunnerShell extends Component {
     }
   };
 
+  componentWillUnmount = () => {
+    clearInterval(this.state.interval);
+  };
+
   // Compute running average of last n frames to help with noise.
   // TODO pass in a desired error margin from the test itself
 
@@ -337,7 +341,7 @@ class NumericRunnerShell extends Component {
         }, 200);
       }
     }, 100);
-    this.setState({measuring: true});
+    this.setState({interval, measuring: true});
   };
 
   render() {

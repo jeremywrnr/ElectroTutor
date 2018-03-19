@@ -229,7 +229,6 @@ class TutorialBody extends Component {
 
   throttledSelect = throttle(selected => {
     this.setState({selected});
-    console.log(selected);
   }, 50);
 
   handleCodeUpdate = e => {};

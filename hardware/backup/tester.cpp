@@ -11,12 +11,13 @@ float voltage;
 
 void setup() {
   pinMode(sense, INPUT);
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop() {
   sensed = analogRead(sense);
   voltage = sensed * (5.0 / 1023.0);
-  Serial.println(voltage);
+  Serial.print(voltage);
+  Serial.print('_');
 }
 

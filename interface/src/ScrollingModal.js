@@ -10,8 +10,10 @@ class ModalScrollingContent extends Component {
     const modProps = Object.assign({}, this.props);
     delete modProps.onClick;
 
+    //Modal dimmer={'blurring'} {...modProps}>
+
     return (
-      <Modal dimmer={'blurring'} {...modProps}>
+      <Modal {...modProps}>
         <Modal.Header>{this.props.title}</Modal.Header>
 
         <Modal.Content image scrolling>
