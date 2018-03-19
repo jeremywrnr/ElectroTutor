@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withSerial} from './Serial.js';
 import MeasuringMessage from './MeasuringMessage.js';
+
 import {StatCouple} from './DynamicStat.js';
 import {
   Form,
@@ -17,6 +18,8 @@ import {
   Input,
   Button,
 } from 'semantic-ui-react';
+
+import SyntaxHighlighter from 'react-syntax-highlighter';
 
 //
 //
@@ -43,7 +46,11 @@ class CodeRunner extends React.Component {
       <div className="full">
         {this.props.test.description}
         <br />
-        {sel && <pre>{this.props.selected}</pre>}
+        {sel && (
+          <SyntaxHighlighter language="arduino">
+            {this.props.selected}
+          </SyntaxHighlighter>
+        )}
       </div>
     );
   }
@@ -169,7 +176,7 @@ class ContinuityRunnerShell extends Component {
   verify = () => {
     this.props.openPort();
     const err = 0.02; // two percent
-    console.log('verify numeric runner...');
+    console.log('verify continuity runner...');
     const interval = setInterval(() => {
       let sum = 0;
       const d = this.props.data;
@@ -233,7 +240,7 @@ class ResistanceRunnerShell extends Component {
   verify = () => {
     this.props.openPort();
     const err = 0.02; // two percent
-    console.log('verify numeric runner...');
+    console.log('verify resistance runner...');
     const interval = setInterval(() => {
       let sum = 0;
       const d = this.props.data;
@@ -292,6 +299,9 @@ class NumericRunnerShell extends Component {
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
+    if (this.props.pdata.state !== 'pass') {
+      this.verify();
+    }
   };
 
   // Compute running average of last n frames to help with noise.
