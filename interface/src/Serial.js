@@ -15,9 +15,8 @@ import {
 
 //
 // GENERAL SERIAL MONITOR
-//
-
 //<Label value="time [ms]" />
+//
 
 class SerialGraph extends Component {
   render() {
@@ -28,7 +27,6 @@ class SerialGraph extends Component {
         <Tooltip />
         <XAxis
           domain={['dataMin * 0.9', 'dataMax * 1.1']}
-          label="time [ms]"
           type="number"
           dataKey="date"
         />
@@ -226,7 +224,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       if (json_msg.D) {
         const d = this.first + json_msg.D;
         let split = d.split('_');
-        if (split.length < 10) {
+        if (split.length < 20) {
           this.first = d;
         } else {
           const last = split.pop(); // next first
@@ -302,3 +300,4 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
 //
 
 const SerialMonitor = withSerial(SerialMonitorShell, 1000);
+export {SerialMonitor, withSerial};
