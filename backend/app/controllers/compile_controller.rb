@@ -15,7 +15,9 @@ class CompileController < ApplicationController
       wait_thr.value
     end
 
-    res = {output: out, error: err, code: ioproc.exitstatus }
+    pout = process_output_message out
+    perr = process_error_message err
+    res = {output: pout, error: perr, code: ioproc.exitstatus }
     puts res
     json_response res
   end

@@ -102,7 +102,7 @@ class TutorialBody extends Component {
   deSplash = () => this.setState({splash: false});
 
   editorContainerIds = ['#code_editor', '#status_container'];
-  editorNames = ['code', 'compile'];
+  editorNames = ['code'];
 
   dataUpdate = api => {
     return api

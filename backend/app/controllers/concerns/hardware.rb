@@ -18,13 +18,17 @@ module Hardware
     yield Open3.popen3("cd #{@@hw_path} && make #{task}")
   end
 
-  # TODO timeout template if process is hanging
+  def process_output_message(m)
+    puts 'todo'
+    m
+  end
 
-  def timeout
-    if no_block_given?
-      raise "Must give block"
-    else
-      yield self
-    end
+  def process_error_message(m)
+    m.gsub!(/src\/main\.cpp/, 'code')
+    m.gsub!(/^\*\*\*.*\n/, '')
+    m.gsub!(/^.*\*\*\*/, '')
+    m.gsub!(/={3,}/, '')
+    m.gsub!(/^\s+/, '')
+    m.strip
   end
 end

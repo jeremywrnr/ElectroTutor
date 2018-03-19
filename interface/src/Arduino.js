@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Browser} from 'react-window-ui';
 import {Segment, Dimmer, Loader, Button, Icon} from 'semantic-ui-react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import {irBlack, dark} from 'react-syntax-highlighter/styles/hljs';
 import Code from './Code.js';
 
 class ArduinoButton extends Component {
@@ -71,11 +73,11 @@ class ArduinoWindow extends Component {
               <Dimmer active={!!this.props.loading}>
                 <Loader size="large">{this.props.loading}</Loader>
               </Dimmer>
-              <Code
-                name={'compile'}
-                value={compile_value}
-                theme={compile_success ? 'gob' : 'terminal'}
-              />
+              <SyntaxHighlighter
+                id={'compile'}
+                style={compile_success ? irBlack : dark}>
+                {compile_value}
+              </SyntaxHighlighter>
             </Segment>
           </div>
         </Browser>

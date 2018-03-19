@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withSerial} from './Serial.js';
 import MeasuringMessage from './MeasuringMessage.js';
-
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import {StatCouple} from './DynamicStat.js';
 import {
   Form,
@@ -18,8 +18,6 @@ import {
   Input,
   Button,
 } from 'semantic-ui-react';
-
-import SyntaxHighlighter from 'react-syntax-highlighter';
 
 //
 //
@@ -76,11 +74,14 @@ class CompileRunner extends React.Component {
   };
 
   render() {
+    const ok = this.props.compile.code === 0;
+    const err = this.props.compile.error;
     return (
       <div className="full">
         {this.props.test.description}
         <br />
         {this.state.loading && <MeasuringMessage head="Compiling..." />}
+        {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
       </div>
     );
   }
