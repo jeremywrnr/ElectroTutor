@@ -12,7 +12,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import {StatCouple} from './DynamicStat.js';
 import {
   Form,
-  Label,
+  //Label,
   Checkbox,
   Segment,
   Message,
@@ -56,13 +56,7 @@ class CodeRunner extends React.Component {
   }
 }
 
-const errorLabel = (text = '') => {
-  return (
-    <Label attached="top right" color="red">
-      {text}
-    </Label>
-  );
-};
+//const errorLabel = (text = '') => { return ( <Label attached="top right" color="red"> {text} </Label>); };
 
 // Code Compile testing
 //

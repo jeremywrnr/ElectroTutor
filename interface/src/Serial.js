@@ -77,8 +77,8 @@ class SerialMonitorShell extends Component {
     this.setState({serial: ''});
   };
 
-  closeSerial = () => {
-    this.props.closePort();
+  clearSerial = () => {
+    this.props.clearPort();
   };
 
   closeSerial = () => {
@@ -208,7 +208,7 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       return this.handleSendSPJS(`close ${port} ${this.state.baud}`);
     };
 
-    clearPortData = () => {
+    clearPort = () => {
       this.setState({data: []});
     };
 
