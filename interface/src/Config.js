@@ -4,7 +4,7 @@ const Config = {
     host: 'ws://localhost:8989/ws',
     tester: '/dev/cu.usbmodem14221',
     device: '/dev/cu.usbmodem14211',
-    baud: 38400,
+    baud: 115200,
   },
 };
 

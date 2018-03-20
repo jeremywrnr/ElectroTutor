@@ -11,7 +11,7 @@ float voltage;
 
 void setup() {
   pinMode(sense, INPUT);
-  Serial.begin(38400);
+  Serial.begin(115200);
 }
 
 void loop() {

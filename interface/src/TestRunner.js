@@ -119,12 +119,10 @@ class UploadRunner extends React.Component {
     );
   }
 }
-//
-//
+
 //
 //
 //// HARDWARE ANALYSIS
-//
 //
 //
 class DynamicRunnerShell extends React.Component {
@@ -416,10 +414,10 @@ class NumericRunnerShell extends Component {
 }
 
 // second param is the number of maximum serial samples
-const DynamicRunner = withSerial(DynamicRunnerShell, 2000);
-const ContinuityRunner = withSerial(ContinuityRunnerShell, 30);
-const ResistanceRunner = withSerial(ResistanceRunnerShell, 30);
-const NumericRunner = withSerial(NumericRunnerShell, 30);
+const DynamicRunner = withSerial(DynamicRunnerShell, 10000);
+const ContinuityRunner = withSerial(ContinuityRunnerShell, 500);
+const ResistanceRunner = withSerial(ResistanceRunnerShell, 500);
+const NumericRunner = withSerial(NumericRunnerShell, 500);
 
 // External info testing
 // Multiple choice example

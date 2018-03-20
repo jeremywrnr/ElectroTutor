@@ -101,10 +101,9 @@ class SerialMonitorShell extends Component {
   render() {
     const d_length = this.state.data.length;
     const l_length = this.state.log.length;
+    //{d_length > 0 && <SerialGraph data={this.state.data} />}
     return (
       <div className="full">
-        {d_length > 0 && <SerialGraph data={this.state.data} />}
-
         <Header as="h5">Serial Port</Header>
         <Segment basic>
           <Button onClick={this.openSerial} content="Open" />
@@ -219,14 +218,12 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
         return;
       }
 
-      // TODO: split into different names for device/tester serial data.
-      // TODO check any of the number conversion failed, and throw
       if (json_msg.D) {
         const d = this.first + json_msg.D;
-        let split = d.split('_');
-        if (split.length < 20) {
+        if (d.length < 400) {
           this.first = d;
         } else {
+          let split = d.split('_');
           const last = split.pop(); // next first
           const numbers = split.map((d, i) => {
             return {V: Number(d), date: (json_msg.date + i) / 1000.0};
