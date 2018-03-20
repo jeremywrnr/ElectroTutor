@@ -22,22 +22,18 @@ class CompileController < ApplicationController
     json_response res
   end
 
-  def post_channel
-    # TODO use action channel to stream data from the serial line rather than using
-  end
-
-  # Look up the current code from the user and step
-
   private
   def compile_params
-    params.require(:compile).permit(:step_id, :user_id, :code, :task)
+    params.require(:compile).permit(:code, :task)
   end
 
-  # TODO this is dumb and I should use a parser generator to perform source manipulation.
-  # ALSO UIST IS COMING UP VERY SHORTLY SO PERHAPS DONT DO IT YET
-
   def set_code
-    @code = '#include "Arduino.h"' + "\n" + params[:code].to_s
+    user_code = params[:code].to_s
+    if user_code.empty?
+      @code = ''
+    else
+      @code = '#include "Arduino.h"' + "\n" + user_code
+    end
   end
 
   def set_task

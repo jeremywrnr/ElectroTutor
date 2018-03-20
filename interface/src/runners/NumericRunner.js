@@ -10,14 +10,15 @@ class NumericRunnerShell extends Component {
     super(props);
     this.state = {
       interval: false,
+      preparing: false,
       measuring: false,
       value: '-',
     };
   }
 
   static defaultProps = {
-    data: [],
-    log: [],
+    data: [0],
+    log: [0],
   };
 
   // Potentially add in a test option here to have it be exact
@@ -35,45 +36,85 @@ class NumericRunnerShell extends Component {
   // TODO pass in a desired error margin from the test itself
 
   verify = () => {
+    if (this.props.test_mode === 'voltage') {
+      this.measure();
+    } else {
+      this.setState({preparing: true});
+      this.props.handleTestMode('voltage');
+      this.props.api
+        .postTVolt()
+        .then(this.measure)
+        .then(() => this.setState({preparing: false}));
+    }
+  };
+
+  measure = () => {
     this.props.openPort();
     const err = 0.02; // two percent
     console.log('verify numeric runner...');
     const interval = setInterval(() => {
+      if (this.props.test_mode !== 'voltage') {
+        // Test mode has been reset
+        clearInterval(interval);
+        this.setState({measuring: false});
+      }
+
       let sum = 0;
       const d = this.props.data;
-      d.map(x => (sum += x.V));
+      d.map(x => !isNaN(x.V) && (sum += x.V));
       const value = d.length > 0 ? sum / d.length : '-';
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
-      //console.log(d, value, pass);
+      console.log(value);
       this.setState({value});
       if (pass !== prev) {
         clearInterval(interval);
         this.setState({measuring: false});
         setTimeout(() => {
           this.props.patch(pass);
-        }, 220);
+        }, 1000);
       }
     }, 100);
     this.setState({interval, measuring: true});
   };
 
   render() {
+    let input;
     const val = this.state.value;
+    const prep = this.state.preparing;
     const out = Number(this.props.test.output);
-    const input = val === '-' ? val : +val.toFixed(2);
+    if (isNaN(val)) {
+      input = '-';
+    } else {
+      input = +val.toFixed(2);
+    }
+
     return (
       <div className="full">
         {this.props.test.description}
         <br />
-        <br />
-        <StatCouple unit="V" input={input} out={out} />
-        {this.state.measuring && <MeasuringMessage />}
+        {prep ? (
+          <MeasuringMessage
+            icon="setting"
+            head="Setting up..."
+            text="Loading code onto test board."
+          />
+        ) : (
+          <div className="full">
+            <br />
+            <StatCouple unit="V" input={input} out={out} />
+            {this.state.measuring && <MeasuringMessage />}
+          </div>
+        )}
       </div>
     );
   }
 }
 
-const NumericRunner = withSerial(NumericRunnerShell, 1000);
+const NumericRunner = withSerial(NumericRunnerShell, {
+  samples: 1100,
+  width: 500,
+});
+
 export default NumericRunner;

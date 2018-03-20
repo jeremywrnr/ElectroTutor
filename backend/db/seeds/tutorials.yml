@@ -6,6 +6,7 @@
   steps:
     -
       title: Debugging the debugger.
+      image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
       description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
       tests:
         -

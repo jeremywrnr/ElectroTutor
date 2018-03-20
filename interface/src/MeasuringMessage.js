@@ -9,12 +9,13 @@ class MeasuringMessage extends React.Component {
   static defaultProps = {
     head: 'Measuring...',
     text: 'Analyzing probe values...',
+    icon: 'circle notched',
   };
 
   render() {
     return (
       <Message icon>
-        <Icon name="circle notched" loading />
+        <Icon name={this.props.icon} loading />
         <Message.Content>
           <Message.Header>{this.props.head}</Message.Header>
           {this.props.text}

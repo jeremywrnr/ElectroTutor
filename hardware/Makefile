@@ -6,6 +6,7 @@ compile:
 	@cd device && platformio run -e uno
 device:
 	@cd device && platformio run -e uno -t upload
+
 voltage:
 	@cp -v backup/voltage.ino tester/src/main.cpp
 	@cd tester && platformio run -e uno -t upload

@@ -46,7 +46,7 @@ class ContinuityRunnerShell extends Component {
         this.setState({measuring: false});
         setTimeout(() => {
           this.props.patch(pass);
-        }, 200);
+        }, 220);
       }
     }, 100);
     this.setState({measuring: true});
@@ -68,5 +68,6 @@ class ContinuityRunnerShell extends Component {
   }
 }
 
-const ContinuityRunner = withSerial(ContinuityRunnerShell, 500);
+const ContinuityRunner = withSerial(ContinuityRunnerShell, {});
+
 export default ContinuityRunner;

@@ -151,10 +151,14 @@ class SerialMonitorShell extends Component {
 // .. or does the message get piped out to all of the channels?
 //
 
-function withSerial(WrappedComponent, sampleWindowWidth) {
+function withSerial(WrappedComponent, options = {}) {
   function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
   }
+
+  // Option initialization
+  options.samples = options.samples || 4000;
+  options.width = options.width || 400;
 
   const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
 
@@ -200,10 +204,10 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       const conn = this.conn;
       conn.onmessage = e => this.handleMessage(e.data); // lower
       conn.onclose = e => console.info('Connection closed.');
-      this.openPort();
+      //this.openPort();
     };
 
-    maxIndex = len => Math.max(len - sampleWindowWidth, 1);
+    maxIndex = len => Math.max(len - options.samples, 1);
 
     // two categories of data: log messages from spjs, and data from the serial
     // monitor, which are stored respectively in the component's log or data.
@@ -219,8 +223,9 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
       }
 
       if (json_msg.D) {
-        const d = this.first + json_msg.D;
-        if (d.length < 400) {
+        const d = (this.first || '_') + json_msg.D;
+        if (d.length < options.width) {
+          //console.log(d, options);
           this.first = d;
         } else {
           let split = d.split('_');
@@ -296,5 +301,6 @@ function withSerial(WrappedComponent, sampleWindowWidth) {
 // HOOK SERIAL MONITOR INTERFACE INTO SPJS WEBSOCKETS
 //
 
-const SerialMonitor = withSerial(SerialMonitorShell, 1000);
+const SerialMonitor = withSerial(SerialMonitorShell, {samples: 1000});
+
 export {SerialMonitor, withSerial};

@@ -32,6 +32,7 @@ class TutorialBody extends Component {
       step_loading: false,
       port_monitor: false,
       splash: false,
+      test_mode: '',
       pData: [],
       tests: [],
       step: {},
@@ -267,6 +268,10 @@ class TutorialBody extends Component {
     return this.setState({port_viewing: false});
   };
 
+  handleTestMode = test_mode => {
+    return this.setState({test_mode});
+  };
+
   //
   // KEY MAPPING
   //
@@ -361,7 +366,9 @@ class TutorialBody extends Component {
                             handleCompile={this.handleCompile}
                             handleUpload={this.handleUpload}
                             handleMonitor={this.handleMonitor}
+                            handleTestMode={this.handleTestMode}
                             handleClick={this.patchProgressData()}
+                            test_mode={this.state.test_mode}
                             tests={this.state.tests}
                             pdata={this.state.pData}
                             api={this.state.api}

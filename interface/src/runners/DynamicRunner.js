@@ -9,6 +9,8 @@ class DynamicRunnerShell extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      interval: false,
+      preparing: false,
       measuring: false,
       value: '-',
     };
@@ -19,50 +21,6 @@ class DynamicRunnerShell extends Component {
     log: [],
   };
 
-  verify = () => {
-    this.props.openPort();
-    console.log('verify dynamic runner...');
-    const err = 0.1; // ten percent
-    const interval = setInterval(() => {
-      const d = this.props.data;
-      const len = d.length;
-      if (len < 10) return;
-      let changes = 0;
-      let inc = false;
-      let prev = 0;
-      d.forEach(x => {
-        const v = x.V;
-        if (inc && v < prev) {
-          // stop increasing
-          changes += 1;
-          inc = false;
-          prev = v;
-        } else if (!inc && v > prev) {
-          // stop decreasing
-          changes += 1;
-          inc = true;
-          prev = v;
-        }
-      });
-
-      const time = d[len - 1].date - d[0].date;
-      const value = time > 0 ? changes / time : '-';
-      const out = Number(this.props.test.output);
-      const pass = (1 - err) * out < value && value < (1 + err) * out;
-      console.log(value, changes, time, pass);
-
-      const past = this.props.pdata.state === 'pass';
-      if (pass !== past) {
-        clearInterval(interval);
-        this.setState({measuring: false});
-        setTimeout(() => {
-          this.props.patch(pass);
-        }, 550);
-      }
-    }, 250);
-    this.setState({interval, measuring: true});
-  };
-
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
   };
@@ -71,21 +29,85 @@ class DynamicRunnerShell extends Component {
     clearInterval(this.state.interval);
   };
 
+  verify = () => {
+    if (this.props.test_mode === 'freq') {
+      this.measure();
+    } else {
+      this.setState({preparing: true});
+      this.props.handleTestMode('freq');
+      this.props.api
+        .postTFreq()
+        .then(this.measure)
+        .then(() => this.setState({preparing: false}));
+    }
+  };
+
+  measure = () => {
+    this.props.openPort();
+    const err = 0.02; // two percent
+    console.log('verify dynamic runner...');
+    const interval = setInterval(() => {
+      // Test mode has been reset
+      if (this.props.test_mode !== 'freq') {
+        clearInterval(interval);
+        this.setState({measuring: false});
+      }
+
+      const d = this.props.data;
+      if (d.length === 0) return;
+      const value = d[d.length - 1].V;
+      const out = Number(this.props.test.output);
+      const pass = (1 - err) * out < value && value < (1 + err) * out;
+      const prev = this.props.pdata.state === 'pass';
+      console.log(value, pass);
+      this.setState({value});
+      if (pass !== prev) {
+        clearInterval(interval);
+        this.setState({measuring: false});
+        setTimeout(() => this.props.patch(pass), 1000);
+      }
+    }, 100);
+    this.setState({interval, measuring: true});
+  };
+
   render() {
+    let input;
     const val = this.state.value;
     const out = Number(this.props.test.output);
-    const input = val === '-' ? val : +val.toFixed(2);
+    const prep = this.state.preparing;
+    if (isNaN(val)) {
+      input = '-';
+    } else {
+      input = +val.toFixed(2);
+    }
+
     return (
       <div className="full">
         {this.props.test.description}
         <br />
-        <StatCouple unit="Hz" input={input} out={out} />
-        {this.state.measuring && <MeasuringMessage />}
+        {prep ? (
+          <MeasuringMessage
+            icon="setting"
+            head="Setting up..."
+            text="Loading code onto test board."
+          />
+        ) : (
+          <div className="full">
+            <br />
+            <StatCouple unit="Hz" input={input} out={out} />
+            {this.state.measuring && <MeasuringMessage />}
+          </div>
+        )}
       </div>
     );
   }
 }
 
+const dynamicOptions = {
+  samples: 10,
+  width: 10,
+};
+
 // second param is the number of maximum serial samples
-const DynamicRunner = withSerial(DynamicRunnerShell, 10000);
+const DynamicRunner = withSerial(DynamicRunnerShell, dynamicOptions);
 export default DynamicRunner;

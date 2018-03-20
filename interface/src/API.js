@@ -106,6 +106,14 @@ class API {
     return this.authFetch(`compile`, 'POST', {code, task: 'device'});
   };
 
+  postTVolt = (code = '') => {
+    return this.authFetch(`compile`, 'POST', {code, task: 'voltage'});
+  };
+
+  postTFreq = (code = '') => {
+    return this.authFetch(`compile`, 'POST', {code, task: 'frequency'});
+  };
+
   /**
    * Parameter helpers
    */

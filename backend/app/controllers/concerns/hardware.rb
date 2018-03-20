@@ -10,11 +10,12 @@ module Hardware
   # Makefile has some logic for programming devices.
 
   def upload (code='', task='device', &block)
-    out = File.join(@@hw_path, "device/src/main.cpp")
+    if !code.empty? # overwrite user code
+      out = File.join(@@hw_path, "device/src/main.cpp")
+      File.open(out, 'w') { |f| f.write code }
+    end
 
-    File.open(out, 'w') { |f| f.write code }
-
-    # stdout, stderr, status
+    # provides stdout, stderr, status in a block format
     yield Open3.popen3("cd #{@@hw_path} && make #{task}")
   end
 

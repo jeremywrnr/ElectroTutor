@@ -67,5 +67,6 @@ class ResistanceRunnerShell extends Component {
   }
 }
 
-const ResistanceRunner = withSerial(ResistanceRunnerShell, 500);
+const ResistanceRunner = withSerial(ResistanceRunnerShell, {});
+
 export default ResistanceRunner;

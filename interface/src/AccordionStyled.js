@@ -42,14 +42,14 @@ class AccordionTestItem extends Component {
   // from this call rather than computing itin the parent container
 
   handleRunText = {
+    code: 'Test Code',
     dynamic: 'Examine',
+    numeric: 'Measure',
     compile: 'Compile',
     upload: 'Upload',
-    code: 'Test Code',
-    manual: 'Confirm',
     question: 'Submit',
     multiple: 'Submit',
-    numeric: 'Measure',
+    manual: 'Confirm',
   };
 
   handlePassColor = {
@@ -117,7 +117,7 @@ export default class AccordionStyled extends Component {
   }
 
   componentDidMount = () => {
-    setTimeout(() => this.generateActive(), 50);
+    setTimeout(() => this.generateActive(), 100);
   };
 
   generateActive = () => {
