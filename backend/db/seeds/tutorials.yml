@@ -44,7 +44,7 @@
         -
           title: code selection
           description: highlight code the word 'ok'
-          jsondata: '{"match": "pinMode", "flag": "i"}'
+          jsondata: '{"match": "ok", "flag": "i"}'
           form: code # regex
         -
           title: information
