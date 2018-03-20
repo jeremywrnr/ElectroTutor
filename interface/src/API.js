@@ -87,10 +87,7 @@ class API {
   };
 
   patchStep = (pid, position) => {
-    return (
-      this.posCheck(position) &&
-      this.authFetch(`progresses/${pid}`, 'PATCH', {position})
-    );
+    return this.authFetch(`progresses/${pid}`, 'PATCH', {position});
   };
 
   patchCode = ({pid, code}) => {

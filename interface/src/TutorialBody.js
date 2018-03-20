@@ -63,7 +63,9 @@ class TutorialBody extends Component {
         console.log('setting step', pos);
         api
           .configure()
-          .then(() => api.patchStep(prog.id, pos)) // Update progress
+          .then(() => api.patchStep(prog.id, pos)) // Update progress's position
+          .then(() => api.fetchProgress(tut))
+          .then(this.handleProgressUpdate)
           .then(() => api.fetchStep(tut, pos)) // Get new step
           .then(this.handleStepUpdate)
           .then(() => api.fetchTest(tut, pos)) // Get new tests
