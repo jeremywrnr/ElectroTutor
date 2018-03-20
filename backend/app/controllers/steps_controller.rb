@@ -1,12 +1,14 @@
 class StepsController < ApplicationController
   before_action :authenticate_user
-  before_action :set_step, only: [:show, :update, :destroy]
+  before_action :set_step, only: [:index, :show, :update, :destroy]
 
   # GET /steps
   def index
-    @steps = Step.all
-
-    render json: @steps
+    if @step.nil?
+      render json: {}, status: :not_found
+    else
+    render json: @step
+    end
   end
 
   # GET /steps/1
@@ -43,11 +45,11 @@ class StepsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_step
     id = params[:id]
-    pos = params[:tutorial_id]
-    tut = params[:position]
+    tut = params[:tutorial_id]
+    pos = params[:position]
 
     if id.nil?
-      @step = Step.where(position: pos).where(tutorial_id: tut).first
+      @step = Step.where(tutorial_id: tut).where(position: pos).first
     else
       @step = Step.find(params[:id])
     end

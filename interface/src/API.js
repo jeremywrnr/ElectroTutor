@@ -34,9 +34,7 @@ class API {
       message.body = JSON.stringify(body);
     }
 
-    return fetch(`${Config.rails}/${route}`, message)
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error));
+    return fetch(`${Config.rails}/${route}`, message).then(res => res.json());
   };
 
   fetchUser = () => {
@@ -51,21 +49,18 @@ class API {
     return this.authFetch(`tutorials/${tutorial}`);
   };
 
-  fetchProgress = tutorial => {
+  fetchProgress = tut => {
     return this.authFetch(
-      `progresses?user_id=${this.user.id}&tutorial_id=${tutorial}`,
+      `progresses?user_id=${this.user.id}&tutorial_id=${tut}`,
     );
   };
 
-  fetchStep = (tutorial, pos) => {
-    return (
-      this.positionCheck(pos) &&
-      this.authFetch(`steps?tutorial_id=${tutorial}&position=${pos}`)
-    );
+  fetchStep = (tut, pos) => {
+    return this.authFetch(`steps?tutorial_id=${tut}&position=${pos}`);
   };
 
-  fetchTest = (tutorial, pos) => {
-    return this.authFetch(`test?tutorial_id=${tutorial}&position=${pos}`);
+  fetchTest = (tut, pos) => {
+    return this.authFetch(`test?tutorial_id=${tut}&position=${pos}`);
   };
 
   fetchData = (prog, tests) => {
@@ -91,9 +86,9 @@ class API {
     return console.log(tutorial);
   };
 
-  patchStep = ({pid, position}) => {
+  patchStep = (pid, position) => {
     return (
-      this.positionCheck(position) &&
+      this.posCheck(position) &&
       this.authFetch(`progresses/${pid}`, 'PATCH', {position})
     );
   };
@@ -118,9 +113,9 @@ class API {
    * Parameter helpers
    */
 
-  positionCheck = pos => {
+  posCheck = pos => {
     const p = Number(pos);
-    return typeof p === 'number' && Number.isInteger(p);
+    return (typeof p === 'number' && Number.isInteger(p)) || 1;
   };
 }
 

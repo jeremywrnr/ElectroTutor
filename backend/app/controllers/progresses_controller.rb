@@ -33,14 +33,7 @@ class ProgressesController < ApplicationController
 
   # PATCH/PUT /progresses/1
   def update
-    pos = progress_params['step_pos']
-    dir = progress_params['move_type']
-
-    if pos && dir
-      puts pos, dir
-      render json: pos
-
-    elsif @progress.update(progress_params)
+    if @progress.update(progress_params)
       render json: @progress
     else
       render json: @progress.errors, status: :unprocessable_entity
@@ -60,12 +53,13 @@ class ProgressesController < ApplicationController
     id = params['id']
     uid = params['user_id']
     tid = params['tutorial_id']
+    pos = params['position']
 
     if uid == current_user.id.to_s && id.nil? # progress id
       @progress = Progress.where(user_id: uid).where(tutorial_id: tid).first
       if @progress.nil? # create for current user/tut
         step = Tutorial.find(tid).steps.first # Set step to first step in tutorial
-        @progress = current_user.progresses.create!(tutorial_id: tid, step_id: step.id)
+        @progress = current_user.progresses.create!(tutorial_id: tid, position: 1)
       end
 
     else # direct id param
@@ -76,6 +70,6 @@ class ProgressesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_params
-    params.permit(:progress, :code, :id, :user_id, :tutorial_id, :step_id, :position, :move_type)
+    params.permit(:progress, :code, :id, :user_id, :tutorial_id, :position)
   end
 end

@@ -52,24 +52,25 @@ class TutorialBody extends Component {
   patchStep = inc => {
     return throttle(() => {
       if (!this.state.tests_passed && inc > 0) {
-        // TODO block going forward if the step is not completed
-        // TODO: tell the user that they must complete test
-        //this.nextStep();
+        return; // tests not yet passed
       } else {
         this.setState({step_loading: true});
         const api = this.state.api;
-        const pid = this.state.progress.id;
-
-        let step_pos = this.state.step.position + inc;
-        step_pos = this.handleStepError(step_pos);
-
+        const prog = this.state.progress;
+        const step_pos = prog.position + inc;
+        const pos = this.handleStepError(step_pos);
+        const tut = this.state.tutorial;
+        console.log('setting step', pos);
         api
           .configure()
-          .then(() => api.patchStep({pid, position: step_pos}))
-          .then(() =>
-            api.fetchStep(this.state.tutorial, this.state.progress.position),
-          ) // MRU step
-          .then(() => this.dataUpdate(api));
+          .then(() => api.patchStep(prog.id, pos)) // Update progress
+          .then(() => api.fetchStep(tut, pos)) // Get new step
+          .then(this.handleStepUpdate)
+          .then(() => api.fetchTest(tut, pos)) // Get new tests
+          .then(this.handleTestUpdate)
+          .then(() => api.fetchData(this.state.progress.id, this.state.tests)) // Get new progress
+          .then(this.handleProgressDataUpdate)
+          .then(this.updateStepProgress);
       }
     }, 250);
   };
@@ -85,13 +86,13 @@ class TutorialBody extends Component {
         .then(() => api.patchData({id, state}))
         .then(() => api.fetchData(this.state.progress.id, this.state.tests))
         .then(this.handleProgressDataUpdate)
-        .then(this.updateStepProgress)
-        .then(() => this.setState({step_loading: false}));
+        .then(this.updateStepProgress);
     }, 250);
   };
 
   nextStep = this.patchStep(+1);
   prevStep = this.patchStep(-1);
+  resetStep = this.patchStep(-1000);
 
   splash = () => this.setState({splash: true});
   deSplash = () => this.setState({splash: false});
@@ -101,14 +102,13 @@ class TutorialBody extends Component {
 
   dataUpdate = api => {
     const tut = this.state.tutorial;
-    const pos = this.state.progress.position;
     return api
       .configure()
       .then(() => api.fetchProgress(tut))
       .then(this.handleProgressUpdate)
-      .then(() => api.fetchStep(tut, pos)) // MRU step
+      .then(() => api.fetchStep(tut, this.state.progress.position)) // MRU step
       .then(this.handleStepUpdate)
-      .then(() => api.fetchTest(tut, pos)) // MRU step
+      .then(() => api.fetchTest(tut, this.state.progress.position))
       .then(this.handleTestUpdate)
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)
@@ -140,7 +140,7 @@ class TutorialBody extends Component {
       })
       .every(p => p.state === 'pass');
     const tests_passed = pass_all || !has_tests;
-    this.setState({tests_passed});
+    this.setState({tests_passed, step_loading: false});
   };
 
   updatePaneSplit = () => {
@@ -163,10 +163,10 @@ class TutorialBody extends Component {
     const api = new API(this.props.api_auth); // from JWT
     const tutorial = this.props.tutorial.id;
     this.setState({api, tutorial});
-    this.dataUpdate(api);
   }
 
   componentDidMount() {
+    this.dataUpdate(this.state.api);
     this.generatePaneSplit();
   }
 
@@ -183,12 +183,16 @@ class TutorialBody extends Component {
   };
 
   handleStepUpdate = step => {
-    this.setState({step});
+    if (this.isEmptyObj(step)) {
+      this.resetStep();
+    } else {
+      this.setState({step});
+    }
   };
 
   handleStepError = step_pos => {
     console.log('step', step_pos);
-    if (!step_pos) {
+    if (!step_pos || step_pos < 1) {
       console.warn('error: resetting step pos to 1');
       this.splash();
       return 1;
@@ -199,7 +203,9 @@ class TutorialBody extends Component {
   };
 
   handleTestUpdate = tests => {
-    this.setState({tests});
+    if (!this.isEmptyObj(tests)) {
+      this.setState({tests});
+    }
   };
 
   handleProgressDataUpdate = pData => {
@@ -266,6 +272,10 @@ class TutorialBody extends Component {
   map = {
     next: ['right'],
     back: ['left'],
+  };
+
+  isEmptyObj = obj => {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
   render() {
