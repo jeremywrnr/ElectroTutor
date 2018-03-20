@@ -9,6 +9,7 @@ class NumericRunnerShell extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      interval: false,
       measuring: false,
       value: '-',
     };
@@ -24,9 +25,6 @@ class NumericRunnerShell extends Component {
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
-    if (this.props.pdata.state !== 'pass') {
-      this.verify();
-    }
   };
 
   componentWillUnmount = () => {
@@ -55,7 +53,7 @@ class NumericRunnerShell extends Component {
         this.setState({measuring: false});
         setTimeout(() => {
           this.props.patch(pass);
-        }, 200);
+        }, 220);
       }
     }, 100);
     this.setState({interval, measuring: true});
@@ -77,5 +75,5 @@ class NumericRunnerShell extends Component {
   }
 }
 
-const NumericRunner = withSerial(NumericRunnerShell, 500);
+const NumericRunner = withSerial(NumericRunnerShell, 1000);
 export default NumericRunner;

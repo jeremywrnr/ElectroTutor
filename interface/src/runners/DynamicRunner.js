@@ -52,7 +52,6 @@ class DynamicRunnerShell extends Component {
       console.log(value, changes, time, pass);
 
       const past = this.props.pdata.state === 'pass';
-      if (value > 0) this.setState({value});
       if (pass !== past) {
         clearInterval(interval);
         this.setState({measuring: false});
@@ -66,9 +65,6 @@ class DynamicRunnerShell extends Component {
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
-    if (this.props.pdata.state !== 'pass') {
-      this.verify();
-    }
   };
 
   componentWillUnmount = () => {
