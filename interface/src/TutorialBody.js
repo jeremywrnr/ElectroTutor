@@ -60,7 +60,6 @@ class TutorialBody extends Component {
         const step_pos = prog.position + inc;
         const pos = this.handleStepError(step_pos);
         const tut = this.state.tutorial;
-        console.log('setting step', pos);
         api
           .configure()
           .then(() => api.patchStep(prog.id, pos)) // Update progress's position
@@ -186,7 +185,8 @@ class TutorialBody extends Component {
 
   handleStepUpdate = step => {
     if (this.isEmptyObj(step)) {
-      this.resetStep();
+      const pos = this.state.progress.position;
+      pos > 1 ? this.prevStep() : this.resetStep();
     } else {
       this.setState({step});
     }
