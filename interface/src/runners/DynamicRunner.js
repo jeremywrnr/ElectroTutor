@@ -57,9 +57,9 @@ class DynamicRunnerShell extends Component {
       if (d.length === 0) return;
       const value = d[d.length - 1].V;
       const out = Number(this.props.test.output);
-      const pass = (1 - err) * out < value && value < (1 + err) * out;
+      const pass = (1 - err) * out <= value && value <= (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
-      console.log(value, pass);
+      //console.log(value, pass);
       this.setState({value});
       if (pass !== prev) {
         clearInterval(interval);
@@ -110,4 +110,5 @@ const dynamicOptions = {
 
 // second param is the number of maximum serial samples
 const DynamicRunner = withSerial(DynamicRunnerShell, dynamicOptions);
+
 export default DynamicRunner;

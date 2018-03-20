@@ -12,6 +12,7 @@ class Continue extends React.Component {
     task: 'Continue once you are ready!',
     color: undefined,
     pass: 'check',
+    text: 'Next',
   };
 
   render() {
@@ -22,7 +23,7 @@ class Continue extends React.Component {
         <Button
           {...bProps}
           attached="bottom"
-          content="Next"
+          content={this.props.text}
           onClick={this.props.next}
         />
       </div>

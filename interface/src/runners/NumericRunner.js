@@ -66,7 +66,6 @@ class NumericRunnerShell extends Component {
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
-      console.log(value);
       this.setState({value});
       if (pass !== prev) {
         clearInterval(interval);
@@ -113,8 +112,8 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 1100,
-  width: 500,
+  samples: 2000,
+  width: 1000,
 });
 
 export default NumericRunner;

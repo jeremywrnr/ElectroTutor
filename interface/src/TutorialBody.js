@@ -28,6 +28,7 @@ class TutorialBody extends Component {
       progress: {code: ''},
       compile: false, // hydrated after compile/error
       tests_passed: false,
+      tests_reveal: false,
       page_loading: true,
       step_loading: false,
       port_monitor: false,
@@ -55,7 +56,7 @@ class TutorialBody extends Component {
       if (!this.state.tests_passed && inc > 0) {
         return; // tests not yet passed
       } else {
-        this.setState({step_loading: true});
+        this.setState({test_reveal: false, step_loading: true});
         const api = this.state.api;
         const prog = this.state.progress;
         const step_pos = prog.position + inc;
@@ -272,6 +273,10 @@ class TutorialBody extends Component {
     return this.setState({test_mode});
   };
 
+  handleTestReveal = (test_reveal = true) => {
+    return this.setState({test_reveal});
+  };
+
   //
   // KEY MAPPING
   //
@@ -290,7 +295,26 @@ class TutorialBody extends Component {
     const step_header = 'Step ' + step.position + ': ' + step.title;
     const page_loading = this.state.page_loading;
     const step_loading = this.state.step_loading;
+
+    // Dynamic continue method params
     const p = this.state.tests_passed;
+    const show = this.state.test_reveal;
+    let continueProps = {
+      disabled: show && !p,
+      head: p ? 'Tests Passed' : 'Unpassed Tests',
+      pass: p ? 'pass' : 'fail',
+      task: p ? 'Continue once you are ready.' : 'Pass the tests to continue.',
+      next: this.nextStep,
+    };
+    if (!show) {
+      continueProps.head = 'Step Tests';
+      continueProps.text = 'Reveal';
+      continueProps.task = 'Click to reveal tests.';
+      continueProps.next = this.handleTestReveal;
+    }
+    if (p) {
+      continueProps.color = 'green';
+    }
 
     return (
       <Segment basic className="no-pad full" loading={page_loading}>
@@ -346,33 +370,24 @@ class TutorialBody extends Component {
                     <Segment basic>
                       {this.state.tests.length > 0 ? (
                         <div className="full">
-                          <Continue
-                            disabled={!p}
-                            color={(p && 'green') || undefined}
-                            next={this.nextStep}
-                            pass={p ? 'pass' : 'fail'}
-                            head={p ? 'Tests Passed' : 'Unpassed Tests'}
-                            task={
-                              p
-                                ? 'Continue once you are ready.'
-                                : 'Pass the tests to continue.'
-                            }
-                          />
-                          <AccordionStyled
-                            progress={this.state.progress}
-                            selected={this.state.selected}
-                            compile={this.state.compile}
-                            loading={this.state.compile_loading}
-                            handleCompile={this.handleCompile}
-                            handleUpload={this.handleUpload}
-                            handleMonitor={this.handleMonitor}
-                            handleTestMode={this.handleTestMode}
-                            handleClick={this.patchProgressData()}
-                            test_mode={this.state.test_mode}
-                            tests={this.state.tests}
-                            pdata={this.state.pData}
-                            api={this.state.api}
-                          />
+                          <Continue {...continueProps} />
+                          {show && (
+                            <AccordionStyled
+                              progress={this.state.progress}
+                              selected={this.state.selected}
+                              compile={this.state.compile}
+                              loading={this.state.compile_loading}
+                              handleCompile={this.handleCompile}
+                              handleUpload={this.handleUpload}
+                              handleMonitor={this.handleMonitor}
+                              handleTestMode={this.handleTestMode}
+                              handleClick={this.patchProgressData()}
+                              test_mode={this.state.test_mode}
+                              tests={this.state.tests}
+                              pdata={this.state.pData}
+                              api={this.state.api}
+                            />
+                          )}
                         </div>
                       ) : (
                         <Continue head={'No checks.'} next={this.nextStep} />
