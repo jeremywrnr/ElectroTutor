@@ -6,13 +6,19 @@ compile:
 	@cd device && platformio run -e uno
 device:
 	@cd device && platformio run -e uno -t upload
-tester:
+voltage:
+	@cp -v backup/voltage.ino tester/src/main.cpp
 	@cd tester && platformio run -e uno -t upload
+frequency:
+	@cp -v backup/frequency.ino tester/src/main.cpp
+	@cd tester && platformio run -e uno -t upload
+
 reset:
 	@cp -v backup/device.cpp device/src/main.cpp
 	@cp -v backup/tester.cpp tester/src/main.cpp
+
 travis: reset
 	cd device && platformio run -e uno
 	cd tester && platformio run -e uno
 
-.PHONY: device tester compile reset travis
+.PHONY: server compile device voltage frequency reset travis
