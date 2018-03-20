@@ -1,18 +1,7 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import MeasuringMessage from '../MeasuringMessage.js';
+import {StatCouple} from '../DynamicStat.js';
+import {withSerial} from '../Serial.js';
 
 class ContinuityRunnerShell extends Component {
   constructor(props) {
@@ -80,3 +69,4 @@ class ContinuityRunnerShell extends Component {
 }
 
 const ContinuityRunner = withSerial(ContinuityRunnerShell, 500);
+export default ContinuityRunner;

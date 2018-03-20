@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-//import {throttle} from 'lodash';
-//import worker_script from './SerialWorker.js';
 import {Header, Button, Input, List, Segment} from 'semantic-ui-react';
 import Config from './Config.js';
 import {
@@ -13,10 +11,10 @@ import {
   ReferenceLine,
 } from 'recharts';
 
-//
 // GENERAL SERIAL MONITOR
 //<Label value="time [ms]" />
-//
+//import {throttle} from 'lodash';
+//import worker_script from './SerialWorker.js';
 
 class SerialGraph extends Component {
   render() {
@@ -72,10 +70,12 @@ class SerialMonitorShell extends Component {
   pullProps = () => {
     this.setState({data: this.props.data, log: this.props.log});
   };
+
   componentDidMount = () => {
     console.log('starting...');
-    this.interval = setInterval(this.pullProps, 200);
+    this.interval = setInterval(this.pullProps, 500);
   };
+
   componentWillUnmount = () => {
     console.log('ending...');
     clearInterval(this.interval);
@@ -101,9 +101,9 @@ class SerialMonitorShell extends Component {
   render() {
     const d_length = this.state.data.length;
     const l_length = this.state.log.length;
-    //{d_length > 0 && <SerialGraph data={this.state.data} />}
     return (
       <div className="full">
+        {d_length > 0 && <SerialGraph data={this.state.data} />}
         <Header as="h5">Serial Port</Header>
         <Segment basic>
           <Button onClick={this.openSerial} content="Open" />

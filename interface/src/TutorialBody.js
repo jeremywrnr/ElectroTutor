@@ -387,7 +387,7 @@ class TutorialBody extends Component {
             />
 
             <SerialModal
-              title={'Serial Port Monitor'}
+              title={'Serial Monitor'}
               open={this.state.port_viewing}
               onClick={this.handleDemonitor}
             />

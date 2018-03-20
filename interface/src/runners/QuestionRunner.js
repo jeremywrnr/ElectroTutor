@@ -1,18 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import {Input} from 'semantic-ui-react';
 
 class QuestionRunner extends Component {
   constructor(props) {
@@ -55,3 +42,4 @@ class QuestionRunner extends Component {
   }
 }
 
+export default QuestionRunner;

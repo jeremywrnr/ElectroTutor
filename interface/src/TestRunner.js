@@ -2,34 +2,23 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import ContinuityRunner from 'runners/ContinuityRunner.js';
-import ResistanceRunner from 'runners/ResistanceRunner.js';
-import CompileRunner from 'runners/CompileRunner.js';
-import UploadRunner from 'runners/UploadRunner.js';
-import DynamicRunner from 'runners/DynamicRunner.js';
-import NumericRunner from 'runners/NumericRunner.js';
-import MultipleRunner from 'runners/MultipleRunner.js';
-import QuestionRunner from 'runners/QuestionRunner.js';
-import ManualRunner from 'runners/ManualRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import CodeRunner from './runners/CodeRunner.js';
+import ContinuityRunner from './runners/ContinuityRunner.js';
+import ResistanceRunner from './runners/ResistanceRunner.js';
+import CompileRunner from './runners/CompileRunner.js';
+import UploadRunner from './runners/UploadRunner.js';
+import DynamicRunner from './runners/DynamicRunner.js';
+import NumericRunner from './runners/NumericRunner.js';
+import MultipleRunner from './runners/MultipleRunner.js';
+import QuestionRunner from './runners/QuestionRunner.js';
+import ManualRunner from './runners/ManualRunner.js';
+import {Segment, Message, Button} from 'semantic-ui-react';
 
 // TODO cache the users last output to save their answers.
 // TODO saving previous user input and output to reference in errors and also
 // to help with the suggestion of fixes -> providing tips for fixing errors
 
-class TestRunner extends React.Component {
+class TestRunner extends Component {
   state = {};
 
   static propTypes = {

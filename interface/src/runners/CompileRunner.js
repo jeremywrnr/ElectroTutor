@@ -1,23 +1,12 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import MeasuringMessage from '../MeasuringMessage.js';
 
 // Code Compile testing
-//
-class CompileRunner extends React.Component {
+
+class CompileRunner extends Component {
   state = {};
+
   verify = () => {
     this.setState({loading: true});
     this.props
@@ -46,3 +35,5 @@ class CompileRunner extends React.Component {
     );
   }
 }
+
+export default CompileRunner;

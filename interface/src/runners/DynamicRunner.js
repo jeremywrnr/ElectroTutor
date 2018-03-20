@@ -1,23 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import MeasuringMessage from '../MeasuringMessage.js';
+import {StatCouple} from '../DynamicStat.js';
+import {withSerial} from '../Serial.js';
 
+// HARDWARE ANALYSIS
 //
-//// HARDWARE ANALYSIS
-//
-class DynamicRunnerShell extends React.Component {
+class DynamicRunnerShell extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -104,3 +92,4 @@ class DynamicRunnerShell extends React.Component {
 
 // second param is the number of maximum serial samples
 const DynamicRunner = withSerial(DynamicRunnerShell, 10000);
+export default DynamicRunner;

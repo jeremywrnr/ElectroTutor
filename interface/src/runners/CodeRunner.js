@@ -1,24 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
 
 //
 // Code Analysis
 //
 
-class CodeRunner extends React.Component {
+class CodeRunner extends Component {
   verify = () => {
     const code = this.props.selected;
     const data = JSON.parse(this.props.test.jsondata);
@@ -46,3 +33,5 @@ class CodeRunner extends React.Component {
     );
   }
 }
+
+export default CodeRunner;

@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withSerial} from './Serial.js';
-import MeasuringMessage from './MeasuringMessage.js';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import CodeRunner from 'runners/CodeRunner.js';
-import {StatCouple} from './DynamicStat.js';
-import {
-  Form,
-  Checkbox,
-  Segment,
-  Message,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import {withSerial} from '../Serial.js';
+import MeasuringMessage from '../MeasuringMessage.js';
+import {StatCouple} from '../DynamicStat.js';
+
+// Compute running average of last n frames to help with noise.
+// TODO pass in a desired error margin from the test itself
+// Potentially add in a test option here to have it be exact
+// Also figure out how to best deal with serial ports.
 
 class ResistanceRunnerShell extends Component {
   constructor(props) {
@@ -28,15 +22,9 @@ class ResistanceRunnerShell extends Component {
     log: [],
   };
 
-  // Potentially add in a test option here to have it be exact
-  // Also figure out how to best deal with serial ports.
-
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
   };
-
-  // Compute running average of last n frames to help with noise.
-  // TODO pass in a desired error margin from the test itself
 
   verify = () => {
     this.props.openPort();
@@ -80,3 +68,4 @@ class ResistanceRunnerShell extends Component {
 }
 
 const ResistanceRunner = withSerial(ResistanceRunnerShell, 500);
+export default ResistanceRunner;
