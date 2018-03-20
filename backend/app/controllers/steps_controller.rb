@@ -42,11 +42,19 @@ class StepsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_step
-    @step = Step.find(params[:id])
+    id = params[:id]
+    pos = params[:tutorial_id]
+    tut = params[:position]
+
+    if id.nil?
+      @step = Step.where(position: pos).where(tutorial_id: tut).first
+    else
+      @step = Step.find(params[:id])
+    end
   end
 
   # Only allow a trusted parameter "white list" through.
   def step_params
-    params.permit(:tutorial_id, :id, :step_id)
+    params.permit(:tutorial_id, :id, :step_id, :position)
   end
 end

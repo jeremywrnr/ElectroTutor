@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20180207164107) do
   create_table "progresses", force: :cascade do |t|
     t.integer "user_id"
     t.integer "tutorial_id"
-    t.integer "step_id"
+    t.integer "position"
     t.text "code", default: "void setup() {\n\n}\n\nvoid loop() {\n\n}"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

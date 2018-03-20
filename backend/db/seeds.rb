@@ -12,7 +12,7 @@ end
 
 seed_load(:users).each {|x| User.create! x }
 
-seed_load(:tutorials).each do |t|
+seed_load(:tutorials).each_with_index do |t, i|
   tut = User.first.tutorials.create! t['tutorial']
 
   t['steps'].each_with_index do |s, i|

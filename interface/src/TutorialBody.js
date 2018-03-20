@@ -60,20 +60,15 @@ class TutorialBody extends Component {
         const api = this.state.api;
         const pid = this.state.progress.id;
 
-        //const step_id = (prevState, props) => { return {step: prevState.step + inc } }
-        let step_pos = Math.min(
-          Math.max(this.state.step.position + inc, 0),
-          10,
-        );
-
-        // TODO handle tutorial bounds
-        // TODO use actual id vs position
+        let step_pos = this.state.step.position + inc;
         step_pos = this.handleStepError(step_pos);
+
         api
           .configure()
-          .then(() => api.patchStep({pid, step_id: step_pos}))
-          .catch(console.error)
-          .then(() => api.fetchStep(step_pos))
+          .then(() => api.patchStep({pid, position: step_pos}))
+          .then(() =>
+            api.fetchStep(this.state.tutorial, this.state.progress.position),
+          ) // MRU step
           .then(() => this.dataUpdate(api));
       }
     }, 250);
@@ -105,13 +100,15 @@ class TutorialBody extends Component {
   editorNames = ['code'];
 
   dataUpdate = api => {
+    const tut = this.state.tutorial;
+    const pos = this.state.progress.position;
     return api
       .configure()
-      .then(() => api.fetchProgress(this.state.tutorial))
+      .then(() => api.fetchProgress(tut))
       .then(this.handleProgressUpdate)
-      .then(() => api.fetchStep(this.state.progress.step_id)) // MRU step
+      .then(() => api.fetchStep(tut, pos)) // MRU step
       .then(this.handleStepUpdate)
-      .then(() => api.fetchTest(this.state.step.id))
+      .then(() => api.fetchTest(tut, pos)) // MRU step
       .then(this.handleTestUpdate)
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)

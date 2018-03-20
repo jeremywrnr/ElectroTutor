@@ -57,12 +57,15 @@ class API {
     );
   };
 
-  fetchStep = step => {
-    return this.stepCheck(step) && this.authFetch(`steps/${step}`);
+  fetchStep = (tutorial, pos) => {
+    return (
+      this.positionCheck(pos) &&
+      this.authFetch(`steps?tutorial_id=${tutorial}&position=${pos}`)
+    );
   };
 
-  fetchTest = step => {
-    return this.authFetch(`test?step_id=${step}`);
+  fetchTest = (tutorial, pos) => {
+    return this.authFetch(`test?tutorial_id=${tutorial}&position=${pos}`);
   };
 
   fetchData = (prog, tests) => {
@@ -88,10 +91,10 @@ class API {
     return console.log(tutorial);
   };
 
-  patchStep = ({pid, step_id}) => {
+  patchStep = ({pid, position}) => {
     return (
-      this.stepCheck(step_id) &&
-      this.authFetch(`progresses/${pid}`, 'PATCH', {step_id})
+      this.positionCheck(position) &&
+      this.authFetch(`progresses/${pid}`, 'PATCH', {position})
     );
   };
 
@@ -115,9 +118,9 @@ class API {
    * Parameter helpers
    */
 
-  stepCheck = step => {
-    const s = Number(step);
-    return typeof s === 'number' && Number.isInteger(s);
+  positionCheck = pos => {
+    const p = Number(pos);
+    return typeof p === 'number' && Number.isInteger(p);
   };
 }
 

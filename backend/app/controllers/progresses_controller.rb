@@ -64,7 +64,7 @@ class ProgressesController < ApplicationController
     if uid == current_user.id.to_s && id.nil? # progress id
       @progress = Progress.where(user_id: uid).where(tutorial_id: tid).first
       if @progress.nil? # create for current user/tut
-        step = Step.where(tutorial_id: tid).first # Set step to first step in tutorial
+        step = Tutorial.find(tid).steps.first # Set step to first step in tutorial
         @progress = current_user.progresses.create!(tutorial_id: tid, step_id: step.id)
       end
 
@@ -76,6 +76,6 @@ class ProgressesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def progress_params
-    params.require(:progress).permit(:code, :id, :user_id, :tutorial_id, :step_id, :step_pos, :move_type)
+    params.permit(:progress, :code, :id, :user_id, :tutorial_id, :step_id, :position, :move_type)
   end
 end
