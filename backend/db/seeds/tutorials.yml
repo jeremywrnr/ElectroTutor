@@ -1,3 +1,60 @@
+-
+  tutorial:
+    title: Who tests the tester?
+    image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
+    description: Simple tutorial with all test types.
+  steps:
+    -
+      title: Debugging the debugger.
+      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+      tests:
+        -
+          title: manual test
+          description: click to verify
+          form: manual
+        -
+          title: multiple choice
+          description: which of these is good?
+          jsondata: '["bad", "bad", "good"]'
+          output: 2 # 0-based
+          form: multiple
+        -
+          title: voltage
+          description: measure voltage with the two probes.
+          form: numeric
+          output: '5.0'
+        -
+          title: question
+          description: the correct answer is ok
+          form: question
+          output: ok
+        -
+          title: frequency
+          description: testing frequency
+          output: 2 # in hz
+          form: dynamic
+        -
+          title: compile
+          description: Does the code compile?
+          form: compile
+        -
+          title: upload Test
+          description: Does the code upload?
+          form: upload
+        -
+          title: code selection
+          description: highlight code the word 'ok'
+          jsondata: '{"match": "pinMode", "flag": "i"}'
+          form: code # regex
+        -
+          title: information
+          description: this is not a step but an simple notice
+          form: info
+          info: true
+
+
+
+
 
 
 
@@ -85,8 +142,6 @@
     source: https://learn.adafruit.com/adafruit-arduino-lesson-2-leds/blinking-the-led
     image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/original/learn_arduino_overview.jpg?1396780031
     description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
-  progress:
-    code: '// Edit me'
   steps:
     -
       title: Introduction
@@ -296,12 +351,11 @@
     title: Light Sensitive Alarm Clock
     image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
     description: When the sun rises, alert the user with sound and light. Who needs roosters?
-  progress:
-    code: '// Edit me'
   steps:
     -
       title: Introduction
       description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
-
-
+    -
+      title: TODO
+      description: please finish the tutorial
 
