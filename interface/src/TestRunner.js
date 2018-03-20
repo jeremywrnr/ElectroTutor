@@ -1,4 +1,4 @@
-/*eslint eqeqeq:0*/
+/*eslint array-callback-return:0 eqeqeq:0*/
 
 // TODO cache the users last output to save their answers.
 // TODO saving previous user input and output to reference in errors and also
@@ -12,7 +12,6 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import {StatCouple} from './DynamicStat.js';
 import {
   Form,
-  //Label,
   Checkbox,
   Segment,
   Message,
@@ -54,8 +53,6 @@ class CodeRunner extends React.Component {
     );
   }
 }
-
-//const errorLabel = (text = '') => { return ( <Label attached="top right" color="red"> {text} </Label>); };
 
 // Code Compile testing
 //
@@ -130,27 +127,86 @@ class UploadRunner extends React.Component {
 //
 //
 //
-class DynamicRunner extends React.Component {
+class DynamicRunnerShell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      measuring: false,
+      value: '-',
+    };
+  }
+
+  static defaultProps = {
+    data: [],
+    log: [],
+  };
+
   verify = () => {
-    console.log('verifying dynamic...');
-    //const output = this.props.test.output;
-    //const value = this.state.value;
-    this.props.patch(true);
+    this.props.openPort();
+    console.log('verify dynamic runner...');
+    const err = 0.1; // ten percent
+    const interval = setInterval(() => {
+      const d = this.props.data;
+      const len = d.length;
+      if (len < 10) return;
+      let changes = 0;
+      let inc = false;
+      let prev = 0;
+      d.forEach(x => {
+        const v = x.V;
+        if (inc && v < prev) {
+          // stop increasing
+          changes += 1;
+          inc = false;
+          prev = v;
+        } else if (!inc && v > prev) {
+          // stop decreasing
+          changes += 1;
+          inc = true;
+          prev = v;
+        }
+      });
+
+      const time = d[len - 1].date - d[0].date;
+      const value = time > 0 ? changes / time : '-';
+      const out = Number(this.props.test.output);
+      const pass = (1 - err) * out < value && value < (1 + err) * out;
+      console.log(value, changes, time, pass);
+
+      const past = this.props.pdata.state === 'pass';
+      if (value > 0) this.setState({value});
+      if (pass !== past) {
+        clearInterval(interval);
+        this.setState({measuring: false});
+        setTimeout(() => {
+          this.props.patch(pass);
+        }, 550);
+      }
+    }, 250);
+    this.setState({interval, measuring: true});
   };
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
+    if (this.props.pdata.state !== 'pass') {
+      this.verify();
+    }
+  };
+
+  componentWillUnmount = () => {
+    clearInterval(this.state.interval);
   };
 
   render() {
+    const val = this.state.value;
+    const out = Number(this.props.test.output);
+    const input = val === '-' ? val : +val.toFixed(2);
     return (
       <div className="full">
-        <Message content={'dynamic test yet to be implemented'} />
         {this.props.test.description}
         <br />
-        jsondata: {this.props.test.jsondata}
-        <br />
-        output: {this.props.test.output}
+        <StatCouple unit="Hz" input={input} out={out} />
+        {this.state.measuring && <MeasuringMessage />}
       </div>
     );
   }
@@ -358,9 +414,12 @@ class NumericRunnerShell extends Component {
     );
   }
 }
-const ContinuityRunner = withSerial(ContinuityRunnerShell, 30); // max samples
-const ResistanceRunner = withSerial(ResistanceRunnerShell, 30); // max samples
-const NumericRunner = withSerial(NumericRunnerShell, 30); // max samples
+
+// second param is the number of maximum serial samples
+const DynamicRunner = withSerial(DynamicRunnerShell, 1000);
+const ContinuityRunner = withSerial(ContinuityRunnerShell, 30);
+const ResistanceRunner = withSerial(ResistanceRunnerShell, 30);
+const NumericRunner = withSerial(NumericRunnerShell, 30);
 
 // External info testing
 // Multiple choice example
