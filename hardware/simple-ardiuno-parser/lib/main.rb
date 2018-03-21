@@ -22,7 +22,8 @@ class ArduinoParser
     elsif opts[:ident]
       pp @idents.to_a
     elsif opts[:watch]
-      puts watchCode opts[:watch]
+      @watching = opts[:watch]
+      puts watchCode
     end
   end
 end

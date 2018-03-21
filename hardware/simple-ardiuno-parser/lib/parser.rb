@@ -39,7 +39,7 @@ module ParserHelper
     end
   end
 
-  def watchCode(vars)
+  def watchCode
     @depth = 0
     code = check_func @code
     code.allparts(NEWLINE).map do |line|
@@ -123,7 +123,7 @@ module ParserHelper
   def check_watcher(b)
     if m = b.str.match(ASSIGN)
       val = m.captures[0]
-      idx = @idents.find_index(val)
+      idx = @watching.find_index(val)
       if idx && b.dep >= 1
         idx_line = b.clone
         val_line = b.clone
