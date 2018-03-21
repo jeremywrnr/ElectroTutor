@@ -14,10 +14,14 @@ frequency:
 	@cp -v backup/frequency.ino tester/src/main.cpp
 	@cd tester && platformio run -e uno -t upload
 
+ident:
+	@simple-ardiuno-parser/bin/arduino-parser device/src/main.cpp --ident
+watch: # make watch vars='a,b,c'
+	simple-ardiuno-parser/bin/arduino-parser device/src/main.cpp --watch=$(vars)
+
 reset:
 	@cp -v backup/device.cpp device/src/main.cpp
 	@cp -v backup/tester.cpp tester/src/main.cpp
-
 travis: reset
 	cd device && platformio run -e uno
 	cd tester && platformio run -e uno
