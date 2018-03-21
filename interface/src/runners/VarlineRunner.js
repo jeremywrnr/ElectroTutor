@@ -7,7 +7,6 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 
 class VarlineRunner extends Component {
   verify = () => {
-    const code = this.props.selected;
     const data = this.props.test.jsondata;
     const pass = data !== undefined;
     this.props.patch(pass);

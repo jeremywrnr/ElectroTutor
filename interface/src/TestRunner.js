@@ -3,6 +3,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CodeRunner from './runners/CodeRunner.js';
+import VariableRunner from './runners/VariableRunner.js';
+import VarlineRunner from './runners/VarlineRunner.js';
 import ContinuityRunner from './runners/ContinuityRunner.js';
 import ResistanceRunner from './runners/ResistanceRunner.js';
 import CompileRunner from './runners/CompileRunner.js';
