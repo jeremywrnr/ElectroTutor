@@ -37,6 +37,10 @@ class TestRunner extends Component {
       switch (form) {
         case 'code':
           return <CodeRunner {...tProps} />;
+        case 'variable':
+          return <VariableRunner {...tProps} />;
+        case 'varline':
+          return <VarlineRunner {...tProps} />;
         case 'continuity':
           return <ContinuityRunner {...tProps} />;
         case 'resistance':
