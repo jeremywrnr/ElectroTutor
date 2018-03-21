@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+stty cols 80 # width
+
+source activate py27
+
+fw rake

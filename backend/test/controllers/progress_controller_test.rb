@@ -29,7 +29,7 @@ class ProgressControllerTest < ActionDispatch::IntegrationTest
     get "/progresses", headers: auth, params: @params
     res = JSON.parse response.body
 
-    ["id", "tutorial_id", "step_id"].map {|x| assert_instance_of Integer, res[x] }
+    ["id", "tutorial_id", "position"].map {|x| assert_instance_of Integer, res[x] }
     assert_nil res["error"]
     assert_response :success
   end

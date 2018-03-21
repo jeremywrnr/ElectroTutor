@@ -4,20 +4,33 @@ require 'open3'
 
 module Hardware
   @@hw_path = Rails.root.join('..', 'hardware/')
-  @tester_port = ''
-  @device_port = ''
+  @@out = File.join(@@hw_path, "device/src/main.cpp")
+  @@head = '#include "Arduino.h"' + "\n"
 
   # Makefile has some logic for programming devices.
-
-  def upload (code='', task='device', &block)
-    if !code.empty? # overwrite user code
-      out = File.join(@@hw_path, "device/src/main.cpp")
-      File.open(out, 'w') { |f| f.write code }
-    end
-
-    # provides stdout, stderr, status in a block format
-    yield Open3.popen3("cd #{@@hw_path} && make #{task}")
+  def make(task)
+    "cd #{@@hw_path} && make #{task}"
   end
+
+  def idents # returns array
+    eval(%x{#{ make 'ident' }})
+  end
+
+  # Open3 provides stdout, stderr, status in a block format
+  def upload (code='', task='device')
+    if !code.empty? # overwrite user code
+      code = File.open(@@out, 'w') { |f| f.write @@head + code }
+    end
+    yield Open3.popen3(make task)
+  end
+
+  def instrument (code, idents=[])
+    File.open(@@out, 'w') { |f| f.write code } # reset
+    watch = %x{#{ make "watch vars=#{idents.join ","}" }}
+    yield upload(watch, 'device') {|*args| yield args }
+  end
+
+  # Formatting platformio messages for Arduino console.
 
   def process_output_message(m)
     m.gsub!(/={3,}/, '')

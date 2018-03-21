@@ -3,6 +3,10 @@ class CompileController < ApplicationController
 
   before_action :compile_params, :set_code, :set_task
 
+  def show_vars
+    render json: idents
+  end
+
   def post
     out = ''
     err = ''
@@ -28,12 +32,7 @@ class CompileController < ApplicationController
   end
 
   def set_code
-    user_code = params[:code].to_s
-    if user_code.empty?
-      @code = ''
-    else
-      @code = '#include "Arduino.h"' + "\n" + user_code
-    end
+    @code =  params[:code].to_s || ''
   end
 
   def set_task

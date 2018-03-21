@@ -3,7 +3,40 @@ require 'test_helper'
 class CompileControllerTest < ActionDispatch::IntegrationTest
   include Hardware
 
+  #
+  # Begin tests
+  #
+
+  test "can grab identifiers from filename ok" do
+    assert idents.is_a? Array
+  end
+
+  test "can instrument code with idents updates ok" do
+    result = instrument(@code_input) {|x| x }
+    assert result
+  end
+
+  test "can filter the success output of platformio commands" do
+    result = process_output_message @result_in
+    assert result
+  end
+
+  # they are equal but ruby strings are hurting me
+  #assert_equal @error_out.delete(' ') , result.delete(' ')
+
+  test "can filter the error output of platformio commands" do
+    result = process_error_message @error_in
+    assert result
+  end
+
+  #
+  # Test setup
+  #
+
   setup do
+    @code_source = File.join(@@hw_path, "simple-ardiuno-parser/test/blinky/blinky.ino")
+    @code_input = File.read(@code_source)
+
     @result_in = <<-eos
 [mon mar 19 12:55:41 2018] processing uno (platform: atmelavr; board: uno; framework: arduino)
 --------------------------------------------------------------------------------
@@ -74,20 +107,5 @@ failing
 [ERROR] Took 2.40 seconds
 [compile] Error 1
     eos
-  end
-
-  # BEGIN TESTS
-
-  test "can filter the success output of platformio commands" do
-    result = process_output_message @result_in
-    #assert_equal @result.delete(' ') , result.delete(' ')
-    assert result
-  end
-
-  #assert_equal @error_out.delete(' ') , result.delete(' ')
-  # they are equal but ruby strings are hurting me
-  test "can filter the error output of platformio commands" do
-    result = process_error_message @error_in
-    assert result
   end
 end
