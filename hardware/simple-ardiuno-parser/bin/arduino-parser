@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative '../lib/main'
+
+# arduino source parser
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options]"
+  opts.on("-d", "--debug", "List input/ident/output for input program") {|a| options[:debug] = a }
+  opts.on("-i", "--ident", "List program identifiers") {|a| options[:ident] = a }
+  opts.on("-w", "--watch=[x,y,z]", Array, "Generate instrumented code w/ watched identifiers") { |a| options[:watch] = a }
+end.parse!
+
+ArduinoParser.new(ARGV, options)

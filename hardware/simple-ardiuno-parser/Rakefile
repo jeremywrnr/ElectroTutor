@@ -1,0 +1,13 @@
+task :default => :test
+
+@tool = '../../bin/arduino-parser'
+
+def testhelper(t)
+  puts %x{cd test/#{t} && #{@tool} --debug #{t}.ino}
+end
+
+task :test do
+  testhelper 'blinky'
+  testhelper 'blocks'
+  testhelper 'methods'
+end

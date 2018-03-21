@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+gem 'rake'
+
+# Added at 2018-03-21 13:59:56 -0400 by jwrnr:
+gem "byebug", "~> 10.0", :groups => [:development, :test]
