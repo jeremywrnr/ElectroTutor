@@ -17,8 +17,7 @@ frequency:
 ident:
 	@simple-ardiuno-parser/bin/arduino-parser device/src/main.cpp --ident
 watch: # make watch vars='a,b,c'
-	echo $(vars)
-	#simple-ardiuno-parser/bin/arduino-parser device/src/main.cpp --watch=$(vars)
+	@simple-ardiuno-parser/bin/arduino-parser device/src/main.cpp --watch=$(vars)
 
 reset:
 	@cp -v backup/device.cpp device/src/main.cpp
