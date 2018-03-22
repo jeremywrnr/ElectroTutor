@@ -12,12 +12,12 @@
         -
           title: variable monitoring
           description: Does the code take on a value?
-          jsondata: '[{"ident": "ledPin", "value": 10}]' # ident, value -> do this to check configuration
+          jsondata: '[{"name": "ledPin", "value": 10}]' # name, value -> do this to check configuration
           form: variable
         -
           title: variable line monitoring
           description: Does the code take on a value at a line?
-          jsondata: '[{"ident": "ledPin", "value": 10, "line": 15} ]' # ident, value, line
+          jsondata: '[{"name": "ledPin", "value": 10, "line": 15} ]' # name, value, line
           form: varline
         -
           title: manual test

@@ -43,6 +43,8 @@ class AccordionTestItem extends Component {
 
   handleRunText = {
     code: 'Test Code',
+    variable: 'Measure',
+    varline: 'Measure',
     dynamic: 'Examine',
     numeric: 'Measure',
     compile: 'Compile',

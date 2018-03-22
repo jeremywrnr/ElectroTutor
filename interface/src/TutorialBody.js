@@ -225,15 +225,13 @@ class TutorialBody extends Component {
     const newState = {progress: {...this.state.progress, code: code}};
     this.setState(newState);
     Delay(() => {
-      console.info('saving code...');
       const data = {code, pid: this.state.progress.id};
-      api.patchCode(data);
-    }, 500);
-
-    Delay(() => {
-      console.info('making idents...');
-      api.fetchIdents(code).then(this.handleIdents);
-    }, 100);
+      console.info('saving code/parsing identifiers...');
+      api
+        .fetchIdents(code)
+        .then(this.handleIdents)
+        .then(() => api.patchCode(data));
+    }, 200);
   };
 
   // user changes selected code
@@ -343,6 +341,7 @@ class TutorialBody extends Component {
                   <div className="tutorial-menu">
                     <Button.Group fluid widths="2">
                       <Button
+                        disabled={this.state.progress.position <= 1}
                         onClick={this.prevStep}
                         labelPosition="left"
                         icon="left chevron"

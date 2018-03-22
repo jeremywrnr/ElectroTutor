@@ -23,7 +23,7 @@ class VarlineRunner extends Component {
         {this.props.test.description}
         <br />
         <br />
-        {idt.map(x => <VarLabel name={x} />)}
+        {idt.map((x, i) => <VarLabel key={i} name={x} />)}
       </div>
     );
   }
