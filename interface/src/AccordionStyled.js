@@ -69,7 +69,7 @@ class AccordionTestItem extends Component {
     const info = t.info;
     const form = t.form;
     const state = d.state;
-    const rtext = !info && this.handleRunText[form];
+    const rtext = (!info && this.handleRunText[form]) || 'Run';
     const color = !info && this.handlePassColor[state];
 
     const tProps = {

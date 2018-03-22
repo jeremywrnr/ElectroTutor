@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   resources :progresses
 
   post '/compile' => 'compile#post'
+  post '/show_vars' => 'compile#show'
+  post '/instrument' => 'compile#measure'
   mount ActionCable.server => '/cable'
 
   post 'user_token', to: 'user_token#create'

@@ -34,6 +34,7 @@ class TutorialBody extends Component {
       port_monitor: false,
       splash: false,
       test_mode: '',
+      idents: [],
       pData: [],
       tests: [],
       step: {},
@@ -225,6 +226,9 @@ class TutorialBody extends Component {
       console.info('saving code...');
       const data = {code, pid: this.state.progress.id};
       api.patchCode(data);
+
+      console.info('making idents...');
+      api.fetchIdents(this.state.code).then(idents => this.setState({idents}));
     }, 500);
   };
 
@@ -383,6 +387,7 @@ class TutorialBody extends Component {
                               handleTestMode={this.handleTestMode}
                               handleClick={this.patchProgressData()}
                               test_mode={this.state.test_mode}
+                              idents={this.state.idents}
                               tests={this.state.tests}
                               pdata={this.state.pData}
                               api={this.state.api}

@@ -14,6 +14,8 @@ class API {
     return this.fetchUser().then(user => (this.user = user));
   }
 
+  // Main method for interacting with the rails server.
+
   authFetch = (route, method = 'GET', body = undefined) => {
     if (route !== 'users' && this.auth === undefined) {
       Account.clearLocalCredentials(); // no auth or db reseeded
@@ -72,6 +74,10 @@ class API {
     }
   };
 
+  fetchIdent = (code = '') => {
+    return this.authFetch(`show_vars`, 'POST', {code});
+  };
+
   /**
    * Interface handlers
    */
@@ -114,13 +120,8 @@ class API {
     return this.authFetch(`compile`, 'POST', {code, task: 'frequency'});
   };
 
-  /**
-   * Parameter helpers
-   */
-
-  posCheck = pos => {
-    const p = Number(pos);
-    return (typeof p === 'number' && Number.isInteger(p)) || 1;
+  postTCode = (code = '') => {
+    return this.authFetch(`compile`, 'POST', {code, task: 'frequency'});
   };
 }
 

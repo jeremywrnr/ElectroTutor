@@ -3,10 +3,6 @@ class CompileController < ApplicationController
 
   before_action :compile_params, :set_code, :set_task
 
-  def show_vars
-    render json: idents
-  end
-
   def post
     out = ''
     err = ''
@@ -26,13 +22,20 @@ class CompileController < ApplicationController
     json_response res
   end
 
+  def show
+    render json: idents(@code)
+  end
+
+  def measure
+  end
+
   private
   def compile_params
-    params.require(:compile).permit(:code, :task)
+    params.require(:compile).permit(:code, :task, :idents)
   end
 
   def set_code
-    @code =  params[:code].to_s || ''
+    @code =  params[:code] || ''
   end
 
   def set_task

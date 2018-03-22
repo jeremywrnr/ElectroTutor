@@ -10,6 +10,16 @@
       description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
       tests:
         -
+          title: variable monitoring
+          description: Does the code take on a value?
+          jsondata: '[{"ident": "ledPin", "value": 10}]' # ident, value -> do this to check configuration
+          form: variable
+        -
+          title: variable line monitoring
+          description: Does the code take on a value at a line?
+          jsondata: '[{"ident": "ledPin", "value": 10, "line": 15} ]' # ident, value, line
+          form: varline
+        -
           title: manual test
           description: click to verify
           form: manual
@@ -42,14 +52,6 @@
           title: upload test
           description: Does the code upload?
           form: upload
-        -
-          title: variable monitoring
-          description: Does the code take on a value?
-          form: variable
-        -
-          title: variable line monitoring
-          description: Does the code take on a value at a line?
-          form: varline
         -
           title: code selection
           description: highlight code the word 'ok'

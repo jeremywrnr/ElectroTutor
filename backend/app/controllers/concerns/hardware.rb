@@ -12,8 +12,13 @@ module Hardware
     "cd #{@@hw_path} && make #{task}"
   end
 
-  def idents # returns array
-    eval(%x{#{ make 'ident' }})
+  def idents (code='') # returns array
+    if !code.empty?
+      code = File.open(@@out, 'w') { |f| f.write code }
+      eval(%x{#{ make 'ident' }})
+    else
+      []
+    end
   end
 
   # Open3 provides stdout, stderr, status in a block format

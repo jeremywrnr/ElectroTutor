@@ -22,6 +22,8 @@ class VariableRunner extends Component {
       <div className="full">
         {this.props.test.description}
         <br />
+        {this.props.idents}
+        <br />
         {sel && (
           <SyntaxHighlighter language="arduino">
             {this.props.selected}
