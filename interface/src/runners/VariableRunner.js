@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import {Icon, Label} from 'semantic-ui-react';
 
 //
 // Variable Analysis
@@ -17,19 +17,24 @@ class VariableRunner extends Component {
   };
 
   render() {
-    const sel = this.props.selected;
+    const idt = this.props.idents;
     return (
       <div className="full">
         {this.props.test.description}
         <br />
-        {this.props.idents}
         <br />
-        {sel && (
-          <SyntaxHighlighter language="arduino">
-            {this.props.selected}
-          </SyntaxHighlighter>
-        )}
+        {idt.map(x => <VarLabel name={x} />)}
       </div>
+    );
+  }
+}
+
+class VarLabel extends Component {
+  render() {
+    return (
+      <Label as="a" size="large">
+        <Icon color="red" name="hide" /> {this.props.name}
+      </Label>
     );
   }
 }

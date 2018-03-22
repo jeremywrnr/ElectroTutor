@@ -23,7 +23,9 @@ class CompileController < ApplicationController
   end
 
   def show
-    render json: idents(@code)
+    idt = idents(@code)
+    puts idt
+    render json: idt
   end
 
   def measure

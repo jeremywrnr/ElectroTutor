@@ -164,3 +164,6 @@ div.ui.styled.accordion .ui.basic.attached.bottom.button:hover {
 div.ui.styled.accordion .ui.statistic .value small {
   font-size: 16px;
 }
+div.ui.styled.accordion.test-accordion .ui.large.label {
+  margin-bottom: 0.5em;
+}

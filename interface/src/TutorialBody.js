@@ -117,6 +117,8 @@ class TutorialBody extends Component {
       .then(() => api.fetchData(this.state.progress.id, this.state.tests))
       .then(this.handleProgressDataUpdate)
       .then(this.updateStepProgress)
+      .then(() => api.fetchIdents(this.state.progress.code))
+      .then(this.handleIdents)
       .then(() => this.setState({step_loading: false, page_loading: false}));
   };
 
@@ -226,10 +228,12 @@ class TutorialBody extends Component {
       console.info('saving code...');
       const data = {code, pid: this.state.progress.id};
       api.patchCode(data);
-
-      console.info('making idents...');
-      api.fetchIdents(this.state.code).then(idents => this.setState({idents}));
     }, 500);
+
+    Delay(() => {
+      console.info('making idents...');
+      api.fetchIdents(code).then(this.handleIdents);
+    }, 100);
   };
 
   // user changes selected code
@@ -242,17 +246,16 @@ class TutorialBody extends Component {
     this.setState({selected});
   }, 50);
 
-  handleCodeUpdate = e => {};
+  handleCodeUpdate = compile => {
+    this.setState({compile, compile_loading: false});
+  };
 
   handleServerCode = throttle((e, handler, msg) => {
     e && e.preventDefault();
     console.info(msg);
     const code = this.state.progress.code;
     this.setState({compile_loading: msg});
-    const finish = compile => this.setState({compile, compile_loading: false});
-    return handler(code)
-      .then(finish)
-      .then(this.handleCodeUpdate);
+    return handler(code).then(this.handleCodeUpdate);
   }, 2000);
 
   handleCompile = e => {
@@ -279,6 +282,10 @@ class TutorialBody extends Component {
 
   handleTestReveal = (test_reveal = true) => {
     return this.setState({test_reveal});
+  };
+
+  handleIdents = idents => {
+    return this.setState({idents});
   };
 
   //

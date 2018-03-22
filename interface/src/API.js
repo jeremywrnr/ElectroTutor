@@ -74,7 +74,7 @@ class API {
     }
   };
 
-  fetchIdent = (code = '') => {
+  fetchIdents = (code = '') => {
     return this.authFetch(`show_vars`, 'POST', {code});
   };
 
