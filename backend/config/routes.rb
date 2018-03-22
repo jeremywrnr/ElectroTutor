@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   post '/compile' => 'compile#post'
   post '/show_vars' => 'compile#show'
-  post '/instrument' => 'compile#measure'
+  post '/measure' => 'compile#measure'
   mount ActionCable.server => '/cable'
 
   post 'user_token', to: 'user_token#create'

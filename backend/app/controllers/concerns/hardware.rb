@@ -22,6 +22,7 @@ module Hardware
   end
 
   # Open3 provides stdout, stderr, status in a block format
+
   def upload (code='', task='device')
     if !code.empty? # overwrite user code
       code = File.open(@@out, 'w') { |f| f.write @@head + code }
@@ -29,10 +30,9 @@ module Hardware
     yield Open3.popen3(make task)
   end
 
-  def instrument (code, idents=[])
+  def instrument (code, idents) # str, str => str
     File.open(@@out, 'w') { |f| f.write code } # reset
-    watch = %x{#{ make "watch vars=#{idents.join ","}" }}
-    yield upload(watch, 'device') {|*args| yield args }
+    watch = %x{#{ make "watch vars=#{idents}" }}
   end
 
   # Formatting platformio messages for Arduino console.

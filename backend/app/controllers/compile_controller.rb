@@ -24,11 +24,29 @@ class CompileController < ApplicationController
 
   def show
     idt = idents(@code)
-    puts idt
     render json: idt
   end
 
   def measure
+    out = ''
+    err = ''
+    idt = params[:idents]
+    instrumented = instrument @code, idt
+    puts idt, instrumented
+
+    ioproc = upload instrumented, 'device' do |stdin, stdout, stderr, wait_thr|
+      pid = wait_thr.pid # pid of the started process.
+      stdin.close
+      out = stdout.read
+      err = stderr.read
+      wait_thr.value
+    end
+
+    pout = process_output_message out
+    perr = process_error_message err
+    res = {output: pout, error: perr, code: ioproc.exitstatus }
+    puts res
+    json_response res
   end
 
   private

@@ -120,8 +120,8 @@ class API {
     return this.authFetch(`compile`, 'POST', {code, task: 'frequency'});
   };
 
-  postTCode = (code = '') => {
-    return this.authFetch(`compile`, 'POST', {code, task: 'frequency'});
+  postTCode = (code = '', idents) => {
+    return this.authFetch(`measure`, 'POST', {code, idents});
   };
 }
 

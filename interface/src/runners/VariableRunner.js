@@ -7,7 +7,10 @@ import {Icon, Label} from 'semantic-ui-react';
 
 class VariableRunner extends Component {
   verify = () => {
+    const idt = this.props.idents.join(',');
     const data = this.props.test.jsondata;
+    const code = this.props.progress.code;
+    this.props.api.postTCode(code, idt).then(console.log);
     const pass = data !== undefined;
     this.props.patch(pass);
   };
