@@ -14,11 +14,12 @@ class ArduinoParser
     @code = code
     parseCode
     if opts[:debug]
+      @watching = @idents
       puts code.split(NEWLINE).each_with_index.map {|l, i| "#{i+1}\t#{l}"}
       puts banner
       pp @idents.to_a
       puts banner
-      puts watchCode @idents
+      puts watchCode
     elsif opts[:ident]
       pp @idents.to_a
     elsif opts[:watch]
