@@ -91,7 +91,7 @@ class VariableRunnerShell extends Component {
     return (
       <div className="full">
         {this.props.test.description}
-        {idt && <br />}
+        {idt.length >= 0 && <br />}
         {idt.map((x, i) => <VarLabel color={col} key={i} name={x} />)}
         {this.state.loading && <MeasuringMessage head="Recompiling..." />}
         {err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
