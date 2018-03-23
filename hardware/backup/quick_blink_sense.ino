@@ -1,12 +1,12 @@
 int level;
 
 void setup() {
-    pinMode(A0, INPUT);
+    pinMode(A1, INPUT);
     pinMode(7, OUTPUT);
 }
 
 void loop() {
-    level = analogRead(A0);
+    level = analogRead(A1);
     digitalWrite(7, HIGH);
     delayMicroseconds(level);
     digitalWrite(7, LOW);

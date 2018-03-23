@@ -6,7 +6,7 @@
 #include "Arduino.h"
 
 int sensed;
-int sense = A0;
+int sense = A1;
 float voltage;
 
 void setup() {

@@ -11,14 +11,14 @@ int last;
 int now;
 
 void setup() {
-  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
   Serial.begin(115200);
-  last = digitalRead(A0);
+  last = digitalRead(A1);
   ms = millis();
 }
 
 void loop() {
-  now = digitalRead(A0);
+  now = digitalRead(A1);
   if (last != now) {
     last = now;
     freq = freq + 1;

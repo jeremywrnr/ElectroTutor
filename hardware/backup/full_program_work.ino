@@ -9,7 +9,7 @@
 #define NUMPIXELS      12
 
 int sensed;
-int sense = A0;
+int sense = A1;
 int freq = 220;
 int buzzed = 0;
 int thresh_lo = 100;

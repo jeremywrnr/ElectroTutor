@@ -3,7 +3,7 @@
 LiquidCrystal lcd(11, 10, 5, 4, 3, 2);
 
 unsigned long time;
-int sense = A0;
+int sense = A1;
 int level = 0;
 
 void setup()
