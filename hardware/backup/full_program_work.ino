@@ -5,6 +5,7 @@
 #define NUMPIXELS      12
 #define RESETPIN       13
 
+int color = 0;
 int sense = A1;
 int freq = 220;
 int buzzing = 0;
@@ -50,8 +51,9 @@ uint32_t Wheel(byte WheelPos) {
 
 
 //Theatre-style crawling lights with rainbow effect
-void theaterChaseRainbow(int wait) {
-  for (int j = 0; j < 256; j++) {   // cycle all 256 colors in the wheel
+void theaterChaseRainbow(int start, int wait) {
+  int j = start;
+
     for (int q = 0; q < 3; q++) {
       for (int i = 0; i < strip.numPixels(); i = i + 3) {
         strip.setPixelColor(i + q, Wheel( (i + j) % 255)); //turn every third pixel on
@@ -60,16 +62,17 @@ void theaterChaseRainbow(int wait) {
       strip.show();
       delay(wait);
 
-      for (int i = 0; i < strip.numPixels(); i = i + 3) {
+      for (int i = 0; i < strip.numPixels(); i = i + 5) {
         strip.setPixelColor(i + q, 0);      //turn every third pixel off
       }
     }
-  }
+  
 }
 
 void buzz() {
     tone(buzzer, freq, 100);
-    theaterChaseRainbow(0);
+    theaterChaseRainbow(color, 0);
+    color = (color+2) % 255;
 }
 
 void loop() {
