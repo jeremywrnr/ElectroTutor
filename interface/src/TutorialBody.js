@@ -231,7 +231,7 @@ class TutorialBody extends Component {
         .fetchIdents(code)
         .then(this.handleIdents)
         .then(() => api.patchCode(data));
-    }, 200);
+    }, 1000);
   };
 
   // user changes selected code
