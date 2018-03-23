@@ -7,7 +7,6 @@
 
 int sensed;
 int sense = A0;
-float voltage;
 
 void setup() {
   pinMode(sense, INPUT);
@@ -16,8 +15,6 @@ void setup() {
 
 void loop() {
   sensed = analogRead(sense);
-  voltage = sensed * (5.0 / 1023.0);
-  Serial.print(voltage);
-  Serial.print('_');
+  Serial.println(sensed);
 }
 
