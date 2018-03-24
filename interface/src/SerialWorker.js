@@ -5,13 +5,10 @@
 
 const workercode = () => {
   self.onmessage = function(e) {
-    const {start, msg, firstT, firstD, samples, width} = e.data;
-    console.log(e.data);
-    const time = Date.now() - start;
-    const mstime = time / 1000.0;
+    //console.log(e.data);
+    const {msg, firstT, firstD, samples, width} = e.data;
     try {
       const json_msg = JSON.parse(msg);
-      //const isArr = Array.isArray(json_msg);
       const keys = Object.keys(json_msg) || [];
       const data = json_msg[keys[0]];
       const fkey = keys[0];
@@ -27,12 +24,10 @@ const workercode = () => {
             port_type = 'addFirstT';
           } else {
             port_type = 'addTest';
-            let split = d.split('_');
-            const last = split.pop(); // next first
-            self.postMessage({addFirstT: last});
-            d = split.map(x => {
-              return {data: Number(x), time: mstime}; // ms
-            });
+            d = d
+              .split('_')
+              .map(Number)
+              .filter(x => !isNaN(x));
           }
         } else if (data.match(/.*221$/)) {
           d = (firstD || '_') + d;
@@ -40,27 +35,25 @@ const workercode = () => {
             port_type = 'addFirstD';
           } else {
             port_type = 'addDev';
-            let split = d.split('_');
-            const last = split.pop(); // next first
-            self.postMessage({setFirstD: last});
-            d = split.map(x => {
-              return {data: Number(x), time: mstime}; // ms
-            });
+            d = d
+              .split('_')
+              .map(Number)
+              .filter(x => !isNaN(x));
           }
         }
 
         let message = {};
         message[port_type] = d;
         self.postMessage(message);
+        console.log(d);
       } else {
-        const str_msg = JSON.stringify(json_msg) + ` +${time}`;
+        const str_msg = JSON.stringify(json_msg);
         self.postMessage({addLog: str_msg});
       }
     } catch (err) {
       // Non-JSON data
       //console.error(err);
-      const str_msg = `${msg} +${time}`;
-      self.postMessage({addLog: str_msg});
+      self.postMessage({addLog: msg});
     }
   };
 };

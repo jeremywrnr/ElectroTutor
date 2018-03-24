@@ -58,6 +58,10 @@ class SerialMonitorShell extends Component {
     log: [],
   };
 
+  //pullProps = () => {
+  //this.setState({data: this.props.test, log: this.props.log});
+  //};
+
   componentDidMount = () => {
     //this.interval = setInterval(this.pullProps, 1000);
   };
@@ -122,7 +126,7 @@ class SerialMonitorShell extends Component {
           data: {d_length}, messages: {l_length}
         </div>
         <Segment inverted>
-          <List divided inverted relaxed items={this.props.log} />
+          <List divided inverted relaxed items={this.state.log} />
         </Segment>
       </div>
     );
@@ -130,8 +134,8 @@ class SerialMonitorShell extends Component {
 }
 
 const SerialMonitor = withSerial(SerialMonitorShell, {
-  samples: 1000,
-  width: 100,
+  samples: 2000,
+  width: 1000,
 });
 
 export {SerialMonitor};

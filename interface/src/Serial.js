@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import worker_script from './SerialWorker.js';
 import Config from './Config.js';
+import {takeRight} from 'lodash';
 
 // Serial Monitor Base Wrapper
 // This function takes a component and returns another component.
@@ -33,8 +34,6 @@ function withSerial(WrappedComponent, options = {}) {
         log: [],
       };
     }
-
-    maxIndex = len => Math.max(len - options.samples, 1);
 
     componentWillMount = () => {
       this.openWorker();
@@ -72,9 +71,6 @@ function withSerial(WrappedComponent, options = {}) {
 
     // two categories of data: log messages from spjs, and data from the serial
     // monitor, which are stored respectively in the component's log or data.
-    handleSPJSMessage = msg => {
-      console.log(msg);
-    };
 
     handleSendSPJS = msg => {
       const conn = this.conn || {};
@@ -126,22 +122,30 @@ function withSerial(WrappedComponent, options = {}) {
     };
 
     handleWorker = msg => {
-      console.log('from worker:', msg.data);
       const fkey = Object.keys(msg.data)[0];
       const data = msg.data[fkey];
+      console.log('from worker:', msg.data);
       if (data) {
         if (fkey === 'addLog') {
-          this.setState({log: [data, ...this.state.log]});
+          //this.setState({log: [data, ...this.state.log]});
+        } else if (fkey === 'addPorts') {
+          const ports = data;
+          const log = ['ports: ' + JSON.stringify(data), ...this.state.log];
+          this.setState({ports, log});
         } else if (fkey === 'addTest') {
-          const join = [...this.state.test, ...data];
-          const test = join.slice(this.maxIndex(join.length), -1);
-          this.setState({test});
+          this.setState({
+            firstT: '',
+            test: takeRight([...this.state.test, ...data], options.samples),
+          });
         } else if (fkey === 'addDev') {
-          const join = [...this.state.dev, ...data];
-          const dev = join.slice(this.maxIndex(join.length), -1);
-          this.setState({dev});
+          this.setState({
+            firstD: '',
+            dev: takeRight([...this.state.dev, ...data], options.samples),
+          });
         } else if (fkey === 'addFirstT') {
-          this.setState({firstT: data});
+          this.setState(prev => {
+            return {firstT: data};
+          });
         } else if (fkey === 'addFirstD') {
           this.setState({firstD: data});
         }

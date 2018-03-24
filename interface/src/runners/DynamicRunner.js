@@ -53,7 +53,7 @@ class DynamicRunnerShell extends Component {
         this.setState({measuring: false});
       }
 
-      const d = this.props.data;
+      const d = this.props.test;
       if (d.length === 0) return;
       const value = d[d.length - 1].data;
       const out = Number(this.props.test.output);
