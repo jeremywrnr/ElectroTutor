@@ -10,7 +10,7 @@ int sense = A1;
 
 void setup() {
   pinMode(sense, INPUT);
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop() {

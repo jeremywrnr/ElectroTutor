@@ -17,7 +17,7 @@ class DynamicRunnerShell extends Component {
   }
 
   static defaultProps = {
-    data: [],
+    t_stream: [],
     log: [],
   };
 
@@ -45,17 +45,16 @@ class DynamicRunnerShell extends Component {
   measure = () => {
     this.props.openPort();
     const err = 0.02; // two percent
-    console.log('verify dynamic runner...');
+    console.log('verify frequency runner...');
     const interval = setInterval(() => {
-      // Test mode has been reset
       if (this.props.test_mode !== 'freq') {
         clearInterval(interval);
         this.setState({measuring: false});
       }
 
-      const d = this.props.test;
+      const d = this.props.t_stream;
       if (d.length === 0) return;
-      const value = d[d.length - 1].data;
+      const value = d[d.length - 1];
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out <= value && value <= (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
@@ -104,7 +103,7 @@ class DynamicRunnerShell extends Component {
 }
 
 const dynamicOptions = {
-  samples: 10,
+  samples: 20,
   width: 10,
 };
 

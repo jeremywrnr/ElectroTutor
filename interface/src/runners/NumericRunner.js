@@ -17,8 +17,7 @@ class NumericRunnerShell extends Component {
   }
 
   static defaultProps = {
-    data: [0],
-    log: [0],
+    t_stream: [0],
   };
 
   // Potentially add in a test option here to have it be exact
@@ -50,6 +49,7 @@ class NumericRunnerShell extends Component {
 
   measure = () => {
     this.props.openPort();
+    this.props.openSPJS();
     const err = 0.02; // two percent
     console.log('verify numeric runner...');
     const interval = setInterval(() => {
@@ -60,7 +60,7 @@ class NumericRunnerShell extends Component {
       }
 
       let sum = 0;
-      const d = this.props.data;
+      const d = this.props.t_stream;
       d.map(x => !isNaN(x.data) && (sum += x.data));
       const value = d.length > 0 ? sum / d.length : '-';
       const out = Number(this.props.test.output);
@@ -112,8 +112,8 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 2000,
-  width: 100,
+  samples: 200,
+  width: 10,
 });
 
 export default NumericRunner;

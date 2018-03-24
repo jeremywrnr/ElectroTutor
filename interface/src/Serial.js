@@ -29,18 +29,14 @@ function withSerial(WrappedComponent, options = {}) {
         firstT: '',
         firstD: '',
         last: '',
-        test: [],
-        dev: [],
+        t_stream: [],
+        d_stream: [],
         log: [],
       };
     }
 
     componentWillMount = () => {
       this.openWorker();
-    };
-
-    componentDidMount = () => {
-      this.openSPJS();
     };
 
     componentWillUnmount = () => {
@@ -53,7 +49,7 @@ function withSerial(WrappedComponent, options = {}) {
 
     openSPJS = () => {
       this.closeSPJS();
-      this.setState({data: [], log: [], firstT: '', firstD: ''});
+      this.setState({test: [], log: [], firstT: '', firstD: ''});
       console.log(`opening spjs - ${this.state.displayName}`);
       let conn = new WebSocket(this.state.host);
       conn.onopen = () => this.listPort();
@@ -124,7 +120,7 @@ function withSerial(WrappedComponent, options = {}) {
     handleWorker = msg => {
       const fkey = Object.keys(msg.data)[0];
       const data = msg.data[fkey];
-      console.log('from worker:', msg.data);
+      //console.log('from worker:', msg.data);
       if (data) {
         if (fkey === 'addLog') {
           //this.setState({log: [data, ...this.state.log]});
@@ -147,7 +143,9 @@ function withSerial(WrappedComponent, options = {}) {
             return {firstT: data};
           });
         } else if (fkey === 'addFirstD') {
-          this.setState({firstD: data});
+          this.setState(prev => {
+            return {firstD: data};
+          });
         }
       }
     };
@@ -164,8 +162,8 @@ function withSerial(WrappedComponent, options = {}) {
         sendPort: this.sendPort,
         closePort: this.closePort,
         clearPort: this.clearPort,
-        test: this.state.test,
-        dev: this.state.dev,
+        t_stream: this.state.test,
+        d_stream: this.state.dev,
         log: this.state.log,
       };
 

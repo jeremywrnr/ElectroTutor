@@ -45,7 +45,6 @@ const workercode = () => {
         let message = {};
         message[port_type] = d;
         self.postMessage(message);
-        console.log(d);
       } else {
         const str_msg = JSON.stringify(json_msg);
         self.postMessage({addLog: str_msg});

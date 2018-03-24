@@ -53,17 +53,13 @@ class SerialMonitorShell extends Component {
   }
 
   static defaultProps = {
-    test: [],
-    dev: [],
+    t_stream: [],
+    d_stream: [],
     log: [],
   };
 
   componentDidMount = () => {
-    //this.interval = setInterval(this.pullProps, 1000);
-  };
-
-  componentWillUnmount = () => {
-    //clearInterval(this.interval);
+    this.props.openSPJS();
   };
 
   handleSerialChange = e => this.setState({serial: e.target.value});
@@ -85,7 +81,7 @@ class SerialMonitorShell extends Component {
 
   //{d_length > 0 && <SerialGraph data={this.state.data} />}
   render() {
-    const d_length = this.props.test.length;
+    const t_length = this.props.t_stream.length;
     const l_length = this.props.log.length;
     return (
       <div className="full">
@@ -119,7 +115,7 @@ class SerialMonitorShell extends Component {
         </Segment>
 
         <div id="log">
-          data: {d_length}, messages: {l_length}
+          data: {t_length}, messages: {l_length}
         </div>
         <Segment inverted>
           <List divided inverted relaxed items={this.props.log} />
@@ -130,7 +126,7 @@ class SerialMonitorShell extends Component {
 }
 
 const SerialMonitor = withSerial(SerialMonitorShell, {
-  samples: 1000,
+  samples: 500,
   width: 100,
 });
 

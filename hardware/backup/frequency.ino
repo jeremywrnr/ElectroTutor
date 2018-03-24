@@ -12,7 +12,7 @@ int now;
 
 void setup() {
   pinMode(A1, INPUT);
-  Serial.begin(115200);
+  Serial.begin(9600);
   last = digitalRead(A1);
   ms = millis();
 }

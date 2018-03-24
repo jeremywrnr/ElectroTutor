@@ -28,7 +28,7 @@ void blankState() {
 void setup() {
   pinMode(sense, INPUT);
   pinMode(RESETPIN, INPUT_PULLUP);
-  Serial.begin(115200);
+  Serial.begin(9600);
   strip.begin(); // This initializes the NeoPixel library.
   strip.setBrightness(16);
   blankState();
