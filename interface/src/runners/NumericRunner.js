@@ -61,7 +61,7 @@ class NumericRunnerShell extends Component {
 
       let sum = 0;
       const d = this.props.data;
-      d.map(x => !isNaN(x.V) && (sum += x.V));
+      d.map(x => !isNaN(x.data) && (sum += x.data));
       const value = d.length > 0 ? sum / d.length : '-';
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
@@ -113,7 +113,7 @@ class NumericRunnerShell extends Component {
 
 const NumericRunner = withSerial(NumericRunnerShell, {
   samples: 2000,
-  width: 1000,
+  width: 100,
 });
 
 export default NumericRunner;

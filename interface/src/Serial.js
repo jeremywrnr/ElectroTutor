@@ -1,155 +1,10 @@
 import React, {Component} from 'react';
-import {Header, Button, Input, List, Segment} from 'semantic-ui-react';
+import worker_script from './SerialWorker.js';
 import Config from './Config.js';
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ReferenceLine,
-} from 'recharts';
 
-// GENERAL SERIAL MONITOR
-//<Label value="time [ms]" />
-//import {throttle} from 'lodash';
-//import worker_script from './SerialWorker.js';
-
-class SerialGraph extends Component {
-  render() {
-    return (
-      <LineChart width={820} height={400} data={this.props.data}>
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-        <YAxis domain={[0, 5]} />
-        <Tooltip />
-        <XAxis
-          domain={['dataMin * 0.9', 'dataMax * 1.1']}
-          type="number"
-          dataKey="date"
-        />
-        <Line
-          isAnimationActive={false}
-          type="monotone"
-          stroke=" #17a1a5"
-          dataKey="V"
-          dot={false}
-        />
-        <ReferenceLine
-          y={5}
-          stroke="grey"
-          alwaysShow={true}
-          strokeWidth="1"
-          strokeDasharray="5 15"
-        />
-      </LineChart>
-    );
-  }
-}
-
-//
-// UNCONNECTED SERIAL MONITOR COMPONENT
-//
-
-class SerialMonitorShell extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      log: [],
-      serial: '',
-      spjs: '',
-    };
-  }
-
-  static defaultProps = {
-    data: [],
-    log: [],
-  };
-
-  pullProps = () => {
-    this.setState({data: this.props.data, log: this.props.log});
-  };
-
-  componentDidMount = () => {
-    console.log('starting...');
-    this.interval = setInterval(this.pullProps, 500);
-  };
-
-  componentWillUnmount = () => {
-    console.log('ending...');
-    clearInterval(this.interval);
-  };
-
-  handleSerialChange = e => this.setState({serial: e.target.value});
-  handleSPJSChange = e => this.setState({spjs: e.target.value});
-
-  openSerial = () => this.props.openPort();
-  closeSerial = () => this.props.closePort();
-  clearSerial = () => this.props.clearPort();
-
-  sendSerial = () => {
-    this.props.sendPort(this.state.serial);
-    this.setState({serial: ''});
-  };
-
-  sendSPJS = () => {
-    this.props.sendSPJS(this.state.spjs);
-    this.setState({spjs: ''});
-  };
-
-  render() {
-    const d_length = this.state.data.length;
-    const l_length = this.state.log.length;
-    return (
-      <div className="full">
-        {d_length > 0 && <SerialGraph data={this.state.data} />}
-        <Header as="h5">Serial Port</Header>
-        <Segment basic>
-          <Button onClick={this.openSerial} content="Open" />
-          <Button onClick={this.closeSerial} content="Close" />
-          <Button onClick={this.clearSerial} content="Clear" />
-          <Input
-            action={{
-              onClick: this.sendSerial,
-              content: 'Send',
-            }}
-            placeholder="serial message"
-            onChange={this.handleSerialChange}
-            value={this.state.serial}
-          />
-        </Segment>
-        <Header as="h5">Websockets Connection</Header>
-        <Segment basic>
-          <Button onClick={this.props.openSPJS} content="Reconnect" />
-          <Input
-            action={{
-              onClick: this.sendSPJS,
-              content: 'Send',
-            }}
-            placeholder="websocket command"
-            onChange={this.handleSPJSChange}
-            value={this.state.spjs}
-          />
-        </Segment>
-
-        <div id="log">
-          data: {d_length}, messages: {l_length}
-        </div>
-        <Segment inverted>
-          <List divided inverted relaxed items={this.state.log} />
-        </Segment>
-      </div>
-    );
-  }
-}
-
-//
-// Higher order component:
+// Serial Monitor Base Wrapper
 // This function takes a component and returns another component.
-// Still kind of implies that there will only be one of these running
-// .. or does the message get piped out to all of the channels?
-//
+// Higher order component.
 
 function withSerial(WrappedComponent, options = {}) {
   function getDisplayName(WrappedComponent) {
@@ -162,7 +17,7 @@ function withSerial(WrappedComponent, options = {}) {
 
   const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
 
-  class WithSerial extends React.Component {
+  class WithSerial extends Component {
     constructor(props) {
       super(props);
       const now = Date.now();
@@ -170,16 +25,19 @@ function withSerial(WrappedComponent, options = {}) {
         ...Config.serial,
         displayName,
         start: now,
-        first: '',
+        firstT: '',
+        firstD: '',
         last: '',
-        data: [],
+        test: [],
+        dev: [],
         log: [],
       };
     }
 
+    maxIndex = len => Math.max(len - options.samples, 1);
+
     componentWillMount = () => {
-      //this.worker = new Worker(worker_script);
-      this.conn = new WebSocket(this.state.host);
+      this.openWorker();
     };
 
     componentDidMount = () => {
@@ -187,7 +45,7 @@ function withSerial(WrappedComponent, options = {}) {
     };
 
     componentWillUnmount = () => {
-      //this.worker.terminate();
+      this.closeWorker();
       this.closeSPJS();
     };
 
@@ -195,68 +53,47 @@ function withSerial(WrappedComponent, options = {}) {
     // when it is necessary to do so. calling open on open ports is not good
 
     openSPJS = () => {
-      if (!this.conn) {
-        console.log(`opening spjs - ${this.state.displayName}`);
-        this.conn = new WebSocket(this.state.host);
-      }
-
-      this.setState({data: [], log: []});
-      const conn = this.conn;
-      conn.onmessage = e => this.handleMessage(e.data); // lower
+      this.closeSPJS();
+      this.setState({data: [], log: [], firstT: '', firstD: ''});
+      console.log(`opening spjs - ${this.state.displayName}`);
+      let conn = new WebSocket(this.state.host);
+      conn.onopen = () => this.listPort();
       conn.onclose = e => console.info('Connection closed.');
-      //this.openPort();
+      conn.onmessage = e =>
+        this.postWorker({
+          ...options,
+          msg: e.data,
+          start: this.state.start,
+          firstT: this.state.firstT,
+          firstD: this.state.firstD,
+        });
+      this.conn = conn;
     };
-
-    maxIndex = len => Math.max(len - options.samples, 1);
 
     // two categories of data: log messages from spjs, and data from the serial
     // monitor, which are stored respectively in the component's log or data.
-    handleMessage = msg => {
-      let json_msg;
-      try {
-        json_msg = JSON.parse(msg);
-        json_msg.date = Date.now() - this.state.start;
-      } catch (e) {
-        const str_msg = `${msg} +${Date.now() - this.state.start}`;
-        this.setState({log: [str_msg, ...this.state.log]});
-        return;
-      }
-
-      if (json_msg.D) {
-        const d = (this.first || '_') + json_msg.D;
-        if (d.length < options.width) {
-          //console.log(d, options);
-          this.first = d;
-        } else {
-          let split = d.split('_');
-          const last = split.pop(); // next first
-          const numbers = split.map((d, i) => {
-            return {V: Number(d), date: (json_msg.date + i) / 1000.0};
-          });
-          const joined = [].concat.apply([], [this.state.data, numbers]);
-          const data = joined.slice(this.maxIndex(joined.length), -1);
-          this.setState({data});
-          this.first = last;
-        }
-      } else {
-        json_msg.key = json_msg.date;
-        this.setState({log: [JSON.stringify(json_msg), ...this.state.log]});
-      }
+    handleSPJSMessage = msg => {
+      console.log(msg);
     };
 
     handleSendSPJS = msg => {
-      const conn = this.conn;
+      const conn = this.conn || {};
       console.log(`spjs - ${this.state.displayName} - ${msg}`);
-      if (msg && conn && conn.readyState === WebSocket.OPEN) {
+      if (msg && conn.readyState === WebSocket.OPEN) {
         conn.send(msg);
       }
     };
 
     closeSPJS = () => {
       console.log(`closing spjs - ${this.state.displayName}`);
-      const conn = this.conn;
-      conn.close();
-      delete this.conn;
+      if (this.conn) {
+        this.conn.close();
+        delete this.conn;
+      }
+    };
+
+    listPort = () => {
+      return this.handleSendSPJS(`list`);
     };
 
     openPort = (port = this.state.device) => {
@@ -272,8 +109,47 @@ function withSerial(WrappedComponent, options = {}) {
     };
 
     clearPort = () => {
-      console.log('clearing...');
-      this.setState({data: []});
+      console.log('Clearing port data...');
+      this.setState({test: [], dev: []});
+    };
+
+    // handle web-worker
+
+    openWorker = () => {
+      const worker = new Worker(worker_script);
+      worker.onmessage = this.handleWorker;
+      this.worker = worker;
+    };
+
+    postWorker = msg => {
+      this.worker.postMessage(msg);
+    };
+
+    handleWorker = msg => {
+      console.log('from worker:', msg.data);
+      const fkey = Object.keys(msg.data)[0];
+      const data = msg.data[fkey];
+      if (data) {
+        if (fkey === 'addLog') {
+          this.setState({log: [data, ...this.state.log]});
+        } else if (fkey === 'addTest') {
+          const join = [...this.state.test, ...data];
+          const test = join.slice(this.maxIndex(join.length), -1);
+          this.setState({test});
+        } else if (fkey === 'addDev') {
+          const join = [...this.state.dev, ...data];
+          const dev = join.slice(this.maxIndex(join.length), -1);
+          this.setState({dev});
+        } else if (fkey === 'addFirstT') {
+          this.setState({firstT: data});
+        } else if (fkey === 'addFirstD') {
+          this.setState({firstD: data});
+        }
+      }
+    };
+
+    closeWorker = () => {
+      this.worker.terminate();
     };
 
     render() {
@@ -284,7 +160,8 @@ function withSerial(WrappedComponent, options = {}) {
         sendPort: this.sendPort,
         closePort: this.closePort,
         clearPort: this.clearPort,
-        data: this.state.data,
+        test: this.state.test,
+        dev: this.state.dev,
         log: this.state.log,
       };
 
@@ -297,10 +174,6 @@ function withSerial(WrappedComponent, options = {}) {
   return WithSerial;
 }
 
-//
 // HOOK SERIAL MONITOR INTERFACE INTO SPJS WEBSOCKETS
-//
 
-const SerialMonitor = withSerial(SerialMonitorShell, {samples: 1000});
-
-export {SerialMonitor, withSerial};
+export {withSerial};
