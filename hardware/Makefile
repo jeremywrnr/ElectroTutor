@@ -5,7 +5,7 @@ AP=../utility/simple-ardiuno-parser/bin/arduino-parser
 AC=src/main.cpp
 
 server:
-	$(SM) -regex usb -v
+	$(SM) -regex cu.usb -v
 compile:
 	@cd device && platformio run -e uno
 device:

@@ -4,7 +4,7 @@ import MeasuringMessage from '../MeasuringMessage.js';
 import {StatCouple} from '../DynamicStat.js';
 
 // Single sample analysis
-//
+
 class NumericRunnerShell extends Component {
   constructor(props) {
     super(props);
@@ -20,9 +20,6 @@ class NumericRunnerShell extends Component {
     t_stream: [0],
   };
 
-  // Potentially add in a test option here to have it be exact
-  // Also figure out how to best deal with serial ports.
-
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
   };
@@ -30,9 +27,6 @@ class NumericRunnerShell extends Component {
   componentWillUnmount = () => {
     clearInterval(this.state.interval);
   };
-
-  // Compute running average of last n frames to help with noise.
-  // TODO pass in a desired error margin from the test itself
 
   verify = () => {
     if (this.props.test_mode === 'voltage') {
@@ -49,20 +43,20 @@ class NumericRunnerShell extends Component {
 
   measure = () => {
     this.props.openPort();
-    this.props.openSPJS();
-    const err = 0.02; // two percent
     console.log('verify numeric runner...');
+    const err = 0.02; // two percent
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'voltage') {
-        // Test mode has been reset
         clearInterval(interval);
         this.setState({measuring: false});
       }
 
       let sum = 0;
-      const d = this.props.t_stream;
-      d.map(x => !isNaN(x.data) && (sum += x.data));
-      const value = d.length > 0 ? sum / d.length : '-';
+      const data = this.props.t_stream;
+      console.log(data);
+      const len = data.length;
+      data.map(x => (sum += x));
+      const value = len > 0 ? sum / len : '-';
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
@@ -74,7 +68,7 @@ class NumericRunnerShell extends Component {
           this.props.patch(pass);
         }, 1000);
       }
-    }, 100);
+    }, 200);
     this.setState({interval, measuring: true});
   };
 
@@ -112,8 +106,8 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 200,
-  width: 10,
+  samples: 300,
+  width: 100,
 });
 
 export default NumericRunner;

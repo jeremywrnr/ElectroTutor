@@ -6,8 +6,6 @@ import Config from './Config.js';
 
 const headers = new Headers({'Content-Type': 'application/json'});
 const dataKeyId = 'tdtutorial.user.account';
-// TODO generalize to include tutorial data
-//const dataKeyId2 = "tdtutorial.user.account"
 
 const Account = {
   createUser(user) {

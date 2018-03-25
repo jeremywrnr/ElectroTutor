@@ -36,7 +36,12 @@ class API {
       message.body = JSON.stringify(body);
     }
 
-    return fetch(`${Config.rails}/${route}`, message).then(res => res.json());
+    return fetch(`${Config.rails}/${route}`, message)
+      .then(res => res.json())
+      .catch(err => {
+        console.warn(err);
+        Account.clearLocalCredentials(); // no auth or db reseeded
+      });
   };
 
   fetchUser = () => {

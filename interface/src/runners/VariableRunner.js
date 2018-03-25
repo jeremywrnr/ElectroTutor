@@ -52,7 +52,7 @@ class VariableRunnerShell extends Component {
     console.log('verify variable runner...');
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {
-        clearInterval(interval);
+        clearInterval(this.state.interval);
         this.setState({measuring: false});
       }
 
@@ -63,11 +63,11 @@ class VariableRunnerShell extends Component {
       const prev = this.props.pdata.state === 'pass';
       this.setState({value});
       if (pass !== prev) {
-        clearInterval(interval);
+        clearInterval(this.state.interval);
         this.setState({measuring: false});
         setTimeout(() => this.props.patch(false), 1000);
       }
-    }, 100);
+    }, 200);
     this.setState({interval, measuring: true});
   };
 
