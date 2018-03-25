@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CodeRunner from './runners/CodeRunner.js';
 import VariableRunner from './runners/VariableRunner.js';
-import VarlineRunner from './runners/VarlineRunner.js';
 import ContinuityRunner from './runners/ContinuityRunner.js';
 import ResistanceRunner from './runners/ResistanceRunner.js';
 import CompileRunner from './runners/CompileRunner.js';
@@ -41,8 +40,6 @@ class TestRunner extends Component {
           return <CodeRunner {...tProps} />;
         case 'variable':
           return <VariableRunner {...tProps} />;
-        case 'varline':
-          return <VarlineRunner {...tProps} />;
         case 'continuity':
           return <ContinuityRunner {...tProps} />;
         case 'resistance':

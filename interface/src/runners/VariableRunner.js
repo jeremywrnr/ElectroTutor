@@ -76,11 +76,12 @@ class VariableRunnerShell extends Component {
     const val = this.state.value;
     const prep = this.state.preparing;
     const meas = this.state.measuring;
+    const data = JSON.parse(this.props.test.jsondata);
     const col = meas ? 'green' : 'grey';
     const compile = this.state.compile;
     const ok = compile.code === 0;
     const err = !ok && compile.error;
-    const idt = this.props.idents;
+    const idt = data.map(d => d.name);
     const out = Number(10);
     if (isNaN(val)) {
       input = '-';

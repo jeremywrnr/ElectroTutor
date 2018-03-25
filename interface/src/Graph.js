@@ -24,8 +24,7 @@ class Graph extends Component {
     });
 
     const yOpts = {
-      yMin: 0,
-      yMax: 5,
+      y: Math.max(...this.props.data),
       stroke: 'grey',
       alwaysShow: true,
       strokeWidth: 1,
@@ -39,8 +38,10 @@ class Graph extends Component {
           height={this.props.height}
           data={dObject}>
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-          <YAxis domain={[0, 5]} />
+          <YAxis domain={[0, 'dataMax']} />
           <XAxis tick={false} padding={{bottom: 20}} />
+          <ReferenceLine {...yOpts} />
+          <ReferenceLine y={9800} label="Max" stroke="red" />
           <Line
             isAnimationActive={false}
             type="step"
@@ -48,8 +49,6 @@ class Graph extends Component {
             dataKey="data"
             dot={false}
           />
-          <ReferenceLine y={this.props.yMin} {...yOpts} />
-          <ReferenceLine y={this.props.yMax} {...yOpts} />
         </LineChart>
       </div>
     );

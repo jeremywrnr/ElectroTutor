@@ -1,3 +1,5 @@
+//
+
 import React, {Component} from 'react';
 import {withSerial} from '../Serial.js';
 import MeasuringMessage from '../MeasuringMessage.js';
@@ -58,7 +60,7 @@ class NumericRunnerShell extends Component {
       data.map(x => (sum += x));
       const value = len > 0 ? sum / len : '-';
       this.setState({value});
-      if (len == 0) {
+      if (len === 0) {
         this.setState({measuring: true});
         return;
       }
