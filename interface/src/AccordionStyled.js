@@ -119,7 +119,7 @@ export default class AccordionStyled extends Component {
   }
 
   componentDidMount = () => {
-    setTimeout(() => this.generateActive(), 100);
+    setTimeout(() => this.generateActive(), 10);
   };
 
   generateActive = () => {

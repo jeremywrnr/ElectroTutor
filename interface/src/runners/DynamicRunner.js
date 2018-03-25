@@ -18,7 +18,6 @@ class DynamicRunnerShell extends Component {
 
   static defaultProps = {
     t_stream: [],
-    log: [],
   };
 
   componentWillMount = () => {
@@ -49,7 +48,7 @@ class DynamicRunnerShell extends Component {
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {
         clearInterval(interval);
-        this.closeSPJS()
+        this.closeSPJS();
         this.setState({measuring: false});
       }
 
@@ -63,7 +62,7 @@ class DynamicRunnerShell extends Component {
       if (pass !== prev) {
         clearInterval(interval);
         this.setState({measuring: false});
-        setTimeout(() => this.props.patch(pass), 1000);
+        setTimeout(() => this.props.patch(pass), 750);
       }
     }, 100);
     this.setState({interval, measuring: true});

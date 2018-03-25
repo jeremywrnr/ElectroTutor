@@ -17,7 +17,7 @@ class NumericRunnerShell extends Component {
   }
 
   static defaultProps = {
-    t_stream: [0],
+    t_stream: [],
   };
 
   componentWillMount = () => {
@@ -49,27 +49,32 @@ class NumericRunnerShell extends Component {
       if (this.props.test_mode !== 'voltage') {
         clearInterval(interval);
         this.setState({measuring: false});
+        return;
       }
 
       let sum = 0;
       const data = this.props.t_stream;
-      console.log(data);
       const len = data.length;
       data.map(x => (sum += x));
       const value = len > 0 ? sum / len : '-';
+      this.setState({value});
+      if (len == 0) {
+        this.setState({measuring: true});
+        return;
+      }
+
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
-      this.setState({value});
       if (pass !== prev) {
         clearInterval(interval);
         this.setState({measuring: false});
         setTimeout(() => {
           this.props.patch(pass);
-        }, 1000);
+        }, 750);
       }
-    }, 200);
-    this.setState({interval, measuring: true});
+    }, 100);
+    this.setState({interval});
   };
 
   render() {
@@ -106,8 +111,7 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 30,
-  width: 20,
+  samples: 50,
 });
 
 export default NumericRunner;
