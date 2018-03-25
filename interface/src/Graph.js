@@ -41,7 +41,6 @@ class Graph extends Component {
           <YAxis domain={[0, 'dataMax']} />
           <XAxis tick={false} padding={{bottom: 20}} />
           <ReferenceLine {...yOpts} />
-          <ReferenceLine y={9800} label="Max" stroke="red" />
           <Line
             isAnimationActive={false}
             type="step"
