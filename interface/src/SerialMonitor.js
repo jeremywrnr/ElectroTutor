@@ -1,47 +1,7 @@
 import React, {Component} from 'react';
+import Graph from './Graph.js';
 import {withSerial} from './Serial.js';
 import {Header, Button, Input, List, Segment} from 'semantic-ui-react';
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  ReferenceLine,
-} from 'recharts';
-
-// GENERAL SERIAL MONITOR
-//Tooltip, <Tooltip />
-
-class SerialGraph extends Component {
-  render() {
-    return (
-      <LineChart width={820} height={400} data={this.props.data}>
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-        <YAxis domain={[0, 5]} />
-        <XAxis
-          domain={['dataMin * 0.9', 'dataMax * 1.1']}
-          type="number"
-          dataKey="time"
-        />
-        <Line
-          isAnimationActive={false}
-          type="step"
-          stroke=" #17a1a5"
-          dataKey="data"
-          dot={false}
-        />
-        <ReferenceLine
-          y={5}
-          stroke="grey"
-          alwaysShow={true}
-          strokeWidth="1"
-          strokeDasharray="5 15"
-        />
-      </LineChart>
-    );
-  }
-}
 
 class SerialMonitorShell extends Component {
   constructor(props) {
@@ -79,9 +39,9 @@ class SerialMonitorShell extends Component {
     this.setState({spjs: ''});
   };
 
-  //{d_length > 0 && <SerialGraph data={this.state.data} />}
   render() {
     const t_length = this.props.t_stream.length;
+    const d_length = this.props.d_stream.length;
     const l_length = this.props.log.length;
     return (
       <div className="full">
@@ -102,6 +62,7 @@ class SerialMonitorShell extends Component {
         </Segment>
         <Header as="h5">Websockets Connection</Header>
         <Segment basic>
+          {t_length > 0 && <Graph data={this.state.data} />}
           <Button onClick={this.props.openSPJS} content="Reconnect" />
           <Input
             action={{
@@ -115,7 +76,7 @@ class SerialMonitorShell extends Component {
         </Segment>
 
         <div id="log">
-          data: {t_length}, messages: {l_length}
+          test: {t_length}, device: {d_length} messages: {l_length}
         </div>
         <Segment inverted>
           <List divided inverted relaxed items={this.props.log} />
@@ -126,8 +87,7 @@ class SerialMonitorShell extends Component {
 }
 
 const SerialMonitor = withSerial(SerialMonitorShell, {
-  samples: 500,
-  width: 100,
+  samples: 1000,
 });
 
 export {SerialMonitor};

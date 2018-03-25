@@ -5,7 +5,7 @@
 
 const workercode = () => {
   self.onmessage = function(e) {
-    console.log('worker got:', e.data);
+    //console.log('worker got:', e.data);
     const {msg, delim} = e.data;
     try {
       const json_msg = JSON.parse(msg);
@@ -17,9 +17,13 @@ const workercode = () => {
       } else if (fkey === 'P') {
         const data_port = data.match(/.*211$/) ? 'test' : 'dev';
         const stream = json_msg.D.split(delim)
+          .filter(s => s.length >= 4)
           .map(Number)
           .filter(x => !isNaN(x));
-        self.postMessage({addData: stream, data_port});
+        if (stream.length > 0) {
+          //console.log('worker sends:', stream);
+          self.postMessage({addData: stream, data_port});
+        }
       } else {
         const str_msg = JSON.stringify(json_msg);
         self.postMessage({addLog: str_msg});

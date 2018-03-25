@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import worker_script from './SerialWorker.js';
 import Config from './Config.js';
-import {takeRight} from 'lodash';
+import {throttle, takeRight} from 'lodash';
 
 // Serial Monitor Base Wrapper
 // This function takes a component and returns another component.
@@ -13,9 +13,8 @@ function withSerial(WrappedComponent, options = {}) {
   }
 
   // Option initialization
-  options.samples = options.samples || 4000;
-  options.width = options.width || 400;
-  options.delim = options.width || '_';
+  options.samples = options.samples || 1000;
+  options.delim = options.delim || '_';
 
   const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
 
@@ -27,9 +26,6 @@ function withSerial(WrappedComponent, options = {}) {
         ...Config.serial,
         displayName,
         start: now,
-        firstT: '',
-        firstD: '',
-        last: '',
         t_stream: [],
         d_stream: [],
         log: [],
@@ -52,11 +48,7 @@ function withSerial(WrappedComponent, options = {}) {
         this.listPort();
         this.openPort();
       };
-      conn.onmessage = e =>
-        this.postWorker({
-          msg: e.data,
-          delim: options.delim,
-        });
+      conn.onmessage = throttle(this.postWorker, 100);
       conn.onclose = e => console.info('Connection closed.');
       this.conn = conn;
     };
@@ -110,13 +102,17 @@ function withSerial(WrappedComponent, options = {}) {
     };
 
     postWorker = msg => {
-      this.worker.postMessage(msg);
+      if (this.worker) {
+        this.worker.postMessage({
+          msg: msg.data,
+          delim: options.delim,
+        });
+      }
     };
 
     handleWorker = msg => {
       const fkey = Object.keys(msg.data)[0];
       const data = msg.data[fkey];
-      console.log('from worker:', msg.data);
       if (data) {
         if (fkey === 'addLog') {
           this.setState({log: [data, ...this.state.log]});
@@ -125,16 +121,13 @@ function withSerial(WrappedComponent, options = {}) {
           const log = ['ports: ' + JSON.stringify(data), ...this.state.log];
           this.setState({ports, log});
         } else if (fkey === 'addData') {
-          let prev;
-          if (msg.data_type === 'test') {
-            prev = this.state.test;
-          } else {
-            prev = this.state.dev;
-          }
-          console.log(data, prev);
-          this.setState({
-            test: takeRight([...prev, ...data], options.samples),
-          });
+          //console.log('from worker:', msg.data);
+          const type = msg.data.data_port;
+          const old_data =
+            type === 'test' ? this.state.t_stream : this.state.d_stream;
+          const new_data = takeRight([...old_data, ...data], options.samples);
+          console.log(new_data);
+          this.setState({[type]: new_data});
         }
       }
     };

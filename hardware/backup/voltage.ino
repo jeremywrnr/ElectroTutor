@@ -17,7 +17,7 @@ void setup() {
 void loop() {
   sensed = analogRead(sense);
   voltage = sensed * (5.0 / 1023.0);
-  Serial.print(voltage);
+  Serial.print(voltage, 2);
   Serial.print('_');
 }
 
