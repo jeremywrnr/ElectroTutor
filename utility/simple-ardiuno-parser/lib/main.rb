@@ -11,6 +11,7 @@ class ArduinoParser
     ino = argv[0]
     code = File.read(ino)
     banner = "\n//" + '-' * 77, "\n"
+    @baud = 115200
     @code = code
     parseCode
     if opts[:debug]

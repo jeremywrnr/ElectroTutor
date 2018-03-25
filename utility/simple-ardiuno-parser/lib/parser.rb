@@ -112,7 +112,7 @@ module ParserHelper
 
   def check_setup(b)
     if b.str.match(SETUP)
-      beg = Line.new("Serial.begin(9600);", b.line)
+      beg = Line.new("Serial.begin(#{@baud});", b.line)
       beg.dep = 1
       [b, beg]
     else

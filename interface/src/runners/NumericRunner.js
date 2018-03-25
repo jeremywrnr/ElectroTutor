@@ -42,7 +42,7 @@ class NumericRunnerShell extends Component {
   };
 
   measure = () => {
-    this.props.openPort();
+    this.props.openSPJS();
     console.log('verify numeric runner...');
     const err = 0.02; // two percent
     const interval = setInterval(() => {
@@ -106,8 +106,8 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 300,
-  width: 100,
+  samples: 30,
+  width: 20,
 });
 
 export default NumericRunner;

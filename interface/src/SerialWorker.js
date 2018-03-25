@@ -5,46 +5,21 @@
 
 const workercode = () => {
   self.onmessage = function(e) {
-    //console.log(e.data);
-    const {msg, firstT, firstD, samples, width} = e.data;
+    console.log(e.data);
+    const {msg, delim} = e.data;
     try {
       const json_msg = JSON.parse(msg);
       const keys = Object.keys(json_msg) || [];
       const data = json_msg[keys[0]];
       const fkey = keys[0];
-
       if (fkey === 'SerialPorts') {
         self.postMessage({addPorts: data});
       } else if (fkey === 'P') {
-        let port_type;
-        let d = json_msg.D;
-        if (data.match(/.*211$/)) {
-          d = (firstT || '_') + d;
-          if (d.length < width) {
-            port_type = 'addFirstT';
-          } else {
-            port_type = 'addTest';
-            d = d
-              .split('_')
-              .map(Number)
-              .filter(x => !isNaN(x));
-          }
-        } else if (data.match(/.*221$/)) {
-          d = (firstD || '_') + d;
-          if (d.length < width) {
-            port_type = 'addFirstD';
-          } else {
-            port_type = 'addDev';
-            d = d
-              .split('_')
-              .map(Number)
-              .filter(x => !isNaN(x));
-          }
-        }
-
-        let message = {};
-        message[port_type] = d;
-        self.postMessage(message);
+        const data_port = data.match(/.*211$/) ? 'test' : 'dev';
+        const stream = json_msg.D.split(delim)
+          .map(Number)
+          .filter(x => !isNaN(x));
+        self.postMessage({addData: stream, data_port});
       } else {
         const str_msg = JSON.stringify(json_msg);
         self.postMessage({addLog: str_msg});

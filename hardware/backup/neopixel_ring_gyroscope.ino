@@ -27,7 +27,7 @@ volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin h
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     Serial.println("Program started");
     initialization = initializeGyroscope();
     strip.begin();

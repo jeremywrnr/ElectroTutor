@@ -15,6 +15,7 @@ function withSerial(WrappedComponent, options = {}) {
   // Option initialization
   options.samples = options.samples || 4000;
   options.width = options.width || 400;
+  options.delim = options.width || '_';
 
   const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
 
@@ -35,38 +36,28 @@ function withSerial(WrappedComponent, options = {}) {
       };
     }
 
-    componentWillMount = () => {
-      this.openWorker();
-    };
-
-    componentDidMount = () => {
-      this.openSPJS();
-    };
-
     componentWillUnmount = () => {
       this.closeWorker();
       this.closeSPJS();
     };
 
-    // TODO maybe list the actual ports which are available and only open them
-    // when it is necessary to do so. calling open on open ports is not good
-
     openSPJS = () => {
       this.closeSPJS();
       this.closePort();
+      this.openWorker();
       this.setState({test: [], log: [], firstT: '', firstD: ''});
       console.log(`opening spjs - ${this.state.displayName}`);
       let conn = new WebSocket(this.state.host);
-      conn.onopen = () => this.listPort();
-      conn.onclose = e => console.info('Connection closed.');
+      conn.onopen = () => {
+        this.listPort();
+        this.openPort();
+      };
       conn.onmessage = e =>
         this.postWorker({
-          ...options,
           msg: e.data,
-          start: this.state.start,
-          firstT: this.state.firstT,
-          firstD: this.state.firstD,
+          delim: options.delim,
         });
+      conn.onclose = e => console.info('Connection closed.');
       this.conn = conn;
     };
 
@@ -125,42 +116,28 @@ function withSerial(WrappedComponent, options = {}) {
     handleWorker = msg => {
       const fkey = Object.keys(msg.data)[0];
       const data = msg.data[fkey];
-      //console.log('from worker:', msg.data);
+      console.log('from worker:', msg.data);
       if (data) {
         if (fkey === 'addLog') {
-          //this.setState({log: [data, ...this.state.log]});
+          this.setState({log: [data, ...this.state.log]});
         } else if (fkey === 'addPorts') {
           const ports = data;
           const log = ['ports: ' + JSON.stringify(data), ...this.state.log];
           this.setState({ports, log});
-        } else if (fkey === 'addTest') {
-          this.setState(prev => {
-            return {
-              firstT: '',
-              test: takeRight([...prev.test, ...data], options.samples),
-            };
-          });
-        } else if (fkey === 'addDev') {
-          this.setState(prev => {
-            return {
-              firstD: '',
-              dev: takeRight([...prev.dev, ...data], options.samples),
-            };
-          });
-        } else if (fkey === 'addFirstT') {
-          this.setState(prev => {
-            return {firstT: data};
-          });
-        } else if (fkey === 'addFirstD') {
-          this.setState(prev => {
-            return {firstD: data};
+        } else if (fkey === 'addData') {
+          const prev =
+            msg.data_type === 'test' ? this.state.test : this.state.dev;
+          this.setState({
+            test: takeRight([...prev, ...data], options.samples),
           });
         }
       }
     };
 
     closeWorker = () => {
-      this.worker.terminate();
+      if (this.worker) {
+        this.worker.terminate();
+      }
     };
 
     render() {
@@ -184,7 +161,5 @@ function withSerial(WrappedComponent, options = {}) {
   WithSerial.displayName = displayName;
   return WithSerial;
 }
-
-// HOOK SERIAL MONITOR INTERFACE INTO SPJS WEBSOCKETS
 
 export {withSerial};

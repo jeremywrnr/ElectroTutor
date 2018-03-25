@@ -9,7 +9,7 @@ int buzz = 7;
 
 void setup() {
   pinMode(sense, INPUT);
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void loop() {
