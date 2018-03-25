@@ -41,7 +41,7 @@ function withSerial(WrappedComponent, options = {}) {
       this.closeSPJS();
       this.closePort();
       this.openWorker();
-      this.setState({test: [], log: [], firstT: '', firstD: ''});
+      this.setState({t_stream: [], d_stream: [], log: []});
       console.log(`opening spjs - ${this.state.displayName}`);
       let conn = new WebSocket(this.state.host);
       conn.onopen = () => {
@@ -90,7 +90,7 @@ function withSerial(WrappedComponent, options = {}) {
 
     clearPort = () => {
       console.log('Clearing port data...');
-      this.setState({test: [], dev: []});
+      this.setState({t_stream: [], d_stream: []});
     };
 
     // handle web-worker
@@ -122,12 +122,13 @@ function withSerial(WrappedComponent, options = {}) {
           this.setState({ports, log});
         } else if (fkey === 'addData') {
           //console.log('from worker:', msg.data);
+          const {t_stream, d_stream} = this.state;
           const type = msg.data.data_port;
-          const old_data =
-            type === 'test' ? this.state.t_stream : this.state.d_stream;
+          const old_data = type === 't_stream' ? t_stream : d_stream;
           const new_data = takeRight([...old_data, ...data], options.samples);
-          console.log(new_data);
-          this.setState({[type]: new_data});
+          let state = {};
+          state[type] = new_data;
+          this.setState(state);
         }
       }
     };
@@ -146,8 +147,8 @@ function withSerial(WrappedComponent, options = {}) {
         sendPort: this.sendPort,
         closePort: this.closePort,
         clearPort: this.clearPort,
-        t_stream: this.state.test,
-        d_stream: this.state.dev,
+        t_stream: this.state.t_stream,
+        d_stream: this.state.d_stream,
         log: this.state.log,
       };
 

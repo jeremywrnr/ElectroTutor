@@ -48,7 +48,7 @@ class VariableRunnerShell extends Component {
 
   measure = () => {
     this.props.openPort(); // todo - change to device port
-    const err = 0.02; // two percent
+    //const err = 0.02; // two percent
     console.log('verify variable runner...');
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {
@@ -58,7 +58,7 @@ class VariableRunnerShell extends Component {
 
       const d = this.props.data;
       const value = d[0] || '-';
-      const out = Number(100);
+      //const out = Number(100);
       const pass = false;
       const prev = this.props.pdata.state === 'pass';
       this.setState({value});

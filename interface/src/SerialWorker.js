@@ -15,7 +15,7 @@ const workercode = () => {
       if (fkey === 'SerialPorts') {
         self.postMessage({addPorts: data});
       } else if (fkey === 'P') {
-        const data_port = data.match(/.*211$/) ? 'test' : 'dev';
+        const data_port = data.match(/.*211$/) ? 't_stream' : 'd_stream';
         const stream = json_msg.D.split(delim)
           .filter(s => s.length >= 4)
           .map(Number)
