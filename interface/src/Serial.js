@@ -125,8 +125,13 @@ function withSerial(WrappedComponent, options = {}) {
           const log = ['ports: ' + JSON.stringify(data), ...this.state.log];
           this.setState({ports, log});
         } else if (fkey === 'addData') {
-          const prev =
-            msg.data_type === 'test' ? this.state.test : this.state.dev;
+          let prev;
+          if (msg.data_type === 'test') {
+            prev = this.state.test;
+          } else {
+            prev = this.state.dev;
+          }
+          console.log(data, prev);
           this.setState({
             test: takeRight([...prev, ...data], options.samples),
           });
