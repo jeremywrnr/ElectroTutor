@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {LineChart, Line, CartesianGrid, YAxis, ReferenceLine} from 'recharts';
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ReferenceLine,
+} from 'recharts';
 
 // general data monitor
 //Tooltip, <Tooltip />
@@ -33,6 +40,7 @@ class Graph extends Component {
           data={dObject}>
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
           <YAxis domain={[0, 5]} />
+          <XAxis tick={false} padding={{bottom: 20}} />
           <Line
             isAnimationActive={false}
             type="step"
