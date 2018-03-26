@@ -56,7 +56,7 @@ class VariableRunnerShell extends Component {
     const data = JSON.parse(this.props.test.jsondata);
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {
-        clearInterval(this.state.interval);
+        clearInterval(interval);
         this.setState({measuring: false});
         return;
       }
@@ -86,9 +86,9 @@ class VariableRunnerShell extends Component {
       const pass = value.length > 0 && value.every(d => d.last === d.expv);
       const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
-        clearInterval(this.state.interval);
+        clearInterval(interval);
         this.setState({measuring: false});
-        setTimeout(() => this.props.patch(pass), 1600);
+        setTimeout(() => this.props.patch(pass), 2000);
       }
     }, 200);
     this.setState({interval, measuring: true});
