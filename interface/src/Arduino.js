@@ -46,13 +46,14 @@ class ArduinoWindow extends Component {
       compile_value = (compile_success ? output.output : output.error) || '';
     }
 
+    //<ArduinoButton onClick={monitor} text="Monitor" icon="search" />
+
     return (
       <div id="arduino" className="arduino full">
         <Browser id="browser">
           <Button.Group widths="3">
             <ArduinoButton onClick={compile} text="Verify" icon="check" />
             <ArduinoButton onClick={upload} text="Upload" icon="arrow right" />
-            <ArduinoButton onClick={monitor} text="Monitor" icon="search" />
           </Button.Group>
 
           <div className="full flex-container">

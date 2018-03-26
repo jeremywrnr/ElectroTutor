@@ -54,7 +54,7 @@
           form: code # regex
         -
           title: information
-          description: this is not a step but an simple notice
+          description: this is not a step but a simple notice
           form: info
           info: true
 

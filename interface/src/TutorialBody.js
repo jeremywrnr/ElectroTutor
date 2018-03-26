@@ -317,8 +317,8 @@ class TutorialBody extends Component {
     };
     if (!show) {
       continueProps.head = 'Step Tests';
-      continueProps.text = 'Reveal';
-      continueProps.task = 'Click to reveal tests.';
+      continueProps.text = 'Begin';
+      continueProps.task = 'Click to start tests.';
       continueProps.next = this.handleTestReveal;
     }
     if (p) {

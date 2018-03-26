@@ -43,18 +43,18 @@ class DynamicRunnerShell extends Component {
 
   measure = () => {
     this.props.openSPJS();
-    const err = 0.02; // two percent
+    const err = 0.04; // percent tolerance
     console.log('verify frequency runner...');
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {
         clearInterval(interval);
-        this.closeSPJS();
         this.setState({measuring: false});
+        this.closeSPJS();
       }
 
       const d = this.props.stream;
       if (d.length === 0) return;
-      const value = d[d.length - 1]; // MRU
+      const value = d[d.length - 1].data; // MRU
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out <= value && value <= (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
@@ -62,7 +62,7 @@ class DynamicRunnerShell extends Component {
       if (pass !== prev) {
         clearInterval(interval);
         this.setState({measuring: false});
-        setTimeout(() => this.props.patch(pass), 750);
+        setTimeout(() => this.props.patch(pass), 1250);
       }
     }, 100);
     this.setState({interval, measuring: true});
