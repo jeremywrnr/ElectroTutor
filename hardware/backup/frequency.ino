@@ -1,5 +1,7 @@
 #include "Arduino.h"
 
+int sense = A0;
+
 long freq = 0;
 long sum;
 long ms;
@@ -11,14 +13,14 @@ int last;
 int now;
 
 void setup() {
-  pinMode(A1, INPUT);
+  pinMode(sense, INPUT);
   Serial.begin(115200);
-  last = digitalRead(A1);
+  last = digitalRead(sense);
   ms = millis();
 }
 
 void loop() {
-  now = digitalRead(A1);
+  now = digitalRead(sense);
   if (last != now) {
     last = now;
     freq = freq + 1;

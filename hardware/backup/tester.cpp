@@ -6,7 +6,7 @@
 #include "Arduino.h"
 
 int sensed;
-int sense = A1;
+int sense = A0;
 
 void setup() {
   pinMode(sense, INPUT);
