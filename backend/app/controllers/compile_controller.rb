@@ -30,8 +30,8 @@ class CompileController < ApplicationController
   def measure
     out = ''
     err = ''
-    idt = params[:idents]
-    instrumented = instrument @code, idt
+    idt = compile_params[:idents]
+    instrumented = instrument @code, idt.join(",") # [] => Str
     puts idt, instrumented
 
     ioproc = upload instrumented, 'device' do |stdin, stdout, stderr, wait_thr|
@@ -51,7 +51,7 @@ class CompileController < ApplicationController
 
   private
   def compile_params
-    params.require(:compile).permit(:code, :task, :idents)
+    params.require(:compile).permit(:code, :task, idents: [])
   end
 
   def set_code

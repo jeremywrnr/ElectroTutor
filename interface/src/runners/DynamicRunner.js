@@ -17,7 +17,7 @@ class DynamicRunnerShell extends Component {
   }
 
   static defaultProps = {
-    t_stream: [],
+    stream: [],
   };
 
   componentWillMount = () => {
@@ -52,7 +52,7 @@ class DynamicRunnerShell extends Component {
         this.setState({measuring: false});
       }
 
-      const d = this.props.t_stream;
+      const d = this.props.stream;
       if (d.length === 0) return;
       const value = d[d.length - 1]; // MRU
       const out = Number(this.props.test.output);

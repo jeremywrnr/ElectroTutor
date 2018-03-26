@@ -19,7 +19,7 @@ class NumericRunnerShell extends Component {
   }
 
   static defaultProps = {
-    t_stream: [],
+    stream: [],
   };
 
   componentWillMount = () => {
@@ -55,7 +55,7 @@ class NumericRunnerShell extends Component {
       }
 
       let sum = 0;
-      const data = this.props.t_stream;
+      const data = this.props.stream;
       const len = data.length;
       data.map(x => (sum += x));
       const value = len > 0 ? sum / len : '-';

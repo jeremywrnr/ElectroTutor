@@ -12,17 +12,37 @@ const workercode = () => {
       const keys = Object.keys(json_msg) || [];
       const data = json_msg[keys[0]];
       const fkey = keys[0];
+      const dataParser = s => {
+        const x = Number(s);
+        if (isNaN(x) && s.match(/\^\S+:\S+:\S+\$/)) {
+          const pkt = s
+            .replace(/^\^/, '')
+            .replace(/\$$/, '')
+            .split(':')
+            .map(Number);
+          return {
+            name: pkt[0],
+            line: pkt[1],
+            data: pkt[2],
+          };
+        } else if (!isNaN(x)) {
+          return {data: x};
+        } else {
+          return null;
+        }
+      };
+
       if (fkey === 'SerialPorts') {
         self.postMessage({addPorts: data});
       } else if (fkey === 'P') {
-        const data_port = data.match(/.*211$/) ? 't_stream' : 'd_stream';
         const stream = json_msg.D.split(delim)
+          .map(x => x.trim())
           .filter(s => s.length >= 4)
-          .map(Number)
-          .filter(x => !isNaN(x));
+          .map(dataParser)
+          .filter(x => x !== null);
         if (stream.length > 0) {
           //console.log('worker sends:', stream);
-          self.postMessage({addData: stream, data_port});
+          self.postMessage({addData: stream});
         }
       } else {
         const str_msg = JSON.stringify(json_msg);

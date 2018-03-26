@@ -4,6 +4,7 @@ import {StatCouple} from '../DynamicStat.js';
 import {Icon, Label} from 'semantic-ui-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MeasuringMessage from '../MeasuringMessage.js';
+import Config from '../Config.js';
 
 //
 // Variable Analysis
@@ -37,7 +38,8 @@ class VariableRunnerShell extends Component {
   verify = () => {
     this.setState({measuring: false, preparing: true});
     const code = this.props.progress.code;
-    const idt = this.props.idents.join(',');
+    const data = JSON.parse(this.props.test.jsondata);
+    const idt = data.map(d => d.name);
     this.props.handleTestMode('variable');
     this.props.api
       .postTCode(code, idt)
@@ -47,25 +49,27 @@ class VariableRunnerShell extends Component {
   };
 
   measure = () => {
-    this.props.openPort(); // todo - change to device port
-    //const err = 0.02; // two percent
+    this.props.openSPJS();
     console.log('verify variable runner...');
+    const data = JSON.parse(this.props.test.jsondata);
+    const idt = data.map(d => d.name)[0];
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {
         clearInterval(this.state.interval);
         this.setState({measuring: false});
       }
 
-      const d = this.props.data;
-      const value = d[0] || '-';
-      //const out = Number(100);
+      const d = this.props.stream;
+      const dl = d.length - 1;
+      const idtidx = this.props.idents.findIndex(x => x === idt);
+      const value = d.filter(d => d.name === idtidx)[dl];
       const pass = false;
       const prev = this.props.pdata.state === 'pass';
       this.setState({value});
       if (pass !== prev) {
         clearInterval(this.state.interval);
         this.setState({measuring: false});
-        setTimeout(() => this.props.patch(false), 1000);
+        setTimeout(() => this.props.patch(false), 8000);
       }
     }, 200);
     this.setState({interval, measuring: true});
@@ -73,16 +77,15 @@ class VariableRunnerShell extends Component {
 
   render() {
     let input;
-    const val = this.state.value;
+    const val = this.state.value && this.state.value.data;
     const prep = this.state.preparing;
     const meas = this.state.measuring;
-    const data = JSON.parse(this.props.test.jsondata);
     const col = meas ? 'green' : 'grey';
     const compile = this.state.compile;
     const ok = compile.code === 0;
     const err = !ok && compile.error;
+    const data = JSON.parse(this.props.test.jsondata);
     const idt = data.map(d => d.name);
-    const out = Number(10);
     if (isNaN(val)) {
       input = '-';
     } else {
@@ -123,8 +126,9 @@ class VarLabel extends Component {
 }
 
 const VariableRunner = withSerial(VariableRunnerShell, {
-  samples: 2000,
-  width: 1000,
+  port: Config.serial.device,
+  delim: `\r\n`,
+  samples: 100,
 });
 
 export default VariableRunner;

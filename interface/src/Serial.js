@@ -15,6 +15,7 @@ function withSerial(WrappedComponent, options = {}) {
   // Option initialization
   options.samples = options.samples || 1000;
   options.delim = options.delim || '_';
+  options.port = options.port || Config.serial.tester;
 
   const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
 
@@ -23,11 +24,9 @@ function withSerial(WrappedComponent, options = {}) {
       super(props);
       const now = Date.now();
       this.state = {
-        ...Config.serial,
         displayName,
         start: now,
-        t_stream: [],
-        d_stream: [],
+        stream: [],
         log: [],
       };
     }
@@ -41,9 +40,9 @@ function withSerial(WrappedComponent, options = {}) {
       this.closeSPJS();
       this.closePort();
       this.openWorker();
-      this.setState({t_stream: [], d_stream: [], log: []});
+      this.setState({stream: [], log: []});
       console.log(`opening spjs - ${this.state.displayName}`);
-      let conn = new WebSocket(this.state.host);
+      let conn = new WebSocket(Config.serial.host);
       conn.onopen = () => {
         this.listPort();
         this.openPort();
@@ -76,21 +75,21 @@ function withSerial(WrappedComponent, options = {}) {
       return this.handleSendSPJS(`list`);
     };
 
-    openPort = (port = this.state.device) => {
-      return this.handleSendSPJS(`open ${port} ${this.state.baud}`);
+    openPort = (port = options.port) => {
+      return this.handleSendSPJS(`open ${port} ${Config.serial.baud}`);
     };
 
-    sendPort = (msg, port = this.state.device) => {
+    sendPort = (msg, port = options.port) => {
       return this.handleSendSPJS(`send ${port} ${msg}`);
     };
 
-    closePort = (port = this.state.device) => {
-      return this.handleSendSPJS(`close ${port} ${this.state.baud}`);
+    closePort = (port = options.port) => {
+      return this.handleSendSPJS(`close ${port} ${Config.serial.baud}`);
     };
 
     clearPort = () => {
       console.log('Clearing port data...');
-      this.setState({t_stream: [], d_stream: []});
+      this.setState({stream: []});
     };
 
     // handle web-worker
@@ -121,14 +120,9 @@ function withSerial(WrappedComponent, options = {}) {
           const log = ['ports: ' + JSON.stringify(data), ...this.state.log];
           this.setState({ports, log});
         } else if (fkey === 'addData') {
-          //console.log('from worker:', msg.data);
-          const {t_stream, d_stream} = this.state;
-          const type = msg.data.data_port;
-          const old_data = type === 't_stream' ? t_stream : d_stream;
-          const new_data = takeRight([...old_data, ...data], options.samples);
-          let state = {};
-          state[type] = new_data;
-          this.setState(state);
+          const {stream} = this.state;
+          const new_data = takeRight([...stream, ...data], options.samples);
+          this.setState({stream: new_data});
         }
       }
     };
@@ -147,8 +141,7 @@ function withSerial(WrappedComponent, options = {}) {
         sendPort: this.sendPort,
         closePort: this.closePort,
         clearPort: this.clearPort,
-        t_stream: this.state.t_stream,
-        d_stream: this.state.d_stream,
+        stream: this.state.stream,
         log: this.state.log,
       };
 

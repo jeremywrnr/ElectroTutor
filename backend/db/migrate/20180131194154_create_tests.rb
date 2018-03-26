@@ -9,6 +9,7 @@ class CreateTests < ActiveRecord::Migration[5.1]
 
       t.string :form
       t.text :output
+      t.text :onerror
 
       t.boolean :info, default: false
       t.string :jsondata, default: '{}'

@@ -1,4 +1,7 @@
 # parse and label code, stored in an array
+# doesnt handle:
+# - bracketless blocks
+# - probably more things
 
 class Line
   attr_reader :line
@@ -129,7 +132,7 @@ module ParserHelper
         val_line = b.clone
         end_line = b.clone
         idx_line.str = serial("\"^#{idx}:#{b.line}:\"", "id, line#")
-        val_line.str = serial(val, "var-data")
+        val_line.str = serial(val, "var-data" )
         end_line.str = serial('"$"', "closure", "ln")
         return [b, idx_line, val_line, end_line]
       end

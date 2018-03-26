@@ -362,6 +362,44 @@
       title: Introduction
       description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
     -
+      title: Firing up the Arduino
+      description: |
+        First, connect the Arduino board to the USB port.
+
+        To make sure it is configured correctly, try uploading the starter code to it.
+      tests:
+        -
+          title: Board Power Test
+          description: Do you see the Arduino board's lights shining?
+          jsondata: '["Yes, the LEDs are lighting up", "No, the LEDs are not lighting up"]'
+          onerror: Make sure that the board is plugged in to the correctly labeled port!
+          output: 0 # 0-based
+          form: multiple
+        -
+          title: Simple Upload Test
+          description: This will pass if the board successfully gets the code upload.
+          onerror: Make sure that the board is plugged into the correctly labeled cable!
+          form: upload
+    -
+      title: Wiring Button Connections
+      description: |
+        Now, that the board is on, connect the Arduino's ground and power lines to the breadboard.
+      tests:
+        -
+          title: Breadboard Power Check
+          description: Measure thepower rail with the tester two probes on the testing board.
+          form: numeric
+          output: '5.0'
+    -
       title: TODO
       description: please finish the tutorial
+    -
+      title: Task Complete!
+      description: Well done!
+      tests:
+        -
+          title: Congrats!
+          description: You have successfully completed the tutorial!
+          form: info
+          info: true
 

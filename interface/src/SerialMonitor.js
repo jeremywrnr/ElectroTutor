@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Graph from './Graph.js';
 import {withSerial} from './Serial.js';
 import {Header, Button, Input, List, Segment} from 'semantic-ui-react';
+import Config from './Config.js';
 
 class SerialMonitorShell extends Component {
   constructor(props) {
@@ -13,8 +14,7 @@ class SerialMonitorShell extends Component {
   }
 
   static defaultProps = {
-    t_stream: [],
-    d_stream: [],
+    stream: [],
     log: [],
   };
 
@@ -40,13 +40,13 @@ class SerialMonitorShell extends Component {
   };
 
   render() {
-    const t = this.props.t_stream;
-    const d = this.props.d_stream;
     const l = this.props.log;
+    const s = this.props.stream;
+    const d = s.map(x => x.data);
     return (
       <div className="full">
+        {s.length > 0 && <Graph data={d} />}
         <Header as="h5">Serial Port</Header>
-        {t.length > 0 && <Graph data={t} />}
         <Segment basic>
           <Button onClick={this.openSerial} content="Open" />
           <Button onClick={this.closeSerial} content="Close" />
@@ -76,7 +76,7 @@ class SerialMonitorShell extends Component {
         </Segment>
 
         <div id="log">
-          test: {t.length}, device: {d.length} messages: {l.length}
+          stream: {s.length}, messages: {l.length}
         </div>
         <Segment inverted>
           <List divided inverted relaxed items={l} />
@@ -87,6 +87,8 @@ class SerialMonitorShell extends Component {
 }
 
 const SerialMonitor = withSerial(SerialMonitorShell, {
+  port: Config.serial.device,
+  delim: `\r\n`,
   samples: 1000,
 });
 
