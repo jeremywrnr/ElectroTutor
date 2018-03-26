@@ -4,7 +4,9 @@ import {StatCouple} from '../DynamicStat.js';
 import {Icon, Label} from 'semantic-ui-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MeasuringMessage from '../MeasuringMessage.js';
+import {groupBy} from 'lodash';
 import Config from '../Config.js';
+import Graph from '../Graph.js';
 
 //
 // Variable Analysis
@@ -18,7 +20,7 @@ class VariableRunnerShell extends Component {
       preparing: false,
       measuring: false,
       compile: {},
-      value: '-',
+      value: [],
     };
   }
 
@@ -52,64 +54,103 @@ class VariableRunnerShell extends Component {
     this.props.openSPJS();
     console.log('verify variable runner...');
     const data = JSON.parse(this.props.test.jsondata);
-    const idt = data.map(d => d.name)[0];
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {
         clearInterval(this.state.interval);
         this.setState({measuring: false});
+        return;
       }
 
       const d = this.props.stream;
-      const dl = d.length - 1;
-      const idtidx = this.props.idents.findIndex(x => x === idt);
-      const value = d.filter(d => d.name === idtidx)[dl];
-      const pass = false;
-      const prev = this.props.pdata.state === 'pass';
+      if (d.length === 0) return;
+      const parsedIdt = this.props.idents;
+      const grouped = groupBy(d, 'name');
+      const gKey = Object.keys(grouped);
+      const value = gKey
+        .map(k => {
+          const gData = grouped[k];
+          const name = parsedIdt[k];
+          const last = gData.slice(-1)[0];
+          const exp = data.find(x => x.name === name);
+          const expv = exp && exp.value;
+          return {
+            last: last.data,
+            line: last.line,
+            data: gData.map(g => g.data),
+            expv,
+            name,
+          };
+        })
+        .filter(d => d.expv !== undefined);
       this.setState({value});
+      const pass = value.length > 0 && value.every(d => d.last === d.expv);
+      const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
         clearInterval(this.state.interval);
         this.setState({measuring: false});
-        setTimeout(() => this.props.patch(false), 8000);
+        setTimeout(() => this.props.patch(pass), 1600);
       }
     }, 200);
     this.setState({interval, measuring: true});
   };
 
   render() {
-    let input;
-    const val = this.state.value && this.state.value.data;
-    const prep = this.state.preparing;
-    const meas = this.state.measuring;
-    const col = meas ? 'green' : 'grey';
+    const data = JSON.parse(this.props.test.jsondata);
+    let value = this.state.value;
+    if (value.length === 0) {
+      value = data.map(d => {
+        return {
+          name: d.name,
+          line: d.line,
+          expv: d.value,
+          data: [],
+        };
+      });
+    }
     const compile = this.state.compile;
     const ok = compile.code === 0;
     const err = !ok && compile.error;
-    const data = JSON.parse(this.props.test.jsondata);
-    const idt = data.map(d => d.name);
-    if (isNaN(val)) {
-      input = '-';
-    } else {
-      input = +val.toFixed(2);
-    }
+    const prep = !err && this.state.preparing;
+    const meas = !err && this.state.measuring;
+    const col = meas ? 'green' : 'grey';
+    const nanCheck = v => {
+      if (isNaN(v)) {
+        return '-';
+      } else {
+        return +v.toFixed(2);
+      }
+    };
 
     return (
       <div className="full">
         {this.props.test.description}
-        {idt.length >= 0 && <br />}
-        {idt.map((x, i) => <VarLabel color={col} key={i} name={x} />)}
         {this.state.loading && <MeasuringMessage head="Recompiling..." />}
         {err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
         <br />
-        {!err &&
-          prep && (
-            <MeasuringMessage
-              icon="setting"
-              head="Setting up..."
-              text="Loading instrumented code onto development board."
-            />
-          )}
-        {!err && !prep && <StatCouple input={input} out={out} />}
-        {!err && meas && <MeasuringMessage />}
+        {prep && (
+          <MeasuringMessage
+            icon="setting"
+            head="Setting up..."
+            text="Loading instrumented code onto development board."
+          />
+        )}
+        {!prep &&
+          value.map((x, i) => {
+            return (
+              <div className="full">
+                <VarLabel color={col} key={i} name={x.name + ` =`} />
+                <StatCouple
+                  key={`${x}-${i}`}
+                  input={nanCheck(x.last)}
+                  out={x.expv}
+                />
+                {x.data.length > 0 && <Graph width={700} data={x.data} />}
+              </div>
+            );
+          })}
+        {meas && (
+          <MeasuringMessage text="Measuring code variable data changes..." />
+        )}
       </div>
     );
   }

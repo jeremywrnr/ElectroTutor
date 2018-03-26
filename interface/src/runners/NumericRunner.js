@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {withSerial} from '../Serial.js';
 import MeasuringMessage from '../MeasuringMessage.js';
 import {StatCouple} from '../DynamicStat.js';
+import Graph from '../Graph.js';
 
 // Single sample analysis
 
@@ -55,15 +56,13 @@ class NumericRunnerShell extends Component {
       }
 
       let sum = 0;
-      const data = this.props.stream;
-      const len = data.length;
-      data.map(x => (sum += x));
-      const value = len > 0 ? sum / len : '-';
+      const d = this.props.stream;
+      const len = d.length;
+      if (len && len <= 0) return;
+      d.map(x => (sum = sum + Number(x.data)));
+      const value = sum / len;
+      console.log(d, sum, len, value);
       this.setState({value});
-      if (len === 0) {
-        this.setState({measuring: true});
-        return;
-      }
 
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out < value && value < (1 + err) * out;
@@ -83,6 +82,7 @@ class NumericRunnerShell extends Component {
     let input;
     const val = this.state.value;
     const prep = this.state.preparing;
+    const d = this.props.stream.map(x => x.data);
     const out = Number(this.props.test.output);
     if (isNaN(val)) {
       input = '-';
@@ -104,6 +104,7 @@ class NumericRunnerShell extends Component {
           <div className="full">
             <br />
             <StatCouple unit="V" input={input} out={out} />
+            {d.length > 0 && <Graph width={700} data={d} />}
             {this.state.measuring && <MeasuringMessage />}
           </div>
         )}
@@ -113,7 +114,7 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 50,
+  samples: 100,
 });
 
 export default NumericRunner;

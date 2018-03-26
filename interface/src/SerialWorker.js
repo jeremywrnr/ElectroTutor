@@ -6,7 +6,7 @@
 const workercode = () => {
   self.onmessage = function(e) {
     //console.log('worker got:', e.data);
-    const {msg, delim} = e.data;
+    const {msg, delim, port} = e.data;
     try {
       const json_msg = JSON.parse(msg);
       const keys = Object.keys(json_msg) || [];
@@ -40,7 +40,8 @@ const workercode = () => {
           .filter(s => s.length >= 4)
           .map(dataParser)
           .filter(x => x !== null);
-        if (stream.length > 0) {
+        const pChk = port === data; // filter
+        if (pChk && stream.length > 0) {
           //console.log('worker sends:', stream);
           self.postMessage({addData: stream});
         }

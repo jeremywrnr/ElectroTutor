@@ -13,9 +13,9 @@ function withSerial(WrappedComponent, options = {}) {
   }
 
   // Option initialization
+  options.port = options.port || Config.serial.tester;
   options.samples = options.samples || 1000;
   options.delim = options.delim || '_';
-  options.port = options.port || Config.serial.tester;
 
   const displayName = `WithSerial(${getDisplayName(WrappedComponent)})`;
 
@@ -47,7 +47,7 @@ function withSerial(WrappedComponent, options = {}) {
         this.listPort();
         this.openPort();
       };
-      conn.onmessage = throttle(this.postWorker, 100);
+      conn.onmessage = throttle(this.postWorker, 50);
       conn.onclose = e => console.info('Connection closed.');
       this.conn = conn;
     };
@@ -105,6 +105,7 @@ function withSerial(WrappedComponent, options = {}) {
         this.worker.postMessage({
           msg: msg.data,
           delim: options.delim,
+          port: options.port,
         });
       }
     };

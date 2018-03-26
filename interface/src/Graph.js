@@ -13,6 +13,7 @@ import {
 
 class Graph extends Component {
   static defaultProps = {
+    margin: {top: 5, right: 10, left: 0, bottom: 5},
     height: 400,
     width: 800,
     data: [],
@@ -36,6 +37,7 @@ class Graph extends Component {
         <LineChart
           width={this.props.width}
           height={this.props.height}
+          margin={this.props.margin}
           data={dObject}>
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
           <YAxis domain={[0, 'dataMax']} />
