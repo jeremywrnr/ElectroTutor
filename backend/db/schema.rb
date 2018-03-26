@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20180207164107) do
     t.string "image"
     t.string "form"
     t.text "output"
+    t.text "onerror"
     t.boolean "info", default: false
     t.string "jsondata", default: "{}"
     t.datetime "created_at", null: false

@@ -12,7 +12,7 @@
         -
           title: variable monitoring
           description: Does the code take on a value?
-          jsondata: '[{"name": "ledPin", "value": 10, "line": 15} ]' # name, value, line
+          jsondata: '[{"name": "value", "value": 10}]' # name, value, line
           form: variable
         -
           title: manual test
@@ -360,9 +360,19 @@
   steps:
     -
       title: Introduction
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
     -
+      title: Components Overview
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Here are all of the parts to use in this tutorial:
+
+        - Arduino Uno
+        - LED Sensor
+    -
       title: Firing up the Arduino
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
         First, connect the Arduino board to the USB port.
 
@@ -382,6 +392,7 @@
           form: upload
     -
       title: Wiring Button Connections
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
         Now, that the board is on, connect the Arduino's ground and power lines to the breadboard.
       tests:
@@ -391,10 +402,32 @@
           form: numeric
           output: '5.0'
     -
-      title: TODO
-      description: please finish the tutorial
+      title: Reset Button Setup
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Tone Generation
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Neopixel Ring Wiring
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Light Sensor Wiring
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Light Sensor Tuning
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Integration
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
     -
       title: Task Complete!
+      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
       description: Well done!
       tests:
         -
