@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import {Message, Segment, Button} from 'semantic-ui-react';
+import {Message, Button} from 'semantic-ui-react';
 
 // Show on-error message when the user notes a failure
 
 class ManualRunner extends Component {
-  state = {};
-
   pass = () => {
     console.log('verifying manual runner...');
     this.props.patch(true);
@@ -16,21 +14,20 @@ class ManualRunner extends Component {
   };
 
   render() {
-    const pass = this.props.pdata.state === 'pass';
+    const fail = this.props.pdata.state === 'fail';
     const help = this.props.test.onerror;
-
+    const show = fail && help;
     return (
       <div className="full">
         {this.props.test.description}
         <br />
-        <br />
-        {!pass && help && <Message info content={help} />}
+        {show ? <Message info content={help} /> : <br />}
         <Button.Group widths="2">
-          <Button as="a" inverted onClick={this.fail} color="red">
-            Error
+          <Button as="a" basic onClick={this.fail} color="red">
+            No
           </Button>
-          <Button as="a" inverted onClick={this.pass} color="green">
-            Success
+          <Button as="a" basic onClick={this.pass} color="green">
+            Yes
           </Button>
         </Button.Group>
       </div>

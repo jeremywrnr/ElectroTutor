@@ -55,9 +55,10 @@ class ArduinoWindow extends Component {
           <Button.Group widths="3">
             <ArduinoButton onClick={compile} text="Verify" icon="check" />
             <ArduinoButton onClick={upload} text="Upload" icon="arrow right" />
-            {ctrl && (
-              <ArduinoButton onClick={monitor} text="Monitor" icon="search" />
-            )}
+            {false &&
+              ctrl && (
+                <ArduinoButton onClick={monitor} text="Monitor" icon="search" />
+              )}
           </Button.Group>
 
           <div className="full flex-container">

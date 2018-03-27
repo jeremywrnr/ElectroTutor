@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MeasuringMessage from '../MeasuringMessage.js';
+import {Message, Button} from 'semantic-ui-react';
 
 // Autoupload code testing
 
@@ -12,6 +13,14 @@ class AutouploadRunner extends Component {
       compile: {},
     };
   }
+
+  pass = () => {
+    this.props.patch(true);
+  };
+
+  fail = () => {
+    this.props.patch(false);
+  };
 
   componentWillMount = () => {
     this.props.button.handleClick = this.verify;
@@ -29,32 +38,44 @@ class AutouploadRunner extends Component {
       .then(() => this.setState({loading: false}));
   };
 
-  measure() {
-  }
-
   render() {
-    const ok = this.props.compile.code === 0;
-    const err = this.props.compile.error;
+    const load = this.state.loading;
+    const ok = this.state.compile.code === 0;
+    const err = this.state.compile.error;
+    const fail = this.props.pdata.state === 'fail';
+    const help = this.props.test.onerror;
+    const show = fail && help;
 
     return (
       <div className="full">
         {this.props.test.description}
         <br />
-        {this.state.loading ? (
+        {load && (
           <MeasuringMessage
             head="Uploading hardware test code..."
             text="Uploading preset code to hardware for testing."
           />
-        ) : (
+        )}
+
+        {ok && (
           <div className="full">
-            {ok && <span> ok </span>}
-            {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
+            <br />
+            {show ? <Message info content={help} /> : <br />}
+            <Button.Group widths="2">
+              <Button as="a" basic onClick={this.fail} color="red">
+                No
+              </Button>
+              <Button as="a" basic onClick={this.pass} color="green">
+                Yes
+              </Button>
+            </Button.Group>
           </div>
         )}
+
+        {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
       </div>
     );
   }
 }
-
 
 export default AutouploadRunner;

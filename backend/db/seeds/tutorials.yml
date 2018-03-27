@@ -121,6 +121,14 @@
         ```
           int buttonLevel = digitalRead(button);
         ```
+      tests:
+        -
+          title: Wiring Checkup
+          description: |
+            Load the hardware board with preset code to manually verify that it works.
+            In this code, if the board is wired up according to the tutorial it will light up.
+          jsondata: '{"file":"2_sounds.ino"}'
+          form: autoupload
     -
       title: Tone Generation
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
@@ -136,21 +144,13 @@
       tests:
         -
           title: Code Check
-          description: Check that you can compile and upload the code!
+          description: Check that your code compiles and uploads to the board!
           form: upload
         -
-          title: frequency
-          description: testing frequency
+          title: Frequency Check
+          description: Place the probes across the speaker end to measure frequency.
           output: 220 # in hz
           form: dynamic
-      tests:
-        -
-          title: Code Check
-          description: |
-            Load the hardware board with preset code to manually verify that it works.
-            In this code, if the board is wired up according to the tutorial it will light up.
-          jsondata: '{"file":"2_sounds.ino"}'
-          form: autoupload
     -
       title: Neopixel Ring Wiring
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
@@ -183,6 +183,12 @@
       title: Light Sensor Wiring
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description:
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"4_sense.ino"}'
+          form: autoupload
     -
       title: Light Sensor Tuning
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
@@ -198,7 +204,7 @@
         -
           title: Code Check
           description: Check that you can compile and upload the code!
-          jsondata: '{"file":"4_complete.ino"}'
+          jsondata: '{"file":"5_complete.ino"}'
           form: autoupload
     -
       title: Task Complete!
@@ -561,9 +567,8 @@
         -
           title: Blinking Light?
           description: Do you see the light blinking?
-          jsondata: '["Yes", "No"]'
-          form: multiple
-          output: 0 # denotes the ordering of the test
+          onerror: Check the connections!
+          form: manual
         -
           title: Blink Frequency Test
           description: Use the pins to measure the exact rate at which it blinks!

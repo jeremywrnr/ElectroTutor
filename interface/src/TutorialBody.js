@@ -8,7 +8,7 @@ import Split from 'split.js';
 
 //import $ from 'jquery'; // animations
 
-import {GuideModal, SerialModal} from './ScrollingModal.js';
+import {SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
 import ArduinoWindow from './Arduino.js';
 import Continue from './Continue.js';
@@ -432,12 +432,8 @@ class TutorialBody extends Component {
                   )}
 
                   <div className="tutorial-menu">
-                    <Button.Group fluid widths="2">
-                      <Button content="Show Guide" onClick={this.splash} />
-                      <Button
-                        content="Exit Tutorial"
-                        onClick={this.props.unset}
-                      />
+                    <Button.Group floated="right">
+                      <Button content="Exit" onClick={this.props.unset} />
                     </Button.Group>
                   </div>
                 </Container>
@@ -450,19 +446,23 @@ class TutorialBody extends Component {
               onClick={this.handleDemonitor}
               onClickBack={this.props.unset}
             />
-
-            <GuideModal
-              open={this.state.splash}
-              onClick={this.deSplash}
-              onClickBack={this.props.unset}
-              title={'Tutorial System Guide'}
-              tutorial={this.props.tutorial}
-            />
           </div>
         </HotKeys>
       </Segment>
     );
   }
 }
+
+//<GuideModal
+//open={this.state.splash}
+//onClick={this.deSplash}
+//clickBack={this.props.unset}
+//title={'Tutorial System Guide'}
+//tutorial={this.props.tutorial}
+//<Button content="Log Out" onClick={this.props.logout} />
+///>
+//<Button.Group fluid widths="2">
+//<Button content="Show Guide" onClick={this.splash} />
+//</Button.Group>
 
 export default TutorialBody;
