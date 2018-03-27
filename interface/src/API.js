@@ -18,7 +18,8 @@ class API {
 
   authFetch = (route, method = 'GET', body = undefined) => {
     if (route !== 'users' && this.auth === undefined) {
-      Account.clearLocal(); // no auth or db reseeded
+      //Account.clearLocal(); // no auth or db reseeded
+      return;
     }
 
     const headers = new Headers({
@@ -38,9 +39,7 @@ class API {
 
     return fetch(`${Config.rails}/${route}`, message)
       .then(res => res.json())
-      .catch(err => {
-        console.warn(err);
-      });
+      .catch(console.warn);
   };
 
   fetchUser = () => {
@@ -126,6 +125,10 @@ class API {
 
   postTCode = (code = '', idents) => {
     return this.authFetch(`measure`, 'POST', {code, idents});
+  };
+
+  postAutoCode = file => {
+    return this.authFetch(`autoupload`, 'POST', {file});
   };
 }
 

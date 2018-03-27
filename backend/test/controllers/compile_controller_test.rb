@@ -12,7 +12,7 @@ class CompileControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can instrument code with idents updates ok" do
-    result = instrument(@code_input) {|x| x }
+    result = instrument(@code_input, '') {|x| x }
     assert result
   end
 
@@ -34,7 +34,7 @@ class CompileControllerTest < ActionDispatch::IntegrationTest
   #
 
   setup do
-    @code_source = File.join(@@hw_path, "simple-ardiuno-parser/test/blinky/blinky.ino")
+    @code_source = File.join(@@hw_path, "../utility/simple-ardiuno-parser/test/blinky/blinky.ino")
     @code_input = File.read(@code_source)
 
     @result_in = <<-eos

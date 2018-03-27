@@ -28,7 +28,7 @@ class UploadRunner extends Component {
       <div className="full">
         {this.props.test.description}
         <br />
-        {this.state.loading && <MeasuringMessage head="Uploading..." />}
+        {this.state.loading && <MeasuringMessage head="Uploading code..." text="Uploading the code for testing."/>}
         {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
       </div>
     );

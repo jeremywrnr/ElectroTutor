@@ -1,6 +1,7 @@
 # parse and label code, stored in an array
 # doesnt handle:
-# - bracketless blocks
+# - bracketless blocks: if (x) y = x + 1;
+# - inplace operations: x++
 # - probably more things
 
 class Line
@@ -21,7 +22,7 @@ module ParserHelper
   NEWLINE = /\n/
   NEWONLY = /^\n$/
   COMMENT = /\/\/.*/
-  ASSIGN = /([\w\.]+)\s*=\s*\w+.*/
+  ASSIGN = /([\w\.]+)\s*([+\-\*\/])?=\s*\w+.*/
   SERIAL = /.*Serial\.begin.*/
   SETUP = /setup.*\(\s*\)\s*{/
   SINS = /\)\s*\n\s*{/m

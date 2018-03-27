@@ -35,6 +35,12 @@ module Hardware
     watch = %x{#{ make "watch vars=#{idents}" }}
   end
 
+  def autoLoader (fn) # str => str
+    file = File.join(@@hw_path, "backup", fn)
+    puts file
+    code = File.read(file)
+  end
+
   # Formatting platformio messages for Arduino console.
 
   def process_output_message(m)

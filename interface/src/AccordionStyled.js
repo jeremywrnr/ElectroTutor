@@ -48,6 +48,7 @@ class AccordionTestItem extends Component {
     numeric: 'Measure',
     compile: 'Compile',
     upload: 'Upload',
+    autoupload: 'Upload',
     question: 'Submit',
     multiple: 'Submit',
     manual: 'Confirm',

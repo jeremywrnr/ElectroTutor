@@ -8,6 +8,7 @@ import ContinuityRunner from './runners/ContinuityRunner.js';
 import ResistanceRunner from './runners/ResistanceRunner.js';
 import CompileRunner from './runners/CompileRunner.js';
 import UploadRunner from './runners/UploadRunner.js';
+import AutouploadRunner from './runners/AutouploadRunner.js';
 import DynamicRunner from './runners/DynamicRunner.js';
 import NumericRunner from './runners/NumericRunner.js';
 import MultipleRunner from './runners/MultipleRunner.js';
@@ -48,6 +49,8 @@ class TestRunner extends Component {
           return <CompileRunner {...tProps} />;
         case 'upload':
           return <UploadRunner {...tProps} />;
+        case 'autoupload':
+          return <AutouploadRunner {...tProps} />;
         case 'dynamic':
           return <DynamicRunner {...tProps} />;
         case 'numeric':

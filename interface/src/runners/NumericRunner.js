@@ -65,7 +65,8 @@ class NumericRunnerShell extends Component {
       this.setState({value});
 
       const out = Number(this.props.test.output);
-      const pass = (1 - err) * out < value && value < (1 + err) * out;
+      const pass = (1 - err) * out <= value && value <= (1 + err) * out;
+      console.log(value, pass, out);
       const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
         clearInterval(interval);

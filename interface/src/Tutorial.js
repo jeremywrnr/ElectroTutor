@@ -62,10 +62,9 @@ class Tutorial extends Component {
     const tutorial = $(e.target)
       .closest('.ui.card')
       .attr('id'); // id
-    const update = () => api.patchUser({current_tutorial: tutorial});
     api
       .configure()
-      .then(update)
+      .then(() => api.patchUser({current_tutorial: tutorial}))
       .then(() => api.fetchTutorial(tutorial))
       .then(this.handleTutorialUpdate);
   };
