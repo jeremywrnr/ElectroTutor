@@ -81,13 +81,15 @@ class Tutorial extends Component {
   };
 
   onClickNo = () => {
-    this.setState({control: false});
-    Account.setLocal(false, controlKey);
+    // disable tests for control group
+    this.setState({control: true});
+    Account.setLocal(true, controlKey);
   };
 
   onClickYes = () => {
-    this.setState({control: true});
-    Account.setLocal(true, controlKey);
+    // enable tests, not in control group
+    this.setState({control: false});
+    Account.setLocal(false, controlKey);
   };
 
   /**

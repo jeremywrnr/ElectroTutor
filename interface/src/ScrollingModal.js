@@ -22,6 +22,11 @@ class ModalScrollingContent extends Component {
         </Modal.Content>
 
         <Modal.Actions>
+          {this.props.onClickBack && (
+            <Button onClick={this.props.onClickBack}>
+              Back <Icon name="left chevron" />
+            </Button>
+          )}
           <Button onClick={close}>
             Continue <Icon name="right chevron" />
           </Button>

@@ -30,6 +30,7 @@ class ArduinoWindow extends Component {
   };
 
   render() {
+    const ctrl = this.props.control;
     const output = this.props.compile;
     const compile = this.props.handleCompile;
     const upload = this.props.handleUpload;
@@ -54,6 +55,9 @@ class ArduinoWindow extends Component {
           <Button.Group widths="3">
             <ArduinoButton onClick={compile} text="Verify" icon="check" />
             <ArduinoButton onClick={upload} text="Upload" icon="arrow right" />
+            {ctrl && (
+              <ArduinoButton onClick={monitor} text="Monitor" icon="search" />
+            )}
           </Button.Group>
 
           <div className="full flex-container">

@@ -58,7 +58,8 @@ class TutorialBody extends Component {
 
   patchStep = inc => {
     return throttle(() => {
-      if (!this.state.tests_passed && inc > 0) {
+      const ctrl = this.props.control;
+      if (!ctrl && !this.state.tests_passed && inc > 0) {
         return; // tests not yet passed
       } else {
         this.setState({test_reveal: false, step_loading: true});
@@ -305,7 +306,7 @@ class TutorialBody extends Component {
 
   render() {
     const step = this.state.step;
-    const ctrl = !this.props.control;
+    const ctrl = this.props.control;
     const step_header = 'Step ' + step.position + ': ' + step.title;
     const page_loading = this.state.page_loading;
     const step_loading = this.state.step_loading;
@@ -336,12 +337,13 @@ class TutorialBody extends Component {
           <div className="full pad">
             <Grid3
               title={step_header}
+              rHead={!ctrl && 'Testing'}
               left={
                 <div className="full">
                   {ctrl && (
                     <div class="ui inverted segment">
                       <h4 class="ui red inverted header">
-                        Control Condition!!!
+                        Control Condition: no tests!!!
                       </h4>
                     </div>
                   )}
@@ -380,42 +382,54 @@ class TutorialBody extends Component {
                   handleMonitor={this.handleMonitor}
                   handleCodeChange={this.handleCodeChange}
                   handleSelectionChange={this.handleSelectionChange}
+                  control={this.props.control}
                 />
               }
               right={
                 <Container>
-                  {step_loading ? (
-                    <Segment padded basic>
-                      <Segment basic loading />
+                  {ctrl ? (
+                    <Segment basic>
+                      <Continue head={'Continue'} next={this.nextStep} />
                     </Segment>
                   ) : (
-                    <Segment basic>
-                      {this.state.tests.length > 0 ? (
-                        <div className="full">
-                          <Continue {...continueProps} />
-                          {show && (
-                            <AccordionStyled
-                              progress={this.state.progress}
-                              selected={this.state.selected}
-                              compile={this.state.compile}
-                              loading={this.state.compile_loading}
-                              handleCompile={this.handleCompile}
-                              handleUpload={this.handleUpload}
-                              handleMonitor={this.handleMonitor}
-                              handleTestMode={this.handleTestMode}
-                              handleClick={this.patchProgressData()}
-                              test_mode={this.state.test_mode}
-                              idents={this.state.idents}
-                              tests={this.state.tests}
-                              pdata={this.state.pData}
-                              api={this.state.api}
+                    <div className="full">
+                      {step_loading ? (
+                        <Segment padded basic>
+                          <Segment basic loading />
+                        </Segment>
+                      ) : (
+                        <Segment basic>
+                          {this.state.tests.length > 0 ? (
+                            <div className="full">
+                              <Continue {...continueProps} />
+                              {show && (
+                                <AccordionStyled
+                                  progress={this.state.progress}
+                                  selected={this.state.selected}
+                                  compile={this.state.compile}
+                                  loading={this.state.compile_loading}
+                                  handleCompile={this.handleCompile}
+                                  handleUpload={this.handleUpload}
+                                  handleMonitor={this.handleMonitor}
+                                  handleTestMode={this.handleTestMode}
+                                  handleClick={this.patchProgressData()}
+                                  test_mode={this.state.test_mode}
+                                  idents={this.state.idents}
+                                  tests={this.state.tests}
+                                  pdata={this.state.pData}
+                                  api={this.state.api}
+                                />
+                              )}
+                            </div>
+                          ) : (
+                            <Continue
+                              head={'No checks.'}
+                              next={this.nextStep}
                             />
                           )}
-                        </div>
-                      ) : (
-                        <Continue head={'No checks.'} next={this.nextStep} />
+                        </Segment>
                       )}
-                    </Segment>
+                    </div>
                   )}
 
                   <div className="tutorial-menu">
@@ -435,11 +449,13 @@ class TutorialBody extends Component {
               title={'Serial Monitor'}
               open={this.state.port_viewing}
               onClick={this.handleDemonitor}
+              onClickBack={this.props.unset}
             />
 
             <GuideModal
               open={this.state.splash}
               onClick={this.deSplash}
+              onClickBack={this.props.unset}
               title={'Tutorial System Guide'}
               tutorial={this.props.tutorial}
             />

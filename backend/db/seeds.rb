@@ -10,7 +10,9 @@ end
 
 # Application Data
 
-seed_load(:users).each {|x| User.create! x }
+if User.first.nil?
+  seed_load(:users).each {|x| User.create! x }
+end
 
 seed_load(:tutorials).each_with_index do |t, i|
   tut = User.first.tutorials.create! t['tutorial']

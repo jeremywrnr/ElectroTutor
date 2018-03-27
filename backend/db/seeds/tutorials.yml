@@ -58,22 +58,47 @@
       description: |
         Place the push button into the breadboard as pictured.
 
-        Wire the one side of the button to ground, and place the other one into the digital `0` on the Arduino board.
+        Wire the one side of the button to ground, and wire the other side to the digital `0` on the Arduino board.
+    -
+      title: Button Press Detection
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Now that the button is connected, we need to detect when it is being pressed in software.
+        At the top of the file, add this definition for set the Arduino pin the button is connected to.
 
         ```
-        // also the internal pin
-        int led = 13;
+        #DEFINE button 0
+        ```
+
+        Next add this code inside of the `setup` function to add pin 0 as an input, using `pinMode`:
+
+        ```
+            pinMode(button, INPUT);
+        ```
+
+        Finally, add this code to the `loop` function to read and print out the value:
+
+
+        ```
+            pinMode(button, INPUT);
         ```
     -
       title: Tone Generation
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
-        Great, now that our system is reading the button correctly, let's hook that button up to play a noise using the Piezo sensor and the Arduino tone generator.
+
+        Great, now that our system is reading the button correctly, let's hook that
+        button up to play a noise using the Piezo sensor and the Arduino tone generator.
 
         ```
         // also the internal pin
         int led = 13;
         ```
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          form: upload
     -
       title: Neopixel Ring Wiring
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb

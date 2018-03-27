@@ -5,6 +5,7 @@ import Column from './Column.js';
 class Grid3 extends Component {
   static defaultProps = {
     mHead: '',
+    rHead: '',
   };
 
   render() {
@@ -25,7 +26,11 @@ class Grid3 extends Component {
             main={this.props.middle}
           />
 
-          <Column key="right-col" main={this.props.right} header="Testing" />
+          <Column
+            key="right-col"
+            main={this.props.right}
+            header={this.props.rHead}
+          />
         </Grid.Row>
       </Grid>
     );
