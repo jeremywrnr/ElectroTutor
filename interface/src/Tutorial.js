@@ -3,7 +3,11 @@ import {Segment, Button} from 'semantic-ui-react';
 import $ from 'jquery'; // which press
 import TutorialBody from './TutorialBody.js';
 import ListSelector from './ListSelector.js';
+import ConfigModal from './ConfigModal.js';
+import Account from './Account.js';
 import API from './API.js';
+
+const controlKey = 'tdtutorial.user.control';
 
 class Tutorial extends Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class Tutorial extends Component {
       user: undefined, // id
       tutorial: undefined, // id
       tutorials: [], // list
+      control: false, // study
     };
   }
 
@@ -75,21 +80,31 @@ class Tutorial extends Component {
       .then(remove);
   };
 
+  onClickNo = () => {
+    this.setState({control: false});
+    Account.setLocal(false, controlKey);
+  };
+
+  onClickYes = () => {
+    this.setState({control: true});
+    Account.setLocal(true, controlKey);
+  };
+
   /**
    * Rendering UI
    */
 
   render() {
     const is_active = !!this.state.user && this.state.tutorial;
-
     return (
       <Segment basic className="full no-pad">
         {is_active ? (
           <TutorialBody
-            logout={this.props.logout}
-            unset={this.unsetTutorial}
+            control={this.state.control}
             tutorial={this.state.tutorial}
             api_auth={this.state.api.auth}
+            logout={this.props.logout}
+            unset={this.unsetTutorial}
           />
         ) : (
           <div className="pad">
@@ -99,6 +114,10 @@ class Tutorial extends Component {
               items={this.state.tutorials}
             />
             <br />
+            <ConfigModal
+              onClickNo={this.onClickNo}
+              onClickYes={this.onClickYes}
+            />
             <Button onClick={this.props.logout} content="Log Out" />
           </div>
         )}

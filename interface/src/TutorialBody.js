@@ -41,6 +41,10 @@ class TutorialBody extends Component {
     };
   }
 
+  static defaultProps = {
+    control: false,
+  };
+
   keyHandler = {
     next: () => {
       this.nextStep();
@@ -301,6 +305,7 @@ class TutorialBody extends Component {
 
   render() {
     const step = this.state.step;
+    const ctrl = !this.props.control;
     const step_header = 'Step ' + step.position + ': ' + step.title;
     const page_loading = this.state.page_loading;
     const step_loading = this.state.step_loading;
@@ -333,6 +338,13 @@ class TutorialBody extends Component {
               title={step_header}
               left={
                 <div className="full">
+                  {ctrl && (
+                    <div class="ui inverted segment">
+                      <h4 class="ui red inverted header">
+                        Control Condition!!!
+                      </h4>
+                    </div>
+                  )}
                   <Image src={step.image} />
                   <Segment>
                     <ReactMarkdown source={step.description} />

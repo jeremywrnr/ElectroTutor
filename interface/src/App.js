@@ -31,7 +31,7 @@ class App extends Component {
       if (req.ok) {
         req.json().then(res => {
           if (res.jwt) {
-            Account.setLocalCredentials(res.jwt);
+            Account.setLocal(res.jwt);
             this.setState({user: res.jwt, isUserActive: true});
           } else {
             this.handleError(res);
@@ -47,11 +47,11 @@ class App extends Component {
 
   logoutUser = () => {
     this.setState({isUserActive: false, eFlag: false});
-    Account.clearLocalCredentials();
+    Account.clearLocal();
   };
 
   componentWillMount() {
-    const token = Account.getLocalCredentials();
+    const token = Account.getLocal();
     if (token) {
       this.setState({user: token, isUserActive: true});
     }

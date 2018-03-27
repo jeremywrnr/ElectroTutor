@@ -1,5 +1,179 @@
 -
   tutorial:
+    title: Light Sensitive Alarm Clock
+    image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+    description: When the sun rises, alert the user with sound and light. Who needs roosters?
+  steps:
+    -
+      title: Introduction
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+    -
+      title: Components Overview
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Here are all of the parts to use in this tutorial:
+
+        - Arduino Uno
+        - LED Sensor
+    -
+      title: Firing up the Arduino
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        First, connect the Arduino board to the USB port.
+
+        To make sure it is configured correctly, try uploading the starter code to it.
+      tests:
+        -
+          title: Board Power Test
+          description: Do you see the Arduino board's lights shining?
+          jsondata: '["Yes, the LEDs are lighting up", "No, the LEDs are not lighting up"]'
+          onerror: Make sure that the board is powered with the USB plug!
+          output: 0 # 0-based
+          form: multiple
+        -
+          title: Simple Upload Test
+          description: This will pass if the board successfully gets the code upload.
+          onerror: Make sure that the board is plugged into the correctly labeled cable!
+          form: upload
+    -
+      title: Breadboard Connection Overview
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        The `(+/-)` rows along the sides of the board at connected through the board, while the center rows are connected horizontally.
+    -
+      title: Wiring Button Connections
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Now, that the board is on, connect the Arduino's ground and power lines to the breadboard.
+      tests:
+        -
+          title: Breadboard Power Check
+          description: Measure the power rail with the tester two probes on the testing board.
+          form: numeric
+          output: '5.0'
+    -
+      title: Reset Button Setup
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Place the push button into the breadboard as pictured.
+
+        Wire the one side of the button to ground, and place the other one into the digital `0` on the Arduino board.
+
+        ```
+        // also the internal pin
+        int led = 13;
+        ```
+    -
+      title: Tone Generation
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Great, now that our system is reading the button correctly, let's hook that button up to play a noise using the Piezo sensor and the Arduino tone generator.
+
+        ```
+        // also the internal pin
+        int led = 13;
+        ```
+    -
+      title: Neopixel Ring Wiring
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Light Sensor Wiring
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Light Sensor Tuning
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Integration
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description:
+    -
+      title: Task Complete!
+      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
+      description: Well done!
+      tests:
+        -
+          title: Congrats!
+          description: You have successfully completed the tutorial!
+          form: info
+          info: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+  tutorial:
     title: Who tests the tester?
     image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
     description: Simple tutorial with all test types.
@@ -7,7 +181,7 @@
     -
       title: Debugging the debugger.
       image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
-      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+      description: You can test each of the different test types here.
       tests:
         -
           title: variable monitoring
@@ -307,128 +481,6 @@
       image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
       description: |
         You have successfully completed the tutorial!
-      tests:
-        -
-          title: Congrats!
-          description: You have successfully completed the tutorial!
-          form: info
-          info: true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--
-  tutorial:
-    title: Light Sensitive Alarm Clock
-    image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-    description: When the sun rises, alert the user with sound and light. Who needs roosters?
-  steps:
-    -
-      title: Introduction
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
-    -
-      title: Components Overview
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description: |
-        Here are all of the parts to use in this tutorial:
-
-        - Arduino Uno
-        - LED Sensor
-    -
-      title: Firing up the Arduino
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description: |
-        First, connect the Arduino board to the USB port.
-
-        To make sure it is configured correctly, try uploading the starter code to it.
-      tests:
-        -
-          title: Board Power Test
-          description: Do you see the Arduino board's lights shining?
-          jsondata: '["Yes, the LEDs are lighting up", "No, the LEDs are not lighting up"]'
-          onerror: Make sure that the board is plugged in to the correctly labeled port!
-          output: 0 # 0-based
-          form: multiple
-        -
-          title: Simple Upload Test
-          description: This will pass if the board successfully gets the code upload.
-          onerror: Make sure that the board is plugged into the correctly labeled cable!
-          form: upload
-    -
-      title: Wiring Button Connections
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description: |
-        Now, that the board is on, connect the Arduino's ground and power lines to the breadboard.
-      tests:
-        -
-          title: Breadboard Power Check
-          description: Measure thepower rail with the tester two probes on the testing board.
-          form: numeric
-          output: '5.0'
-    -
-      title: Reset Button Setup
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-    -
-      title: Tone Generation
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-    -
-      title: Neopixel Ring Wiring
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-    -
-      title: Light Sensor Wiring
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-    -
-      title: Light Sensor Tuning
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-    -
-      title: Integration
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-    -
-      title: Task Complete!
-      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
-      description: Well done!
       tests:
         -
           title: Congrats!

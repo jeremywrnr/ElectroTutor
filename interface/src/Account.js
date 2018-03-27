@@ -24,16 +24,16 @@ const Account = {
     });
   },
 
-  setLocalCredentials(data) {
+  setLocal(data, key = dataKeyId) {
     localStorage.setItem(dataKeyId, data);
   },
 
-  getLocalCredentials() {
-    return localStorage.getItem(dataKeyId);
+  getLocal(key = dataKeyId) {
+    return localStorage.getItem(key);
   },
 
-  clearLocalCredentials() {
-    localStorage.removeItem(dataKeyId);
+  clearLocal(key = dataKeyId) {
+    localStorage.removeItem(key);
   },
 };
 

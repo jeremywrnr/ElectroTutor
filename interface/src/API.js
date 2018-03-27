@@ -18,7 +18,7 @@ class API {
 
   authFetch = (route, method = 'GET', body = undefined) => {
     if (route !== 'users' && this.auth === undefined) {
-      Account.clearLocalCredentials(); // no auth or db reseeded
+      Account.clearLocal(); // no auth or db reseeded
     }
 
     const headers = new Headers({
@@ -40,7 +40,7 @@ class API {
       .then(res => res.json())
       .catch(err => {
         console.warn(err);
-        Account.clearLocalCredentials(); // no auth or db reseeded
+        Account.clearLocal(); // no auth or db reseeded
       });
   };
 
