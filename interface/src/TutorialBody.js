@@ -304,6 +304,12 @@ class TutorialBody extends Component {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
+  transformImageUri = input => {
+    /^https?:/.test(input)
+      ? `%PUBLIC_URL%/tutorial/${input}`
+      : `https://octodex.github.com/images/${input}`;
+  };
+
   render() {
     const step = this.state.step;
     const ctrl = this.props.control;
@@ -342,7 +348,10 @@ class TutorialBody extends Component {
                 <div className="full">
                   <Image src={step.image} />
                   <Segment>
-                    <ReactMarkdown source={step.description} />
+                    <ReactMarkdown
+                      transformImageUri={this.transformImageUri}
+                      source={step.description}
+                    />
                   </Segment>
                   <br />
                   <div className="tutorial-menu">
