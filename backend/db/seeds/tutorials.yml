@@ -12,10 +12,14 @@
       title: Components Overview
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
-        Here are all of the parts to use in this tutorial:
+        Here are the parts to use in this tutorial:
 
-        - Arduino Uno
-        - LED Sensor
+        - Arduino UNO Microcontroller
+        - Jumper wires
+        - Light Sensor
+        - Blue Button
+        - Resistor
+        - LED Ring 
     -
       title: Firing up the Arduino
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
@@ -59,50 +63,118 @@
         Place the push button into the breadboard as pictured.
 
         Wire the one side of the button to ground, and wire the other side to the digital `0` on the Arduino board.
+      tests:
+        -
+          title: Button Press Check
+          description: Measure the voltage across the button. It should drop when you press it!
+          form: numeric
+          output: '0.0'
     -
       title: Button Press Detection
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
         Now that the button is connected, we need to detect when it is being pressed in software.
-        At the top of the file, add this definition for set the Arduino pin the button is connected to.
+        At the top of the file, add this definition to set which Arduino pin the button is connected to.
 
         ```
         #DEFINE button 0
+        #DEFINE outLED 13
         ```
 
-        Next add this code inside of the `setup` function to add pin 0 as an input, using `pinMode`:
+        Next add this code inside of the `setup()` function to add pin 0 as an input, using `pinMode`:
 
         ```
-            pinMode(button, INPUT);
+          pinMode(button, INPUT);
+          pinMode(outLED, OUTPUT);
         ```
 
-        Finally, add this code to the `loop` function to read and print out the value:
+        Finally, add this code to the `loop()` function to read out the button value and set it to the internal LED.
 
 
         ```
-            pinMode(button, INPUT);
+          int press = digitalRead(button);
+          digitalWrite(button, press);
+        ```
+
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"1_button.ino"}'
+          form: autoupload
+        -
+          title: LED Status Check
+          description: Do you see the Arduino board's `L` light turn off when you press the button?
+          jsondata: '["Yes, the LED is lighting up", "No, the LED is not lighting up"]'
+          onerror: Make sure that the board is powered with the USB plug and the wiring is to pin 0!
+          output: 0 # 0-based
+          form: multiple
+    -
+      title: Piezo Buzzer Wiring
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        Now that our system is reading the button correctly, let's hook that
+        button up to play a noise using the Piezo sensor and the Arduino tone generator.
+
+        Use this code, or upload and it test it automatically from the testing pane.
+
+        ```
+          int buttonLevel = digitalRead(button);
         ```
     -
       title: Tone Generation
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
-
-        Great, now that our system is reading the button correctly, let's hook that
+        Now that our system is reading the button correctly, let's hook that
         button up to play a noise using the Piezo sensor and the Arduino tone generator.
 
+        Use this code, or upload and it test it automatically from the testing pane.
+
         ```
-        // also the internal pin
-        int led = 13;
+          int buttonLevel = digitalRead(button);
         ```
       tests:
         -
           title: Code Check
           description: Check that you can compile and upload the code!
           form: upload
+        -
+          title: frequency
+          description: testing frequency
+          output: 220 # in hz
+          form: dynamic
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"2_sounds.ino"}'
+          form: autoupload
     -
       title: Neopixel Ring Wiring
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
+      description: |
+        Wire the Power (red) and Ground (black) ends of the neopixel ring to the positive and ground rails.
+
+        Place the Data In pin on the Arduino 7 pin.
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"3_lights.ino"}'
+          form: autoupload
+    -
+      title: Neopixel Ring Programming
+      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      description: |
+        We want to have a nice pattern which shows when the alarm is triggered.
+
+        Place the Data In pin on the Arduino 7 pin.
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"3_lights.ino"}'
+          form: autoupload
     -
       title: Light Sensor Wiring
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
@@ -111,10 +183,19 @@
       title: Light Sensor Tuning
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description:
+        You can use the flashlight to trigger the LED.
     -
       title: Integration
       image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description:
+        Now that each of the hardware components is working, we will integrate the different parts.
+        The light sensor will trigger the alarm (lights and sound), and the button will reset it.
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"4_complete.ino"}'
+          form: autoupload
     -
       title: Task Complete!
       image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
