@@ -340,13 +340,6 @@ class TutorialBody extends Component {
               rHead={!ctrl && 'Testing'}
               left={
                 <div className="full">
-                  {ctrl && (
-                    <div class="ui inverted segment">
-                      <h4 class="ui red inverted header">
-                        Control Condition: no tests!!!
-                      </h4>
-                    </div>
-                  )}
                   <Image src={step.image} />
                   <Segment>
                     <ReactMarkdown source={step.description} />
@@ -389,7 +382,13 @@ class TutorialBody extends Component {
                 <Container>
                   {ctrl ? (
                     <Segment basic>
-                      <Continue head={'Continue'} next={this.nextStep} />
+                      <div class="ui inverted segment">
+                        <h4 class="ui inverted header">Control Condition</h4>
+                      </div>
+                      <Continue
+                        head={'Continue Tutorial'}
+                        next={this.nextStep}
+                      />
                     </Segment>
                   ) : (
                     <div className="full">

@@ -40,7 +40,6 @@ class API {
       .then(res => res.json())
       .catch(err => {
         console.warn(err);
-        Account.clearLocal(); // no auth or db reseeded
       });
   };
 
