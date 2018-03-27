@@ -3,7 +3,6 @@
  */
 
 import Config from './Config.js';
-import Account from './Account.js';
 
 class API {
   constructor(auth) {

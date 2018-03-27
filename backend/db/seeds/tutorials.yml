@@ -77,8 +77,8 @@
         At the top of the file, add this definition to set which Arduino pin the button is connected to.
 
         ```
-        #DEFINE button 0
-        #DEFINE outLED 13
+        #define button 0
+        #define outLED 13
         ```
 
         Next add this code inside of the `setup()` function to add pin 0 as an input, using `pinMode`:
@@ -93,7 +93,7 @@
 
         ```
           int press = digitalRead(button);
-          digitalWrite(button, press);
+          digitalWrite(outLED, press);
         ```
 
       tests:
@@ -146,7 +146,9 @@
       tests:
         -
           title: Code Check
-          description: Check that you can compile and upload the code!
+          description: |
+            Load the hardware board with preset code to manually verify that it works.
+            In this code, if the board is wired up according to the tutorial it will light up.
           jsondata: '{"file":"2_sounds.ino"}'
           form: autoupload
     -
@@ -159,7 +161,9 @@
       tests:
         -
           title: Code Check
-          description: Check that you can compile and upload the code!
+          description: |
+            Load the hardware board with preset code to manually verify that it works.
+            In this code, if the lights are wired up correctly the will have a glowing pattern.
           jsondata: '{"file":"3_lights.ino"}'
           form: autoupload
     -
@@ -327,6 +331,11 @@
           title: upload test
           description: Does the code upload?
           form: upload
+        -
+          title: autoupload test
+          description: Does the autouploaded code work?
+          jsondata: '{"file":"1_button.ino"}'
+          form: autoupload
         -
           title: code selection
           description: highlight code the word 'ok'

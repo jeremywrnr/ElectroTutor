@@ -9,7 +9,7 @@ void setup() {
 }
 
 void loop() {
-    int press = digitalRead(button);
+    int press = !digitalRead(button);
     digitalWrite(outLED, press);
 }
 

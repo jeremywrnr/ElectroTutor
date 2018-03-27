@@ -8,6 +8,6 @@ end
 
 task :test do
   testhelper 'blinky'
-  #testhelper 'blocks'
-  #testhelper 'methods'
+  testhelper 'blocks'
+  testhelper 'methods'
 end
