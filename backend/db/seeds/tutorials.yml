@@ -301,6 +301,7 @@
         -
           title: manual test
           description: click to verify
+          onerror: potentially helpful message!
           form: manual
         -
           title: multiple choice

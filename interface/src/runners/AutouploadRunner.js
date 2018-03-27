@@ -18,6 +18,7 @@ class AutouploadRunner extends Component {
   };
 
   verify = () => {
+    console.log('verifying autocode...');
     this.setState({loading: true});
     this.props.handleTestMode('autoupload');
     const data = JSON.parse(this.props.test.jsondata);
@@ -28,6 +29,9 @@ class AutouploadRunner extends Component {
       .then(() => this.setState({loading: false}));
   };
 
+  measure() {
+  }
+
   render() {
     const ok = this.props.compile.code === 0;
     const err = this.props.compile.error;
@@ -36,17 +40,21 @@ class AutouploadRunner extends Component {
       <div className="full">
         {this.props.test.description}
         <br />
-        {this.state.loading && (
+        {this.state.loading ? (
           <MeasuringMessage
-            head="Uploading test code..."
+            head="Uploading hardware test code..."
             text="Uploading preset code to hardware for testing."
           />
+        ) : (
+          <div className="full">
+            {ok && <span> ok </span>}
+            {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
+          </div>
         )}
-        {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
-        {ok && <span> ok </span>}
       </div>
     );
   }
 }
+
 
 export default AutouploadRunner;

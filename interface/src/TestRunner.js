@@ -35,7 +35,7 @@ class TestRunner extends Component {
 
   generateTestRunner = tProps => {
     const form = tProps.test.form;
-    if (tProps.button || form === 'info') {
+    if (tProps.button || form.match(/(info|manual)/)) {
       switch (form) {
         case 'code':
           return <CodeRunner {...tProps} />;
@@ -77,7 +77,7 @@ class TestRunner extends Component {
   render() {
     const button = this.state.button;
     const tProps = {button, ...this.props};
-    const render = tProps && !tProps.test.info;
+    const render = tProps && !tProps.test.form.match(/(info|manual)/);
     return (
       <div className="full">
         <Segment attached basic color={tProps.color || 'grey'}>
