@@ -22,7 +22,7 @@ module ParserHelper
   NEWLINE = /\n/
   NEWONLY = /^\n$/
   COMMENT = /\/\/.*/
-  ASSIGN = /([\w\.]+)\s*([+\-\*\/])?=\s*\w+.*/
+  ASSIGN = /([\w\.]+)\s*([+\-\*\/])?=.*\w+.*/
   SERIAL = /.*Serial\.begin.*/
   SETUP = /setup.*\(\s*\)\s*{/
   SINS = /\)\s*\n\s*{/m

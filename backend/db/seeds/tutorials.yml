@@ -7,20 +7,23 @@
     -
       title: Introduction
       image: /tutorial/tutorial-demo.gif
-      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise (or in this case, a flashlight).
+      description: |
+        In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+
+        (...or in this case, a flashlight!)
     -
       title: Components Overview
       description: |
         ![parts](parts.jpg)
 
-        Here are the parts to use in this tutorial:
+        Here are the this tutorial requires:
 
-        - Arduino UNO Microcontroller
-        - Jumper wires
-        - Light Sensor
-        - Push Button
+        - Arduino UNO microcontroller
+        - Neopixel LED Ring
+        - Piezo Buzzer
         - Resistor
-        - LED Ring
+        - Button
+        - Light Sensor
 
     -
       title: Firing up the Arduino
@@ -29,32 +32,39 @@
 
         First, connect the Arduino board to the USB port.
 
-        To make sure it is configured correctly, try uploading the starter code to it.
+        To make sure it is connected ok, try uploading the starter code to it.
 
         The lights on the top of the board when it recieves new code!
       tests:
         -
           title: Board Power Test
-          description: Do you see the Arduino board's lights turn on after plugging it in?
+          description: Did the Arduino board light up after plugging it in?
           onerror: Make sure that the board is powered with the USB plug!
           form: manual
         -
           title: Simple Upload Test
-          description: This will pass if the board successfully gets the code upload.
-          onerror: Make sure that the board is plugged into the correctly labeled cable!
+          description: Press the button below to try and upload code onto the board.
+          onerror: Make sure that the board is plugged with the correctly labeled cable!
           form: upload
     -
       title: Breadboard Connection Overview
       image: /tutorial/breadboard.gif
       description: |
-        The `(+/-)` rows along the sides of the board at connected through the board, while the center rows are connected horizontally.
+        The red and blue `(+/-)` rows along the sides of the board are connected.
+
+        The center rows are connected horizontally.
     -
       title: Wiring Button Connections
       title: Connecting Power and Ground
       description: |
         ![power](power.jpg)
 
-        Now, that the board is on, connect the Arduino's ground and power lines to the breadboard.
+        From the Arduino to the breadboard, connect:
+        - *GND* (ground) line to the blue rail
+        - *5V* (power) line to the red rail
+
+        ![power](power-crop.jpg)
+
       tests:
         -
           title: Breadboard Power Check
@@ -62,6 +72,9 @@
             ![power](measure-power.jpg)
 
             Measure the power rail with the tester's two probes on the testing board.
+
+            Press the button below to start measuring voltage.
+          onerror: Make sure that you use the 5V pin; not the Vin or 3.3V pins!
           form: numeric
           output: '5.0'
     -
@@ -69,26 +82,47 @@
       description: |
         ![button-in](button-in.jpg)
 
-        Place the push button into the breadboard as pictured above.
+        Connect the button to `GND` by placing a wire between the blue `(-)` line and one end of the button.
 
-        The button has a connection across its face like this:
+        Connect the button's other side to the digital `0` pin on the Arduino board.
+
+        ![button-in](button-in-crop.jpg)
+
+        The button's legs are connected in pairs. When you press the button, you connect the pairs.
 
         ![button](button.jpg)
 
-        Wire the one side of the button to ground, and wire the other side to the digital `0` header on the Arduino board.
       tests:
         -
           title: Button Press Check
           description: |
-            ![piezo](measure-piezo.jpg)
+            ![piezo](measure-button.jpg)
 
-            Measure the voltage across the button. It should drop when you press down the button and connect the Arduino pin with `0V`!
+            Measure the voltage across the button.
+
+            ![piezo](measure-button-crop.jpg)
+
+            It should drop when you press down the button and connect the Arduino pin with `0V`!
+
           form: numeric
           output: '0.0'
+        -
+          title: Hardware Wiring Check
+          description: |
+            The system will now check to see that you have wired up the board correctly.
+
+            Does the light change when you push the button?
+
+            Click the button below to setup the test.
+
+          onerror: Check that the wire between the button and the board is in the right place.
+          jsondata: '{"file":"1_button.ino"}'
+          form: autoupload
     -
       title: Button Press Detection Code
       description: |
         Now that the button is connected, we need to detect when it is being pressed in software.
+
         At the top of the file, add this definition to set which Arduino pin the button is connected to.
 
         ```
@@ -107,31 +141,31 @@
 
 
         ```
-          int press = digitalRead(button);
+          int press = !digitalRead(button);
           digitalWrite(outLED, press);
         ```
 
       tests:
         -
-          title: Hardware Wiring Check
-          description: Try to compile and upload the code!
-          onerror: Check that the wire between the button and the board is in the right place.
-          jsondata: '{"file":"1_button.ino"}'
-          form: autoupload
-        -
-          title: LED Status Check
-          description: Do you see one of the Arduino board's light turn off when you press the button?
-          onerror: Make sure that the board is powered with the USB plug and the wiring is to pin 0!
-          form: manual
+          title: Software Variable Check
+          description: |
+            The system will now check to see that you programmed the board correctly.
+
+            Click the button below to setup the test.
+
+          onerror: Make sure that you are saving the sensor value into `press`.
+          jsondata: '[{"name": "press", "value": 1}]' # name, value, line
+          form: variable
     -
       title: Piezo Buzzer Wiring
       description: |
         ![pie](piezo.jpg)
 
-        Now that our system is reading the button correctly, let's hook that
-        button up to play a noise using the Piezo sensor and the Arduino tone generator.
+        Next, connect the piezo buzzer to the the third digital Arduino pin `(3)`.
 
-        Use this code, or upload and it test it automatically from the testing pane.
+        Connect the other end of the piezo to GND (the blue rail) with the resistor.
+
+        ![pie](piezo-crop.jpg)
 
       tests:
         -
@@ -139,7 +173,9 @@
           description: |
             Load the hardware board with preset code to manually verify that it works.
 
-            In this code, if the board is wired up according to the tutorial it will light up.
+            In this code, if the board is wired up according to the tutorial it will beep.
+
+          onerror: Make the sure one end of the piezo is going to GND with the resistor, and the other end is going to pin 3!
           jsondata: '{"file":"2_sounds.ino"}'
           form: autoupload
     -
@@ -185,6 +221,7 @@
             ![piezo](measure-piezo.jpg)
 
             Place the probes across the speaker end to measure the piezo's frequency.
+
           output: 220 # hz
           form: dynamic
     -
@@ -199,8 +236,12 @@
         -
           title: Wiring Check
           description: |
-            Load the hardware board with preset code to manually verify that it works.
-            In this code, if the lights are wired up correctly the will have a glowing pattern.
+            Press the button below to verify the ring is wired correctly.
+
+            ![neopix](rainbow.gif)
+
+            If the lights are wired up correctly, they will have a glowing pattern.
+
           jsondata: '{"file":"3_lights.ino"}'
           form: autoupload
     -
@@ -212,10 +253,9 @@
 
         Connect the "Data In" pin of the Neopixel LED ring to the Arduino D7 pin.
 
-        You can use this code to run the lights:
+        Add this library at the top of the file to include.
 
         ```
-        #include "Arduino.h"
         #include <Adafruit_NeoPixel.h>
 
         #define PIN    7
@@ -277,7 +317,13 @@
       description: |
         ![wiring](light-wiring.jpg)
 
-        Connect the positive terminal of the sensor to 5V, the negative terminal to ground, and the output pin to the Arduino's analog 5 pin (A5).
+        Connect the positive `(+)` terminal of the sensor to 5V (red power rail).
+
+        Connect the negative terminal to GND (blue ground rail).
+
+        Connect the the output pin to the Arduino's analog 5 pin `(A5)`.
+
+        ![wiring](light-wiring-crop.jpg)
       tests:
         -
           title: Wiring Check

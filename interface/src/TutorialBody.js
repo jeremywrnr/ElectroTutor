@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Image, Container, Segment, Button} from 'semantic-ui-react';
 import {HotKeys} from 'react-hotkeys';
+import Sound from 'react-sound';
 import * as ace from 'brace';
 import {throttle} from 'lodash';
 import Split from 'split.js';
@@ -26,6 +27,7 @@ class TutorialBody extends Component {
     this.state = {
       code: 'Initializing...',
       progress: {code: ''},
+      song: Sound.status.STOPPED, // play when pass
       compile: false, // hydrated after compile/error
       tests_passed: false,
       tests_reveal: false,
@@ -86,10 +88,13 @@ class TutorialBody extends Component {
 
   patchProgressData = () => {
     return throttle((pdata, pass) => {
-      this.setState({step_loading: true});
       const id = pdata.id;
       const api = this.state.api;
       const state = pass ? 'pass' : 'fail';
+
+      // passed, play audio
+      pass && this.setState({song: Sound.status.PLAYING});
+      this.setState({step_loading: true});
       api
         .configure()
         .then(() => api.patchData({id, state}))
@@ -292,6 +297,14 @@ class TutorialBody extends Component {
   };
 
   //
+  // SOUND
+  //
+
+  handleSongDone = () => {
+    this.setState({song: Sound.status.STOPPED});
+  };
+
+  //
   // KEY MAPPING
   //
 
@@ -343,7 +356,7 @@ class TutorialBody extends Component {
                   {step.image && <Image src={step.image} />}
                   <Segment>
                     <MarkdownView source={step.description} />
-                  <br />
+                    <br />
                     <Button.Group fluid widths="2">
                       <Button
                         disabled={this.state.progress.position <= 1}
@@ -428,21 +441,14 @@ class TutorialBody extends Component {
                       )}
                     </div>
                   )}
-
-                  <div className="tutorial-menu">
-                    <Button
-                      floated="right"
-                      content="Exit"
-                      onClick={this.props.unset}
-                    />
-                    <Button
-                      floated="right"
-                      content="Guide"
-                      onClick={this.splash}
-                    />
-                  </div>
                 </Container>
               }
+            />
+
+            <Sound
+              url="/pass.mp3"
+              playStatus={this.state.song}
+              onFinishedPlaying={this.handleSongDone}
             />
 
             <SerialModal
@@ -455,10 +461,19 @@ class TutorialBody extends Component {
             <GuideModal
               open={this.state.splash}
               onClick={this.deSplash}
-              clickBack={this.props.unset}
+              onClickBack={this.props.unset}
               title={'Tutorial System Guide'}
               tutorial={this.props.tutorial}
             />
+
+            <div className="pad tutorial-menu">
+              <Button
+                floated="right"
+                content="Exit"
+                onClick={this.props.unset}
+              />
+              <Button floated="right" content="Guide" onClick={this.splash} />
+            </div>
           </div>
         </HotKeys>
       </Segment>

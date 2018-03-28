@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Message, Button} from 'semantic-ui-react';
+import MarkdownView from '../MarkdownView.js';
 
 // Show on-error message when the user notes a failure
 
@@ -19,8 +20,7 @@ class ManualRunner extends Component {
     const show = fail && help;
     return (
       <div className="full">
-        {this.props.test.description}
-        <br />
+        <MarkdownView source={this.props.test.description} />
         {show ? <Message info content={help} /> : <br />}
         <Button.Group widths="2">
           <Button as="a" basic onClick={this.fail} color="red">

@@ -85,6 +85,7 @@ class TestRunner extends Component {
         </Segment>
         {render && (
           <Button
+            as="a"
             basic
             attached="bottom"
             content={tProps.rtext}

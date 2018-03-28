@@ -4,6 +4,7 @@ import {StatCouple} from '../DynamicStat.js';
 import {Icon, Label} from 'semantic-ui-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MeasuringMessage from '../MeasuringMessage.js';
+import MarkdownView from '../MarkdownView.js';
 import {groupBy} from 'lodash';
 import Config from '../Config.js';
 import Graph from '../Graph.js';
@@ -123,7 +124,7 @@ class VariableRunnerShell extends Component {
 
     return (
       <div className="full">
-        {this.props.test.description}
+        <MarkdownView source={this.props.test.description} />
         {this.state.loading && <MeasuringMessage head="Recompiling..." />}
         {err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
         <br />

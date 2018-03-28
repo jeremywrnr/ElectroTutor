@@ -62,12 +62,9 @@ class NumericRunnerShell extends Component {
       if (len && len <= 0) return;
       d.map(x => (sum = sum + Number(x.data)));
       const value = sum / len;
-      console.log(d, sum, len, value);
       this.setState({value});
-
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out <= value && value <= (1 + err) * out;
-      console.log(value, pass, out);
       const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
         clearInterval(interval);
@@ -95,7 +92,6 @@ class NumericRunnerShell extends Component {
     return (
       <div className="full">
         <MarkdownView source={this.props.test.description} />
-        <br />
         {prep ? (
           <MeasuringMessage
             icon="setting"

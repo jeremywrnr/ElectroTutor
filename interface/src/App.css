@@ -62,11 +62,9 @@ div.ui.grid > div.row {
 /*TUTORIAL MENU*/
 
 .tutorial-menu {
-  background: white;
   position: absolute;
-  padding-right: 2rem;
-  width: 100%;
   bottom: 0;
+  right: 0;
 }
 .pull-right {
   float: right;
@@ -163,8 +161,12 @@ div.ui.styled.accordion div.title:hover {
 div.ui.styled.accordion .ui.label > .icon {
   margin: 0;
 }
+div.ui.styled.accordion .ui.basic.attached.bottom.button {
+  font-weight: bold;
+}
 div.ui.styled.accordion .ui.basic.attached.bottom.button:hover {
   background: rgba(34, 36, 38, 0.1) !important;
+  color: #21ba45 !important;
 }
 div.ui.styled.accordion .ui.statistic .value small {
   font-size: 16px;

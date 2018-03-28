@@ -7,7 +7,7 @@ def testhelper(t)
 end
 
 task :test do
-  testhelper 'blinky'
+  #testhelper 'blinky'
   testhelper 'blocks'
-  testhelper 'methods'
+  #testhelper 'methods'
 end

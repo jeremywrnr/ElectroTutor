@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MeasuringMessage from '../MeasuringMessage.js';
+import MarkdownView from '../MarkdownView.js';
 import {Message, Button} from 'semantic-ui-react';
 
 // Autoupload code testing
@@ -48,8 +49,7 @@ class AutouploadRunner extends Component {
 
     return (
       <div className="full">
-        {this.props.test.description}
-        <br />
+        <MarkdownView source={this.props.test.description} />
         {load && (
           <MeasuringMessage
             head="Uploading hardware test code..."
@@ -57,10 +57,11 @@ class AutouploadRunner extends Component {
           />
         )}
 
+        {show && <Message info content={help} />}
+
         {ok && (
-          <div className="full">
-            <br />
-            {show ? <Message info content={help} /> : <br />}
+          <div class="full">
+            {!show && <br />}
             <Button.Group widths="2">
               <Button as="a" basic onClick={this.fail} color="red">
                 No
