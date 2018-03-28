@@ -1,6 +1,9 @@
 # Modifications to generated files
 hardware/**/*.cpp
 
+# Log files
+*.log
+
 # Prerequisites
 *.d
 
