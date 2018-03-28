@@ -4,4 +4,6 @@ stty cols 80 # width
 
 source activate py27
 
-rails server -p 3001
+echo "Starting Rails..."
+
+rails server -p 3001 | tee -a study.log

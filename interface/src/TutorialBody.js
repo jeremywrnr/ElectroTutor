@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Image, Container, Segment, Button} from 'semantic-ui-react';
-import ReactMarkdown from 'react-markdown';
 import {HotKeys} from 'react-hotkeys';
 import * as ace from 'brace';
 import {throttle} from 'lodash';
@@ -10,6 +9,7 @@ import Split from 'split.js';
 
 import {GuideModal, SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
+import MarkdownView from './MarkdownView.js';
 import ArduinoWindow from './Arduino.js';
 import Continue from './Continue.js';
 import Grid3 from './Grid3.js';
@@ -304,10 +304,6 @@ class TutorialBody extends Component {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
-  transformImageUri = input => {
-    return /^https?:/.test(input) ? input : `/tutorial/${input}`;
-  };
-
   render() {
     const step = this.state.step;
     const ctrl = this.props.control;
@@ -346,13 +342,8 @@ class TutorialBody extends Component {
                 <div className="full">
                   {step.image && <Image src={step.image} />}
                   <Segment>
-                    <ReactMarkdown
-                      transformImageUri={this.transformImageUri}
-                      source={step.description}
-                    />
-                  </Segment>
+                    <MarkdownView source={step.description} />
                   <br />
-                  <div className="tutorial-menu">
                     <Button.Group fluid widths="2">
                       <Button
                         disabled={this.state.progress.position <= 1}
@@ -362,14 +353,14 @@ class TutorialBody extends Component {
                         content="Back"
                       />
                       <Button
-                        disabled={!p}
+                        disabled={!ctrl && !p}
                         onClick={this.nextStep}
                         labelPosition="right"
                         icon="right chevron"
                         content="Next"
                       />
                     </Button.Group>
-                  </div>
+                  </Segment>
                 </div>
               }
               middle={

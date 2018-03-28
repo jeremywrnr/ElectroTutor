@@ -113,13 +113,14 @@
 
       tests:
         -
-          title: Code Check
-          description: Check that you can compile and upload the code!
+          title: Hardware Wiring Check
+          description: Try to compile and upload the code!
+          onerror: Check that the wire between the button and the board is in the right place.
           jsondata: '{"file":"1_button.ino"}'
           form: autoupload
         -
           title: LED Status Check
-          description: Do you see the Arduino board's light turn off when you press the button?
+          description: Do you see one of the Arduino board's light turn off when you press the button?
           onerror: Make sure that the board is powered with the USB plug and the wiring is to pin 0!
           form: manual
     -
@@ -149,10 +150,31 @@
 
         Use this code, or upload and it test it automatically from the testing pane.
 
+        Add two more statements at the top to define our buzzer pin, and the note frequency.
+
         ```
-          int buttonLevel = digitalRead(button);
+        #define buzzer 3
+        #define freq 220
         ```
+
+        Then, in the `loop()` function, set the noise to play when the button is pressed:
+
+        ```
+          int pressed = !digitalRead(button);
+          digitalWrite(outLED, pressed);
+          if (pressed) {
+            tone(buzzer, freq, 10);
+            delay(10);
+          }
+        ```
+
       tests:
+        -
+          title: Code Selection Test
+          description: Highlight to select the part of your code which turns on the buzzer.
+          onerror: Make sure to include the buzzer line as described in the left pane.
+          jsondata: '{"match": "tone", "flag": "i"}'
+          form: code # regex
         -
           title: Code Check
           description: Check that your code compiles and uploads to the board!
@@ -175,7 +197,7 @@
         Place the `Data In` pin on the Arduino 7 pin.
       tests:
         -
-          title: Code Check
+          title: Wiring Check
           description: |
             Load the hardware board with preset code to manually verify that it works.
             In this code, if the lights are wired up correctly the will have a glowing pattern.
@@ -189,9 +211,64 @@
         We want to have a nice pattern which shows when the alarm is triggered.
 
         Connect the "Data In" pin of the Neopixel LED ring to the Arduino D7 pin.
+
+        You can use this code to run the lights:
+
+        ```
+        #include "Arduino.h"
+        #include <Adafruit_NeoPixel.h>
+
+        #define PIN    7
+        #define PIXELS 12
+
+        int color = 0;
+
+        Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXELS, PIN, NEO_GRB + NEO_KHZ800);
+        uint32_t white = strip.Color(16, 16, 16); // dim white color
+
+        void setup() {
+            strip.begin(); // This initializes the NeoPixel library.
+            strip.setBrightness(16);
+        }
+
+        uint32_t Wheel(byte WheelPos) {
+            WheelPos = 255 - WheelPos;
+            if (WheelPos < 85) {
+                return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+            }
+            if (WheelPos < 170) {
+                WheelPos -= 85;
+                return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+            }
+            WheelPos -= 170;
+            return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+        }
+
+        void rainbow(int start, int wait) {
+            int j = start;
+            for (int q = 0; q < 3; q++) {
+                for (int i = 0; i < strip.numPixels(); i = i + 3) {
+                    strip.setPixelColor(i + q, Wheel( (i + j) % 255)); //turn every third pixel on
+                }
+                strip.show();
+                delay(wait);
+
+                for (int i = 0; i < strip.numPixels(); i = i + 5) {
+                    strip.setPixelColor(i + q, 0);      //turn every third pixel off
+                }
+            }
+        }
+
+        void loop() {
+            rainbow(color, 2);
+            color = (color+2) % 255;
+        }
+
+        ```
+
       tests:
         -
-          title: Code Check
+          title: Wiring Check
           description: Check that you can compile and upload the code!
           jsondata: '{"file":"3_lights.ino"}'
           form: autoupload
@@ -213,6 +290,37 @@
         ![wiring](flashlight.jpg)
 
         You can use the flashlight to trigger the light sensor.
+
+        Threshold ranges guard the alarm from going off when it shouldn't.
+
+        You can use the code to test the board:
+
+        ```
+        #include "Arduino.h"
+
+        #define light  A5
+        #define outLED 13
+
+        #define thresh_lo 100
+        #define thresh_hi 900
+
+        void setup() {
+            pinMode(light, INPUT);
+            pinMode(outLED, OUTPUT);
+        }
+
+        void loop() {
+            int level = analogRead(light);
+            if (level > thresh_hi) {
+                digitalWrite(outLED, HIGH);
+            } else if (level < thresh_lo) {
+                digitalWrite(outLED, LOW);
+            }
+        }
+
+
+        ```
+
     -
       title: Integration
       description: |

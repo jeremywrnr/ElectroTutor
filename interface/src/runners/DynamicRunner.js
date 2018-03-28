@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import MeasuringMessage from '../MeasuringMessage.js';
+import MarkdownView from '../MarkdownView.js';
 import {StatCouple} from '../DynamicStat.js';
 import {withSerial} from '../Serial.js';
 
@@ -43,7 +44,7 @@ class DynamicRunnerShell extends Component {
 
   measure = () => {
     this.props.openSPJS();
-    const err = 0.04; // percent tolerance
+    const err = 0.02; // percent tolerance
     console.log('verify frequency runner...');
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {
@@ -81,7 +82,7 @@ class DynamicRunnerShell extends Component {
 
     return (
       <div className="full">
-        {this.props.test.description}
+        <MarkdownView source={this.props.test.description} />
         <br />
         {prep ? (
           <MeasuringMessage
