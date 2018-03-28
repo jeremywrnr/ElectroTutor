@@ -44,7 +44,7 @@ class DynamicRunnerShell extends Component {
 
   measure = () => {
     this.props.openSPJS();
-    const err = 0.03; // percent tolerance
+    const err = 0.05; // percent tolerance
     console.log('verify frequency runner...');
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {

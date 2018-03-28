@@ -127,7 +127,6 @@ class VariableRunnerShell extends Component {
         <MarkdownView source={this.props.test.description} />
         {this.state.loading && <MeasuringMessage head="Recompiling..." />}
         {err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
-        <br />
         {prep && (
           <MeasuringMessage
             icon="setting"
@@ -139,6 +138,7 @@ class VariableRunnerShell extends Component {
           value.map((x, i) => {
             return (
               <div className="full">
+                <br />
                 <VarLabel color={col} key={i} name={x.name + ` =`} />
                 <StatCouple
                   key={`${x}-${i}`}

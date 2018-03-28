@@ -8,15 +8,13 @@
       title: Introduction
       image: /tutorial/tutorial-demo.gif
       description: |
-        In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
-
-        (...or in this case, a flashlight!)
+        In this tutorial, you will build an light-sensitive alarm clock!
     -
       title: Components Overview
       description: |
         ![parts](parts.jpg)
 
-        Here are the this tutorial requires:
+        Here are the parts this tutorial requires:
 
         - Arduino UNO microcontroller
         - Neopixel LED Ring
@@ -34,7 +32,7 @@
 
         To make sure it is connected ok, try uploading the starter code to it.
 
-        The lights on the top of the board when it recieves new code!
+        The lights on the top of the board flash as it recieves new code!
       tests:
         -
           title: Board Power Test
@@ -43,7 +41,7 @@
           form: manual
         -
           title: Simple Upload Test
-          description: Press the button below to try and upload code onto the board.
+          description: Press the button below to upload code to the board.
           onerror: Make sure that the board is plugged with the correctly labeled cable!
           form: upload
     -
@@ -102,7 +100,9 @@
 
             ![piezo](measure-button-crop.jpg)
 
-            It should drop when you press down the button and connect the Arduino pin with `0V`!
+            It should drop when you press the button down.
+
+            Click the button below to setup the test.
 
           form: numeric
           output: '0.0'
@@ -111,9 +111,9 @@
           description: |
             The system will now check to see that you have wired up the board correctly.
 
-            Does the light change when you push the button?
+            Does the Arduino light turn on as you push the button?
 
-            Click the button below to setup the test.
+            Click below to setup the test.
 
           onerror: Check that the wire between the button and the board is in the right place.
           jsondata: '{"file":"1_button.ino"}'
@@ -130,14 +130,16 @@
         #define outLED 13
         ```
 
-        Next add this code inside of the `setup()` function to add pin 0 as an input, using `pinMode`:
+        Next, add this code inside of the `setup()` function to add pin 0 as an input, using `pinMode`:
 
         ```
           pinMode(button, INPUT);
           pinMode(outLED, OUTPUT);
         ```
 
-        Finally, add this code to the `loop()` function to read out the button value and set it to the internal LED.
+        Last, add this code to the `loop()` function to read the button's value.
+
+        This code will also copy the button state to the onboard Arduino LED.
 
 
         ```
@@ -151,7 +153,9 @@
           description: |
             The system will now check to see that you programmed the board correctly.
 
-            Click the button below to setup the test.
+            Press the button, and change the value of `press` in software to `1`.
+
+            Click below to setup the test.
 
           onerror: Make sure that you are saving the sensor value into `press`.
           jsondata: '[{"name": "press", "value": 1}]' # name, value, line
@@ -171,9 +175,11 @@
         -
           title: Wiring Check
           description: |
-            Load the hardware board with preset code to manually verify that it works.
+            In this test, if the board is wired up according to the tutorial it will beep.
 
-            In this code, if the board is wired up according to the tutorial it will beep.
+            Does the piezo beep after code is uploaded?
+
+            Click below to setup the test.
 
           onerror: Make the sure one end of the piezo is going to GND with the resistor, and the other end is going to pin 3!
           jsondata: '{"file":"2_sounds.ino"}'
@@ -196,9 +202,7 @@
         Then, in the `loop()` function, set the noise to play when the button is pressed:
 
         ```
-          int pressed = !digitalRead(button);
-          digitalWrite(outLED, pressed);
-          if (pressed) {
+          if (press) {
             tone(buzzer, freq, 10);
             delay(10);
           }
@@ -222,16 +226,26 @@
 
             Place the probes across the speaker end to measure the piezo's frequency.
 
+            The piezo will only beep when the button is pressed.
+
+            Click below to setup the test.
+
           output: 220 # hz
+          onerror: Make sure that the white probe is connected to the same end of the piezo as the Arduino.
           form: dynamic
     -
       title: Neopixel Ring Wiring
       description: |
         ![neopix](neopixel.jpg)
 
-        Wire the Power (red) and Ground (black) ends of the neopixel ring to the positive and ground rails.
+        Wire the Power (red) and Ground (black) ends of the Neopixel ring to the positive and ground rails.
 
-        Place the `Data In` pin on the Arduino 7 pin.
+        ![neopix](neopixel-crop1.jpg)
+
+        Connect the "`Data In`" yellow LED pin to the digital 7 on the Arduino.
+
+        ![neopix](neopixel-crop2.jpg)
+
       tests:
         -
           title: Wiring Check
@@ -243,34 +257,44 @@
             If the lights are wired up correctly, they will have a glowing pattern.
 
           jsondata: '{"file":"3_lights.ino"}'
+          onerror: Make the sure data pin is connected to pin 7, and the power/ground pins are connected to 5V and GND respectively.
           form: autoupload
     -
       title: Neopixel Ring Code
       description: |
         ![rain](rainbow.gif)
 
-        We want to have a nice pattern which shows when the alarm is triggered.
-
-        Connect the "Data In" pin of the Neopixel LED ring to the Arduino D7 pin.
-
-        Add this library at the top of the file to include.
+        Include code for the LED ring at the top of the file:
 
         ```
         #include <Adafruit_NeoPixel.h>
+        ```
 
+        Then, define the pin the ring is connected to, and the number of "pixels" in the ring.
+
+        ```
         #define PIN    7
         #define PIXELS 12
+        ```
 
+        Before the `setup()` function, initial the ring and a base white color.
+
+        ```
         int color = 0;
-
         Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXELS, PIN, NEO_GRB + NEO_KHZ800);
         uint32_t white = strip.Color(16, 16, 16); // dim white color
+        ```
 
-        void setup() {
+        Initialize the strip in the `setup()` function.
+
+        ```
             strip.begin(); // This initializes the NeoPixel library.
             strip.setBrightness(16);
-        }
+        ```
 
+        Before the `loop()` function, insert these two light helper functions.
+
+        ```
         uint32_t Wheel(byte WheelPos) {
             WheelPos = 255 - WheelPos;
             if (WheelPos < 85) {
@@ -298,24 +322,34 @@
                 }
             }
         }
+        ```
 
-        void loop() {
+        Then, in the `loop()` function, change the colors:
+
+        ```
             rainbow(color, 2);
             color = (color+2) % 255;
-        }
-
         ```
 
       tests:
         -
-          title: Wiring Check
-          description: Check that you can compile and upload the code!
+          title: Hardware Wiring Check
+          description: |
+            The system will now check to see that you have wired up the LED ring correctly.
+
+            Does the LED ring rotate though the rainbow?
+
+            Click below to setup the test.
+
+          onerror: Check that there are no code compile errors, and that the wire between the button and the board is on the right pin.
           jsondata: '{"file":"3_lights.ino"}'
           form: autoupload
     -
       title: Light Sensor Wiring
       description: |
         ![wiring](light-wiring.jpg)
+
+        Next, install the hardware for sensing the light level.
 
         Connect the positive `(+)` terminal of the sensor to 5V (red power rail).
 
@@ -327,7 +361,14 @@
       tests:
         -
           title: Wiring Check
-          description: Upload starter code for the light sensor. If it is configured correctly, you
+          description: |
+            The system will now check to see that you have wired up the sensor correctly.
+
+            Does the onboard Arduino LED turn on when you shine the flashlight on the sensor?
+
+            Click below to setup the test.
+
+          onerror: Ensure that the + and - terminals are connected to 5V (power/red) and GND (ground/blue) correctly.
           jsondata: '{"file":"4_sense.ino"}'
           form: autoupload
     -
@@ -337,43 +378,57 @@
 
         You can use the flashlight to trigger the light sensor.
 
-        Threshold ranges guard the alarm from going off when it shouldn't.
-
-        You can use the code to test the board:
+        At the top of the file, add a pin definition for the light pin:
 
         ```
-        #include "Arduino.h"
-
         #define light  A5
         #define outLED 13
+        ```
 
+        Before the loop function, add a high and low sensor threshold:
+
+        ```
         #define thresh_lo 100
         #define thresh_hi 900
+        ```
 
-        void setup() {
+        In `setup()`, add the light sensor as an input:
+
+        ```
             pinMode(light, INPUT);
-            pinMode(outLED, OUTPUT);
-        }
+        ```
 
-        void loop() {
+        In `loop()`, remove the old assignments to outLED, and add these:
+
+        ```
             int level = analogRead(light);
             if (level > thresh_hi) {
                 digitalWrite(outLED, HIGH);
             } else if (level < thresh_lo) {
                 digitalWrite(outLED, LOW);
             }
-        }
-
-
         ```
 
+      tests:
+        -
+          title: Software Trigger Check
+          description: |
+            The system will now check to see that you programmed the board correctly.
+
+            Click the button below to setup the test.
+
+          onerror: Make sure that you are saving the sensor value into `press`.
+          jsondata: '[{"name": "press", "value": 900, "op": "gt"}]' # name, value, line
+          form: variable
+
     -
-      title: Integration
+      title: Code Integration
       description: |
         ![integration](integration.jpg)
 
-        Now that each of the hardware components is working, we will integrate the different parts.
-        The light sensor will trigger the alarm (lights and sound), and the button will reset it.
+        Now that each  hardware component is working, integrate the parts in software.
+
+        The light sensor will trigger the alarm (lights and sound), and pressing button will reset it.
       tests:
         -
           title: Code Check
