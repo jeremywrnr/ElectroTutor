@@ -15,7 +15,7 @@ class Graph extends Component {
   static defaultProps = {
     margin: {top: 5, right: 10, left: 0, bottom: 5},
     height: 400,
-    width: 800,
+    width: 550,
     data: [],
   };
 

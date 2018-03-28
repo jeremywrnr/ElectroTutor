@@ -36,7 +36,8 @@ void loop() {
 
     window[len - 1] = freq;
 
-    Serial.print(1.0 * sum / 2, 2); // 2second sample window.
+    // 2second sample window, divide by 2 
+    Serial.print(1.0 * sum >> 1, 2);
     Serial.print('_'); // delimiter
     ms = millis();
     freq = 0;

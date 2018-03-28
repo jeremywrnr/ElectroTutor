@@ -39,9 +39,9 @@ class NumericRunnerShell extends Component {
       this.setState({preparing: true});
       this.props.handleTestMode('voltage');
       this.props.api
-      .postTVolt()
-      .then(this.measure)
-      .then(() => this.setState({preparing: false}));
+        .postTVolt()
+        .then(this.measure)
+        .then(() => this.setState({preparing: false}));
     }
   };
 
@@ -97,21 +97,21 @@ class NumericRunnerShell extends Component {
         <MarkdownView source={this.props.test.description} />
         <br />
         {prep ? (
-        <MeasuringMessage
-          icon="setting"
-          head="Setting up..."
-          text="Loading code onto test board."
-        />
+          <MeasuringMessage
+            icon="setting"
+            head="Setting up..."
+            text="Loading code onto test board."
+          />
         ) : (
-        <div className="full">
-          <br />
-          <StatCouple unit="V" input={input} out={out} />
-          {d.length > 0 && <Graph width={700} data={d} />}
-          {this.state.measuring && <MeasuringMessage />}
-        </div>
+          <div className="full">
+            <br />
+            <StatCouple unit="V" input={input} out={out} />
+            {d.length > 0 && <Graph data={d} />}
+            {this.state.measuring && <MeasuringMessage />}
+          </div>
         )}
       </div>
-      );
+    );
   }
 }
 

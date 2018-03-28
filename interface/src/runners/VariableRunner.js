@@ -144,7 +144,7 @@ class VariableRunnerShell extends Component {
                   input={nanCheck(x.last)}
                   out={x.expv}
                 />
-                {x.data.length > 0 && <Graph width={700} data={x.data} />}
+                {x.data.length > 0 && <Graph data={x.data} />}
               </div>
             );
           })}

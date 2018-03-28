@@ -1,11 +1,9 @@
-
 /**
  * Rendering and running tests
  */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Message} from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 
 export default class MarkdownView extends React.Component {
@@ -23,6 +21,6 @@ export default class MarkdownView extends React.Component {
         transformImageUri={this.transformImageUri}
         source={this.props.source}
       />
-      );
+    );
   }
 }
