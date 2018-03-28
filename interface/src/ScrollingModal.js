@@ -17,7 +17,7 @@ class ModalScrollingContent extends Component {
         <Modal.Header>{this.props.title}</Modal.Header>
 
         <Modal.Content image scrolling>
-          {this.props.image && <Image size="medium" src={this.props.image} />}
+          {this.props.image && <Image size="huge" src={this.props.image} />}
           {this.props.modalcontent}
         </Modal.Content>
 
@@ -53,26 +53,26 @@ class GuideModal extends Component {
     <Modal.Description className="guide">
       <Header>{this.props.tutorial.title}</Header>
       <p>{this.props.tutorial.description}</p>
-      <Image size="medium" src={this.props.tutorial.image} />
+      <Image size="huge" src={this.props.tutorial.image} />
 
       <Header>Interface Overview</Header>
-      <Image src="/interface.png" />
+      <Image size="huge" src="/interface.png" />
 
       <Header>Moving Around</Header>
       <p>Click the back or next buttons to advance through the tutorial.</p>
-      <Image src="/step-move.gif" />
+      <Image size="huge" src="/step-move.gif" />
 
       <p>
         You can also use the left and right arrow keys to move between steps.
       </p>
-      <Image src="/left-right-gray.gif" />
+      <Image size="huge" src="/left-right-gray.gif" />
 
       <Header>Verifying Code</Header>
       <p>
         Click the check mark in the microcontroller code editor to verify and
         compile your code.
       </p>
-      <Image src="/verify.gif" />
+      <Image size="huge" src="/verify.gif" />
 
       <Header>Uploading Code</Header>
       <p>
@@ -83,10 +83,7 @@ class GuideModal extends Component {
         If the microcontroller is not plugged in, this command will fail. Plug
         it in first!
       </p>
-      <Image src="/upload.gif" />
-
-      <Header>Running Checks</Header>
-      <p>TODO</p>
+      <Image size="huge" src="/upload.gif" />
 
       <br />
     </Modal.Description>

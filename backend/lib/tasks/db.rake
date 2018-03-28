@@ -9,7 +9,8 @@ namespace :db do
     desc "Rebuild tutorials from YAML seed."
     task :tutorial => :environment do
       puts "=== Rebuild tutorials from YAML seed done."
-      [Tutorial, Test, Step, Progress, ProgressDatum].map(&:delete_all)
+      Tutorial.destroy_all
+      Rake::Task["db:migrate"].invoke
       Rake::Task["db:seed"].invoke
       puts "=== Rebuild done."
     end

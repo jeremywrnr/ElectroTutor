@@ -8,7 +8,7 @@ import Split from 'split.js';
 
 //import $ from 'jquery'; // animations
 
-import {SerialModal} from './ScrollingModal.js';
+import {GuideModal, SerialModal} from './ScrollingModal.js';
 import AccordionStyled from './AccordionStyled.js';
 import ArduinoWindow from './Arduino.js';
 import Continue from './Continue.js';
@@ -305,9 +305,7 @@ class TutorialBody extends Component {
   };
 
   transformImageUri = input => {
-    /^https?:/.test(input)
-      ? `%PUBLIC_URL%/tutorial/${input}`
-      : `https://octodex.github.com/images/${input}`;
+    return /^https?:/.test(input) ? input : `/tutorial/${input}`;
   };
 
   render() {
@@ -346,7 +344,7 @@ class TutorialBody extends Component {
               rHead={!ctrl && 'Testing'}
               left={
                 <div className="full">
-                  <Image src={step.image} />
+                  {step.image && <Image src={step.image} />}
                   <Segment>
                     <ReactMarkdown
                       transformImageUri={this.transformImageUri}
@@ -441,9 +439,16 @@ class TutorialBody extends Component {
                   )}
 
                   <div className="tutorial-menu">
-                    <Button.Group floated="right">
-                      <Button content="Exit" onClick={this.props.unset} />
-                    </Button.Group>
+                    <Button
+                      floated="right"
+                      content="Exit"
+                      onClick={this.props.unset}
+                    />
+                    <Button
+                      floated="right"
+                      content="Guide"
+                      onClick={this.splash}
+                    />
                   </div>
                 </Container>
               }
@@ -455,23 +460,19 @@ class TutorialBody extends Component {
               onClick={this.handleDemonitor}
               onClickBack={this.props.unset}
             />
+
+            <GuideModal
+              open={this.state.splash}
+              onClick={this.deSplash}
+              clickBack={this.props.unset}
+              title={'Tutorial System Guide'}
+              tutorial={this.props.tutorial}
+            />
           </div>
         </HotKeys>
       </Segment>
     );
   }
 }
-
-//<GuideModal
-//open={this.state.splash}
-//onClick={this.deSplash}
-//clickBack={this.props.unset}
-//title={'Tutorial System Guide'}
-//tutorial={this.props.tutorial}
-//<Button content="Log Out" onClick={this.props.logout} />
-///>
-//<Button.Group fluid widths="2">
-//<Button content="Show Guide" onClick={this.splash} />
-//</Button.Group>
 
 export default TutorialBody;

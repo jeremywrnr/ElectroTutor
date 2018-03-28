@@ -1,17 +1,18 @@
 -
   tutorial:
     title: Light Sensitive Alarm Clock
-    image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-    description: When the sun rises, alert the user with sound and light. Who needs roosters?
+    image: /tutorial/tutorial-demo.gif
+    description: When the sun rises, set off an alarm with sound and light.
   steps:
     -
       title: Introduction
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise.
+      image: /tutorial/tutorial-demo.gif
+      description: In this lesson, you will learn how to build an alarm clock which triggers from the sunrise (or in this case, a flashlight).
     -
       title: Components Overview
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
+        ![parts](parts.jpg)
+
         Here are the parts to use in this tutorial:
 
         - Arduino UNO Microcontroller
@@ -20,21 +21,23 @@
         - Push Button
         - Resistor
         - LED Ring
+
     -
       title: Firing up the Arduino
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
+        ![plug](plug.gif)
+
         First, connect the Arduino board to the USB port.
 
         To make sure it is configured correctly, try uploading the starter code to it.
+
+        The lights on the top of the board when it recieves new code!
       tests:
         -
           title: Board Power Test
-          description: Do you see the Arduino board's lights shining?
-          jsondata: '["Yes, the LEDs are lighting up", "No, the LEDs are not lighting up"]'
+          description: Do you see the Arduino board's lights turn on after plugging it in?
           onerror: Make sure that the board is powered with the USB plug!
-          output: 0 # 0-based
-          form: multiple
+          form: manual
         -
           title: Simple Upload Test
           description: This will pass if the board successfully gets the code upload.
@@ -42,36 +45,48 @@
           form: upload
     -
       title: Breadboard Connection Overview
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      image: /tutorial/breadboard.gif
       description: |
         The `(+/-)` rows along the sides of the board at connected through the board, while the center rows are connected horizontally.
     -
       title: Wiring Button Connections
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      title: Connecting Power and Ground
       description: |
+        ![power](power.jpg)
+
         Now, that the board is on, connect the Arduino's ground and power lines to the breadboard.
       tests:
         -
           title: Breadboard Power Check
-          description: Measure the power rail with the tester two probes on the testing board.
+          description: |
+            ![power](measure-power.jpg)
+
+            Measure the power rail with the tester's two probes on the testing board.
           form: numeric
           output: '5.0'
     -
       title: Reset Button Setup
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
-        Place the push button into the breadboard as pictured.
+        ![button-in](button-in.jpg)
 
-        Wire the one side of the button to ground, and wire the other side to the digital `0` on the Arduino board.
+        Place the push button into the breadboard as pictured above.
+
+        The button has a connection across its face like this:
+
+        ![button](button.jpg)
+
+        Wire the one side of the button to ground, and wire the other side to the digital `0` header on the Arduino board.
       tests:
         -
           title: Button Press Check
-          description: Measure the voltage across the button. It should drop when you press it!
+          description: |
+            ![piezo](measure-piezo.jpg)
+
+            Measure the voltage across the button. It should drop when you press down the button and connect the Arduino pin with `0V`!
           form: numeric
           output: '0.0'
     -
-      title: Button Press Detection
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      title: Button Press Detection Code
       description: |
         Now that the button is connected, we need to detect when it is being pressed in software.
         At the top of the file, add this definition to set which Arduino pin the button is connected to.
@@ -104,36 +119,32 @@
           form: autoupload
         -
           title: LED Status Check
-          description: Do you see the Arduino board's `L` light turn off when you press the button?
-          jsondata: '["Yes, the LED is lighting up", "No, the LED is not lighting up"]'
+          description: Do you see the Arduino board's light turn off when you press the button?
           onerror: Make sure that the board is powered with the USB plug and the wiring is to pin 0!
-          output: 0 # 0-based
-          form: multiple
+          form: manual
     -
       title: Piezo Buzzer Wiring
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
+        ![pie](piezo.jpg)
+
         Now that our system is reading the button correctly, let's hook that
         button up to play a noise using the Piezo sensor and the Arduino tone generator.
 
         Use this code, or upload and it test it automatically from the testing pane.
 
-        ```
-          int buttonLevel = digitalRead(button);
-        ```
       tests:
         -
-          title: Wiring Checkup
+          title: Wiring Check
           description: |
             Load the hardware board with preset code to manually verify that it works.
+
             In this code, if the board is wired up according to the tutorial it will light up.
           jsondata: '{"file":"2_sounds.ino"}'
           form: autoupload
     -
-      title: Tone Generation
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      title: Tone Generation Code
       description: |
-        Now that our system is reading the button correctly, let's hook that
+        Now that our system is reading the button correctly, let's hook the
         button up to play a noise using the Piezo sensor and the Arduino tone generator.
 
         Use this code, or upload and it test it automatically from the testing pane.
@@ -148,16 +159,20 @@
           form: upload
         -
           title: Frequency Check
-          description: Place the probes across the speaker end to measure frequency.
-          output: 220 # in hz
+          description: |
+            ![piezo](measure-piezo.jpg)
+
+            Place the probes across the speaker end to measure the piezo's frequency.
+          output: 220 # hz
           form: dynamic
     -
       title: Neopixel Ring Wiring
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
       description: |
+        ![neopix](neopixel.jpg)
+
         Wire the Power (red) and Ground (black) ends of the neopixel ring to the positive and ground rails.
 
-        Place the Data In pin on the Arduino 7 pin.
+        Place the `Data In` pin on the Arduino 7 pin.
       tests:
         -
           title: Code Check
@@ -167,12 +182,13 @@
           jsondata: '{"file":"3_lights.ino"}'
           form: autoupload
     -
-      title: Neopixel Ring Programming
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
+      title: Neopixel Ring Code
       description: |
+        ![rain](rainbow.gif)
+
         We want to have a nice pattern which shows when the alarm is triggered.
 
-        Place the Data In pin on the Arduino 7 pin.
+        Connect the "Data In" pin of the Neopixel LED ring to the Arduino D7 pin.
       tests:
         -
           title: Code Check
@@ -181,23 +197,27 @@
           form: autoupload
     -
       title: Light Sensor Wiring
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
+      description: |
+        ![wiring](light-wiring.jpg)
+
+        Connect the positive terminal of the sensor to 5V, the negative terminal to ground, and the output pin to the Arduino's analog 5 pin (A5).
       tests:
         -
-          title: Code Check
-          description: Check that you can compile and upload the code!
+          title: Wiring Check
+          description: Upload starter code for the light sensor. If it is configured correctly, you
           jsondata: '{"file":"4_sense.ino"}'
           form: autoupload
     -
       title: Light Sensor Tuning
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
-        You can use the flashlight to trigger the LED.
+      description: |
+        ![wiring](flashlight.jpg)
+
+        You can use the flashlight to trigger the light sensor.
     -
       title: Integration
-      image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTgbWMHXWVUMbJb_l4pHWoNOtCJWegg1aZmjZFLxVKNqLODZb
-      description:
+      description: |
+        ![integration](integration.jpg)
+
         Now that each of the hardware components is working, we will integrate the different parts.
         The light sensor will trigger the alarm (lights and sound), and the button will reset it.
       tests:
@@ -208,7 +228,7 @@
           form: autoupload
     -
       title: Task Complete!
-      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
+      image: /tutorial/complete.gif
       description: Well done!
       tests:
         -
@@ -290,7 +310,7 @@
 
 -
   tutorial:
-    title: Who tests the tester?
+    title: Test Sampler
     image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
     description: Simple tutorial with all test types.
   steps:
@@ -351,261 +371,6 @@
         -
           title: information
           description: this is not a step but a simple notice
-          form: info
-          info: true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--
-  tutorial:
-    title: Simple LED Button Flasher
-    source: https://learn.adafruit.com/adafruit-arduino-lesson-2-leds/blinking-the-led
-    image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/original/learn_arduino_overview.jpg?1396780031
-    description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
-  steps:
-    -
-      title: Introduction
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/medium640/learn_arduino_overview.jpg?1396780031
-      description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
-    -
-      title: Collecting Parts
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/165/medium800/learn_arduino_uno_r3_web.jpg?1396780086
-      description: |
-        To carry out the experiment described in this lesson, you will need the following parts.
-        - LED 1,
-        - Resistor 1,
-        - Half-size Breadboard 1,
-        - Arduino Uno R3 1,
-        - Jumper wire pack 1.
-    -
-      title: Breadboard Layout
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/169/medium640/learn_arduino_fritzing.jpg?1396780115
-      description: |
-        Connect up your stripboard as shown below, using the 270Ω resistor.
-
-        The Arduino is a convenient source of 5 Volts, that we will use to
-        provide power to the LED and resistor. You do not need to do anything
-        with your Arduino, except plug it into a USB cable.
-
-        With the 270 Ω resistor in place, the LED should be quite bright. If
-        you swap out the 270 Ω resistor for the 470 Ω resistor, then the LED
-        will appear a little dimmer. With the 2.2kΩ resistor in place the LED
-        should be quite faint. Finally, with the 10 kΩ resistor in place, the
-        LED will be just about visible. Pull the red jumper lead out of the
-        breadboard and touch it into the hole and remove it, so that it acts
-        like a switch. You should just be able to notice the difference.
-
-        Turning out the lights might help even more.
-      tests:
-        -
-          title: Positive V => Longer Leg
-          description: Make sure to connect the LED's longer leg with the positive voltage!
-          form: manual
-        -
-          title: LED Glowing
-          description: Is the LED glowing as we would expect?
-          image: https://cdn-learn.adafruit.com/assets/assets/000/002/170/medium640/learn_arduino_overview.jpg?1396780130
-          form: manual
-    -
-      title: Moving the Resistor
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
-      description: |
-        At the moment, you have 5V going to one leg of the resistor, the other
-        leg of the resistor going to the positive side of the LED and the other
-        side of the LED going to GND. However, if we moved the resistor so that
-        it came after the LED, as shown below, the LED will still light.
-
-        Note, you will probably want to put the 270Ω resistor back in place.
-        So, it does not matter which side of the LED we put the resistor, as
-        long as it is there somewhere.
-      tests:
-        -
-          title: LED Polarity
-          description: Which leg of the LED should be connected to the positive voltage?
-          jsondata: '["Shorter Leg", "Longer Leg"]'
-          form: multiple
-          output: 1
-        -
-          title: LED Brightness
-          description: Has the LEDs brightness changed at all?
-          form: manual
-    -
-      title: Adding a Button Press
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
-      description: |
-        Insert a button in between the resistor and the positive voltage power line connected to the LED.
-      tests:
-        -
-          title: Button-Press Light Control
-          description: Use the two probes to test the signal for the light!
-          form: numeric
-          output: '5.0'
-    -
-      title: Getting Ready to Blink the LED
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180
-      description: |
-        With a simple modification of the breadboard, we could attach the LED
-        to an output  pin of the Arduino. Move the red jumper wire from the
-        Arduino 5V connector to D13, as shown below. Lets try using a different
-        pin of the Arduino – say D7. Move the red jumper lead from pin D13 to pin
-        D7 and modify the following line near the top of the sketch:
-    -
-      title: Blinking the LED with Code
-      image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180
-      description: |
-        First, set the code to the specify the output pin:
-
-        ```
-        // also the internal pin
-        int led = 13;
-        ```
-
-        Then, configure that pin to be used as an output.
-
-        ```
-        // initialize the digital pin as an output.
-        pinMode(led, OUTPUT);
-        ```
-
-        Then, change set the LED to toggle every 1000 ms (1 second).
-
-        ```
-        digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-        delay(1000);               // wait for a second
-        digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-        delay(1000);               // wait for a second
-        ```
-
-      tests:
-        -
-          title: Light Frequency
-          description: What rate (times/second or Hz) is the light blinking?
-          form: question
-          output: 0.5 # enable loose query... some tolerances
-        -
-          title: Blinking Light?
-          description: Do you see the light blinking?
-          onerror: Check the connections!
-          form: manual
-        -
-          title: Blink Frequency Test
-          description: Use the pins to measure the exact rate at which it blinks!
-          form: dynamic
-          output: 2 # in hz, the expected frequency
-    -
-      title: Adding a Button Press
-      image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
-      description: |
-        Insert a button in between the resistor and the positive voltage power line connected to the LED.
-      tests:
-        -
-          title: Button Press Control
-          description: Does the button press control whether the light is flashing or not?
-          form: dynamic
-        -
-          title: Compile Test
-          description: Does the code compile?
-          form: compile
-        -
-          title: Upload Test
-          description: Does the code upload?
-          form: upload
-        -
-          title: Code Selection
-          description: Highlight your code with the pin mode setting.
-          jsondata: '{"match": "pinMode"}'
-          form: code
-    -
-      title: Congrats!
-      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
-      description: |
-        You have successfully completed the tutorial!
-      tests:
-        -
-          title: Congrats!
-          description: You have successfully completed the tutorial!
           form: info
           info: true
 

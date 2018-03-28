@@ -383,3 +383,210 @@
       image: https://hackster.imgix.net/uploads/attachments/393483/2017-12-10_16_29_40_SYvpi0cUi5.jpg
       description: description
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+  tutorial:
+    title: Simple LED Button Flasher
+    source: https://learn.adafruit.com/adafruit-arduino-lesson-2-leds/blinking-the-led
+    image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/original/learn_arduino_overview.jpg?1396780031
+    description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
+  steps:
+    -
+      title: Introduction
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/158/medium640/learn_arduino_overview.jpg?1396780031
+      description: In this lesson, you will learn how to flash an LED with a button press and an Arduino Uno.
+    -
+      title: Collecting Parts
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/165/medium800/learn_arduino_uno_r3_web.jpg?1396780086
+      description: |
+        To carry out the experiment described in this lesson, you will need the following parts.
+        - LED 1,
+        - Resistor 1,
+        - Half-size Breadboard 1,
+        - Arduino Uno R3 1,
+        - Jumper wire pack 1.
+    -
+      title: Breadboard Layout
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/169/medium640/learn_arduino_fritzing.jpg?1396780115
+      description: |
+        Connect up your stripboard as shown below, using the 270Ω resistor.
+
+        The Arduino is a convenient source of 5 Volts, that we will use to
+        provide power to the LED and resistor. You do not need to do anything
+        with your Arduino, except plug it into a USB cable.
+
+        With the 270 Ω resistor in place, the LED should be quite bright. If
+        you swap out the 270 Ω resistor for the 470 Ω resistor, then the LED
+        will appear a little dimmer. With the 2.2kΩ resistor in place the LED
+        should be quite faint. Finally, with the 10 kΩ resistor in place, the
+        LED will be just about visible. Pull the red jumper lead out of the
+        breadboard and touch it into the hole and remove it, so that it acts
+        like a switch. You should just be able to notice the difference.
+
+        Turning out the lights might help even more.
+      tests:
+        -
+          title: Positive V => Longer Leg
+          description: Make sure to connect the LED's longer leg with the positive voltage!
+          form: manual
+        -
+          title: LED Glowing
+          description: Is the LED glowing as we would expect?
+          image: https://cdn-learn.adafruit.com/assets/assets/000/002/170/medium640/learn_arduino_overview.jpg?1396780130
+          form: manual
+    -
+      title: Moving the Resistor
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
+      description: |
+        At the moment, you have 5V going to one leg of the resistor, the other
+        leg of the resistor going to the positive side of the LED and the other
+        side of the LED going to GND. However, if we moved the resistor so that
+        it came after the LED, as shown below, the LED will still light.
+
+        Note, you will probably want to put the 270Ω resistor back in place.
+        So, it does not matter which side of the LED we put the resistor, as
+        long as it is there somewhere.
+      tests:
+        -
+          title: LED Polarity
+          description: Which leg of the LED should be connected to the positive voltage?
+          jsondata: '["Shorter Leg", "Longer Leg"]'
+          form: multiple
+          output: 1
+        -
+          title: LED Brightness
+          description: Has the LEDs brightness changed at all?
+          form: manual
+    -
+      title: Adding a Button Press
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/171/medium640/learn_arduino_fritzing_2.jpg?1396780135
+      description: |
+        Insert a button in between the resistor and the positive voltage power line connected to the LED.
+      tests:
+        -
+          title: Button-Press Light Control
+          description: Use the two probes to test the signal for the light!
+          form: numeric
+          output: '5.0'
+    -
+      title: Getting Ready to Blink the LED
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180
+      description: |
+        With a simple modification of the breadboard, we could attach the LED
+        to an output  pin of the Arduino. Move the red jumper wire from the
+        Arduino 5V connector to D13, as shown below. Lets try using a different
+        pin of the Arduino – say D7. Move the red jumper lead from pin D13 to pin
+        D7 and modify the following line near the top of the sketch:
+    -
+      title: Blinking the LED with Code
+      image: https://cdn-learn.adafruit.com/assets/assets/000/002/177/medium640/learn_arduino_fritzing_pin_13.jpg?1396780180
+      description: |
+        First, set the code to the specify the output pin:
+
+        ```
+        // also the internal pin
+        int led = 13;
+        ```
+
+        Then, configure that pin to be used as an output.
+
+        ```
+        // initialize the digital pin as an output.
+        pinMode(led, OUTPUT);
+        ```
+
+        Then, change set the LED to toggle every 1000 ms (1 second).
+
+        ```
+        digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+        delay(1000);               // wait for a second
+        digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
+        delay(1000);               // wait for a second
+        ```
+
+      tests:
+        -
+          title: Light Frequency
+          description: What rate (times/second or Hz) is the light blinking?
+          form: question
+          output: 0.5 # enable loose query... some tolerances
+        -
+          title: Blinking Light?
+          description: Do you see the light blinking?
+          onerror: Check the connections!
+          form: manual
+        -
+          title: Blink Frequency Test
+          description: Use the pins to measure the exact rate at which it blinks!
+          form: dynamic
+          output: 2 # in hz, the expected frequency
+    -
+      title: Adding a Button Press
+      image: https://raw.githubusercontent.com/OnionIoT/Onion-Docs/master/Omega2/Kit-Guides/img/switches-push-button-layout.jpg
+      description: |
+        Insert a button in between the resistor and the positive voltage power line connected to the LED.
+      tests:
+        -
+          title: Button Press Control
+          description: Does the button press control whether the light is flashing or not?
+          form: dynamic
+        -
+          title: Compile Test
+          description: Does the code compile?
+          form: compile
+        -
+          title: Upload Test
+          description: Does the code upload?
+          form: upload
+        -
+          title: Code Selection
+          description: Highlight your code with the pin mode setting.
+          jsondata: '{"match": "pinMode"}'
+          form: code
+    -
+      title: Congrats!
+      image: http://www.pngall.com/wp-content/uploads/2016/07/Success-Free-Download-PNG.png
+      description: |
+        You have successfully completed the tutorial!
+      tests:
+        -
+          title: Congrats!
+          description: You have successfully completed the tutorial!
+          form: info
+          info: true
+
