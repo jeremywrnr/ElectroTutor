@@ -7,7 +7,7 @@ class StepsController < ApplicationController
     if @step.nil?
       render json: {}, status: :not_found
     else
-    render json: @step
+      render json: @step
     end
   end
 

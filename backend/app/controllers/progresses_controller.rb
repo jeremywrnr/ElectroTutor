@@ -1,4 +1,6 @@
 class ProgressesController < ApplicationController
+  include Studylogger
+
   before_action :authenticate_user
   before_action :set_progress, except: [:create]
 
@@ -34,6 +36,7 @@ class ProgressesController < ApplicationController
   # PATCH/PUT /progresses/1
   def update
     if @progress.update(progress_params)
+      log_user_act "progress-update", progress_params.as_json
       render json: @progress
     else
       render json: @progress.errors, status: :unprocessable_entity

@@ -20,6 +20,7 @@ class TestsController < ApplicationController
     if @step.nil?
       render json: {}, status: :not_found
     else
+
       @tests = Test.where(step_id: @step.id)
       render json: @tests
     end
