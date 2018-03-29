@@ -67,13 +67,11 @@ class VariableRunnerShell extends Component {
       const parsedIdt = this.props.idents;
       const grouped = groupBy(d, 'name');
       const gKey = Object.keys(grouped);
-      console.log(parsedIdt, grouped, gKey);
       const value = gKey
         .map(k => {
           const gData = grouped[k];
           const name = parsedIdt[k];
           const last = gData.slice(-1)[0];
-          console.log(gData, name, last);
           const exp = data.find(x => x.name === name);
           const expv = exp && exp.value;
           const op = exp && exp.op;
