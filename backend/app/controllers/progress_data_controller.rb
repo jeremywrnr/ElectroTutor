@@ -1,4 +1,6 @@
 class ProgressDataController < ApplicationController
+  include Studylogger
+
   before_action :authenticate_user
   before_action :set_progress_data, except: [:create]
 
@@ -27,9 +29,10 @@ class ProgressDataController < ApplicationController
     end
   end
 
-  # PATCH/tUT /progress_data/1
+  # PATCH/PUT /progress_data/1
   def update
     if @progress_data.update(progress_data_params)
+      log_user_act "progress-data-update", progress_data_params # study instrumentation
       render json: @progress_data
     else
       render json: @progress_data.errors, status: :unprocessable_entity

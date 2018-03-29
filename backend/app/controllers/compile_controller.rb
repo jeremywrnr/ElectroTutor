@@ -1,4 +1,5 @@
 class CompileController < ApplicationController
+  include Studylogger
   include Hardware
 
   before_action :compile_params, :set_code, :set_task
@@ -6,6 +7,8 @@ class CompileController < ApplicationController
   def post
     out = ''
     err = ''
+
+    log_user_act "hardware-update", {code: @code, type: @task} # study instrumentation
 
     ioproc = upload @code, @task do |stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
@@ -34,6 +37,8 @@ class CompileController < ApplicationController
     instrumented = instrument @code, idt.join(",") # [] => Str
     puts idt, instrumented
 
+    log_user_act "hardware-update", {code: @code, type: 'measure'} # study instrumentation
+
     ioproc = upload instrumented, 'device' do |stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
       stdin.close
@@ -53,6 +58,8 @@ class CompileController < ApplicationController
     out = ''
     err = ''
     code = autoLoader compile_params[:file]
+
+    log_user_act "hardware-update", {code: @code, type: 'autoload'} # study instrumentation
 
     ioproc = upload code, 'device' do |stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.

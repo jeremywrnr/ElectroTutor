@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include Studylogger
+
   before_action :authenticate_user, except: :create
   before_action :set_user, only: [:show, :update, :destroy]
 
@@ -17,6 +19,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      log_user_act "user-create", user_params # study instrumentation
       render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -26,6 +29,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
+      log_user_act "user-update", user_params # study instrumentation
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
