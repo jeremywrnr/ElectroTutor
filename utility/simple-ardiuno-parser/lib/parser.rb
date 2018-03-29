@@ -127,8 +127,8 @@ module ParserHelper
   def check_watcher(b)
     if m = b.str.match(ASSIGN)
       val = m.captures[0]
-      idx = @watching.find_index(val)
-      if idx && b.dep >= 1
+      idx = @idents.find_index(val)
+      if idx && b.dep >= 1 && @watching.include?(val)
         idx_line = b.clone
         val_line = b.clone
         end_line = b.clone

@@ -67,19 +67,23 @@ class VariableRunnerShell extends Component {
       const parsedIdt = this.props.idents;
       const grouped = groupBy(d, 'name');
       const gKey = Object.keys(grouped);
+      console.log(parsedIdt, grouped, gKey);
       const value = gKey
         .map(k => {
           const gData = grouped[k];
           const name = parsedIdt[k];
           const last = gData.slice(-1)[0];
+          console.log(gData, name, last);
           const exp = data.find(x => x.name === name);
           const expv = exp && exp.value;
+          const op = exp && exp.op;
           return {
             last: last.data,
             line: last.line,
             data: gData.map(g => g.data),
             expv,
             name,
+            op,
           };
         })
         .filter(d => d.expv !== undefined);
@@ -88,10 +92,12 @@ class VariableRunnerShell extends Component {
         if (d.op === 'gt') {
           return d.last >= d.expv;
         } else {
+          // assume equals...
           return d.last === d.expv;
         }
       };
       const pass = value.length > 0 && value.every(checkPass);
+      console.log(value, pass);
       const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
         clearInterval(interval);
@@ -147,7 +153,7 @@ class VariableRunnerShell extends Component {
           !prep &&
           value.map((x, i) => {
             return (
-              <div className="full">
+              <div className="full" key={`var-${i}`}>
                 <br />
                 <VarLabel color={col} key={i} name={x.name + ` =`} />
                 <StatCouple

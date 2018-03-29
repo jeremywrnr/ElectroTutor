@@ -18,7 +18,7 @@ export default class MarkdownView extends React.Component {
 
   dragstart = ev => {
     // set the data to move into the editor
-    ev.dataTransfer.setData('text', ev.target.innerText);
+    ev.dataTransfer.setData('text', `\n${ev.target.innerText}\n`);
   };
 
   renderers = {

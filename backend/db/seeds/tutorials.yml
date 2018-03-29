@@ -109,6 +109,12 @@
           form: numeric
           output: '0.0'
         -
+          title: Voltage Knowledge Test
+          description: What voltage exists between the power (red) and ground (blue) rails?
+          jsondata: '["0 V", "10 V", "5 V", "3.3 V"]'
+          output: 2 # 0-based
+          form: multiple
+        -
           title: Hardware Wiring Check
           description: |
             *REMOVE THE WHITE AND BLACK PROBES FROM THE CIRCUIT BEFORE DOING THIS TEST*
@@ -128,23 +134,29 @@
         At the top of the file, add this definition to set which Arduino pin the button is connected to.
 
         ```
+
         #define button 2
         #define outLED 13
+
         ```
 
         Next, add this code inside of the `setup()` function to add pin 2 as an input, using `pinMode`:
 
         ```
-          pinMode(button, INPUT_PULLUP);
-          pinMode(outLED, OUTPUT);
+
+        pinMode(button, INPUT_PULLUP);
+        pinMode(outLED, OUTPUT);
+
         ```
 
         Last, add this code to the `loop()` function to read the button's value.
 
 
         ```
+
         int press = !digitalRead(button);
         digitalWrite(outLED, press);
+
         ```
 
         This code will also copy the button state to the onboard Arduino LED.
@@ -192,17 +204,21 @@
         Add two more statements at the top to define our buzzer pin and the note frequency.
 
         ```
+
         #define buzzer 4
         #define freq 220
+
         ```
 
         Then, at the bottom of `loop()` function, set the noise to play when the button is pressed:
 
         ```
+
         if (press) {
           tone(buzzer, freq, 10);
           delay(10);
         }
+
         ```
 
       tests:
@@ -266,32 +282,38 @@
       description: |
         ![rain](rainbow.gif)
 
-        Include code for the LED ring at the top of the file:
+        Include code for the LED ring *at the VERY top* of the file:
 
         ```
         #include <Adafruit_NeoPixel.h>
+
         ```
 
         Then, define the pin the ring is connected to, and the number of "pixels" in the ring.
 
         ```
+
         #define PIN    7
         #define PIXELS 12
+
         ```
 
         *Before* the `setup()` function, initial the ring and a base white color.
 
         ```
+
         int color = 0;
         Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXELS, PIN, NEO_GRB + NEO_KHZ800);
         uint32_t white = strip.Color(16, 16, 16); // dim white color
-        ```
-
-        Initialize the strip just before the end of `setup()` function.
 
         ```
-          strip.begin(); // This initializes the NeoPixel library.
-          strip.setBrightness(16);
+
+        Initialize the strip *just before* the end of `setup()` function.
+
+        ```
+        strip.begin(); // This initializes the NeoPixel library.
+        strip.setBrightness(16);
+
         ```
 
         *In between* the `setup()` and `loop()` functions, insert these two light helper functions.
@@ -328,25 +350,21 @@
 
         ```
 
-        Replace the `loop()` function content with these lines:
+        *Replace the* `loop()` function content with these lines:
 
         ```
+
         rainbow(color, 2);
         color = (color+2) % 255;
+
         ```
 
       tests:
         -
           title: Code Selection Test - Library Inclusion
           description: Highlight the code which *includes the LED ring library*.
-          onerror: Include the Adafruit library at the top of the file. 
+          onerror: Include the Adafruit library at the top of the file.
           jsondata: '{"match": "include <Adafruit", "flag": "i"}'
-          form: code # regex
-        -
-          title: Code Selection - Strip Initialization
-          description: Highlight the line of your code which *initializes the LED ring*.
-          onerror: Include the initialization line in setup().
-          jsondata: '{"match": "strip.begin", "flag": "i"}'
           form: code # regex
         -
           title: Compilation Check
@@ -386,12 +404,14 @@
 
         You can use the flashlight to trigger the light sensor.
 
-        Just below the Neopixell ibrary inclusion line, add this code snippet:
+        Just below the Neopixel ibrary inclusion line, add this code snippet:
 
         ```
+
         #define light  A5
         #define thresh_lo 100
         #define thresh_hi 900
+
         ```
 
         This sets the light sensor pin and sensor level thresholds.
@@ -400,17 +420,20 @@
 
         ```
         pinMode(light, INPUT_PULLUP);
+
         ```
 
         Replace the `loop()` content with this snippet:
 
         ```
+
         int level = analogRead(light);
         if (level > thresh_hi) {
             digitalWrite(outLED, HIGH);
         } else if (level < thresh_lo) {
             digitalWrite(outLED, LOW);
         }
+
         ```
 
         Now, the onboard Arduino's LED should activate when you flast the light sensor.
@@ -433,6 +456,7 @@
         Replace the `loop()` function content with this snippet:
 
         ```
+
         int level = analogRead(light);
         int reset = !digitalRead(button);
         if (buzzing) {
@@ -445,6 +469,7 @@
         } else if (!buzzing && level > thresh_hi) {
           buzzing = 1; // begin buzzing
         }
+
         ```
     -
       title: Code Integration

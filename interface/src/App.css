@@ -47,6 +47,13 @@ div.ui.segment pre {
   overflow: auto;
   padding: 10px;
 }
+div.full.tut-content pre:hover {
+  border-right: 1em #17a1a5 solid;
+}
+div.ui.segment em {
+  background: rgba(0, 100, 104, 0.2);
+  border-bottom: 0.2em #17a1a5 solid;
+}
 div.guide img {
   /*800px !important;*/
   max-width: 100%;
@@ -173,4 +180,7 @@ div.ui.styled.accordion .ui.statistic .value small {
 }
 div.ui.styled.accordion.test-accordion .ui.large.label {
   margin-bottom: 0.5em;
+}
+div.ui.styled.accordion.test-accordion div.title:hover {
+  background: rgba(34, 36, 38, 0.1) !important;
 }

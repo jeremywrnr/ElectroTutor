@@ -37,7 +37,7 @@ class Code extends React.Component {
     wrapEnabled: true,
     showPrintMargin: false,
     highlightActiveLine: false,
-    value: 'void setup() {\n\n}\n\nvoid loop() {\n\n}',
+    value: '// Starter Code. \n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}\n\n',
   };
 
   // Alias mounting flash with component flash

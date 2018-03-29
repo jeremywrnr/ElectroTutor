@@ -337,6 +337,7 @@ class TutorialBody extends Component {
     if (!show) {
       continueProps.head = 'Step Tests';
       continueProps.text = 'Begin';
+      continueProps.color = 'green';
       continueProps.task = 'Click to start tests.';
       continueProps.next = this.handleTestReveal;
     }
@@ -352,7 +353,7 @@ class TutorialBody extends Component {
               title={step_header}
               rHead={!ctrl && 'Testing'}
               left={
-                <div className="full">
+                <div className="full tut-content">
                   {step.image && <Image src={step.image} />}
                   <Segment>
                     <MarkdownView source={step.description || ''} />

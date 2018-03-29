@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20180207164107) do
     t.integer "user_id"
     t.integer "tutorial_id"
     t.integer "position"
-    t.text "code", default: "void setup() {\n\n}\n\nvoid loop() {\n\n}"
+    t.text "code", default: "// Starter code - this is a comment.\n\n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}\n"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tutorial_id"], name: "index_progresses_on_tutorial_id"
