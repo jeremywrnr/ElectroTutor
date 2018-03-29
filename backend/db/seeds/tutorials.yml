@@ -177,11 +177,15 @@
       description: |
         ![pie](piezo.jpg)
 
-        Next, connect the piezo buzzer to the third digital Arduino pin `(3)`.
+        Insert the piezo so that it's legs are on different rows, as pictured.
 
-        Connect the other end of the piezo to GND (the blue rail) with the resistor.
+        Next, connect the piezo buzzer to the *digital pin 4* on the Arduino.
+
+        Connect the other end of the piezo to *GND* (the blue rail) with the resistor.
 
         ![pie](piezo-crop.jpg)
+
+        The polarity does not matter, so you can plug it in either direction.
 
       tests:
         -
@@ -381,7 +385,7 @@
 
         Connect the negative `(-)` terminal to GND (blue/ground).
 
-        Connect the the output pin to the Arduino's analog 5 pin `(A5)`.
+        Connect the the output pin to the Arduino's analog 5 pin *(A5)*.
 
         ![wiring](light-wiring-crop.jpg)
       tests:
@@ -440,6 +444,12 @@
 
       tests:
         -
+          title: Code Selection Test - Library Inclusion
+          description: Highlight the code which resets the LED strip.
+          onerror: Include the Adafruit library at the top of the file.
+          jsondata: '{"match": "include <Adafruit", "flag": "i"}'
+          form: code # regex
+        -
           title: Software Trigger Check
           description: |
             The system will now check to see that you programmed the board correctly.
@@ -452,6 +462,51 @@
     -
       title: Hardware Integration
       description: |
+        ![integration](integration.jpg)
+
+        Now that each  hardware component is working, test integrating the parts in software.
+
+        The light sensor will trigger the alarm (lights and sound), and pressing button will reset it.
+
+      tests:
+        -
+          title: Code Check
+          description: Check that you can compile and upload the code!
+          jsondata: '{"file":"5_complete.ino"}'
+          form: autoupload
+    -
+      title: Software Integration
+      description: |
+
+        Add these two definitions and this function *before* the `setup()` function:
+
+        ```
+        int buzzing;
+        int color = 0;
+
+        void blankState() {
+          for (int i = 0; i < PIXELS; i++) {
+            strip.setPixelColor(i, white);
+          }
+          strip.show();
+        }
+        ```
+
+        The variables will be used to control the whether the system is buzzing, and what color it shows.
+
+        The function will reset the LEDs back to a dim white.
+
+        Add this function *before* the `loop()` function:
+
+        ```
+        void buzz() {
+          tone(buzzer, freq, 100);
+          rainbow(color, 2);
+          color = (color + 2) % 255;
+        }
+        ```
+
+        This helper function both buzzes the piezo and powers the LED.
 
         Replace the `loop()` function content with this snippet:
 
@@ -472,24 +527,11 @@
 
         ```
     -
-      title: Code Integration
-      description: |
-        ![integration](integration.jpg)
-
-        Now that each  hardware component is working, integrate the parts in software.
-
-        The light sensor will trigger the alarm (lights and sound), and pressing button will reset it.
-
-      tests:
-        -
-          title: Code Check
-          description: Check that you can compile and upload the code!
-          jsondata: '{"file":"5_complete.ino"}'
-          form: autoupload
-    -
       title: Task Complete!
       image: /tutorial/complete.gif
-      description: Well done!
+      description:
+        # Well done!
+        Congrats on successfully completing the tutorial!
       tests:
         -
           title: Congrats!
