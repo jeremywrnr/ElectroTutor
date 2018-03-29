@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import MarkdownView from '../MarkdownView.js';
 
 //
 // Code Analysis
@@ -22,7 +23,7 @@ class CodeRunner extends Component {
     const sel = this.props.selected;
     return (
       <div className="full">
-        {this.props.test.description}
+        <MarkdownView source={this.props.test.description} />
         <br />
         {sel && (
           <SyntaxHighlighter language="arduino">

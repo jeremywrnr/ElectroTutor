@@ -137,7 +137,6 @@ class VariableRunnerShell extends Component {
 
     return (
       <div className="full">
-        <MarkdownView source={this.props.test.description} />
         {this.state.loading && <MeasuringMessage head="Recompiling..." />}
         {err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
         {prep && (
@@ -153,11 +152,15 @@ class VariableRunnerShell extends Component {
             return (
               <div className="full" key={`var-${i}`}>
                 <br />
-                <VarLabel color={col} key={i} name={x.name + ` =`} />
+                <VarLabel
+                  color={col}
+                  key={i}
+                  name={`${x.name} ${x.op === 'gt' ? '>' : ''}=`}
+                />
                 <StatCouple
                   key={`${x}-${i}`}
                   input={nanCheck(x.last)}
-                  out={x.expv}
+                  out={`${x.op === 'gt' ? '>=' : ''} ${x.expv}`}
                 />
                 {x.data.length > 0 && <Graph data={x.data} />}
               </div>
@@ -166,6 +169,7 @@ class VariableRunnerShell extends Component {
         {meas && (
           <MeasuringMessage text="Measuring code variable data changes..." />
         )}
+        <MarkdownView source={this.props.test.description} />
       </div>
     );
   }
@@ -184,7 +188,7 @@ class VarLabel extends Component {
 const VariableRunner = withSerial(VariableRunnerShell, {
   port: Config.serial.device,
   delim: `\r\n`,
-  samples: 100,
+  samples: 50000,
 });
 
 export default VariableRunner;

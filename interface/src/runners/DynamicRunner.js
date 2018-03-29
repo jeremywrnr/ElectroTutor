@@ -83,8 +83,14 @@ class DynamicRunnerShell extends Component {
 
     return (
       <div className="full">
-        <MarkdownView source={this.props.test.description} />
-        <br />
+        {meas && (
+          <div className="full">
+            <br />
+            <StatCouple unit="Hz" input={input} out={out} />
+            <MeasuringMessage />
+            <br />
+          </div>
+        )}
         {prep && (
           <MeasuringMessage
             icon="setting"
@@ -92,14 +98,7 @@ class DynamicRunnerShell extends Component {
             text="Loading code onto test board."
           />
         )}
-
-        {meas && (
-          <div className="full">
-            <br />
-            <StatCouple unit="Hz" input={input} out={out} />
-            <MeasuringMessage />
-          </div>
-        )}
+        <MarkdownView source={this.props.test.description} />
       </div>
     );
   }

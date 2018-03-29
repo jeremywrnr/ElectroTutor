@@ -50,7 +50,7 @@
       description: |
         The red and blue `(+/-)` columns along the sides of the board are connected.
 
-        The center rows are connected horizontally, as pictured above.
+        The center rows are connected *horizontally*, as pictured above.
 
     -
       title: Wiring Button Connections
@@ -98,19 +98,19 @@
         -
           title: Button Press Check
           description: |
-            Measure the voltage across the button.
+            Measure the voltage across the button using the white-box instrumentation tool.
 
-            Connect the black wire to `GND` and the white wire to side connected to the Arduino.
+            Connect the *black wire to GND* and the *white wire to the Arduino-connected side*.
 
             ![piezo](measure-button-crop.jpg)
 
-            It should drop as you press the button down.
+            It should drop as you press the button down - *hold it down for at least 2 seconds*.
 
           form: numeric
           output: '0.0'
         -
           title: Voltage Knowledge Test
-          description: What voltage exists between the power (red) and ground (blue) rails?
+          description: What voltage difference exists between the power (red) and ground (blue) rails?
           jsondata: '["0 V", "10 V", "5 V", "3.3 V"]'
           output: 2 # 0-based
           form: multiple
@@ -129,34 +129,28 @@
     -
       title: Button Press Detection Code
       description: |
-        Now that the button is connected, we need to detect when it is being pressed in software.
+        Now that the button is connected, detect when it is being pressed in software.
 
         At the top of the file, add this definition to set which Arduino pin the button is connected to.
 
         ```
-
         #define button 2
         #define outLED 13
-
         ```
 
         Next, add this code inside of the `setup()` function to add pin 2 as an input, using `pinMode`:
 
         ```
-
-        pinMode(button, INPUT_PULLUP);
-        pinMode(outLED, OUTPUT);
-
+          pinMode(button, INPUT_PULLUP);
+          pinMode(outLED, OUTPUT);
         ```
 
         Last, add this code to the `loop()` function to read the button's value.
 
 
         ```
-
-        int press = !digitalRead(button);
-        digitalWrite(outLED, press);
-
+          int press = !digitalRead(button);
+          digitalWrite(outLED, press);
         ```
 
         This code will also copy the button state to the onboard Arduino LED.
@@ -208,28 +202,24 @@
         Add two more statements at the top to define our buzzer pin and the note frequency.
 
         ```
-
         #define buzzer 4
         #define freq 220
-
         ```
 
-        Then, at the bottom of `loop()` function, set the noise to play when the button is pressed:
+        Then, *just before the end* of `loop()` function, set the noise to play when the button is pressed:
 
         ```
-
-        if (press) {
-          tone(buzzer, freq, 10);
-          delay(10);
-        }
-
+          if (press) {
+            tone(buzzer, freq, 10);
+            delay(10);
+          }
         ```
 
       tests:
         -
           title: Code Selection Test
           description: Highlight the part of your code which turns on the buzzer.
-          onerror: Make sure to include the buzzer line as described in the left pane.
+          onerror: Make sure to include the buzzer code line as described in the left pane.
           jsondata: '{"match": "tone", "flag": "i"}'
           form: code # regex
         -
@@ -241,7 +231,7 @@
           description: |
             ![piezo](measure-piezo.jpg)
 
-            Place the probes across the speaker end to measure the piezo's frequency.
+            Connect the *black probe to ground* and the *white probe to the Arduino-connected piezo leg*.
 
             ![piezo](measure-piezo-crop.jpg)
 
@@ -255,11 +245,11 @@
       description: |
         ![neopix](neopixel.jpg)
 
-        Wire the Power (red) and Ground (black) ends of the Neopixel ring to the positive and ground rails.
+        Connect the *Power (red)* and *Ground (black)* ends of the Neopixel ring to the positive and ground rails.
 
         ![neopix](neopixel-crop1.jpg)
 
-        Connect the "`Data In`" yellow LED pin to the digital 7 on the Arduino.
+        Connect the *Data In* yellow LED pin to the *digital 7* on the Arduino.
 
         ![neopix](neopixel-crop2.jpg)
 
@@ -290,34 +280,28 @@
 
         ```
         #include <Adafruit_NeoPixel.h>
-
         ```
 
         Then, define the pin the ring is connected to, and the number of "pixels" in the ring.
 
         ```
-
         #define PIN    7
         #define PIXELS 12
-
         ```
 
         *Before* the `setup()` function, initial the ring and a base white color.
 
         ```
-
         int color = 0;
         Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXELS, PIN, NEO_GRB + NEO_KHZ800);
         uint32_t white = strip.Color(16, 16, 16); // dim white color
-
         ```
 
         Initialize the strip *just before* the end of `setup()` function.
 
         ```
-        strip.begin(); // This initializes the NeoPixel library.
-        strip.setBrightness(16);
-
+          strip.begin(); // This initializes the NeoPixel library.
+          strip.setBrightness(16);
         ```
 
         *In between* the `setup()` and `loop()` functions, insert these two light helper functions.
@@ -357,16 +341,14 @@
         *Replace the* `loop()` function content with these lines:
 
         ```
-
-        rainbow(color, 2);
-        color = (color+2) % 255;
-
+          rainbow(color, 2);
+          color = (color+2) % 255;
         ```
 
       tests:
         -
           title: Code Selection Test - Library Inclusion
-          description: Highlight the code which *includes the LED ring library*.
+          description: Highlight the code which includes the *Neopixel LED* library.
           onerror: Include the Adafruit library at the top of the file.
           jsondata: '{"match": "include <Adafruit", "flag": "i"}'
           form: code # regex
@@ -381,11 +363,11 @@
 
         Next, install the hardware for sensing the light level.
 
-        Connect the positive `(+)` terminal of the sensor to 5V (red/power).
+        Connect the *positive (+)* terminal of the sensor to *5V* (red/power).
 
-        Connect the negative `(-)` terminal to GND (blue/ground).
+        Connect the *negative (-)* terminal to *GND* (blue/ground).
 
-        Connect the the output pin to the Arduino's analog 5 pin *(A5)*.
+        Connect the the *output pin* to the *Analog 5 pin, (A5)* on the Arduino.
 
         ![wiring](light-wiring-crop.jpg)
       tests:
@@ -411,11 +393,9 @@
         Just below the Neopixel ibrary inclusion line, add this code snippet:
 
         ```
-
         #define light  A5
         #define thresh_lo 100
         #define thresh_hi 900
-
         ```
 
         This sets the light sensor pin and sensor level thresholds.
@@ -423,31 +403,33 @@
         In `setup()`, add the light sensor as an input:
 
         ```
-        pinMode(light, INPUT_PULLUP);
+          pinMode(light, INPUT);
 
         ```
 
         Replace the `loop()` content with this snippet:
 
         ```
+          int digital;
+          int level = analogRead(light); // Read sensor.
+          if (level > thresh_hi) {
+              digital = 1;
+          } else if (level < thresh_lo) {
+              digital = 0;
+          }
 
-        int level = analogRead(light);
-        if (level > thresh_hi) {
-            digitalWrite(outLED, HIGH);
-        } else if (level < thresh_lo) {
-            digitalWrite(outLED, LOW);
-        }
-
+          // Write the digital value to the onboard LED.
+          digitalWrite(outLED, digital);
         ```
 
-        Now, the onboard Arduino's LED should activate when you flast the light sensor.
+        Now, the onboard Arduino's LED should activate when you flash the light sensor.
 
       tests:
         -
-          title: Code Selection Test - Library Inclusion
-          description: Highlight the code which resets the LED strip.
+          title: Code Selection Test - Sensor Reading
+          description: Highlight the code which reads in the light sensor value.
           onerror: Include the Adafruit library at the top of the file.
-          jsondata: '{"match": "include <Adafruit", "flag": "i"}'
+          jsondata: '{"match": "analogRead.*light", "flag": "i"}'
           form: code # regex
         -
           title: Software Trigger Check
@@ -457,32 +439,40 @@
             Once loaded, flash the light sensor to raise the level above the threshold.
 
           onerror: Make sure that you are saving the sensor value into `level`.
-          jsondata: '[{"name": "level", "value": 900, "op": "gt"}]' # name, value, line
+          jsondata: '[{"name": "level", "value": 900, "op": "gt"}, {"name": "digital", "value": 1}]' # name, value, line
           form: variable
     -
       title: Hardware Integration
       description: |
         ![integration](integration.jpg)
 
-        Now that each  hardware component is working, test integrating the parts in software.
+        Now that each hardware component is working, test integrating the parts in software.
 
         The light sensor will trigger the alarm (lights and sound), and pressing button will reset it.
 
       tests:
         -
-          title: Code Check
-          description: Check that you can compile and upload the code!
+          title: Hardware Configuration Check
+          description: |
+            Check that your hardware is configured corrected.
+
+            Try *flashing the light sensor* to turn on the alarm.
+
+            Try *pressing the button* to turn off the alarm after it is activated.
+
+            Did both of these functions work as expected?
+
           jsondata: '{"file":"5_complete.ino"}'
+          onerror: Check that the sensor is connected and configured as `INPUT`, not `INPUT_PULLUP`.
           form: autoupload
     -
       title: Software Integration
       description: |
 
-        Add these two definitions and this function *before* the `setup()` function:
+        Add these this definition and this function *before* the `setup()` function:
 
         ```
         int buzzing;
-        int color = 0;
 
         void blankState() {
           for (int i = 0; i < PIXELS; i++) {
@@ -492,7 +482,7 @@
         }
         ```
 
-        The variables will be used to control the whether the system is buzzing, and what color it shows.
+        The variables will be used to control the whether the system is buzzing.
 
         The function will reset the LEDs back to a dim white.
 
@@ -508,24 +498,32 @@
 
         This helper function both buzzes the piezo and powers the LED.
 
-        Replace the `loop()` function content with this snippet:
+        *Replace the* `loop()` function content with this snippet:
 
         ```
 
-        int level = analogRead(light);
-        int reset = !digitalRead(button);
-        if (buzzing) {
-          if (reset && level < thresh_lo) {
-            blankState();
-            buzzing = 0; // reset
-          } else {
-            buzz();
+          int level = analogRead(light);
+          int reset = !digitalRead(button);
+          if (buzzing) {
+            if (reset && level < thresh_lo) {
+              blankState();
+              buzzing = 0; // reset
+            } else {
+              buzz();
+            }
+          } else if (!buzzing && level > thresh_hi) {
+            buzzing = 1; // begin buzzing
           }
-        } else if (!buzzing && level > thresh_hi) {
-          buzzing = 1; // begin buzzing
-        }
 
         ```
+
+      tests:
+        -
+          title: Code Selection Test
+          description: Highlight the function call in loop which resets the LEDs.
+          onerror: Make sure to include replace the loop code with the new code!
+          jsondata: '{"match": "blankState", "flag": "i"}'
+          form: code # regex
     -
       title: Task Complete!
       image: /tutorial/complete.gif
@@ -619,7 +617,15 @@
     -
       title: Debugging the debugger.
       image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
-      description: You can test each of the different test types here.
+      description: |
+        ## Overview
+
+        You can test each of the different test types here.
+
+        ```
+        // A comment you can drag to insert.
+        ```
+
       tests:
         -
           title: variable monitoring

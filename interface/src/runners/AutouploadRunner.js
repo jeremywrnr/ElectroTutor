@@ -49,7 +49,6 @@ class AutouploadRunner extends Component {
 
     return (
       <div className="full">
-        <MarkdownView source={this.props.test.description} />
         {load && (
           <MeasuringMessage
             head="Uploading hardware test code..."
@@ -58,6 +57,8 @@ class AutouploadRunner extends Component {
         )}
 
         {show && <Message info content={help} />}
+
+        <MarkdownView source={this.props.test.description} />
 
         {ok && (
           <div class="full">

@@ -146,7 +146,7 @@ class TutorialBody extends Component {
   };
 
   updateStepProgress = () => {
-    const pData = this.state.pData;
+    const pData = this.state.pData || [];
     const tests = this.state.tests;
     const has_tests = pData.length > 0;
     const pass_all = pData

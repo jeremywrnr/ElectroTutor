@@ -43,7 +43,7 @@ class AccordionTestItem extends Component {
     variable: 'Click to Measure Code Variable',
     dynamic: 'Click to Measure Signal Frequency',
     numeric: 'Click to Measure Voltage Signal',
-    compile: 'Click to Attempt Compililation',
+    compile: 'Click to Attempt Compilation',
     upload: 'Click to Attempt Upload',
     autoupload: 'Click to Setup and Begin Test',
     question: 'Submit Answer',

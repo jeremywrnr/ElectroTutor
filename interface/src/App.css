@@ -59,8 +59,8 @@ div.guide img {
   max-width: 100%;
 }
 div.ui.three.column.grid.full {
+  max-width: 2100px;
   margin: auto;
-  max-width: 2000px;
 }
 div.ui.grid > div.row {
   padding-bottom: 0rem;

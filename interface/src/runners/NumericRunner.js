@@ -93,7 +93,15 @@ class NumericRunnerShell extends Component {
 
     return (
       <div className="full">
-        <MarkdownView source={this.props.test.description} />
+        {meas && (
+          <div className="full">
+            <br />
+            <StatCouple unit="V" input={input} out={out} />
+            {d.length > 0 && <Graph data={d} />}
+            <MeasuringMessage />
+            <br />
+          </div>
+        )}
 
         {prep && (
           <MeasuringMessage
@@ -103,14 +111,7 @@ class NumericRunnerShell extends Component {
           />
         )}
 
-        {meas && (
-          <div className="full">
-            <br />
-            <StatCouple unit="V" input={input} out={out} />
-            {d.length > 0 && <Graph data={d} />}
-            <MeasuringMessage />
-          </div>
-        )}
+        <MarkdownView source={this.props.test.description} />
       </div>
     );
   }
