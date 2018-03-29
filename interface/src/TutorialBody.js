@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {Image, Container, Segment, Button} from 'semantic-ui-react';
+import {
+  Image,
+  Container,
+  Segment,
+  Button,
+  Message,
+} from 'semantic-ui-react';
 import {HotKeys} from 'react-hotkeys';
 import Sound from 'react-sound';
 import * as ace from 'brace';
@@ -358,6 +364,16 @@ class TutorialBody extends Component {
                   <Segment>
                     <MarkdownView source={step.description || ''} />
                     <br />
+                    {!p &&
+                      !ctrl && (
+                        <Message
+                          big
+                          warning
+                          icon="help"
+                          header="Pass the tests to continue."
+                          content="Pass the all of the tests in the right-hand pane to continue."
+                        />
+                      )}
                     <Button.Group fluid widths="2">
                       <Button
                         disabled={this.state.progress.position <= 1}

@@ -21,10 +21,12 @@ export default class MarkdownView extends React.Component {
     ev.dataTransfer.setData('text', `\n${ev.target.innerText}\n`);
   };
 
+  // disabled the drag - jeremy
+
   renderers = {
     code: node => (
       <SyntaxHighlighter
-        draggable={true}
+        draggable={false}
         onDragStart={this.dragstart}
         language="arduino"
         children={node.value}
