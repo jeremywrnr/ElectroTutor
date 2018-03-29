@@ -394,9 +394,6 @@ class TutorialBody extends Component {
                 <Container>
                   {ctrl ? (
                     <Segment basic>
-                      <div class="ui inverted segment">
-                        <h4 class="ui inverted header">Control Condition</h4>
-                      </div>
                       <Continue
                         head={'Continue Tutorial'}
                         next={this.nextStep}

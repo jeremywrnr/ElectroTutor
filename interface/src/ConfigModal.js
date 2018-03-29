@@ -33,7 +33,7 @@ export default class ConfigModal extends Component {
         basic>
         <Header icon="setting" content="Settings" />
         <Modal.Content>
-          <p>Control condition has the tutorial tests disabled.</p>
+          <p>Disable or enable the tutorial tests.</p>
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={this.onClickNo} color="red" inverted>
