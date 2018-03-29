@@ -51,8 +51,8 @@ class Code extends React.Component {
 
     const options = {
       //maxLines: Infinity,
+      //enableLiveAutocompletion: true,
       enableBasicAutocompletion: true,
-      enableLiveAutocompletion: true,
       showLineNumbers: this.props.showLines,
       scrollPastEnd: true,
       tabSize: 2,

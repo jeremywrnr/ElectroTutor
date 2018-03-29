@@ -14,7 +14,7 @@
       description: |
         ![parts](parts.jpg)
 
-        Here are the parts this tutorial requires:
+        Here are the components this tutorial requires:
 
         - Arduino UNO microcontroller
         - Neopixel LED Ring
@@ -48,9 +48,10 @@
       title: Breadboard Connection Overview
       image: /tutorial/breadboard.gif
       description: |
-        The red and blue `(+/-)` rows along the sides of the board are connected.
+        The red and blue `(+/-)` columns along the sides of the board are connected.
 
-        The center rows are connected horizontally.
+        The center rows are connected horizontally, as pictured above.
+
     -
       title: Wiring Button Connections
       title: Connecting Power and Ground
@@ -67,22 +68,25 @@
         -
           title: Breadboard Power Check
           description: |
-            ![power](measure-power.jpg)
-
             Measure the power rail with the tester's two probes on the testing board.
 
-            Press the button below to start measuring voltage.
+            Connect the white pin to *5V* (red/power), and the black pin to *GND* (blue/ground).
+
+            ![power](measure-power-crop.jpg)
+
+            Press the button below to check the voltage.
+
           onerror: Make sure that you use the 5V pin; not the Vin or 3.3V pins!
           form: numeric
           output: '5.0'
     -
-      title: Reset Button Setup
+      title: Button Setup
       description: |
         ![button-in](button-in.jpg)
 
-        Connect the button to `GND` by placing a wire between the blue `(-)` line and one end of the button.
+        Connect the one side of the button to `GND` with a jumper wire.
 
-        Connect the button's other side to the digital `0` pin on the Arduino board.
+        Connect the other side to *digital pin 2* on the Arduino board.
 
         ![button-in](button-in-crop.jpg)
 
@@ -94,28 +98,26 @@
         -
           title: Button Press Check
           description: |
-            ![piezo](measure-button.jpg)
-
             Measure the voltage across the button.
+
+            Connect the black wire to `GND` and the white wire to side connected to the Arduino.
 
             ![piezo](measure-button-crop.jpg)
 
-            It should drop when you press the button down.
-
-            Click the button below to setup the test.
+            It should drop as you press the button down.
 
           form: numeric
           output: '0.0'
         -
           title: Hardware Wiring Check
           description: |
+            *REMOVE THE WHITE AND BLACK PROBES FROM THE CIRCUIT BEFORE DOING THIS TEST*
+
             The system will now check to see that you have wired up the board correctly.
 
             Does the Arduino light turn on as you push the button?
 
-            Click below to setup the test.
-
-          onerror: Check that the wire between the button and the board is in the right place.
+          onerror: Check that the wire between the button and the board is in the right place. Also make sure that probe is no longer connected to the button.
           jsondata: '{"file":"1_button.ino"}'
           form: autoupload
     -
@@ -126,26 +128,26 @@
         At the top of the file, add this definition to set which Arduino pin the button is connected to.
 
         ```
-        #define button 0
+        #define button 2
         #define outLED 13
         ```
 
-        Next, add this code inside of the `setup()` function to add pin 0 as an input, using `pinMode`:
+        Next, add this code inside of the `setup()` function to add pin 2 as an input, using `pinMode`:
 
         ```
-          pinMode(button, INPUT);
+          pinMode(button, INPUT_PULLUP);
           pinMode(outLED, OUTPUT);
         ```
 
         Last, add this code to the `loop()` function to read the button's value.
 
+
+        ```
+        int press = !digitalRead(button);
+        digitalWrite(outLED, press);
+        ```
+
         This code will also copy the button state to the onboard Arduino LED.
-
-
-        ```
-          int press = !digitalRead(button);
-          digitalWrite(outLED, press);
-        ```
 
       tests:
         -
@@ -153,9 +155,7 @@
           description: |
             The system will now check to see that you programmed the board correctly.
 
-            Press the button, and change the value of `press` in software to `1`.
-
-            Click below to setup the test.
+            Once loaded, press the button on the breadboard to set the `press` variable's value to `1`.
 
           onerror: Make sure that you are saving the sensor value into `press`.
           jsondata: '[{"name": "press", "value": 1}]' # name, value, line
@@ -165,7 +165,7 @@
       description: |
         ![pie](piezo.jpg)
 
-        Next, connect the piezo buzzer to the the third digital Arduino pin `(3)`.
+        Next, connect the piezo buzzer to the third digital Arduino pin `(3)`.
 
         Connect the other end of the piezo to GND (the blue rail) with the resistor.
 
@@ -179,39 +179,36 @@
 
             Does the piezo beep after code is uploaded?
 
-            Click below to setup the test.
-
           onerror: Make the sure one end of the piezo is going to GND with the resistor, and the other end is going to pin 3!
           jsondata: '{"file":"2_sounds.ino"}'
           form: autoupload
     -
       title: Tone Generation Code
       description: |
-        Now that our system is reading the button correctly, let's hook the
-        button up to play a noise using the Piezo sensor and the Arduino tone generator.
+        To stop the beeping, press the *Upload* button in the Arduino IDE.
 
-        Use this code, or upload and it test it automatically from the testing pane.
+        Next, in software, set up the system to buzz whenever the button is pressed.
 
-        Add two more statements at the top to define our buzzer pin, and the note frequency.
+        Add two more statements at the top to define our buzzer pin and the note frequency.
 
         ```
-        #define buzzer 3
+        #define buzzer 4
         #define freq 220
         ```
 
-        Then, in the `loop()` function, set the noise to play when the button is pressed:
+        Then, at the bottom of `loop()` function, set the noise to play when the button is pressed:
 
         ```
-          if (press) {
-            tone(buzzer, freq, 10);
-            delay(10);
-          }
+        if (press) {
+          tone(buzzer, freq, 10);
+          delay(10);
+        }
         ```
 
       tests:
         -
           title: Code Selection Test
-          description: Highlight to select the part of your code which turns on the buzzer.
+          description: Highlight the part of your code which turns on the buzzer.
           onerror: Make sure to include the buzzer line as described in the left pane.
           jsondata: '{"match": "tone", "flag": "i"}'
           form: code # regex
@@ -226,9 +223,9 @@
 
             Place the probes across the speaker end to measure the piezo's frequency.
 
-            The piezo will only beep when the button is pressed.
+            ![piezo](measure-piezo-crop.jpg)
 
-            Click below to setup the test.
+            The piezo will only beep when the button is pressed.
 
           output: 220 # hz
           onerror: Make sure that the white probe is connected to the same end of the piezo as the Arduino.
@@ -248,16 +245,21 @@
 
       tests:
         -
-          title: Wiring Check
+          title: Hardware Wiring Check
           description: |
-            Press the button below to verify the ring is wired correctly.
+            The system will now check to see that you have wired up the LED ring correctly.
 
             ![neopix](rainbow.gif)
 
-            If the lights are wired up correctly, they will have a glowing pattern.
+            If the lights are wired up correctly, you will see a glowing pattern.
 
+            Does the LED ring rotate though the rainbow?
+
+            Click below to setup the test.
+
+          onerror: |
+            Make the sure data pin is connected to pin 7, and the power/ground pins are connected to 5V and GND respectively.
           jsondata: '{"file":"3_lights.ino"}'
-          onerror: Make the sure data pin is connected to pin 7, and the power/ground pins are connected to 5V and GND respectively.
           form: autoupload
     -
       title: Neopixel Ring Code
@@ -277,7 +279,7 @@
         #define PIXELS 12
         ```
 
-        Before the `setup()` function, initial the ring and a base white color.
+        *Before* the `setup()` function, initial the ring and a base white color.
 
         ```
         int color = 0;
@@ -285,16 +287,17 @@
         uint32_t white = strip.Color(16, 16, 16); // dim white color
         ```
 
-        Initialize the strip in the `setup()` function.
+        Initialize the strip just before the end of `setup()` function.
 
         ```
-            strip.begin(); // This initializes the NeoPixel library.
-            strip.setBrightness(16);
+          strip.begin(); // This initializes the NeoPixel library.
+          strip.setBrightness(16);
         ```
 
-        Before the `loop()` function, insert these two light helper functions.
+        *In between* the `setup()` and `loop()` functions, insert these two light helper functions.
 
         ```
+
         uint32_t Wheel(byte WheelPos) {
             WheelPos = 255 - WheelPos;
             if (WheelPos < 85) {
@@ -322,28 +325,33 @@
                 }
             }
         }
-        ```
-
-        Then, in the `loop()` function, change the colors:
 
         ```
-            rainbow(color, 2);
-            color = (color+2) % 255;
+
+        Replace the `loop()` function content with these lines:
+
+        ```
+        rainbow(color, 2);
+        color = (color+2) % 255;
         ```
 
       tests:
         -
-          title: Hardware Wiring Check
-          description: |
-            The system will now check to see that you have wired up the LED ring correctly.
-
-            Does the LED ring rotate though the rainbow?
-
-            Click below to setup the test.
-
-          onerror: Check that there are no code compile errors, and that the wire between the button and the board is on the right pin.
-          jsondata: '{"file":"3_lights.ino"}'
-          form: autoupload
+          title: Code Selection Test - Library Inclusion
+          description: Highlight the code which *includes the LED ring library*.
+          onerror: Include the Adafruit library at the top of the file. 
+          jsondata: '{"match": "include <Adafruit", "flag": "i"}'
+          form: code # regex
+        -
+          title: Code Selection - Strip Initialization
+          description: Highlight the line of your code which *initializes the LED ring*.
+          onerror: Include the initialization line in setup().
+          jsondata: '{"match": "strip.begin", "flag": "i"}'
+          form: code # regex
+        -
+          title: Compilation Check
+          description: Test your code to see if there are any errors in it.
+          form: compile
     -
       title: Light Sensor Wiring
       description: |
@@ -351,9 +359,9 @@
 
         Next, install the hardware for sensing the light level.
 
-        Connect the positive `(+)` terminal of the sensor to 5V (red power rail).
+        Connect the positive `(+)` terminal of the sensor to 5V (red/power).
 
-        Connect the negative terminal to GND (blue ground rail).
+        Connect the negative `(-)` terminal to GND (blue/ground).
 
         Connect the the output pin to the Arduino's analog 5 pin `(A5)`.
 
@@ -364,11 +372,11 @@
           description: |
             The system will now check to see that you have wired up the sensor correctly.
 
+            ![wiring](flashlight.jpg)
+
             Does the onboard Arduino LED turn on when you shine the flashlight on the sensor?
 
-            Click below to setup the test.
-
-          onerror: Ensure that the + and - terminals are connected to 5V (power/red) and GND (ground/blue) correctly.
+          onerror: Ensure that the + and - terminals are connected to 5V (power/red) and GND (ground/blue) correctly. The `out` pin should go to A5.
           jsondata: '{"file":"4_sense.ino"}'
           form: autoupload
     -
@@ -378,36 +386,34 @@
 
         You can use the flashlight to trigger the light sensor.
 
-        At the top of the file, add a pin definition for the light pin:
+        Just below the Neopixell ibrary inclusion line, add this code snippet:
 
         ```
         #define light  A5
-        #define outLED 13
-        ```
-
-        Before the loop function, add a high and low sensor threshold:
-
-        ```
         #define thresh_lo 100
         #define thresh_hi 900
         ```
 
+        This sets the light sensor pin and sensor level thresholds.
+
         In `setup()`, add the light sensor as an input:
 
         ```
-            pinMode(light, INPUT);
+        pinMode(light, INPUT_PULLUP);
         ```
 
-        In `loop()`, remove the old assignments to outLED, and add these:
+        Replace the `loop()` content with this snippet:
 
         ```
-            int level = analogRead(light);
-            if (level > thresh_hi) {
-                digitalWrite(outLED, HIGH);
-            } else if (level < thresh_lo) {
-                digitalWrite(outLED, LOW);
-            }
+        int level = analogRead(light);
+        if (level > thresh_hi) {
+            digitalWrite(outLED, HIGH);
+        } else if (level < thresh_lo) {
+            digitalWrite(outLED, LOW);
+        }
         ```
+
+        Now, the onboard Arduino's LED should activate when you flast the light sensor.
 
       tests:
         -
@@ -415,12 +421,31 @@
           description: |
             The system will now check to see that you programmed the board correctly.
 
-            Click the button below to setup the test.
+            Once loaded, flash the light sensor to raise the level above the threshold.
 
-          onerror: Make sure that you are saving the sensor value into `press`.
-          jsondata: '[{"name": "press", "value": 900, "op": "gt"}]' # name, value, line
+          onerror: Make sure that you are saving the sensor value into `level`.
+          jsondata: '[{"name": "level", "value": 900, "op": "gt"}]' # name, value, line
           form: variable
+    -
+      title: Hardware Integration
+      description: |
 
+        Replace the `loop()` function content with this snippet:
+
+        ```
+        int level = analogRead(light);
+        int reset = !digitalRead(button);
+        if (buzzing) {
+          if (reset && level < thresh_lo) {
+            blankState();
+            buzzing = 0; // reset
+          } else {
+            buzz();
+          }
+        } else if (!buzzing && level > thresh_hi) {
+          buzzing = 1; // begin buzzing
+        }
+        ```
     -
       title: Code Integration
       description: |
@@ -429,6 +454,7 @@
         Now that each  hardware component is working, integrate the parts in software.
 
         The light sensor will trigger the alarm (lights and sound), and pressing button will reset it.
+
       tests:
         -
           title: Code Check

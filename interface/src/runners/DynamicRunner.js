@@ -44,7 +44,7 @@ class DynamicRunnerShell extends Component {
 
   measure = () => {
     this.props.openSPJS();
-    const err = 0.05; // percent tolerance
+    const err = 0.03; // percent tolerance
     console.log('verify frequency runner...');
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {
@@ -74,6 +74,7 @@ class DynamicRunnerShell extends Component {
     const val = this.state.value;
     const out = Number(this.props.test.output);
     const prep = this.state.preparing;
+    const meas = this.state.measuring;
     if (isNaN(val)) {
       input = '-';
     } else {
@@ -84,17 +85,19 @@ class DynamicRunnerShell extends Component {
       <div className="full">
         <MarkdownView source={this.props.test.description} />
         <br />
-        {prep ? (
+        {prep && (
           <MeasuringMessage
             icon="setting"
             head="Setting up..."
             text="Loading code onto test board."
           />
-        ) : (
+        )}
+
+        {meas && (
           <div className="full">
             <br />
             <StatCouple unit="Hz" input={input} out={out} />
-            {this.state.measuring && <MeasuringMessage />}
+            <MeasuringMessage />
           </div>
         )}
       </div>

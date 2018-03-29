@@ -355,7 +355,7 @@ class TutorialBody extends Component {
                 <div className="full">
                   {step.image && <Image src={step.image} />}
                   <Segment>
-                    <MarkdownView source={step.description} />
+                    <MarkdownView source={step.description || ''} />
                     <br />
                     <Button.Group fluid widths="2">
                       <Button

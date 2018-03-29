@@ -47,6 +47,7 @@ class NumericRunnerShell extends Component {
 
   measure = () => {
     this.props.openSPJS();
+    this.setState({measuring: true});
     console.log('verify numeric runner...');
     const err = 0.02; // two percent
     const interval = setInterval(() => {
@@ -81,6 +82,7 @@ class NumericRunnerShell extends Component {
     let input;
     const val = this.state.value;
     const prep = this.state.preparing;
+    const meas = this.state.measuring;
     const d = this.props.stream.map(x => x.data);
     const out = Number(this.props.test.output);
     if (isNaN(val)) {
@@ -92,18 +94,21 @@ class NumericRunnerShell extends Component {
     return (
       <div className="full">
         <MarkdownView source={this.props.test.description} />
-        {prep ? (
+
+        {prep && (
           <MeasuringMessage
             icon="setting"
             head="Setting up..."
             text="Loading code onto test board."
           />
-        ) : (
+        )}
+
+        {meas && (
           <div className="full">
             <br />
             <StatCouple unit="V" input={input} out={out} />
             {d.length > 0 && <Graph data={d} />}
-            {this.state.measuring && <MeasuringMessage />}
+            <MeasuringMessage />
           </div>
         )}
       </div>

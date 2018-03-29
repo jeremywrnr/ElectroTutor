@@ -16,10 +16,6 @@ import QuestionRunner from './runners/QuestionRunner.js';
 import ManualRunner from './runners/ManualRunner.js';
 import {Segment, Message, Button} from 'semantic-ui-react';
 
-// TODO cache the users last output to save their answers.
-// TODO saving previous user input and output to reference in errors and also
-// to help with the suggestion of fixes -> providing tips for fixing errors
-
 class TestRunner extends Component {
   state = {};
 

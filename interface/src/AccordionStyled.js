@@ -38,20 +38,16 @@ class AccordionTestItem extends Component {
     test: PropTypes.object.isRequired,
   };
 
-  // TODO - check that the expected output matched and pass back true or false
-  // from this call rather than computing itin the parent container
-
   handleRunText = {
-    code: 'Test Code',
-    variable: 'Measure',
-    dynamic: 'Examine',
-    numeric: 'Measure',
-    compile: 'Compile',
-    upload: 'Upload',
-    autoupload: 'Upload',
-    question: 'Submit',
-    multiple: 'Submit',
-    manual: 'Confirm',
+    code: 'Check Code Selection',
+    variable: 'Click to Measure Code Variable',
+    dynamic: 'Click to Measure Signal Frequency',
+    numeric: 'Click to Measure Voltage Signal',
+    compile: 'Click to Attempt Compililation',
+    upload: 'Click to Attempt Upload',
+    autoupload: 'Click to Setup and Begin Test',
+    question: 'Submit Answer',
+    multiple: 'Submit Choice',
   };
 
   handlePassColor = {

@@ -1,10 +1,10 @@
 #include "Arduino.h"
 
-#define button 0
+#define button 2
 #define outLED 13
 
 void setup() {
-  pinMode(button, INPUT);
+  pinMode(button, INPUT_PULLUP);
   pinMode(outLED, OUTPUT);
 }
 

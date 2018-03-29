@@ -84,12 +84,21 @@ class VariableRunnerShell extends Component {
         })
         .filter(d => d.expv !== undefined);
       this.setState({value});
-      const pass = value.length > 0 && value.every(d => d.last === d.expv);
+      const checkPass = d => {
+        if (d.op === 'gt') {
+          return d.last >= d.expv;
+        } else {
+          return d.last === d.expv;
+        }
+      };
+      const pass = value.length > 0 && value.every(checkPass);
       const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
         clearInterval(interval);
-        this.setState({measuring: false});
-        setTimeout(() => this.props.patch(pass), 2000);
+        setTimeout(() => {
+          this.setState({measuring: false});
+          this.props.patch(pass);
+        }, 2000);
       }
     }, 200);
     this.setState({interval, measuring: true});
@@ -134,7 +143,8 @@ class VariableRunnerShell extends Component {
             text="Loading instrumented code onto development board."
           />
         )}
-        {!prep &&
+        {meas &&
+          !prep &&
           value.map((x, i) => {
             return (
               <div className="full">

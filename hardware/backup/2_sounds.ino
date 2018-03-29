@@ -1,6 +1,6 @@
 #include "Arduino.h"
 
-#define buzzer 3
+#define buzzer 4
 #define freq 220
 
 void setup() {
