@@ -5,6 +5,7 @@ import {Icon, Label} from 'semantic-ui-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MeasuringMessage from '../MeasuringMessage.js';
 import MarkdownView from '../MarkdownView.js';
+import {Message} from 'semantic-ui-react';
 import {groupBy} from 'lodash';
 import Config from '../Config.js';
 import Graph from '../Graph.js';
@@ -98,8 +99,9 @@ class VariableRunnerShell extends Component {
       console.log(value, pass);
       const prev = this.props.pdata.state === 'pass';
       if (pass !== prev) {
-        clearInterval(interval);
+        this.setState({changing: true, pass: pass});
         setTimeout(() => {
+          clearInterval(interval);
           this.setState({measuring: false});
           this.props.patch(pass);
         }, 2000);
@@ -125,6 +127,7 @@ class VariableRunnerShell extends Component {
     const ok = compile.code === 0;
     const err = !ok && compile.error;
     const prep = !err && this.state.preparing;
+    const pass = !err && this.state.pass && this.state.changing;
     const meas = !err && this.state.measuring;
     const col = meas ? 'green' : 'grey';
     const nanCheck = v => {
@@ -139,6 +142,15 @@ class VariableRunnerShell extends Component {
       <div className="full">
         {this.state.loading && <MeasuringMessage head="Recompiling..." />}
         {err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
+        {pass && (
+          <Message
+            success
+            header={'Test Passed!'}
+            icon={'check'}
+            content={'Correct measurement recorded.'}
+          />
+        )}
+
         {prep && (
           <MeasuringMessage
             icon="setting"

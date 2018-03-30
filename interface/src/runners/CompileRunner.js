@@ -34,7 +34,7 @@ class CompileRunner extends Component {
     return (
       <div className="full">
         {this.state.loading && <MeasuringMessage head="Compiling..." />}
-        {show ? <Message info content={help} /> : <br />}
+        {show && <Message info content={help} />}
         <MarkdownView source={this.props.test.description} />
         {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
       </div>

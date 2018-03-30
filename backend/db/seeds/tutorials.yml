@@ -70,11 +70,11 @@
           description: |
             Measure the power rail with the tester's two probes on the testing board.
 
-            Connect the white pin to *5V* (red/power), and the black pin to *GND* (blue/ground).
+            Connect the white pin to *5V* (red/power), and the black pin to *0V / GND* (blue/ground).
+
+            Then, press the button below to check the voltage.
 
             ![power](measure-power-crop.jpg)
-
-            Press the button below to check the voltage.
 
           onerror: Make sure that you use the 5V pin; not the Vin or 3.3V pins!
           form: numeric
@@ -84,7 +84,7 @@
       description: |
         ![button-in](button-in.jpg)
 
-        Connect the one side of the button to `GND` with a jumper wire.
+        Connect the one side of the button to *GND* (blue/ground) with a jumper wire.
 
         Connect the other side to *digital pin 2* on the Arduino board.
 
@@ -98,13 +98,13 @@
         -
           title: Button Press Check
           description: |
-            Measure the voltage across the button using the white-box instrumentation tool.
+            Measure the voltage across the button using the tester.
 
-            Connect the *black wire to GND* and the *white wire to the Arduino-connected side*.
+            Connect the *black wire true GND* and the *white wire to the Arduino-connected side*.
+
+            It should drop as you press the button down - *hold it down for AT LEAST 2 seconds*.
 
             ![piezo](measure-button-crop.jpg)
-
-            It should drop as you press the button down - *hold it down for at least 2 seconds*.
 
           form: numeric
           output: '0.0'
@@ -163,6 +163,8 @@
 
             Once loaded, press the button on the breadboard to set the `press` variable's value to `1`.
 
+            Click below to begin the test.
+
           onerror: Make sure that you are saving the sensor value into `press`.
           jsondata: '[{"name": "press", "value": 1}]' # name, value, line
           form: variable
@@ -171,7 +173,7 @@
       description: |
         ![pie](piezo.jpg)
 
-        Insert the piezo so that it's legs are on different rows, as pictured.
+        Insert the piezo so that its legs are on different rows, as pictured.
 
         Next, connect the piezo buzzer to the *digital pin 4* on the Arduino.
 
@@ -229,13 +231,17 @@
         -
           title: Frequency Check
           description: |
-            ![piezo](measure-piezo.jpg)
+            Connect the tester's *black probe to ground* and the *white probe to the Arduino-connected piezo leg*.
 
-            Connect the *black probe to ground* and the *white probe to the Arduino-connected piezo leg*.
+            The piezo will only beep when the button is pressed.
+
+            Once the test starts, press the button *hold it down for AT LEAST 2 seconds* to measure the frequency.
+
+            Click below to start the test.
 
             ![piezo](measure-piezo-crop.jpg)
 
-            The piezo will only beep when the button is pressed.
+            ![piezo](measure-piezo.jpg)
 
           output: 220 # hz
           onerror: Make sure that the white probe is connected to the same end of the piezo as the Arduino.
@@ -410,7 +416,7 @@
         Replace the `loop()` content with this snippet:
 
         ```
-          int digital;
+          int digital; // Variable to 'triggered' state.
           int level = analogRead(light); // Read sensor.
           if (level > thresh_hi) {
               digital = 1;
@@ -428,7 +434,7 @@
         -
           title: Code Selection Test - Sensor Reading
           description: Highlight the code which reads in the light sensor value.
-          onerror: Include the Adafruit library at the top of the file.
+          onerror: Include the sensor reading code from the left pane in the loop() function.
           jsondata: '{"match": "analogRead.*light", "flag": "i"}'
           form: code # regex
         -
@@ -524,6 +530,20 @@
           onerror: Make sure to include replace the loop code with the new code!
           jsondata: '{"match": "blankState", "flag": "i"}'
           form: code # regex
+        -
+          title: Code Compile and Upload
+          description: Compile and upload your code to the board.
+          form: upload
+        -
+          title: Flashlight Trigger Test
+          description: Do the lights and piezo buzzer turn on when you shine the light?
+          onerror: Make sure that the code is setup to enable the lights when the system is `buzzing`!
+          form: manual
+        -
+          title: Reset Button Test
+          description: Does the alarm turn off when you press the reset button?
+          onerror: Check that the code is setting the `buzzing` variable back to 0 when the button is pressed!
+          form: manual
     -
       title: Task Complete!
       image: /tutorial/complete.gif

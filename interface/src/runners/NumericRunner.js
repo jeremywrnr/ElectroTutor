@@ -1,6 +1,7 @@
 //
 
 import React, {Component} from 'react';
+import {Message} from 'semantic-ui-react';
 import {withSerial} from '../Serial.js';
 import MeasuringMessage from '../MeasuringMessage.js';
 import MarkdownView from '../MarkdownView.js';
@@ -67,12 +68,13 @@ class NumericRunnerShell extends Component {
       const out = Number(this.props.test.output);
       const pass = (1 - err) * out <= value && value <= (1 + err) * out;
       const prev = this.props.pdata.state === 'pass';
-      if (pass !== prev) {
-        clearInterval(interval);
+      if (pass !== prev && !this.state.changing) {
+        this.setState({pass: pass, changing: true});
         setTimeout(() => {
+          clearInterval(interval);
           this.setState({measuring: false});
           this.props.patch(pass);
-        }, 1750);
+        }, 2000);
       }
     }, 100);
     this.setState({interval});
@@ -81,6 +83,7 @@ class NumericRunnerShell extends Component {
   render() {
     let input;
     const val = this.state.value;
+    const pass = this.state.pass && this.state.changing; // fail -> pass
     const prep = this.state.preparing;
     const meas = this.state.measuring;
     const d = this.props.stream.map(x => x.data);
@@ -93,6 +96,15 @@ class NumericRunnerShell extends Component {
 
     return (
       <div className="full">
+        {pass && (
+          <Message
+            success
+            header={'Test Passed!'}
+            icon={'check'}
+            content={'Correct measurement recorded.'}
+          />
+        )}
+
         {meas && (
           <div className="full">
             <br />
@@ -118,7 +130,7 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 60,
+  samples: 150,
 });
 
 export default NumericRunner;

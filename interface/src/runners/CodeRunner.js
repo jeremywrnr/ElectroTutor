@@ -23,18 +23,14 @@ class CodeRunner extends Component {
   render() {
     const fail = this.props.pdata.state === 'fail';
     const help = this.props.test.onerror;
-    const sel = this.props.selected;
+    const code = this.props.selected;
     const show = fail && help;
 
     return (
       <div className="full">
         <MarkdownView source={this.props.test.description} />
-        {show ? <Message info content={help} /> : <br />}
-        {sel && (
-          <SyntaxHighlighter language="arduino">
-            {this.props.selected}
-          </SyntaxHighlighter>
-        )}
+        {show && <Message info content={help} />}
+        {code && <SyntaxHighlighter language="arduino" children={code} />}
       </div>
     );
   }

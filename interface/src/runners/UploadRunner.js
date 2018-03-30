@@ -38,7 +38,7 @@ class UploadRunner extends Component {
             text="Uploading the code for testing."
           />
         )}
-        {show ? <Message info content={help} /> : <br />}
+        {show && <Message info content={help} />}
         <MarkdownView source={this.props.test.description} />
         {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
       </div>
