@@ -33,7 +33,12 @@ class CompileRunner extends Component {
     const err = this.props.compile.error;
     return (
       <div className="full">
-        {this.state.loading && <MeasuringMessage head="Compiling..." />}
+        {this.state.loading && (
+          <MeasuringMessage
+            head="Compiling..."
+            text="Compiling your program..."
+          />
+        )}
         {show && <Message info content={help} />}
         <MarkdownView source={this.props.test.description} />
         {!ok && err && <SyntaxHighlighter>{err}</SyntaxHighlighter>}
