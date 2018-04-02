@@ -36,8 +36,8 @@ u_events = raw_events.split("\n")
 end
 
 puts "parsed participants:"
-u_events.map{|u| u[:data] = u[:data].length; pp u }
 clean_data = JSON.pretty_generate(u_events)
+u_events.map{|u| u[:data] = u[:data].length; pp u }
 
 puts "emitting data.js..."
 file_data = "var data = #{clean_data}"

@@ -1,47 +1,15 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>graphs</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/1.2.9/raphael-min.js"></script>
-<link rel="stylesheet" href="tufte-graph.css" type="text/css" media="screen" charset="utf-8" />
-<script type="text/javascript" src="jquery.enumerable.js"></script>
-<script type="text/javascript" src="jquery.tufte-graph.js"></script>
-
-<!--output from parse.rb study.log-->
-<script type="text/javascript" src="data.js"></script>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <style>
-body { font-family: georgia; font-size 14px; }
-.test-case { float: left; text-align: center; margin-right: 50px;}
-a, a:visited { color: black; }
-h2 { font-size: 1.2em; clear: both;}
-table { text-align: left; margin-bottom: 10px;}
-.graph .label { font-size: 0.8em; }
-.bar-A { color: #82293B; }
-.bar-B { color: #E57536; }
-.graph { width: 300px; height: 300px; }
+.line { fill: none; stroke-width: 1.5px; }
 </style>
+<script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
-
 <body>
-<div class='test-case'>
-<h3>Default</h3>
-<div id='defaults-graph' class='graph'></div>
-</div>
-
-<div class='test-case'>
-<h3>Static properties</h3>
-<div id='static-properties-graph' class='graph'></div>
-</div>
-
-<div class='test-case'>
-<h3>Dynamic properties</h3>
-<div id='dynamic-properties-graph' class='graph'></div>
-</div>
-
-<!--Data processing-->
-<script src='graph.js'></script>
-
+<svg width="960" height="500"></svg>
+<script src="data.js"></script>
+<script src="graph.js"></script>
 </body>
 </html>
