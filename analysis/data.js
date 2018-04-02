@@ -1,9 +1,16 @@
 var data = [
-  [1000, {label: 'A'}],
-  [1300, {label: 'B'}],
-  [3600, {label: 'C'}],
-  [4000, {label: 'D'}],
-  [5200, {label: 'E'}],
-  [7000, {label: 'F', color: '#FFBE33'}],
-  [0, {label: 'G'}],
-];
+  {
+    "user": 57,
+    "control": true,
+    "start": 1522347582,
+    "end": 1522350081,
+    "data": 4
+  },
+  {
+    "user": 61,
+    "control": false,
+    "start": 1522355192,
+    "end": 1522357281,
+    "data": 3
+  }
+]
