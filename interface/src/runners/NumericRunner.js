@@ -1,5 +1,3 @@
-//
-
 import React, {Component} from 'react';
 import {Message} from 'semantic-ui-react';
 import {withSerial} from '../Serial.js';
@@ -77,6 +75,12 @@ class NumericRunnerShell extends Component {
         }, 2000);
       }
     }, 100);
+
+    const failTimeout = setInterval(() => {
+      clearInterval(interval);
+      this.props.patch(false); // fail
+    }, 5000);
+
     this.setState({interval});
   };
 

@@ -107,6 +107,12 @@ class VariableRunnerShell extends Component {
         }, 2000);
       }
     }, 200);
+
+    const failTimeout = setInterval(() => {
+      clearInterval(interval);
+      this.props.patch(false); // fail
+    }, 7000);
+
     this.setState({interval, measuring: true});
   };
 

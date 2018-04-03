@@ -66,6 +66,12 @@ class DynamicRunnerShell extends Component {
         setTimeout(() => this.props.patch(pass), 1000);
       }
     }, 100);
+
+    const failTimeout = setInterval(() => {
+      clearInterval(interval);
+      this.props.patch(false); // fail
+    }, 8000);
+
     this.setState({interval, measuring: true});
   };
 
