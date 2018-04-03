@@ -53,7 +53,6 @@
         The center rows are connected *horizontally*, as pictured above.
 
     -
-      title: Wiring Button Connections
       title: Connecting Power and Ground
       description: |
         ![power](power.jpg)
@@ -159,7 +158,15 @@
         We use a `!` to negate the reading, since when we press the button we pull the pin value to ground (0V).
         This code will also copy the inverted button state to the onboard Arduino LED, turning it on (high) when we press the button.
 
+        ![onboard](internal-led.jpg)
+
       tests:
+        -
+          title: Voltage Knowledge Test
+          description: What voltage exists across the button when it is not being pressed?
+          jsondata: '["5 V", "0 V", "10 V", "3.3 V"]'
+          output: 0 # 0-based
+          form: multiple
         -
           title: Software Variable Check
           description: |
@@ -169,7 +176,7 @@
 
             Click below to begin the test.
 
-          onerror: Make sure that you are saving the sensor value into `press`.
+          onerror: Make sure that you are saving the sensor value into `press` and that the pin is in the correction position.
           jsondata: '[{"name": "press", "value": 1}]' # name, value, line
           form: variable
     -
@@ -278,8 +285,7 @@
 
             ![neopix](rainbow.gif)
 
-          onerror: |
-            Make the sure data pin is connected to pin 7, and the power/ground pins are connected to 5V and GND respectively.
+          onerror: Make the sure data pin is connected to pin 7, and the power/ground pins are connected to 5V and GND respectively.
           jsondata: '{"file":"3_lights.ino"}'
           form: autoupload
     -

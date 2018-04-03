@@ -116,6 +116,10 @@ class VariableRunnerShell extends Component {
   };
 
   render() {
+    const fail = this.props.pdata.state === 'fail';
+    const help = this.props.test.onerror;
+    const show = fail && help;
+
     const data = JSON.parse(this.props.test.jsondata);
     let value = this.state.value;
     if (value.length === 0) {
@@ -155,6 +159,8 @@ class VariableRunnerShell extends Component {
             content={'Correct measurement recorded.'}
           />
         )}
+
+        {show && <Message info content={help} />}
 
         {prep && (
           <MeasuringMessage
