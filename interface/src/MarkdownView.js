@@ -26,7 +26,7 @@ export default class MarkdownView extends React.Component {
   renderers = {
     code: node => (
       <SyntaxHighlighter
-        draggable={true}
+        draggable={false}
         onDragStart={this.dragstart}
         language="arduino"
         children={node.value}

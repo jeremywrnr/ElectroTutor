@@ -8,7 +8,7 @@
       title: Introduction
       image: /tutorial/tutorial-demo.gif
       description: |
-        In this tutorial, you will build an light-sensitive alarm clock!
+        In this tutorial, you will build an light-sensitive alarm clock.
     -
       title: Components Overview
       description: |
@@ -32,7 +32,7 @@
 
         To make sure it is connected ok, try uploading the starter code to it.
 
-        The lights on the top of the board flash as it recieves new code!
+        The lights on the top of the board flash as it recieves new code.
       tests:
         -
           title: Board Power Test
@@ -123,6 +123,8 @@
 
             Does the Arduino light turn on as you push the button?
 
+            Click the button below to begin the test.
+
           onerror: Check that the wire between the button and the board is in the right place. Also make sure that probe is no longer connected to the button.
           jsondata: '{"file":"1_button.ino"}'
           form: autoupload
@@ -147,13 +149,13 @@
 
         Last, add this code to the `loop()` function to read the button's value.
 
-
         ```
           int press = !digitalRead(button);
           digitalWrite(outLED, press);
         ```
 
-        This code will also copy the button state to the onboard Arduino LED.
+        We use a `!` to negate the reading, since when we press the button we pull the pin value to ground (0V).
+        This code will also copy the inverted button state to the onboard Arduino LED, turning it on (high) when we press the button.
 
       tests:
         -
@@ -179,10 +181,9 @@
 
         Connect the other end of the piezo to *GND* (the blue rail) with the resistor.
 
-        ![pie](piezo-crop.jpg)
-
         The polarity does not matter, so you can plug it in either direction.
 
+        ![pie](piezo-crop.jpg)
       tests:
         -
           title: Wiring Check
@@ -226,16 +227,18 @@
           form: code # regex
         -
           title: Code Check
-          description: Check that your code compiles and uploads to the board!
+          description: Check that your code compiles and uploads to the board.
           form: upload
         -
           title: Frequency Check
           description: |
-            Connect the tester's *black probe to ground* and the *white probe to the Arduino-connected piezo leg*.
+            Next, the system will check the speaker is buzzing at the right frequency.
 
-            The piezo will only beep when the button is pressed.
+            Connect the tester's *black probe to ground (0V)* and the *white probe to the othertpiezo leg* (the one that is connected directly to the Arduino pin).
 
-            Once the test starts, press the button *hold it down for AT LEAST 2 seconds* to measure the frequency.
+            The piezo will *only* beep when the button is pressed.
+
+            Once the test starts, *press the button down for AT LEAST 2 seconds* to measure the frequency.
 
             Click below to start the test.
 
@@ -265,13 +268,13 @@
           description: |
             The system will now check to see that you have wired up the LED ring correctly.
 
-            ![neopix](rainbow.gif)
-
             If the lights are wired up correctly, you will see a glowing pattern.
 
             Does the LED ring rotate though the rainbow?
 
             Click below to setup the test.
+
+            ![neopix](rainbow.gif)
 
           onerror: |
             Make the sure data pin is connected to pin 7, and the power/ground pins are connected to 5V and GND respectively.
@@ -382,9 +385,9 @@
           description: |
             The system will now check to see that you have wired up the sensor correctly.
 
-            ![wiring](flashlight.jpg)
-
             Does the onboard Arduino LED turn on when you shine the flashlight on the sensor?
+
+            ![wiring](flashlight.jpg)
 
           onerror: Ensure that the + and - terminals are connected to 5V (power/red) and GND (ground/blue) correctly. The `out` pin should go to A5.
           jsondata: '{"file":"4_sense.ino"}'
