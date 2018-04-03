@@ -1,5 +1,6 @@
 # Modifications to generated files
 hardware/**/*.cpp
+*zip
 
 # Log files
 *.log
