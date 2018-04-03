@@ -49,7 +49,7 @@ class DynamicRunnerShell extends Component {
     console.log('verify frequency runner...');
     const failTimeout = setTimeout(() => {
       this.props.patch(false); // fail
-    }, 8000);
+    }, 12000);
 
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {

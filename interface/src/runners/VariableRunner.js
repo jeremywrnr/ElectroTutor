@@ -58,7 +58,7 @@ class VariableRunnerShell extends Component {
     const failTimeout = setTimeout(() => {
       clearInterval(interval);
       this.props.patch(false); // fail
-    }, 7000);
+    }, 12000);
 
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {

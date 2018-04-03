@@ -80,7 +80,7 @@ class NumericRunnerShell extends Component {
     const failTimeout = setTimeout(() => {
       clearInterval(interval);
       this.props.patch(false); // fail
-    }, 6000);
+    }, 12000);
 
     this.setState({interval, failTimeout});
   };
