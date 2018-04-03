@@ -289,6 +289,10 @@ class TutorialBody extends Component {
   };
 
   handleTestReveal = (test_reveal = true) => {
+    const api = this.state.api;
+    const tut = this.state.tutorial;
+    const pos = this.state.progress.position;
+    api.configure().then(() => api.fetchTestUnlock(tut, pos));
     return this.setState({test_reveal});
   };
 

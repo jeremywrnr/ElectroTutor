@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :tutorials
   resources :progress_data
 
+  get '/test_unlock', to: 'tests#test_unlock'
   get '/test', to: 'tests#step'
   resources :tests
 

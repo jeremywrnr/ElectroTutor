@@ -101,6 +101,7 @@ function withSerial(WrappedComponent, options = {}) {
     };
 
     postWorker = msg => {
+      console.log(msg);
       if (this.worker) {
         this.worker.postMessage({
           msg: msg.data,

@@ -1,6 +1,8 @@
 class TestsController < ApplicationController
+  include Studylogger
+
   before_action :authenticate_user
-  before_action :set_step, only: [:step]
+  before_action :set_step, only: [:step, :test_unlock]
   before_action :set_test, only: [:show, :update, :destroy]
 
   # GET /tests
@@ -12,6 +14,12 @@ class TestsController < ApplicationController
   # GET /tests/1
   def show
     render json: @test
+  end
+
+  # GET /test_unlock?position=1
+  def test_unlock
+      log_user_act "test-unlock", test_params # study instrumentation
+      render json: {}
   end
 
   # GET /test?tutorial_id=1&position=2
@@ -65,6 +73,6 @@ class TestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def test_params
-    params.require(:test).permit(:tutorial_id, :position)
+    params.permit(:test, :tutorial_id, :position)
   end
 end

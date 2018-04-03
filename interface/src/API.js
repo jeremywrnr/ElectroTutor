@@ -63,6 +63,10 @@ class API {
     return this.authFetch(`steps?tutorial_id=${tut}&position=${pos}`);
   };
 
+  fetchTestUnlock = (tut, pos) => {
+    return this.authFetch(`test_unlock?tutorial_id=${tut}&position=${pos}`);
+  };
+
   fetchTest = (tut, pos) => {
     return this.authFetch(`test?tutorial_id=${tut}&position=${pos}`);
   };

@@ -10,9 +10,7 @@ import {groupBy} from 'lodash';
 import Config from '../Config.js';
 import Graph from '../Graph.js';
 
-//
 // Variable Analysis
-//
 
 class VariableRunnerShell extends Component {
   constructor(props) {
@@ -37,6 +35,7 @@ class VariableRunnerShell extends Component {
 
   componentWillUnmount = () => {
     clearInterval(this.state.interval);
+    clearTimeout(this.state.failTimeout);
   };
 
   verify = () => {
@@ -56,6 +55,11 @@ class VariableRunnerShell extends Component {
     this.props.openSPJS();
     console.log('verify variable runner...');
     const data = JSON.parse(this.props.test.jsondata);
+    const failTimeout = setTimeout(() => {
+      clearInterval(interval);
+      this.props.patch(false); // fail
+    }, 7000);
+
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'variable') {
         clearInterval(interval);
@@ -108,12 +112,7 @@ class VariableRunnerShell extends Component {
       }
     }, 200);
 
-    const failTimeout = setInterval(() => {
-      clearInterval(interval);
-      this.props.patch(false); // fail
-    }, 7000);
-
-    this.setState({interval, measuring: true});
+    this.setState({interval, failTimeout, measuring: true});
   };
 
   render() {

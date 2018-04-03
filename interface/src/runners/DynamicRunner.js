@@ -5,7 +5,7 @@ import {StatCouple} from '../DynamicStat.js';
 import {withSerial} from '../Serial.js';
 
 // HARDWARE ANALYSIS
-//
+
 class DynamicRunnerShell extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +26,7 @@ class DynamicRunnerShell extends Component {
   };
 
   componentWillUnmount = () => {
+    clearTimeout(this.state.failTimeout);
     clearInterval(this.state.interval);
   };
 
@@ -46,13 +47,16 @@ class DynamicRunnerShell extends Component {
     this.props.openSPJS();
     const err = 0.03; // percent tolerance
     console.log('verify frequency runner...');
+    const failTimeout = setTimeout(() => {
+      this.props.patch(false); // fail
+    }, 8000);
+
     const interval = setInterval(() => {
       if (this.props.test_mode !== 'freq') {
         clearInterval(interval);
         this.setState({measuring: false});
         this.closeSPJS();
       }
-
       const d = this.props.stream;
       if (d.length === 0) return;
       const value = d[d.length - 1].data; // MRU
@@ -67,12 +71,7 @@ class DynamicRunnerShell extends Component {
       }
     }, 100);
 
-    const failTimeout = setInterval(() => {
-      clearInterval(interval);
-      this.props.patch(false); // fail
-    }, 8000);
-
-    this.setState({interval, measuring: true});
+    this.setState({interval, failTimeout, measuring: true});
   };
 
   render() {

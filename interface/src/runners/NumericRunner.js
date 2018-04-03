@@ -29,6 +29,7 @@ class NumericRunnerShell extends Component {
 
   componentWillUnmount = () => {
     clearInterval(this.state.interval);
+    clearTimeout(this.state.failTimeout);
   };
 
   verify = () => {
@@ -55,9 +56,9 @@ class NumericRunnerShell extends Component {
         this.setState({measuring: false});
         return;
       }
-
       let sum = 0;
       const d = this.props.stream;
+      console.log(d);
       const len = d.length;
       if (len && len <= 0) return;
       d.map(x => (sum = sum + Number(x.data)));
@@ -76,12 +77,12 @@ class NumericRunnerShell extends Component {
       }
     }, 100);
 
-    const failTimeout = setInterval(() => {
+    const failTimeout = setTimeout(() => {
       clearInterval(interval);
       this.props.patch(false); // fail
-    }, 5000);
+    }, 6000);
 
-    this.setState({interval});
+    this.setState({interval, failTimeout});
   };
 
   render() {
@@ -134,7 +135,7 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 150,
+  samples: 50,
 });
 
 export default NumericRunner;
