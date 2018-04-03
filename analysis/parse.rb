@@ -3,7 +3,16 @@ require 'pp'
 
 TUT_ID = '1'
 LEADER = /^=*> /
-CONTROL = [61]
+CONTROL = [61, 89]
+
+# Helper to check is JSON corrupt.
+
+def valid_json?(json)
+    JSON.parse(json)
+    return true
+  rescue JSON::ParserError => e
+    return false
+end
 
 # Todo: define better END condition
 
@@ -12,7 +21,9 @@ raw_events = %x{grep '==============>' ../backend/study.log}
 
 puts 'parsing study.log...'
 u_events = raw_events.split("\n")
-  .map {|e| JSON.parse e.sub(LEADER, '') }
+  .map {|e| e.sub(LEADER, '') }
+  .select {|e| valid_json? e }
+  .map {|e| JSON.parse e }
   .group_by {|e| e['user'] }
   .select {|k, v| k =~ /.*user.*/ }
   .map {|k, v| [k, v.map {|e| e.delete('user'); e  }] }
@@ -21,8 +32,8 @@ u_events = raw_events.split("\n")
     user_data = {}
     user_data[:user] = user.sub(/.*user/, '').to_i
     user_data[:control] = CONTROL.include? user_data[:user]
-    user_data[:start] = events.find {|e|
-      e['name'] == "user-update" && e['args']['current_tutorial'] == TUT_ID }['time']
+    first_event = events.find {|e| e['name'] == "user-update" && e['args']['current_tutorial'].to_i > 0 }
+    user_data[:start] = first_event.nil?? 0 : first_event['time']
     user_data[:end] = events.sort_by {|e| e['time'] }.last['time']
     user_data[:data] = events
       .group_by {|e| e['name'] }

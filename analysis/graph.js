@@ -6,6 +6,8 @@ var svg = d3.select('svg'),
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+var minuteForm = x => x / 60; //s->min
+
 var x = d3.scaleLinear().range([0, width]),
   y = d3.scaleLinear().range([height, 0]),
   z = d3.scaleOrdinal(d3.schemeCategory10);
@@ -23,10 +25,10 @@ var time_norm_data = data.map(function(d) {
   return {
     id: d.user,
     control: d.control,
-    start: d.start,
-    end: d.end,
+    start: minuteForm(d.start),
+    end: minuteForm(d.end),
     values: d.data['progress-update'].map(function(e) {
-      return {time: e.time - d.start, progress: +e.args.position};
+      return {time: minuteForm(e.time - d.start), progress: +e.args.position};
     }),
   };
 });
@@ -34,7 +36,7 @@ var time_norm_data = data.map(function(d) {
 var users = data.map(function(d, i) {
   let user_data = [{time: 0, progress: 1}].concat(
     d.data['progress-update'].map(function(e) {
-      return {time: e.time - d.start, progress: +e.args.position};
+      return {time: minuteForm(e.time - d.start), progress: +e.args.position};
     }),
   );
   return {
