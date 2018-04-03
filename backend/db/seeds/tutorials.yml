@@ -723,3 +723,43 @@
           form: info
           info: true
 
+
+-
+  tutorial:
+    title: System Introduction
+    image: http://www.mindphp.com/forums/download/file.php?id=23846
+    description: Example tutorial.
+  steps:
+    -
+      title: First Step
+      image: http://www.mindphp.com/forums/download/file.php?id=23846
+      description: |
+        ## Overview
+
+        This is where the tutorial instructions will be.
+
+        ```
+        // A code block
+        ```
+
+      tests:
+        -
+          title: Manual Test
+          description: Click 'yes' to pass the test.
+          onerror: A potentially helpful message!
+          form: manual
+    -
+      title: Introductions complete!
+      image: https://i.ytimg.com/vi/ctynv2klT6Q/maxresdefault.jpg
+      description: |
+        ## Begin main tutorial!
+
+        You are now ready to begin the main tutorial.
+
+      tests:
+        -
+          title: Ready to begin!
+          description: You are now ready to begin the main tutorial.
+          form: info
+          info: true
+
