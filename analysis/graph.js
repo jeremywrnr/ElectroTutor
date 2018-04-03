@@ -32,12 +32,15 @@ var time_norm_data = data.map(function(d) {
 });
 
 var users = data.map(function(d, i) {
+  let user_data = [{time: 0, progress: 1}].concat(
+    d.data['progress-update'].map(function(e) {
+      return {time: e.time - d.start, progress: +e.args.position};
+    }),
+  );
   return {
     id: d.user,
     control: d.control,
-    values: d.data['progress-update'].map(function(e) {
-      return {time: e.time - d.start, progress: +e.args.position};
-    }),
+    values: user_data,
   };
 });
 
@@ -89,7 +92,7 @@ var user = g
 
 user
   .append('path')
-  .attr('class', 'line')
+  .attr('class', d => (d.control ? 'line control' : 'line'))
   .attr('d', function(d) {
     return line(d.values);
   })
@@ -103,6 +106,7 @@ user
     return {id: d.id, value: d.values[d.values.length - 1]};
   })
   .attr('transform', function(d) {
+    console.log(d);
     return 'translate(' + x(d.value.time) + ',' + y(d.value.progress) + ')';
   })
   .attr('x', 3)

@@ -3,7 +3,7 @@ require 'pp'
 
 TUT_ID = '1'
 LEADER = /^=*> /
-CONTROL = [57]
+CONTROL = [61]
 
 # Todo: define better END condition
 
