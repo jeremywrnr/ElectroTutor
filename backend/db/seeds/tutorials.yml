@@ -8,7 +8,7 @@
       title: Introduction
       image: /tutorial/tutorial-demo.gif
       description: |
-        In this tutorial, you will build an light-sensitive alarm clock.
+        In this tutorial, you will build a light-sensitive alarm clock.
     -
       title: Components Overview
       description: |
@@ -16,7 +16,7 @@
 
         Here are the components this tutorial requires:
 
-        - Arduino UNO microcontroller
+        - Arduino Uno microcontroller
         - Neopixel LED Ring
         - Piezo Buzzer
         - Resistor
@@ -32,7 +32,7 @@
 
         To make sure it is connected ok, try uploading the starter code to it.
 
-        The lights on the top of the board flash as it recieves new code.
+        The lights on the top of the board flash as it receives new code.
       tests:
         -
           title: Board Power Test
@@ -48,7 +48,7 @@
       title: Breadboard Connection Overview
       image: /tutorial/breadboard.gif
       description: |
-        The red and blue `(+/-)` columns along the sides of the board are connected.
+        The red and blue `(+/-)` columns along the sides of the breadboard are connected.
 
         The center rows are connected *horizontally*, as pictured above.
 
@@ -68,7 +68,7 @@
         -
           title: Breadboard Power Check
           description: |
-            Measure the power rail with the tester's two probes on the testing board.
+            Measure the breadboard power with the testing device's two probes.
 
             Connect the white pin to *5V* (red/power), and the black pin to *0V / GND* (blue/ground).
 
@@ -83,6 +83,8 @@
       title: Button Setup
       description: |
         ![button-in](button-in.jpg)
+
+        Insert the button onto the breadboard, as pictured.
 
         Connect the one side of the button to *GND* (blue/ground) with a jumper wire.
 
@@ -102,7 +104,7 @@
 
             Connect the *black wire true GND* and the *white wire to the Arduino-connected side*.
 
-            It should drop as you press the button down - *hold it down for AT LEAST 2 seconds*.
+            The voltage should drop as you press the button down - *hold it down for AT LEAST 2 seconds*.
 
             ![piezo](measure-button-crop.jpg)
 
@@ -131,16 +133,16 @@
     -
       title: Button Press Detection Code
       description: |
-        Now that the button is connected, detect when it is being pressed in software.
+        Now that the button is connected, add code to detect when the button is pressed in software.
 
-        At the top of the file, add this definition to set which Arduino pin the button is connected to.
+        At the top of the file, add this code to define which Arduino pin the button is connected to.
 
         ```
         #define button 2
         #define outLED 13
         ```
 
-        Next, add this code inside of the `setup()` function to add pin 2 as an input, using `pinMode`:
+        Next, add this code in the `setup()` function body to add pin 2 (our button) as an input, using `pinMode`:
 
         ```
           pinMode(button, INPUT_PULLUP);
@@ -161,7 +163,7 @@
         -
           title: Software Variable Check
           description: |
-            The system will now check to see that you programmed the board correctly.
+            The system will now check to see that you programmed the Arduino board correctly.
 
             Once loaded, press the button on the breadboard to set the `press` variable's value to `1`.
 
@@ -179,7 +181,7 @@
 
         Next, connect the piezo buzzer to the *digital pin 4* on the Arduino.
 
-        Connect the other end of the piezo to *GND* (the blue rail) with the resistor.
+        With the resistor, connect the other end of the piezo to *GND* (the blue rail).
 
         The polarity does not matter, so you can plug it in either direction.
 
@@ -188,7 +190,7 @@
         -
           title: Wiring Check
           description: |
-            In this test, if the board is wired up according to the tutorial it will beep.
+            In this test, if the system is wired up according to the tutorial it will beep.
 
             Does the piezo beep after code is uploaded?
 
@@ -198,18 +200,18 @@
     -
       title: Tone Generation Code
       description: |
-        To stop the beeping, press the *Upload* button in the Arduino IDE.
+        To stop the piezo's beeping, press the *Upload* button in the Arduino IDE.
 
-        Next, in software, set up the system to buzz whenever the button is pressed.
+        Next, in software, add code to set up the system to buzz whenever the button is pressed.
 
-        Add two more statements at the top to define our buzzer pin and the note frequency.
+        Add these statements at the top of the file to define the buzzer pin and note frequency.
 
         ```
         #define buzzer 4
         #define freq 220
         ```
 
-        Then, *just before the end* of `loop()` function, set the noise to play when the button is pressed:
+        Then, *just before the end* of `loop()` function, set the `tone` to play when the button is pressed:
 
         ```
           if (press) {
@@ -227,18 +229,18 @@
           form: code # regex
         -
           title: Code Check
-          description: Check that your code compiles and uploads to the board.
+          description: Check that your code compiles and uploads to the Arduino board.
           form: upload
         -
           title: Frequency Check
           description: |
-            Next, the system will check the speaker is buzzing at the right frequency.
+            Next, the system will check that the piezo speaker is buzzing at the right frequency.
 
-            Connect the tester's *black probe to ground (0V)* and the *white probe to the othertpiezo leg* (the one that is connected directly to the Arduino pin).
+            Connect the tester's *black probe to ground (0V)* and the *white probe to the other piezo leg* (the one that is connected directly to the Arduino pin).
 
-            The piezo will *only* beep when the button is pressed.
+            The piezo will *only* play a tone when the button is pressed.
 
-            Once the test starts, *press the button down for AT LEAST 2 seconds* to measure the frequency.
+            Once the test starts, *press the button down for AT LEAST 2 seconds* to sample the frequency.
 
             Click below to start the test.
 
@@ -285,20 +287,20 @@
       description: |
         ![rain](rainbow.gif)
 
-        Include code for the LED ring *at the VERY top* of the file:
+        Include this library code for the LED ring *at the VERY top* of the file:
 
         ```
         #include <Adafruit_NeoPixel.h>
         ```
 
-        Then, define the pin the ring is connected to, and the number of "pixels" in the ring.
+        Then, define the pin the Neopixel ring's data pin is connected to, and the number of "pixels" in the ring.
 
         ```
         #define PIN    7
         #define PIXELS 12
         ```
 
-        *Before* the `setup()` function, initial the ring and a base white color.
+        *Before* the `setup()` function, create the strip of LEDs and a base white color.
 
         ```
         int color = 0;
@@ -306,7 +308,7 @@
         uint32_t white = strip.Color(16, 16, 16); // dim white color
         ```
 
-        Initialize the strip *just before* the end of `setup()` function.
+        Initialize the LED strip *just before* the end of `setup()` function.
 
         ```
           strip.begin(); // This initializes the NeoPixel library.
@@ -314,6 +316,10 @@
         ```
 
         *In between* the `setup()` and `loop()` functions, insert these two light helper functions.
+
+        The first function, `Wheel`, takes in a number (specifically a byte, an 8-bit number), and returns a color that we can use to set the LED.
+
+        The second function, `rainbow`, loops over all of the LEDs in the ring and updates their color, using the `Wheel` function.
 
         ```
 
@@ -347,7 +353,7 @@
 
         ```
 
-        *Replace the* `loop()` function content with these lines:
+        *Replace the* `loop()` function content with these lines. They make use of the helper functions to continuously glow the LED ring.
 
         ```
           rainbow(color, 2);
@@ -376,7 +382,7 @@
 
         Connect the *negative (-)* terminal to *GND* (blue/ground).
 
-        Connect the the *output pin* to the *Analog 5 pin, (A5)* on the Arduino.
+        Connect the *output pin* to the *Analog 5 pin, (A5)* on the Arduino.
 
         ![wiring](light-wiring-crop.jpg)
       tests:
@@ -385,7 +391,7 @@
           description: |
             The system will now check to see that you have wired up the sensor correctly.
 
-            Does the onboard Arduino LED turn on when you shine the flashlight on the sensor?
+            Does the onboard Arduino LED and the Neopixel ring turn on when you shine the flashlight on the sensor?
 
             ![wiring](flashlight.jpg)
 
@@ -399,7 +405,7 @@
 
         You can use the flashlight to trigger the light sensor.
 
-        Just below the Neopixel ibrary inclusion line, add this code snippet:
+        Just below the Neopixel library inclusion line, add this code snippet:
 
         ```
         #define light  A5
@@ -431,7 +437,7 @@
           digitalWrite(outLED, digital);
         ```
 
-        Now, the onboard Arduino's LED should activate when you flash the light sensor.
+        Now, the *onboard Arduino LED* should turn on when you shine the light sensor.
 
       tests:
         -
@@ -443,9 +449,9 @@
         -
           title: Software Trigger Check
           description: |
-            The system will now check to see that you programmed the board correctly.
+            The system will now check to see that you programmed the Arduino board correctly.
 
-            Once loaded, flash the light sensor to raise the level above the threshold.
+            Once loaded, shine the light sensor to raise the level above the threshold.
 
           onerror: Make sure that you are saving the sensor value into `level`.
           jsondata: '[{"name": "level", "value": 900, "op": "gt"}, {"name": "digital", "value": 1}]' # name, value, line
@@ -455,7 +461,7 @@
       description: |
         ![integration](integration.jpg)
 
-        Now that each hardware component is working, test integrating the parts in software.
+        Now that each hardware component is working, we will test integrating the parts in software.
 
         The light sensor will trigger the alarm (lights and sound), and pressing button will reset it.
 
@@ -463,7 +469,7 @@
         -
           title: Hardware Configuration Check
           description: |
-            Check that your hardware is configured corrected.
+            We will now check that your hardware is configured corrected.
 
             Try *flashing the light sensor* to turn on the alarm.
 
@@ -478,11 +484,17 @@
       title: Software Integration
       description: |
 
-        Add these this definition and this function *before* the `setup()` function:
+        Add this definition and this function *before* the `setup()` function:
+
+        This code serves to keep track of the state whether the system is buzzing or not.
 
         ```
         int buzzing;
+        ```
 
+        This function provides a convenient way to reset the light ring when the alarm is deactivated.
+
+        ```
         void blankState() {
           for (int i = 0; i < PIXELS; i++) {
             strip.setPixelColor(i, white);
@@ -495,7 +507,9 @@
 
         The function will reset the LEDs back to a dim white.
 
-        Add this function *before* the `loop()` function:
+        Add this code snippet *before* the `loop()` function:
+
+        This function will activate the buzzer and flash the LED ring.
 
         ```
         void buzz() {
@@ -507,7 +521,11 @@
 
         This helper function both buzzes the piezo and powers the LED.
 
-        *Replace the* `loop()` function content with this snippet:
+        *Replace the* `loop()` function content with this snippet.
+
+        This code is used to read from the button and the analog sensor.
+
+        Depending on those values, it will either turn on the buzzer and lights, or reset it back to a waiting state.
 
         ```
 

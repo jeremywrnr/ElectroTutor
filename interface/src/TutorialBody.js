@@ -132,7 +132,7 @@ class TutorialBody extends Component {
       .then(() => this.setState({step_loading: false, page_loading: false}));
   };
 
-  generatePaneSplit = (sizes = [80, 20]) => {
+  generatePaneSplit = (sizes = [85, 15]) => {
     const split = Split(this.editorContainerIds, {
       direction: 'vertical',
       gutterSize: 35,
