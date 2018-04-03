@@ -102,7 +102,7 @@
           description: |
             Measure the voltage across the button using the tester.
 
-            Connect the *black wire true GND* and the *white wire to the Arduino-connected side*.
+            Connect the *black wire to GND (ground)* and the *white wire to the Arduino-connected side*.
 
             The voltage should drop as you press the button down - *hold it down for AT LEAST 2 seconds*.
 
