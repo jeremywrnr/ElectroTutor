@@ -141,7 +141,7 @@ class NumericRunnerShell extends Component {
 }
 
 const NumericRunner = withSerial(NumericRunnerShell, {
-  samples: 50,
+  samples: 100,
 });
 
 export default NumericRunner;
