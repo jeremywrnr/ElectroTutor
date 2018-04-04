@@ -99,6 +99,10 @@ class NumericRunnerShell extends Component {
       input = +val.toFixed(2);
     }
 
+    const fail = this.props.pdata.state === 'fail';
+    const help = this.props.test.onerror;
+    const show = fail && help;
+
     return (
       <div className="full">
         {pass && (
@@ -127,6 +131,8 @@ class NumericRunnerShell extends Component {
             text="Loading code onto test board."
           />
         )}
+
+        {show && <Message info content={help} />}
 
         <MarkdownView source={this.props.test.description} />
       </div>
