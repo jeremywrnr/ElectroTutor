@@ -201,7 +201,7 @@
 
             Does the piezo beep after code is uploaded?
 
-          onerror: Make the sure one end of the piezo is going to GND with the resistor, and the other end is going to pin 3!
+          onerror: Make the sure one end of the piezo is going to GND with the resistor, and the other end is going to pin 4!
           jsondata: '{"file":"2_sounds.ino"}'
           form: autoupload
     -
