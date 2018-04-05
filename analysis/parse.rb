@@ -23,11 +23,6 @@ TIMED = {
   50 => m(45),
 }
 
-OFFSET = {
-  15 => {s: m(21), o: m(6)},
-  78 => {s: m(22), o: -m(5)}
-}
-
 # Helper to check is JSON corrupt.
 
 def valid_json?(json)
@@ -38,6 +33,8 @@ rescue JSON::ParserError => e
 end
 
 # Todo: define better END condition
+
+OFFSET = { 15 => {s: m(21), o: m(6)}, 78 => {s: m(22), o: -m(5)} }
 
 puts 'reading study.log...'
 raw_events = %x{grep '==============>' ../backend/study.log}
@@ -92,7 +89,6 @@ end
 puts "parsed participants:"
 clean_data = JSON.pretty_generate(u_events)
 u_events.map do |u|
-
   u[:data]['progress-update'] =
     [{'user': u[:user], 'control': u[:control], 'time-seconds': 0, 'step': 1}] + u[:data]['progress-update'].map do |x|
     x[:user] = u[:user]
