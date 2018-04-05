@@ -1,444 +1,11 @@
 var data = [
   {
-    "user": 61,
-    "control": true,
-    "start": 1522355111,
-    "end": 1522357281,
-    "data": {
-      "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522355111,
-          "args": {
-            "current_tutorial": "2"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522355184,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522355192,
-          "args": {
-            "current_tutorial": "1"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522357281,
-          "args": {
-            "current_tutorial": ""
-          }
-        }
-      ],
-      "hardware-update": [
-
-      ],
-      "progress-update": [
-        {
-          "name": "progress-update",
-          "time": 1522355221,
-          "args": {
-            "id": "9",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355222,
-          "args": {
-            "id": "9",
-            "position": 1
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355253,
-          "args": {
-            "id": "9",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355281,
-          "args": {
-            "id": "9",
-            "position": 3
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355306,
-          "args": {
-            "id": "9",
-            "position": 4
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355323,
-          "args": {
-            "id": "9",
-            "position": 5
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355373,
-          "args": {
-            "id": "9",
-            "position": 6
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355490,
-          "args": {
-            "id": "9",
-            "position": 7
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355570,
-          "args": {
-            "id": "9",
-            "position": 8
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355650,
-          "args": {
-            "id": "9",
-            "position": 9
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355762,
-          "args": {
-            "id": "9",
-            "position": 8
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355764,
-          "args": {
-            "id": "9",
-            "position": 7
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355766,
-          "args": {
-            "id": "9",
-            "position": 6
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355775,
-          "args": {
-            "id": "9",
-            "position": 7
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355777,
-          "args": {
-            "id": "9",
-            "position": 8
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355779,
-          "args": {
-            "id": "9",
-            "position": 9
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355781,
-          "args": {
-            "id": "9",
-            "position": 10
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355820,
-          "args": {
-            "id": "9",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355900,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522355986,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356137,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356139,
-          "args": {
-            "id": "9",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356159,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356160,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356263,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356264,
-          "args": {
-            "id": "9",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356288,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356290,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356390,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356524,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356597,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356599,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356603,
-          "args": {
-            "id": "9",
-            "position": 14
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356624,
-          "args": {
-            "id": "9",
-            "position": 15
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356627,
-          "args": {
-            "id": "9",
-            "position": 14
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356628,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356684,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356685,
-          "args": {
-            "id": "9",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356692,
-          "args": {
-            "id": "9",
-            "position": 10
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356792,
-          "args": {
-            "id": "9",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356829,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356831,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356834,
-          "args": {
-            "id": "9",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356864,
-          "args": {
-            "id": "9",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356900,
-          "args": {
-            "id": "9",
-            "position": 14
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356902,
-          "args": {
-            "id": "9",
-            "position": 15
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522356977,
-          "args": {
-            "id": "9",
-            "position": 16
-          }
-        }
-      ]
-    }
-  },
-  {
     "user": 9,
     "control": false,
-    "start": 1522778549,
-    "end": 1522781879,
+    "start": 1522778731,
+    "end": 1522781431,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522778549,
-          "args": {
-            "current_tutorial": "11"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522778645,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522778731,
@@ -451,14 +18,6 @@ var data = [
 
       ],
       "test-unlock": [
-        {
-          "name": "test-unlock",
-          "time": 1522778576,
-          "args": {
-            "tutorial_id": "11",
-            "position": "1"
-          }
-        },
         {
           "name": "test-unlock",
           "time": 1522778823,
@@ -565,22 +124,6 @@ var data = [
         }
       ],
       "progress-data-update": [
-        {
-          "name": "progress-data-update",
-          "time": 1522778587,
-          "args": {
-            "id": "230",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522778606,
-          "args": {
-            "id": "230",
-            "state": "pass"
-          }
-        },
         {
           "name": "progress-data-update",
           "time": 1522778828,
@@ -929,30 +472,6 @@ var data = [
       "progress-update": [
         {
           "name": "progress-update",
-          "time": 1522778609,
-          "args": {
-            "id": "19",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522778639,
-          "args": {
-            "id": "19",
-            "position": 1
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522778641,
-          "args": {
-            "id": "19",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
           "time": 1522778737,
           "args": {
             "id": "20",
@@ -1093,38 +612,10 @@ var data = [
   {
     "user": 89,
     "control": true,
-    "start": 1522782175,
-    "end": 1522785090,
+    "start": 1522782353,
+    "end": 1522784813,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522782175,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522782194,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522782198,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522782341,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522782353,
@@ -1193,38 +684,6 @@ var data = [
 
       ],
       "progress-update": [
-        {
-          "name": "progress-update",
-          "time": 1522782224,
-          "args": {
-            "id": "21",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522782224,
-          "args": {
-            "id": "21",
-            "position": 1
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522782227,
-          "args": {
-            "id": "21",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522782237,
-          "args": {
-            "id": "21",
-            "position": 1
-          }
-        },
         {
           "name": "progress-update",
           "time": 1522782359,
@@ -1448,190 +907,6 @@ var data = [
             "id": "22",
             "position": 15
           }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784815,
-          "args": {
-            "id": "22",
-            "position": 16
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784816,
-          "args": {
-            "id": "22",
-            "position": 17
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784816,
-          "args": {
-            "id": "22",
-            "position": 16
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784817,
-          "args": {
-            "id": "22",
-            "position": 17
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784817,
-          "args": {
-            "id": "22",
-            "position": 16
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784818,
-          "args": {
-            "id": "22",
-            "position": 15
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784820,
-          "args": {
-            "id": "22",
-            "position": 14
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784821,
-          "args": {
-            "id": "22",
-            "position": 13
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784823,
-          "args": {
-            "id": "22",
-            "position": 12
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784827,
-          "args": {
-            "id": "22",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784829,
-          "args": {
-            "id": "22",
-            "position": 10
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784831,
-          "args": {
-            "id": "22",
-            "position": 9
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784833,
-          "args": {
-            "id": "22",
-            "position": 8
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784835,
-          "args": {
-            "id": "22",
-            "position": 7
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784836,
-          "args": {
-            "id": "22",
-            "position": 6
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784839,
-          "args": {
-            "id": "22",
-            "position": 5
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784841,
-          "args": {
-            "id": "22",
-            "position": 4
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784842,
-          "args": {
-            "id": "22",
-            "position": 3
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784843,
-          "args": {
-            "id": "22",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784846,
-          "args": {
-            "id": "22",
-            "position": 1
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784849,
-          "args": {
-            "id": "22",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784861,
-          "args": {
-            "id": "22",
-            "position": 3
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522784864,
-          "args": {
-            "id": "22",
-            "position": 4
-          }
         }
       ],
       "test-unlock": [
@@ -1657,24 +932,10 @@ var data = [
   {
     "user": 45,
     "control": false,
-    "start": 1522785670,
-    "end": 1522799109,
+    "start": 1522785842,
+    "end": 1522787462,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522785670,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522785813,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522785842,
@@ -1687,14 +948,6 @@ var data = [
 
       ],
       "test-unlock": [
-        {
-          "name": "test-unlock",
-          "time": 1522785733,
-          "args": {
-            "tutorial_id": "14",
-            "position": "1"
-          }
-        },
         {
           "name": "test-unlock",
           "time": 1522785894,
@@ -1793,22 +1046,6 @@ var data = [
         }
       ],
       "progress-data-update": [
-        {
-          "name": "progress-data-update",
-          "time": 1522785764,
-          "args": {
-            "id": "282",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522785768,
-          "args": {
-            "id": "282",
-            "state": "pass"
-          }
-        },
         {
           "name": "progress-data-update",
           "time": 1522785899,
@@ -2005,22 +1242,6 @@ var data = [
       "progress-update": [
         {
           "name": "progress-update",
-          "time": 1522785774,
-          "args": {
-            "id": "23",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522785799,
-          "args": {
-            "id": "23",
-            "position": 1
-          }
-        },
-        {
-          "name": "progress-update",
           "time": 1522785848,
           "args": {
             "id": "24",
@@ -2145,24 +1366,10 @@ var data = [
   {
     "user": 15,
     "control": false,
-    "start": 1522850640,
-    "end": 1522853942,
+    "start": 1522850838,
+    "end": 1522853058,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522850640,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522850808,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522850838,
@@ -2172,7 +1379,7 @@ var data = [
         },
         {
           "name": "user-update",
-          "time": 1522853108,
+          "time": 1522852748,
           "args": {
             "current_tutorial": ""
           }
@@ -2182,14 +1389,6 @@ var data = [
 
       ],
       "test-unlock": [
-        {
-          "name": "test-unlock",
-          "time": 1522850725,
-          "args": {
-            "tutorial_id": "14",
-            "position": "1"
-          }
-        },
         {
           "name": "test-unlock",
           "time": 1522850931,
@@ -2248,23 +1447,7 @@ var data = [
         },
         {
           "name": "test-unlock",
-          "time": 1522852169,
-          "args": {
-            "tutorial_id": "12",
-            "position": "10"
-          }
-        },
-        {
-          "name": "test-unlock",
-          "time": 1522852425,
-          "args": {
-            "tutorial_id": "12",
-            "position": "11"
-          }
-        },
-        {
-          "name": "test-unlock",
-          "time": 1522852639,
+          "time": 1522852279,
           "args": {
             "tutorial_id": "12",
             "position": "12"
@@ -2272,7 +1455,7 @@ var data = [
         },
         {
           "name": "test-unlock",
-          "time": 1522852808,
+          "time": 1522852448,
           "args": {
             "tutorial_id": "12",
             "position": "13"
@@ -2280,7 +1463,7 @@ var data = [
         },
         {
           "name": "test-unlock",
-          "time": 1522852906,
+          "time": 1522852546,
           "args": {
             "tutorial_id": "12",
             "position": "14"
@@ -2288,7 +1471,7 @@ var data = [
         },
         {
           "name": "test-unlock",
-          "time": 1522853035,
+          "time": 1522852675,
           "args": {
             "tutorial_id": "12",
             "position": "15"
@@ -2296,7 +1479,7 @@ var data = [
         },
         {
           "name": "test-unlock",
-          "time": 1522853100,
+          "time": 1522852740,
           "args": {
             "tutorial_id": "12",
             "position": "16"
@@ -2304,22 +1487,6 @@ var data = [
         }
       ],
       "progress-data-update": [
-        {
-          "name": "progress-data-update",
-          "time": 1522850737,
-          "args": {
-            "id": "340",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522850749,
-          "args": {
-            "id": "340",
-            "state": "pass"
-          }
-        },
         {
           "name": "progress-data-update",
           "time": 1522850935,
@@ -2434,31 +1601,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852204,
-          "args": {
-            "id": "354",
-            "state": "pass"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522852442,
-          "args": {
-            "id": "355",
-            "state": "pass"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522852453,
-          "args": {
-            "id": "356",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522852543,
+          "time": 1522852183,
           "args": {
             "id": "356",
             "state": "pass"
@@ -2466,7 +1609,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852715,
+          "time": 1522852355,
           "args": {
             "id": "357",
             "state": "pass"
@@ -2474,7 +1617,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852861,
+          "time": 1522852501,
           "args": {
             "id": "358",
             "state": "pass"
@@ -2482,7 +1625,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852886,
+          "time": 1522852526,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2490,7 +1633,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852887,
+          "time": 1522852527,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2498,7 +1641,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852887,
+          "time": 1522852527,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2506,7 +1649,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852888,
+          "time": 1522852528,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2514,7 +1657,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852889,
+          "time": 1522852529,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2522,7 +1665,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852889,
+          "time": 1522852529,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2530,7 +1673,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852889,
+          "time": 1522852529,
           "args": {
             "id": "359",
             "state": "pass"
@@ -2538,7 +1681,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522852943,
+          "time": 1522852583,
           "args": {
             "id": "360",
             "state": "pass"
@@ -2546,7 +1689,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522853053,
+          "time": 1522852693,
           "args": {
             "id": "361",
             "state": "fail"
@@ -2554,7 +1697,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522853068,
+          "time": 1522852708,
           "args": {
             "id": "361",
             "state": "pass"
@@ -2562,7 +1705,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522853082,
+          "time": 1522852722,
           "args": {
             "id": "362",
             "state": "pass"
@@ -2570,7 +1713,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522853089,
+          "time": 1522852729,
           "args": {
             "id": "363",
             "state": "pass"
@@ -2578,7 +1721,7 @@ var data = [
         },
         {
           "name": "progress-data-update",
-          "time": 1522853092,
+          "time": 1522852732,
           "args": {
             "id": "364",
             "state": "pass"
@@ -2586,14 +1729,6 @@ var data = [
         }
       ],
       "progress-update": [
-        {
-          "name": "progress-update",
-          "time": 1522850787,
-          "args": {
-            "id": "28",
-            "position": 2
-          }
-        },
         {
           "name": "progress-update",
           "time": 1522850847,
@@ -2668,31 +1803,7 @@ var data = [
         },
         {
           "name": "progress-update",
-          "time": 1522852155,
-          "args": {
-            "id": "29",
-            "position": 9
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522852156,
-          "args": {
-            "id": "29",
-            "position": 10
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522852206,
-          "args": {
-            "id": "29",
-            "position": 11
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522852545,
+          "time": 1522852185,
           "args": {
             "id": "29",
             "position": 12
@@ -2700,7 +1811,7 @@ var data = [
         },
         {
           "name": "progress-update",
-          "time": 1522852725,
+          "time": 1522852365,
           "args": {
             "id": "29",
             "position": 13
@@ -2708,7 +1819,7 @@ var data = [
         },
         {
           "name": "progress-update",
-          "time": 1522852891,
+          "time": 1522852531,
           "args": {
             "id": "29",
             "position": 14
@@ -2716,7 +1827,7 @@ var data = [
         },
         {
           "name": "progress-update",
-          "time": 1522852947,
+          "time": 1522852587,
           "args": {
             "id": "29",
             "position": 15
@@ -2724,7 +1835,7 @@ var data = [
         },
         {
           "name": "progress-update",
-          "time": 1522853094,
+          "time": 1522852734,
           "args": {
             "id": "29",
             "position": 16
@@ -2736,38 +1847,10 @@ var data = [
   {
     "user": 32,
     "control": true,
-    "start": 1522854261,
-    "end": 1522857995,
+    "start": 1522854417,
+    "end": 1522857117,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522854261,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522854264,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522854267,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522854397,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522854417,
@@ -2780,30 +1863,6 @@ var data = [
 
       ],
       "progress-update": [
-        {
-          "name": "progress-update",
-          "time": 1522854337,
-          "args": {
-            "id": "30",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522854337,
-          "args": {
-            "id": "30",
-            "position": 1
-          }
-        },
-        {
-          "name": "progress-update",
-          "time": 1522854388,
-          "args": {
-            "id": "30",
-            "position": 2
-          }
-        },
         {
           "name": "progress-update",
           "time": 1522854423,
@@ -3256,24 +2315,10 @@ var data = [
   {
     "user": 66,
     "control": false,
-    "start": 1522861453,
-    "end": 1522864532,
+    "start": 1522861650,
+    "end": 1522864170,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522861453,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522861631,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522861650,
@@ -3283,14 +2328,6 @@ var data = [
         }
       ],
       "test-unlock": [
-        {
-          "name": "test-unlock",
-          "time": 1522861546,
-          "args": {
-            "tutorial_id": "14",
-            "position": "1"
-          }
-        },
         {
           "name": "test-unlock",
           "time": 1522861767,
@@ -3381,22 +2418,6 @@ var data = [
         }
       ],
       "progress-data-update": [
-        {
-          "name": "progress-data-update",
-          "time": 1522861563,
-          "args": {
-            "id": "397",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522861597,
-          "args": {
-            "id": "397",
-            "state": "pass"
-          }
-        },
         {
           "name": "progress-data-update",
           "time": 1522861769,
@@ -3633,14 +2654,6 @@ var data = [
       "progress-update": [
         {
           "name": "progress-update",
-          "time": 1522861605,
-          "args": {
-            "id": "33",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
           "time": 1522861676,
           "args": {
             "id": "34",
@@ -3760,43 +2773,22 @@ var data = [
   {
     "user": 13,
     "control": true,
-    "start": 1522865214,
-    "end": 1522868525,
+    "start": 1522865430,
+    "end": 1522868130,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522865214,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522865220,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522865223,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522865361,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522865430,
           "args": {
             "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522868000,
+          "args": {
+            "current_tutorial": ""
           }
         }
       ],
@@ -3804,14 +2796,6 @@ var data = [
 
       ],
       "progress-update": [
-        {
-          "name": "progress-update",
-          "time": 1522865310,
-          "args": {
-            "id": "35",
-            "position": 2
-          }
-        },
         {
           "name": "progress-update",
           "time": 1522865445,
@@ -3955,6 +2939,38 @@ var data = [
             "id": "36",
             "position": 15
           }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522867920,
+          "args": {
+            "id": "36",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522867929,
+          "args": {
+            "id": "36",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522867933,
+          "args": {
+            "id": "36",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522867941,
+          "args": {
+            "id": "36",
+            "position": 15
+          }
         }
       ],
       "test-unlock": [
@@ -3968,24 +2984,10 @@ var data = [
   {
     "user": 20,
     "control": false,
-    "start": 1522868747,
-    "end": 1522872858,
+    "start": 1522868931,
+    "end": 1522871511,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522868747,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522868890,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522868931,
@@ -3998,22 +3000,6 @@ var data = [
 
       ],
       "test-unlock": [
-        {
-          "name": "test-unlock",
-          "time": 1522868817,
-          "args": {
-            "tutorial_id": "14",
-            "position": "1"
-          }
-        },
-        {
-          "name": "test-unlock",
-          "time": 1522868871,
-          "args": {
-            "tutorial_id": "14",
-            "position": "2"
-          }
-        },
         {
           "name": "test-unlock",
           "time": 1522869023,
@@ -4112,22 +3098,6 @@ var data = [
         }
       ],
       "progress-data-update": [
-        {
-          "name": "progress-data-update",
-          "time": 1522868843,
-          "args": {
-            "id": "448",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522868849,
-          "args": {
-            "id": "448",
-            "state": "pass"
-          }
-        },
         {
           "name": "progress-data-update",
           "time": 1522869027,
@@ -4460,14 +3430,6 @@ var data = [
       "progress-update": [
         {
           "name": "progress-update",
-          "time": 1522868867,
-          "args": {
-            "id": "37",
-            "position": 2
-          }
-        },
-        {
-          "name": "progress-update",
           "time": 1522868942,
           "args": {
             "id": "38",
@@ -4592,24 +3554,10 @@ var data = [
   {
     "user": 24,
     "control": false,
-    "start": 1522872869,
-    "end": 1522876224,
+    "start": 1522873235,
+    "end": 1522875935,
     "data": {
       "user-update": [
-        {
-          "name": "user-update",
-          "time": 1522872869,
-          "args": {
-            "current_tutorial": "14"
-          }
-        },
-        {
-          "name": "user-update",
-          "time": 1522873021,
-          "args": {
-            "current_tutorial": ""
-          }
-        },
         {
           "name": "user-update",
           "time": 1522873235,
@@ -4622,14 +3570,6 @@ var data = [
 
       ],
       "test-unlock": [
-        {
-          "name": "test-unlock",
-          "time": 1522872977,
-          "args": {
-            "tutorial_id": "14",
-            "position": "1"
-          }
-        },
         {
           "name": "test-unlock",
           "time": 1522873336,
@@ -4725,25 +3665,17 @@ var data = [
             "tutorial_id": "12",
             "position": "14"
           }
+        },
+        {
+          "name": "test-unlock",
+          "time": 1522875643,
+          "args": {
+            "tutorial_id": "12",
+            "position": "15"
+          }
         }
       ],
       "progress-data-update": [
-        {
-          "name": "progress-data-update",
-          "time": 1522872992,
-          "args": {
-            "id": "474",
-            "state": "fail"
-          }
-        },
-        {
-          "name": "progress-data-update",
-          "time": 1522872998,
-          "args": {
-            "id": "474",
-            "state": "pass"
-          }
-        },
         {
           "name": "progress-data-update",
           "time": 1522873339,
@@ -5015,17 +3947,49 @@ var data = [
             "id": "494",
             "state": "pass"
           }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522875650,
+          "args": {
+            "id": "495",
+            "state": "pass"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522875660,
+          "args": {
+            "id": "496",
+            "state": "pass"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522875696,
+          "args": {
+            "id": "497",
+            "state": "pass"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522875809,
+          "args": {
+            "id": "498",
+            "state": "fail"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522875818,
+          "args": {
+            "id": "498",
+            "state": "fail"
+          }
         }
       ],
       "progress-update": [
-        {
-          "name": "progress-update",
-          "time": 1522873013,
-          "args": {
-            "id": "39",
-            "position": 2
-          }
-        },
         {
           "name": "progress-update",
           "time": 1522873250,
@@ -5136,6 +4100,896 @@ var data = [
           "args": {
             "id": "40",
             "position": 15
+          }
+        }
+      ]
+    }
+  },
+  {
+    "user": 37,
+    "control": true,
+    "start": 1522877260,
+    "end": 1522879540,
+    "data": {
+      "user-update": [
+        {
+          "name": "user-update",
+          "time": 1522877260,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522877932,
+          "args": {
+            "current_tutorial": ""
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522877934,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522878699,
+          "args": {
+            "current_tutorial": ""
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879076,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879188,
+          "args": {
+            "current_tutorial": ""
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879192,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879240,
+          "args": {
+            "current_tutorial": ""
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879243,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879292,
+          "args": {
+            "current_tutorial": ""
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879295,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879302,
+          "args": {
+            "current_tutorial": ""
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879306,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522879338,
+          "args": {
+            "current_tutorial": ""
+          }
+        }
+      ],
+      "progress-update": [
+        {
+          "name": "progress-update",
+          "time": 1522877276,
+          "args": {
+            "id": "42",
+            "position": 2
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877289,
+          "args": {
+            "id": "42",
+            "position": 3
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877292,
+          "args": {
+            "id": "42",
+            "position": 2
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877294,
+          "args": {
+            "id": "42",
+            "position": 3
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877347,
+          "args": {
+            "id": "42",
+            "position": 4
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877377,
+          "args": {
+            "id": "42",
+            "position": 5
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877470,
+          "args": {
+            "id": "42",
+            "position": 6
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877586,
+          "args": {
+            "id": "42",
+            "position": 7
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877696,
+          "args": {
+            "id": "42",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877700,
+          "args": {
+            "id": "42",
+            "position": 7
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877732,
+          "args": {
+            "id": "42",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877829,
+          "args": {
+            "id": "42",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877835,
+          "args": {
+            "id": "42",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877837,
+          "args": {
+            "id": "42",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877944,
+          "args": {
+            "id": "42",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522877947,
+          "args": {
+            "id": "42",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878015,
+          "args": {
+            "id": "42",
+            "position": 10
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878070,
+          "args": {
+            "id": "42",
+            "position": 11
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878178,
+          "args": {
+            "id": "42",
+            "position": 12
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878276,
+          "args": {
+            "id": "42",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878417,
+          "args": {
+            "id": "42",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878428,
+          "args": {
+            "id": "42",
+            "position": 15
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878533,
+          "args": {
+            "id": "42",
+            "position": 16
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878536,
+          "args": {
+            "id": "42",
+            "position": 17
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878536,
+          "args": {
+            "id": "42",
+            "position": 16
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878604,
+          "args": {
+            "id": "42",
+            "position": 17
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878605,
+          "args": {
+            "id": "42",
+            "position": 16
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878609,
+          "args": {
+            "id": "42",
+            "position": 17
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878610,
+          "args": {
+            "id": "42",
+            "position": 16
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878610,
+          "args": {
+            "id": "42",
+            "position": 17
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878610,
+          "args": {
+            "id": "42",
+            "position": 16
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878620,
+          "args": {
+            "id": "42",
+            "position": 17
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878620,
+          "args": {
+            "id": "42",
+            "position": 16
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878639,
+          "args": {
+            "id": "42",
+            "position": 15
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878641,
+          "args": {
+            "id": "42",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878642,
+          "args": {
+            "id": "42",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878642,
+          "args": {
+            "id": "42",
+            "position": 12
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878643,
+          "args": {
+            "id": "42",
+            "position": 11
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878643,
+          "args": {
+            "id": "42",
+            "position": 10
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878644,
+          "args": {
+            "id": "42",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878645,
+          "args": {
+            "id": "42",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878645,
+          "args": {
+            "id": "42",
+            "position": 7
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878646,
+          "args": {
+            "id": "42",
+            "position": 6
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878647,
+          "args": {
+            "id": "42",
+            "position": 5
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878647,
+          "args": {
+            "id": "42",
+            "position": 4
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878648,
+          "args": {
+            "id": "42",
+            "position": 5
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878651,
+          "args": {
+            "id": "42",
+            "position": 6
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878651,
+          "args": {
+            "id": "42",
+            "position": 5
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522878657,
+          "args": {
+            "id": "42",
+            "position": 6
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879107,
+          "args": {
+            "id": "42",
+            "position": 5
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879197,
+          "args": {
+            "id": "42",
+            "position": 6
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879197,
+          "args": {
+            "id": "42",
+            "position": 7
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879198,
+          "args": {
+            "id": "42",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879198,
+          "args": {
+            "id": "42",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879199,
+          "args": {
+            "id": "42",
+            "position": 10
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879199,
+          "args": {
+            "id": "42",
+            "position": 11
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879201,
+          "args": {
+            "id": "42",
+            "position": 12
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879213,
+          "args": {
+            "id": "42",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879219,
+          "args": {
+            "id": "42",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879222,
+          "args": {
+            "id": "42",
+            "position": 15
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879233,
+          "args": {
+            "id": "42",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879234,
+          "args": {
+            "id": "42",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879237,
+          "args": {
+            "id": "42",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879238,
+          "args": {
+            "id": "42",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522879300,
+          "args": {
+            "id": "42",
+            "position": 14
+          }
+        }
+      ],
+      "hardware-update": [
+
+      ],
+      "test-unlock": [
+        {
+          "name": "test-unlock",
+          "time": 1522879080,
+          "args": {
+            "tutorial_id": "12",
+            "position": "6"
+          }
+        },
+        {
+          "name": "test-unlock",
+          "time": 1522879109,
+          "args": {
+            "tutorial_id": "12",
+            "position": "5"
+          }
+        },
+        {
+          "name": "test-unlock",
+          "time": 1522879245,
+          "args": {
+            "tutorial_id": "12",
+            "position": "13"
+          }
+        },
+        {
+          "name": "test-unlock",
+          "time": 1522879307,
+          "args": {
+            "tutorial_id": "12",
+            "position": "14"
+          }
+        }
+      ],
+      "progress-data-update": [
+        {
+          "name": "progress-data-update",
+          "time": 1522879156,
+          "args": {
+            "id": "503",
+            "state": "fail"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522879172,
+          "args": {
+            "id": "503",
+            "state": "pass"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522879182,
+          "args": {
+            "id": "503",
+            "state": "fail"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522879260,
+          "args": {
+            "id": "517",
+            "state": "pass"
+          }
+        },
+        {
+          "name": "progress-data-update",
+          "time": 1522879264,
+          "args": {
+            "id": "517",
+            "state": "fail"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "user": 78,
+    "control": true,
+    "start": 1522933890,
+    "end": 1522936590,
+    "data": {
+      "user-update": [
+        {
+          "name": "user-update",
+          "time": 1522933890,
+          "args": {
+            "current_tutorial": "12"
+          }
+        },
+        {
+          "name": "user-update",
+          "time": 1522935913,
+          "args": {
+            "current_tutorial": ""
+          }
+        }
+      ],
+      "hardware-update": [
+
+      ],
+      "progress-update": [
+        {
+          "name": "progress-update",
+          "time": 1522933906,
+          "args": {
+            "id": "45",
+            "position": 2
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522933930,
+          "args": {
+            "id": "45",
+            "position": 3
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522933981,
+          "args": {
+            "id": "45",
+            "position": 4
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934027,
+          "args": {
+            "id": "45",
+            "position": 5
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934091,
+          "args": {
+            "id": "45",
+            "position": 6
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934363,
+          "args": {
+            "id": "45",
+            "position": 7
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934544,
+          "args": {
+            "id": "45",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934651,
+          "args": {
+            "id": "45",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934653,
+          "args": {
+            "id": "45",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934655,
+          "args": {
+            "id": "45",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934662,
+          "args": {
+            "id": "45",
+            "position": 8
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934674,
+          "args": {
+            "id": "45",
+            "position": 9
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934786,
+          "args": {
+            "id": "45",
+            "position": 10
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522934865,
+          "args": {
+            "id": "45",
+            "position": 11
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522935130,
+          "args": {
+            "id": "45",
+            "position": 12
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522935565,
+          "args": {
+            "id": "45",
+            "position": 13
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522935701,
+          "args": {
+            "id": "45",
+            "position": 14
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522935712,
+          "args": {
+            "id": "45",
+            "position": 15
+          }
+        },
+        {
+          "name": "progress-update",
+          "time": 1522935897,
+          "args": {
+            "id": "45",
+            "position": 16
           }
         }
       ]
