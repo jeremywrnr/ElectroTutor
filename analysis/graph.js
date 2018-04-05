@@ -9,8 +9,10 @@ var svg = d3.select('svg'),
 var minuteForm = x => x / 60; //s->min
 
 var x = d3.scaleLinear().range([0, width]),
-  y = d3.scaleLinear().range([height, 0]),
-  z = d3.scaleOrdinal(d3.schemeCategory10);
+  y = d3.scaleLinear().range([height, 0]);
+
+var ctr = '#236AB9',
+  exp = '#FC7307';
 
 var line = d3
   .line()
@@ -62,12 +64,6 @@ y.domain(
   }),
 );
 
-z.domain(
-  users.map(function(c) {
-    return c.id;
-  }),
-);
-
 g
   .append('g')
   .attr('class', 'axis axis--x')
@@ -94,13 +90,11 @@ var user = g
 
 user
   .append('path')
-  .attr('class', d => (d.control ? 'line control' : 'line'))
+  .attr('class', d => (d.control ? 'line' : 'line'))
   .attr('d', function(d) {
     return line(d.values);
   })
-  .style('stroke', function(d) {
-    return z(d.id);
-  });
+  .style('stroke', d => (d.control ? ctr : exp));
 
 user
   .append('text')
